@@ -13,7 +13,7 @@ import { assertNonNegativeFinite } from './numbers.js';
  * All fields are optional (partial constraints are permitted).
  * Missing maxima are represented by `undefined` (not Infinity).
  *
- * Validity classification (VALID / DEGRADED / INVALID) is DND-1.3 — not here.
+ * Validity classification uses these fields in DND-1.3 (`evaluateItemPlacement`).
  */
 export interface ContentConstraints {
   readonly minWidth?: number;

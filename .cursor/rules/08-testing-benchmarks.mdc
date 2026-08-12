@@ -1,6 +1,6 @@
 ---
 description: Testing and benchmark discipline
-globs: "{packages,apps,examples,benchmarks,e2e}/**/*"
+globs: "{packages,apps,examples,benchmarks,e2e,.github}/**/*"
 alwaysApply: false
 ---
 
@@ -8,5 +8,13 @@ alwaysApply: false
 
 - Unit: Vitest for pure TS packages.
 - Browser/E2E: Playwright for DOM/drag/resize/React later; smoke only until product logic exists.
-- Property-based testing: defer library install until DND-1.3/DND-1.4 needs it.
+- Property-based testing: DND-1.3 uses table-driven Vitest; defer fast-check until DND-1.4 needs it.
 - Benchmarks: infrastructure only in DND-1.1; no invented FPS/solve-time claims.
+
+## Private Technical MVP quality gates
+
+- GitHub CI: browser smoke only (`pnpm test:e2e` + smoke prerequisites).
+- Sprint Final Quality Gate (local, mandatory before sprint complete / final commit/push):
+  `lint`, `format:check`, `typecheck`, `test`, `build`, `check:boundaries`,
+  playground + example builds, and `test:e2e`.
+- See `docs/architecture/testing-strategy.md`. CI may be strengthened before Public Alpha.

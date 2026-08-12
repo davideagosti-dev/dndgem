@@ -1,7 +1,7 @@
 {
   "name": "@dndgem/core",
   "version": "0.0.0",
-  "description": "Renderer-agnostic core for DnDGem — domain model and content constraints (validity/solver in later sprints).",
+  "description": "Renderer-agnostic core for DnDGem — domain model, content constraints, validity evaluation, and layout scoring.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

@@ -7,10 +7,12 @@ alwaysApply: false
 # Constraint Model
 
 DND-1.2 defines content constraints and domain types in `@dndgem/core`.
-Validity evaluation and scoring belong to DND-1.3.
+DND-1.3 implements validity evaluation and scoring in Core (`evaluateItemPlacement`, `evaluateLayout`).
 
 - Prefer renderer-agnostic vocabulary over HTML/CSS semantics in core.
 - Keep geometric bounds, minUseful*, and preferred* semantically distinct.
 - Validity states and scoring belong in core, not in React components.
 - Do not invent persistence I/O early; layout shapes include `schemaVersion`.
-- Do not implement VALID/DEGRADED/INVALID evaluation or scoring in DND-1.2.
+- Preferred dimensions affect score/reasons only — never validity alone.
+- Hard geometric violations → INVALID; usefulness misses (hard OK) → DEGRADED.
+- Do not implement solver, candidate generation, or reflow in DND-1.3 (DND-1.4).

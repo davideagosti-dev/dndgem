@@ -2,7 +2,7 @@
 
 DnDGem (by FinGem-AI) is a content-aware adaptive layout engine for draggable/resizable interfaces.
 
-## Product thesis (planned)
+## Product thesis
 
 ```text
 Content Constraints
@@ -11,13 +11,20 @@ Content Constraints
 + Responsive Reflow
 ```
 
-## Current status (DND-1.2)
+Executable Core distinction (DND-1.3):
+
+```text
+GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
+```
+
+## Current status (DND-1.3)
 
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
-- Validity evaluation, scoring, solver, measurement, and DnD behaviour remain later sprints.
+- `@dndgem/core` evaluates placements as `VALID` / `DEGRADED` / `INVALID` with deterministic scoring (DND-1.3).
+- Solver, measurement, and DnD behaviour remain later sprints.
 
-See [core-domain.md](./core-domain.md) for domain semantics.
+See [core-domain.md](./core-domain.md) for domain and scoring semantics.
 
 ## Package graph
 

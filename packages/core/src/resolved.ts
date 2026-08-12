@@ -7,8 +7,8 @@ import { createLayoutSpace, type LayoutSpace, type LayoutSpaceInput } from './sp
  * Resolved layout output shape (ADR-0006).
  *
  * Distinct from {@link import('./intent.js').LayoutIntent}: this represents
- * placements after validation/solving/reflow. DND-1.2 defines the data shape
- * only — no solver, scoring, or reflow behaviour.
+ * placements after evaluation/solving/reflow. Construction does not score;
+ * use `evaluateLayout` (DND-1.3) for validity. Solver/reflow remain DND-1.4.
  */
 export interface ResolvedLayout {
   readonly schemaVersion: typeof LAYOUT_SCHEMA_VERSION;
@@ -24,7 +24,7 @@ export interface ResolvedLayoutInput {
 
 /**
  * Builds an immutable {@link ResolvedLayout} stamped with {@link LAYOUT_SCHEMA_VERSION}.
- * Does not verify placements against constraints (that is DND-1.3+).
+ * Does not verify placements against constraints — use `evaluateLayout`.
  */
 export function createResolvedLayout(input: ResolvedLayoutInput): ResolvedLayout {
   const space = createLayoutSpace(input.space);

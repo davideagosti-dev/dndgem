@@ -1,8 +1,8 @@
 /**
- * Planned layout validity classification vocabulary (ADR-0002).
+ * Layout validity classification vocabulary (ADR-0002).
  *
- * DND-1.2 exposes the type only. Evaluation, scoring, and degradation
- * algorithms belong to DND-1.3 — do not add them here.
+ * Evaluation and scoring live in `evaluate.ts` (DND-1.3).
+ * Severity for aggregation: INVALID > DEGRADED > VALID (explicit, not enum order).
  */
 export type ValidityState = 'VALID' | 'DEGRADED' | 'INVALID';
 
