@@ -10,13 +10,14 @@ Category: **Content-Aware Adaptive Layout Engine**
 
 DnDGem is in **early technical development**.
 
-Phase 0 audits are closed with a go decision for the Technical MVP. The repository currently contains the **DND-1.1 engineering foundation** only.
+Phase 0 audits are closed with a go decision for the Technical MVP. **DND-1.1** established the engineering baseline; **DND-1.2** adds the Core domain and constraint model.
 
 | Area                              | Status                                        |
 | --------------------------------- | --------------------------------------------- |
 | Monorepo / tooling                | Implemented (DND-1.1)                         |
-| Package shells (`core/dom/react`) | Implemented (no product logic)                |
-| Constraint model / validity       | Planned (DND-1.2 / DND-1.3)                   |
+| Package shells (`core/dom/react`) | Implemented (DND-1.1)                         |
+| Core domain / constraints         | Implemented (DND-1.2)                         |
+| Validity engine / scoring         | Planned (DND-1.3)                             |
 | Adaptive solver / reflow          | Planned (DND-1.4)                             |
 | DOM measurement / resize          | Planned (DND-1.5)                             |
 | Drag & drop integration           | Planned (DND-1.6; `@dnd-kit/dom` deferred)    |
@@ -35,19 +36,19 @@ Content Constraints
 + Responsive Reflow
 ```
 
-None of that solver behaviour is implemented yet.
+Constraint domain types exist in Core; validity, solver, and reflow behaviour are not implemented yet.
 
 ## Architecture overview
 
 ```text
-@dndgem/core          renderer-agnostic domain (future constraints/solver)
+@dndgem/core          renderer-agnostic domain + constraints (validity/solver later)
      ▲
 @dndgem/dom           DOM adapter (future measurement/resize)
      ▲
 @dndgem/react         React adapter (future bindings; React is a peerDependency)
 ```
 
-Details: `docs/architecture/overview.md` and `docs/adr/`.
+Details: `docs/architecture/overview.md`, `docs/architecture/core-domain.md`, and `docs/adr/`.
 
 ## Phase 1 roadmap
 
