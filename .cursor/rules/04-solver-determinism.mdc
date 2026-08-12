@@ -1,0 +1,15 @@
+---
+description: Deterministic solver requirements
+globs: packages/core/**/*
+alwaysApply: false
+---
+
+# Solver Determinism
+
+When the solver is implemented (DND-1.4):
+
+- Identical inputs must produce identical outputs.
+- Do not rely on wall-clock time or unordered iteration for results.
+- Keep AI out of the critical solve path.
+
+DND-1.1 must not implement the solver, candidate generation, or adaptive reflow.

@@ -1,0 +1,12 @@
+---
+description: Testing and benchmark discipline
+globs: "{packages,apps,examples,benchmarks,e2e}/**/*"
+alwaysApply: false
+---
+
+# Testing & Benchmarks
+
+- Unit: Vitest for pure TS packages.
+- Browser/E2E: Playwright for DOM/drag/resize/React later; smoke only until product logic exists.
+- Property-based testing: defer library install until DND-1.3/DND-1.4 needs it.
+- Benchmarks: infrastructure only in DND-1.1; no invented FPS/solve-time claims.

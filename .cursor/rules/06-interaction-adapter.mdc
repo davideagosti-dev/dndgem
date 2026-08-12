@@ -1,0 +1,14 @@
+---
+description: Interaction provider abstraction and dnd-kit policy
+alwaysApply: true
+---
+
+# Interaction Adapter
+
+- DnDGem owns the interaction abstraction.
+- Planned initial web provider: `@dnd-kit/dom` (DND-1.6).
+- Do not install dnd-kit until DND-1.6 unless there is a clear infrastructure-only reason.
+- Never import dnd-kit from `@dndgem/core`.
+- Never expose dnd-kit types through DnDGem public APIs.
+- Provider must remain replaceable (contract tests + rollback possible).
+- No custom native DnD engine in Phase 1.

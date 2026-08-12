@@ -1,0 +1,17 @@
+---
+description: DOM package boundary and deferred measurement work
+globs: packages/dom/**/*
+alwaysApply: false
+---
+
+# DOM Boundary
+
+`@dndgem/dom` may depend on `@dndgem/core`.
+
+It must not depend on React or `@dndgem/react`.
+
+Deferred to later sprints (not DND-1.1):
+
+- ResizeObserver measurement logic
+- drag / resize product behaviour
+- leaking raw HTMLElement types into core public contracts

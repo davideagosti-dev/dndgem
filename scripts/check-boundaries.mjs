@@ -1,0 +1,108 @@
+#!/usr/bin/env node
+/**
+ * Lightweight package-boundary verifier for DnDGem.
+ * Enforces dependency direction and forbidden runtime deps without heavy tooling.
+ */
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const packagesDir = join(root, 'packages');
+
+const errors = [];
+
+function readPkg(name) {
+  const pkgPath = join(packagesDir, name, 'package.json');
+  if (!existsSync(pkgPath)) {
+    errors.push(`Missing package.json for packages/${name}`);
+    return null;
+  }
+  return JSON.parse(readFileSync(pkgPath, 'utf8'));
+}
+
+function allDeps(pkg) {
+  return {
+    ...pkg.dependencies,
+    ...pkg.optionalDependencies,
+    ...pkg.peerDependencies,
+    ...pkg.devDependencies,
+  };
+}
+
+function assertNoDeps(packageName, pkg, forbidden) {
+  const deps = allDeps(pkg);
+  for (const dep of Object.keys(deps)) {
+    if (forbidden.has(dep)) {
+      errors.push(`packages/${packageName} must not depend on "${dep}"`);
+    }
+  }
+}
+
+const core = readPkg('core');
+const dom = readPkg('dom');
+const react = readPkg('react');
+
+if (core) {
+  assertNoDeps(
+    'core',
+    core,
+    new Set([
+      '@dndgem/dom',
+      '@dndgem/react',
+      'react',
+      'react-dom',
+      '@dnd-kit/dom',
+      '@dnd-kit/core',
+      '@dnd-kit/react',
+    ]),
+  );
+  for (const dep of Object.keys(allDeps(core))) {
+    if (dep.startsWith('@dnd-kit/')) {
+      errors.push(`packages/core must not depend on "${dep}"`);
+    }
+  }
+  if (core.type !== 'module') errors.push('packages/core should be ESM ("type": "module")');
+  if (!core.exports?.['.']) errors.push('packages/core must declare a public "." export');
+}
+
+if (dom) {
+  assertNoDeps('dom', dom, new Set(['@dndgem/react', 'react', 'react-dom']));
+  if (dom.type !== 'module') errors.push('packages/dom should be ESM ("type": "module")');
+  if (!dom.exports?.['.']) errors.push('packages/dom must declare a public "." export');
+  if (!dom.dependencies?.['@dndgem/core']) {
+    errors.push('@dndgem/dom must declare a dependency on @dndgem/core');
+  }
+}
+
+if (react) {
+  if (react.type !== 'module') errors.push('packages/react should be ESM ("type": "module")');
+  if (!react.exports?.['.']) errors.push('packages/react must declare a public "." export');
+  if (!react.dependencies?.['@dndgem/core']) {
+    errors.push('@dndgem/react must declare a dependency on @dndgem/core');
+  }
+  if (!react.peerDependencies?.react) {
+    errors.push('@dndgem/react must declare react as a peerDependency');
+  }
+}
+
+// Ensure no unexpected packages under packages/ for Phase 1
+for (const name of readdirSync(packagesDir)) {
+  if (!['core', 'dom', 'react'].includes(name)) {
+    errors.push(`Unexpected package folder packages/${name} (Phase 1 allows core/dom/react only)`);
+  }
+}
+
+if (errors.length > 0) {
+  console.error('Package boundary check FAILED:\n');
+  for (const error of errors) {
+    console.error(` - ${error}`);
+  }
+  process.exit(1);
+}
+
+console.log('Package boundary check PASSED');
+console.log(' - core: no DOM/React/dnd-kit dependencies');
+console.log(' - dom: no React dependencies; depends on core');
+console.log(' - react: depends on core; react is a peerDependency');
+console.log(' - public exports present on packages');

@@ -1,0 +1,13 @@
+---
+description: React adapter peerDependency and API discipline
+globs: packages/react/**/*
+alwaysApply: false
+---
+
+# React Adapter
+
+- React is a peerDependency of `@dndgem/react`.
+- Do not bundle React into the library.
+- Prefer no misleading public component API (e.g. AdaptiveGrid) before DND-1.7.
+- `@dndgem/react` may depend on `@dndgem/core` and `@dndgem/dom`.
+- Do not place solver logic in the React package.

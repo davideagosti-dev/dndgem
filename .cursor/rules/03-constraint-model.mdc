@@ -1,0 +1,14 @@
+---
+description: Content constraint and validity model guidance
+globs: packages/core/**/*
+alwaysApply: false
+---
+
+# Constraint Model
+
+Future core work (DND-1.2+) defines content constraints and validity.
+
+- Prefer renderer-agnostic vocabulary over HTML/CSS semantics in core.
+- Validity states and scoring belong in core, not in React components.
+- Do not invent persistence schemas early; future saved layouts must include `schemaVersion`.
+- DND-1.1 must not implement LayoutNode semantics, minUsefulWidth, or VALID/DEGRADED/INVALID logic.

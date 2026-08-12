@@ -1,0 +1,19 @@
+---
+description: Enforce dependency and public export boundaries
+globs: "{packages,apps,examples}/**/*"
+alwaysApply: false
+---
+
+# Dependency Boundaries
+
+Forbidden in `@dndgem/core` imports:
+
+- `packages/dom`, `packages/react`
+- browser APIs as dependencies of core logic
+- React / react-dom
+- dnd-kit
+- AI provider SDKs
+
+Consumers (apps/examples) must import `@dndgem/*` public exports only — never `src/internal` paths or relative package source trees.
+
+Run `pnpm check:boundaries` after dependency changes.

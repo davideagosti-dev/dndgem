@@ -1,0 +1,29 @@
+---
+description: DnDGem project governance and Phase 1 hard exclusions
+alwaysApply: true
+---
+
+# Project Governance
+
+Brand: FinGem-AI · Product: DnDGem
+
+Phase 0 is CLOSED. Do not reopen gates without a hard contradiction (stop, document, report).
+
+Active Phase 1 sprint work must stay within the declared sprint scope.
+
+## Phase 1 hard exclusions
+
+During Phase 1, Cursor MUST NOT introduce:
+
+- AI / Gemini / OpenAI / Anthropic / local model runtimes
+- Flutter implementation
+- Vue / Angular / Svelte implementations
+- cloud services / billing / Stripe
+- Layout CI SaaS / team accounts / enterprise functionality
+- custom native DnD engine
+
+unless the active sprint explicitly requires it.
+
+Flutter compatibility may be considered architecturally (types, ADRs), but not implemented.
+
+AI is optional and outside the critical path.

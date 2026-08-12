@@ -1,0 +1,9 @@
+pnpm-lock.yaml
+dist
+coverage
+.turbo
+playwright-report
+test-results
+blob-report
+node_modules
+CHANGELOG.md

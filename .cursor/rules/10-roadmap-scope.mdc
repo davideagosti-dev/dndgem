@@ -1,0 +1,21 @@
+---
+description: Roadmap scope lock for Phase 1 sprints
+alwaysApply: true
+---
+
+# Roadmap Scope
+
+Phase 1 mapping:
+
+1. DND-1.1 Repository & Engineering Foundation
+2. DND-1.2 Core Domain & Constraint Model
+3. DND-1.3 Validity Engine & Layout Scoring
+4. DND-1.4 Adaptive Solver & Reflow
+5. DND-1.5 DOM Measurement & Resize
+6. DND-1.6 Drag & Drop Interaction
+7. DND-1.7 React / Vanilla Integration
+8. DND-1.8 Technical Proof, Benchmarks & MVP Closure
+
+Do not implement later sprints early.
+
+Do not turn roadmap ideas into committed calendar dates in docs or code comments unless explicitly asked.

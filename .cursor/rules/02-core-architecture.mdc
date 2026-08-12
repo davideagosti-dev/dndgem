@@ -1,0 +1,18 @@
+---
+description: Renderer-agnostic core and package graph rules
+globs: packages/**/*
+alwaysApply: false
+---
+
+# Core Architecture
+
+Dependency direction:
+
+```text
+@dndgem/core <- @dndgem/dom <- @dndgem/react
+```
+
+- `@dndgem/core` must not depend on DOM, HTMLElement, CSS, window, document, ResizeObserver, React, dnd-kit, or AI SDKs.
+- No reverse imports.
+- No private cross-package source imports; use public package exports only.
+- Do not create placeholder packages for vue/angular/svelte/flutter/ai/enterprise/cloud.
