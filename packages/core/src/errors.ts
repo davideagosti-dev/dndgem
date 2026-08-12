@@ -1,6 +1,6 @@
 /**
- * Predictable, renderer-neutral domain construction failures.
- * Not a layout validity classification (that belongs to DND-1.3).
+ * Predictable, renderer-neutral domain construction / invocation failures.
+ * Distinct from layout validity classification (`ValidityState` in DND-1.3).
  */
 export class DomainError extends Error {
   readonly code: string;

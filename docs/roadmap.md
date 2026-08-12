@@ -28,10 +28,11 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 ### DND-1.3 — Validity Engine & Layout Scoring
 
 - **Objective:** Evaluate layouts as VALID / DEGRADED / INVALID with scoring.
-- **Scope:** Validity engine, scoring, property-based testing setup as needed.
+- **Scope:** Validity engine, scoring; table-driven boundary tests (no solver).
 - **Out of scope:** Adaptive candidate generation / reflow.
 - **Dependencies:** DND-1.2.
 - **Closure:** Deterministic validity/scoring for fixture layouts.
+- **Reference:** `docs/architecture/core-domain.md`, ADR-0002, ADR-0009.
 
 ### DND-1.4 — Adaptive Solver & Reflow
 

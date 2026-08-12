@@ -13,53 +13,14 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Private Technical MVP: GitHub CI runs browser smoke only.
+# Full sprint quality gate remains mandatory locally (see docs/architecture/testing-strategy.md).
+
 jobs:
-  quality:
-    name: Quality gates
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.34.5
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Boundary check
-        run: pnpm check:boundaries
-
-      - name: Format check
-        run: pnpm format:check
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Test
-        run: pnpm test
-
-      - name: Build
-        run: pnpm build
-
   browser-smoke:
-    name: Browser smoke
+    name: browser-smoke
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: quality
 
     steps:
       - name: Checkout
@@ -79,6 +40,7 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      # Playground Vite resolves workspace packages from dist — required for smoke server.
       - name: Build packages
         run: pnpm --filter "./packages/**" build
 

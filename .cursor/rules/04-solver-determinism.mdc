@@ -12,4 +12,5 @@ When the solver is implemented (DND-1.4):
 - Do not rely on wall-clock time or unordered iteration for results.
 - Keep AI out of the critical solve path.
 
-DND-1.1 must not implement the solver, candidate generation, or adaptive reflow.
+DND-1.1 / DND-1.3 must not implement the solver, candidate generation, or adaptive reflow.
+Evaluation and scoring (DND-1.3) must remain pure: same input → same output; no wall-clock or randomness.
