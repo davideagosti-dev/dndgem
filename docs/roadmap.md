@@ -20,9 +20,10 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 
 - **Objective:** Define core domain types and content constraint model in `@dndgem/core`.
 - **Scope:** Domain types, constraints, schemaVersion principle for future persistence.
-- **Out of scope:** Solver algorithms, DOM/React behaviour.
+- **Out of scope:** Solver algorithms, DOM/React behaviour; validity evaluation / scoring.
 - **Dependencies:** DND-1.1.
 - **Closure:** Constraint model documented and typed without renderer leakage.
+- **Reference:** `docs/architecture/core-domain.md`.
 
 ### DND-1.3 — Validity Engine & Layout Scoring
 

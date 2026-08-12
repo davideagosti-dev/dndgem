@@ -11,12 +11,13 @@ Content Constraints
 + Responsive Reflow
 ```
 
-## Current status (DND-1.1)
+## Current status (DND-1.2)
 
-Engineering baseline only:
+- Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
+- `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
+- Validity evaluation, scoring, solver, measurement, and DnD behaviour remain later sprints.
 
-- Monorepo, packages, quality gates, docs, and boundaries exist.
-- No constraint model, solver, measurement, or DnD behaviour yet.
+See [core-domain.md](./core-domain.md) for domain semantics.
 
 ## Package graph
 
