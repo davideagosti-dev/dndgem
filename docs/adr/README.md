@@ -10,3 +10,4 @@
 | 0006 | Layout Intent vs Resolved Layout  | Accepted (types DND-1.2; I/O deferred)   |
 | 0007 | React-First, Framework-Agnostic   | Accepted                                 |
 | 0008 | Flutter Compatibility Principle   | Accepted (no impl)                       |
+| 0009 | Validity Scoring Convention       | Accepted (DND-1.3)                       |

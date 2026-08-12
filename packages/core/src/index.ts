@@ -2,9 +2,11 @@
  * @dndgem/core public entry.
  *
  * DND-1.2: renderer-agnostic domain model and content constraints.
+ * DND-1.3: deterministic validity evaluation and layout scoring.
+ *
  * This package MUST remain renderer-agnostic (no DOM, React, or dnd-kit imports).
  *
- * Out of scope here: validity engine, scoring, solver/reflow, DOM measurement, DnD.
+ * Out of scope here: solver/reflow, DOM measurement, DnD interaction.
  */
 
 export const CORE_PACKAGE_NAME = '@dndgem/core' as const;
@@ -60,3 +62,19 @@ export {
 } from './intent.js';
 
 export { createResolvedLayout, type ResolvedLayout, type ResolvedLayoutInput } from './resolved.js';
+
+export {
+  SCORE_PREFERENCE_WEIGHT,
+  SCORE_USEFULNESS_WEIGHT,
+  VALIDITY_REASON_CODES,
+  evaluateConstraintsPlacement,
+  evaluateItemPlacement,
+  evaluateLayout,
+  type ItemPlacementEvaluation,
+  type LayoutEvaluation,
+  type ScoreBreakdown,
+  type ValidityAxis,
+  type ValidityReason,
+  type ValidityReasonCode,
+  type ValidityReasonKind,
+} from './evaluate.js';
