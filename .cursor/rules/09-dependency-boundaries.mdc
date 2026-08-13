@@ -14,6 +14,8 @@ Forbidden in `@dndgem/core` imports:
 - dnd-kit
 - AI provider SDKs
 
+`@dndgem/dom` may depend on `@dnd-kit/dom` internally. `@dndgem/react` must not.
+
 Consumers (apps/examples) must import `@dndgem/*` public exports only — never `src/internal` paths or relative package source trees.
 
 Run `pnpm check:boundaries` after dependency changes.

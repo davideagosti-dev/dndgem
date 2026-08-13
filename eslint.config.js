@@ -104,6 +104,32 @@ export default tseslint.config(
     },
   },
   {
+    files: ['packages/react/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@dnd-kit/dom',
+              message: '@dndgem/react must consume DnDGem interaction APIs, not dnd-kit types.',
+            },
+            {
+              name: '@dnd-kit/core',
+              message: '@dndgem/react must consume DnDGem interaction APIs, not dnd-kit types.',
+            },
+          ],
+          patterns: [
+            {
+              group: ['@dnd-kit/*'],
+              message: 'Forbidden dnd-kit import for @dndgem/react.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: ['apps/**/*.{ts,tsx}', 'examples/**/*.{ts,tsx}'],
     languageOptions: {
       globals: {

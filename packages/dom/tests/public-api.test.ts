@@ -2,6 +2,7 @@ import { describe, expect, expectTypeOf, it } from 'vitest';
 import {
   DOM_PACKAGE_NAME,
   DomAdapterError,
+  createDragInteraction,
   getDomPackageInfo,
   measureLayout,
   observeLayout,
@@ -15,26 +16,35 @@ describe('@dndgem/dom public API', () => {
     expect(info.core.name).toBe('@dndgem/core');
   });
 
-  it('exports measurement and observation entry points', () => {
+  it('exports measurement, observation, and drag interaction entry points', () => {
     expect(typeof measureLayout).toBe('function');
     expect(typeof observeLayout).toBe('function');
+    expect(typeof createDragInteraction).toBe('function');
     expect(new DomAdapterError('TEST', 'test').name).toBe('DomAdapterError');
   });
 
-  it('does not leak internal helpers as public symbols', async () => {
+  it('does not leak internal helpers or provider types as public symbols', async () => {
     const api = await import('../src/index.js');
     expect('snapshotsEqual' in api).toBe(false);
     expect('readClientBox' in api).toBe(false);
     expect('assertMeasurableElement' in api).toBe(false);
     expect('resolveResizeObserverConstructor' in api).toBe(false);
+    expect('dndKitMechanicsAdapter' in api).toBe(false);
+    expect('DragDropManager' in api).toBe(false);
+    expect('Draggable' in api).toBe(false);
+    expect('Droppable' in api).toBe(false);
+    expect('PointerSensor' in api).toBe(false);
   });
 });
 
 describe('compile-time contracts', () => {
-  it('keeps snapshots free of renderer handles', () => {
+  it('keeps snapshots and proposals free of renderer and provider handles', () => {
     type Snapshot = import('../src/index.js').DomMeasurementSnapshot;
+    type Proposal = import('../src/index.js').DragProposal;
     type ForbiddenKeys = 'container' | 'element' | 'node' | 'ref' | 'style' | 'observer';
     type SnapshotKeys = keyof Snapshot;
+    type ProposalKeys = keyof Proposal;
     expectTypeOf<Extract<SnapshotKeys, ForbiddenKeys>>().toEqualTypeOf<never>();
+    expectTypeOf<Extract<ProposalKeys, ForbiddenKeys>>().toEqualTypeOf<never>();
   });
 });
