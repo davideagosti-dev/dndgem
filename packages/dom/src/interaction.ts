@@ -136,6 +136,11 @@ export interface DragInteractionInput {
   readonly onProposal?: (event: DragProposalEvent) => void;
   readonly onDrop?: (event: DragDropEvent) => void;
   readonly onCancel?: (event: DragCancelEvent) => void;
+  /**
+   * Snapshot updates from the interaction's `observeLayout` instance.
+   * Idle consumers (DND-1.7 layout session) use this instead of a second observer.
+   */
+  readonly onMeasure?: (snapshot: DomMeasurementSnapshot) => void;
   readonly ResizeObserver?: ResizeObserverConstructor;
   /**
    * Optional replaceable drag mechanics. Defaults to the internal @dnd-kit/dom
@@ -366,6 +371,7 @@ export function createDragInteraction(input: DragInteractionInput): DragInteract
   const onProposal = input.onProposal;
   const onDrop = input.onDrop;
   const onCancel = input.onCancel;
+  const onMeasure = input.onMeasure;
   const mechanics = input.mechanics ?? dndKitMechanicsAdapter;
 
   const items = Object.freeze({ ...input.items });
@@ -524,6 +530,7 @@ export function createDragInteraction(input: DragInteractionInput): DragInteract
         return;
       }
       latestSnapshot = snapshot;
+      onMeasure?.(snapshot);
       if (active === undefined) {
         return;
       }

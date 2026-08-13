@@ -3,10 +3,11 @@
  *
  * DND-1.5: DOM measurement and ResizeObserver-driven snapshot updates.
  * DND-1.6: vendor-isolated drag interaction that produces LayoutIntent
- * proposals for the Core solver. Depends on @dndgem/core. Must not depend
- * on React. @dnd-kit/dom is an internal implementation detail.
+ * proposals for the Core solver.
+ * DND-1.7: layout session orchestration and resolved-geometry application.
  *
- * Out of scope here: layout style application, React bindings (DND-1.7).
+ * Depends on @dndgem/core. Must not depend on React. @dnd-kit/dom is an
+ * internal implementation detail.
  */
 
 import { getCorePackageInfo } from '@dndgem/core';
@@ -69,3 +70,19 @@ export {
   type DragStartEvent,
   type DragTranslation,
 } from './interaction.js';
+
+export {
+  applyLayoutPlacements,
+  layoutPlacementStyle,
+  prepareLayoutContainer,
+  type ApplyLayoutPlacementsInput,
+  type LayoutPlacementStyle,
+} from './apply.js';
+
+export {
+  createLayoutSession,
+  type LayoutSession,
+  type LayoutSessionInput,
+  type LayoutSessionItemInput,
+  type LayoutSessionState,
+} from './session.js';

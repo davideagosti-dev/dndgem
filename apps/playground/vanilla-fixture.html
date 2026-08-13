@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DnDGem DND-1.7 vanilla fixture</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+      }
+      .board {
+        position: relative;
+        margin: 24px 0 0 48px;
+        width: 480px;
+        height: 240px;
+        background: #e8eef2;
+        border: 1px solid #4d646f;
+      }
+      .item {
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        user-select: none;
+        touch-action: none;
+      }
+      #item-a {
+        background: #2f6f5e;
+      }
+      #item-b {
+        background: #3d5a80;
+      }
+      #reject-board {
+        width: 120px;
+        height: 120px;
+      }
+      #item-c {
+        background: #8a4b2f;
+      }
+      #log {
+        margin: 1rem 48px;
+        font-family: ui-monospace, monospace;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>DND-1.7 vanilla fixture</h1>
+    <p>Public createLayoutSession consumer proof.</p>
+    <div id="board" class="board" data-testid="board">
+      <div id="item-a" class="item" data-testid="item-a">A</div>
+      <div id="item-b" class="item" data-testid="item-b">B</div>
+    </div>
+    <h2>Reject board</h2>
+    <div id="reject-board" class="board" data-testid="reject-board">
+      <div id="item-c" class="item" data-testid="item-c">C</div>
+    </div>
+    <pre id="log" data-testid="log"></pre>
+    <script type="module" src="/src/vanilla-fixture.ts"></script>
+  </body>
+</html>

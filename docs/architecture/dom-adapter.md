@@ -1,8 +1,8 @@
 # DOM Adapter
 
-Authoritative semantics for `@dndgem/dom` measurement, resize observation (DND-1.5), and vendor-isolated drag interaction (DND-1.6).
+Authoritative semantics for `@dndgem/dom` measurement, resize observation (DND-1.5), vendor-isolated drag interaction (DND-1.6), and Vanilla layout session / geometry application (DND-1.7).
 
-Related: [ADR-0001](../adr/ADR-0001-renderer-agnostic-core.md), [ADR-0004](../adr/ADR-0004-interaction-provider-boundary.md), [ADR-0005](../adr/ADR-0005-dnd-kit-initial-provider.md), [ADR-0011](../adr/ADR-0011-dom-measurement-resize.md), [ADR-0012](../adr/ADR-0012-vendor-isolated-drag-interaction.md), [core-domain.md](./core-domain.md).
+Related: [ADR-0001](../adr/ADR-0001-renderer-agnostic-core.md), [ADR-0004](../adr/ADR-0004-interaction-provider-boundary.md), [ADR-0005](../adr/ADR-0005-dnd-kit-initial-provider.md), [ADR-0011](../adr/ADR-0011-dom-measurement-resize.md), [ADR-0012](../adr/ADR-0012-vendor-isolated-drag-interaction.md), [ADR-0013](../adr/ADR-0013-react-vanilla-integration-boundary.md), [core-domain.md](./core-domain.md).
 
 ## Responsibility
 
@@ -18,16 +18,18 @@ renderer-neutral geometry + LayoutIntent proposals
 validity, scoring, solver, reflow
 ```
 
-Core never reads the DOM. Measurement never writes layout styles. Interaction composes with `solveLayout`; it does not rank layouts, apply final styles, or expose the drag provider. React bindings remain DND-1.7.
+Core never reads the DOM. Measurement never writes layout styles. Interaction composes with `solveLayout`; it does not rank layouts or expose the drag provider. DND-1.7 `createLayoutSession` applies resolved geometry and is the Vanilla consumer entry. React wraps that session.
 
 ## Public entry points
 
-| API                     | Role                                                                                        |
-| ----------------------- | ------------------------------------------------------------------------------------------- |
-| `measureLayout`         | One-shot read: container + item map → `DomMeasurementSnapshot`                              |
-| `observeLayout`         | Initial snapshot + `ResizeObserver` updates; `measure()` / `dispose()`                      |
-| `createDragInteraction` | Pointer mechanics → container-relative `LayoutIntent` proposal → Core solve → accept/reject |
-| `DomAdapterError`       | Adapter usage / environment failures (not Core `DomainError` or solver `UNSATISFIABLE`)     |
+| API                                              | Role                                                                                        |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| `measureLayout`                                  | One-shot read: container + item map → `DomMeasurementSnapshot`                              |
+| `observeLayout`                                  | Initial snapshot + `ResizeObserver` updates; `measure()` / `dispose()`                      |
+| `createDragInteraction`                          | Pointer mechanics → container-relative `LayoutIntent` proposal → Core solve → accept/reject |
+| `createLayoutSession`                            | Vanilla orchestration: measure → solve → apply; drag preview/drop/cancel; idle resize       |
+| `layoutPlacementStyle` / `applyLayoutPlacements` | `ResolvedLayout` Rect → absolute border-box `left/top/width/height`                         |
+| `DomAdapterError`                                | Adapter usage / environment failures (not Core `DomainError` or solver `UNSATISFIABLE`)     |
 
 Item identity remains Core `ItemId`. The adapter maps `ItemId` string keys to `HTMLElement` outside Core.
 
@@ -143,7 +145,7 @@ ADR-0010 would otherwise keep the last commit: `preserve-previous` has stability
 - Cancel → discard proposal; commit nothing; return idle
 - Unsatisfiable is a solver condition, not `DomAdapterError` / `DomainError`
 
-Caller-owned `LayoutIntent` / `ResolvedLayout` objects are never mutated. Interaction does not write final layout styles (DND-1.7).
+Caller-owned `LayoutIntent` / `ResolvedLayout` objects are never mutated. Interaction does not write final layout styles; `createLayoutSession` does (DND-1.7).
 
 ### Provider isolation
 
@@ -157,10 +159,38 @@ Pointer drag is implemented and covered by unit tests plus a Playwright fixture.
 
 `dispose()` is idempotent: provider destroy, observer disconnect, dropped element refs, no further callbacks. `getState()` after dispose throws `INTERACTION_DISPOSED`.
 
+## Layout session (DND-1.7)
+
+```text
+createLayoutSession
+  → measure + solveLayout
+  → applyLayoutPlacements
+  → createDragInteraction
+        ↓
+  proposal preview (skip active item)
+  accepted drop → commit + apply
+  rejected drop / cancel → restore committed
+  idle resize → solveLayout({ intent, previous }) → apply if changed
+```
+
+Positioning model:
+
+- Container: positioned containing block (`relative` if it was `static`)
+- Items: `position: absolute; box-sizing: border-box; left; top; width; height`
+- Values are CSS pixels matching Core `Rect`
+- Committed layout does not use `transform` (the drag provider may transform the active item during a drag)
+- Library styles do not set colors, fonts, or z-index
+
+Idle resize and constraint-driven session recreation may pass Core `previous` for ADR-0010 stability. Drag proposals and **explicit new `desiredPlacements`** do **not**. Passing `previous` while also supplying a new equally-valid desired placement lets `preserve-previous` win (the DND-1.6 class of bug).
+
+`dispose()` disconnects interaction and observers and is idempotent. Layout-related inline styles are left in place; the consumer resets them if a pre-session look is required. Unrelated visual styles (color, font, z-index, …) are never written by the library.
+
+React (`@dndgem/react`) wraps this session. It does not add a second ResizeObserver or a second solver. Importing the React package is SSR-safe; rendering the provider requires a client-side mount.
+
 ## Explicit non-goals
 
-- React hooks, refs, components, or vanilla auto-mount APIs (DND-1.7)
-- Applying `element.style.*` as a product layout API
+- Vue / Angular / Svelte / Flutter adapters
+- Animation / spring / FLIP engines
 - Custom native DnD engine; leaking dnd-kit types
 - `MutationObserver`, auto child discovery, `querySelector` scanning
-- AI, Flutter, cloud
+- AI, cloud, claiming production-ready or fully accessible drag

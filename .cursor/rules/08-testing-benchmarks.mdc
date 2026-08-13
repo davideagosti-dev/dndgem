@@ -7,7 +7,7 @@ alwaysApply: false
 # Testing & Benchmarks
 
 - Unit: Vitest for Core and for `@dndgem/dom` measurement (mocked geometry / fake `ResizeObserver`) and drag interaction (fake mechanics).
-- Browser/E2E: Playwright Chromium smoke (playground boot + DND-1.6 drag fixture); broader product surfaces later.
+- Browser/E2E: Playwright Chromium smoke (playground boot + DND-1.6 drag fixture + DND-1.7 Vanilla/React integration); broader product surfaces later.
 - Property-based testing: DND-1.3 uses table-driven Vitest; defer fast-check until DND-1.4 needs it.
 - Benchmarks: infrastructure only in DND-1.1; no invented FPS/solve-time claims.
 

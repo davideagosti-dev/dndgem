@@ -6,7 +6,32 @@
     <title>DnDGem Vanilla Example</title>
   </head>
   <body>
-    <main id="app"></main>
+    <main>
+      <h1>DnDGem Vanilla Example</h1>
+      <p>
+        Public <code>@dndgem/dom</code> layout session: measure, solve, drag preview, drop, and
+        resize.
+      </p>
+      <p id="status" data-testid="status">starting</p>
+      <div id="board" class="board" data-testid="board">
+        <article id="item-chart" class="item chart" data-testid="item-chart">
+          <h2>Chart</h2>
+          <p>Wide card · min useful 180</p>
+        </article>
+        <article id="item-table" class="item table" data-testid="item-table">
+          <h2>Table</h2>
+          <p>Dense rows · min useful 220</p>
+        </article>
+        <article id="item-details" class="item details" data-testid="item-details">
+          <h2>Details</h2>
+          <p>Text panel that needs height.</p>
+        </article>
+        <article id="item-metric" class="item metric" data-testid="item-metric">
+          <h2>42</h2>
+          <p>Metric</p>
+        </article>
+      </div>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
