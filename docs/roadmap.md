@@ -54,7 +54,7 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Out of scope:** Full DnD interaction integration.
 - **Dependencies:** DND-1.4 (core contracts).
 - **Closure:** DOM measurements feed core without leaking HTML semantics upward incorrectly.
-- **Status:** COMPLETE / READY FOR MERGE
+- **Status:** COMPLETE
 - **Reference:** `docs/architecture/dom-adapter.md`, ADR-0011.
 
 ### DND-1.6 — Drag & Drop Interaction
@@ -63,8 +63,9 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Scope:** DnDGem-owned interaction abstraction; dnd-kit as internal provider.
 - **Out of scope:** Custom native DnD engine; exposing dnd-kit types publicly.
 - **Dependencies:** DND-1.5.
-- **Closure:** Drag/resize interactions respect validity constraints via adapters.
-- **Status:** NEXT
+- **Closure:** Drag interactions produce normalized layout proposals; Core solver accepts, reflows, or rejects.
+- **Status:** COMPLETE
+- **Reference:** `docs/architecture/dom-adapter.md`, ADR-0012.
 
 ### DND-1.7 — React / Vanilla Integration
 
@@ -73,6 +74,7 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Out of scope:** Vue/Angular/Svelte/Flutter adapters.
 - **Dependencies:** DND-1.6.
 - **Closure:** Playground/examples demonstrate adaptive layouts through public APIs.
+- **Status:** NEXT
 
 ### DND-1.8 — Technical Proof, Benchmarks & MVP Closure
 

@@ -1,4 +1,5 @@
 import { vi } from 'vitest';
+import type { DragMechanicsAdapter, DragMechanicsContext } from '../src/index.js';
 
 export interface FakeBox {
   left: number;
@@ -82,4 +83,57 @@ export function lastFakeObserver(): FakeResizeObserver {
 
 export function spyRect(element: HTMLElement) {
   return vi.spyOn(element, 'getBoundingClientRect');
+}
+
+export interface FakeDragController {
+  readonly adapter: DragMechanicsAdapter;
+  start(itemId: string): void;
+  move(itemId: string, translation: { readonly x: number; readonly y: number }): void;
+  drop(itemId: string, translation: { readonly x: number; readonly y: number }): void;
+  cancel(itemId: string): void;
+  isConnected(): boolean;
+}
+
+export function createFakeDragMechanics(): FakeDragController {
+  let context: DragMechanicsContext | undefined;
+
+  return {
+    adapter: {
+      connect(next) {
+        context = next;
+        return {
+          dispose() {
+            context = undefined;
+          },
+        };
+      },
+    },
+    start(itemId) {
+      if (context === undefined) {
+        throw new Error('fake drag mechanics are not connected');
+      }
+      context.onStart({ itemId });
+    },
+    move(itemId, translation) {
+      if (context === undefined) {
+        throw new Error('fake drag mechanics are not connected');
+      }
+      context.onMove({ itemId, translation });
+    },
+    drop(itemId, translation) {
+      if (context === undefined) {
+        throw new Error('fake drag mechanics are not connected');
+      }
+      context.onDrop({ itemId, translation });
+    },
+    cancel(itemId) {
+      if (context === undefined) {
+        throw new Error('fake drag mechanics are not connected');
+      }
+      context.onCancel({ itemId });
+    },
+    isConnected() {
+      return context !== undefined;
+    },
+  };
 }

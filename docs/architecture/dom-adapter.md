@@ -1,8 +1,8 @@
 # DOM Adapter
 
-Authoritative semantics for `@dndgem/dom` measurement and resize observation (DND-1.5).
+Authoritative semantics for `@dndgem/dom` measurement, resize observation (DND-1.5), and vendor-isolated drag interaction (DND-1.6).
 
-Related: [ADR-0001](../adr/ADR-0001-renderer-agnostic-core.md), [ADR-0011](../adr/ADR-0011-dom-measurement-resize.md), [core-domain.md](./core-domain.md).
+Related: [ADR-0001](../adr/ADR-0001-renderer-agnostic-core.md), [ADR-0004](../adr/ADR-0004-interaction-provider-boundary.md), [ADR-0005](../adr/ADR-0005-dnd-kit-initial-provider.md), [ADR-0011](../adr/ADR-0011-dom-measurement-resize.md), [ADR-0012](../adr/ADR-0012-vendor-isolated-drag-interaction.md), [core-domain.md](./core-domain.md).
 
 ## Responsibility
 
@@ -10,23 +10,24 @@ Related: [ADR-0001](../adr/ADR-0001-renderer-agnostic-core.md), [ADR-0011](../ad
 Browser / DOM
     ↓
 @dndgem/dom
-measurement, normalization, resize observation
+measurement, normalization, resize observation, drag mechanics adaptation
     ↓
-renderer-neutral geometry (Core Size / Rect / LayoutSpace)
+renderer-neutral geometry + LayoutIntent proposals
     ↓
 @dndgem/core
 validity, scoring, solver, reflow
 ```
 
-Core never reads the DOM. This package never calls `solveLayout` as an owned lifecycle, never writes layout styles, and never implements drag/drop or React bindings.
+Core never reads the DOM. Measurement never writes layout styles. Interaction composes with `solveLayout`; it does not rank layouts, apply final styles, or expose the drag provider. React bindings remain DND-1.7.
 
 ## Public entry points
 
-| API               | Role                                                                   |
-| ----------------- | ---------------------------------------------------------------------- |
-| `measureLayout`   | One-shot read: container + item map → `DomMeasurementSnapshot`         |
-| `observeLayout`   | Initial snapshot + `ResizeObserver` updates; `measure()` / `dispose()` |
-| `DomAdapterError` | Adapter usage / environment failures (not Core `DomainError`)          |
+| API                     | Role                                                                                        |
+| ----------------------- | ------------------------------------------------------------------------------------------- |
+| `measureLayout`         | One-shot read: container + item map → `DomMeasurementSnapshot`                              |
+| `observeLayout`         | Initial snapshot + `ResizeObserver` updates; `measure()` / `dispose()`                      |
+| `createDragInteraction` | Pointer mechanics → container-relative `LayoutIntent` proposal → Core solve → accept/reject |
+| `DomAdapterError`       | Adapter usage / environment failures (not Core `DomainError` or solver `UNSATISFIABLE`)     |
 
 Item identity remains Core `ItemId`. The adapter maps `ItemId` string keys to `HTMLElement` outside Core.
 
@@ -91,7 +92,7 @@ If `ResizeObserver` is missing and no constructor is injected, observation throw
 
 ## Core integration
 
-Typical composition (owned by the consumer, not this package):
+Measurement composition (owned by the consumer):
 
 ```text
 measureLayout({ container, items })
@@ -100,10 +101,66 @@ measureLayout({ container, items })
   → solveLayout({ intent }) / evaluateLayout(intent, resolved)
 ```
 
-## Explicit non-goals (this sprint)
+## Drag interaction (DND-1.6)
 
-- Drag/drop, pointer sensors, `@dnd-kit/*` (DND-1.6)
-- React hooks, refs, components (DND-1.7)
+```text
+browser pointer / keyboard sensors (provider)
+        ↓
+createDragInteraction (DnDGem-owned)
+        ↓
+container-relative proposed Rect + LayoutIntent.desiredPlacements
+        ↓
+solveLayout({ intent })
+        ↓
+accepted VALID/DEGRADED  |  rejected INVALID/UNSATISFIABLE
+```
+
+`createDragInteraction` maps `ItemId` strings to elements. Provider identifiers are not canonical Core ids. Unknown ids throw `DomAdapterError` (`UNKNOWN_ITEM`) and never become new Core items.
+
+### Coordinates
+
+Provider translation (`operation.transform`) is cumulative client-space CSS pixels. Combined with the drag-start ADR-0011 baseline:
+
+```text
+proposed.x = baseline.x + translation.x
+proposed.y = baseline.y + translation.y
+```
+
+Width/height come from the start baseline, not live transformed boxes. Fractions are preserved.
+
+### Measurement during interaction
+
+`observeLayout` supplies the authoritative snapshot. Moves do not re-query geometry. A ResizeObserver emission during drag updates `intent.space` from the latest snapshot and re-runs the current proposal; the active item’s start baseline is not replaced.
+
+### Solver and drop
+
+Each proposal seeds sibling `desiredPlacements` from the last committed resolved layout first (then original intent desired, then snapshot) and overlays the dragged item. Core is invoked as `solveLayout({ intent })` **without** `previous`.
+
+ADR-0010 would otherwise keep the last commit: `preserve-previous` has stability distance 0 and outranks an equally valid `preserve-desired` that holds the new drag placement. Sibling stability is the seeded desired placements, not Core `previous`. Preview during move uses the same path.
+
+- `VALID` / `DEGRADED` → accept; new intent + `solver.resolved` become authoritative
+- `INVALID` / `UNSATISFIABLE` → reject; previous intent/resolved preserved; solver result still returned
+- Cancel → discard proposal; commit nothing; return idle
+- Unsatisfiable is a solver condition, not `DomAdapterError` / `DomainError`
+
+Caller-owned `LayoutIntent` / `ResolvedLayout` objects are never mutated. Interaction does not write final layout styles (DND-1.7).
+
+### Provider isolation
+
+`@dnd-kit/dom` is the default internal adapter (pointer + keyboard sensors, Accessibility plugin). Public types do not mention it. Optional `mechanics` replaces the provider. Provider collision detection is targeting mechanics only.
+
+### Accessibility status
+
+Pointer drag is implemented and covered by unit tests plus a Playwright fixture. The provider’s keyboard sensor and ARIA plugin remain enabled by default but are **not** a tested DnDGem keyboard/screen-reader product path. Do not claim accessible drag-and-drop yet. The public API is translation-based so a future keyboard path can reuse it.
+
+### Cleanup
+
+`dispose()` is idempotent: provider destroy, observer disconnect, dropped element refs, no further callbacks. `getState()` after dispose throws `INTERACTION_DISPOSED`.
+
+## Explicit non-goals
+
+- React hooks, refs, components, or vanilla auto-mount APIs (DND-1.7)
+- Applying `element.style.*` as a product layout API
+- Custom native DnD engine; leaking dnd-kit types
 - `MutationObserver`, auto child discovery, `querySelector` scanning
-- Applying `element.style.*` / CSS transforms as a product API
 - AI, Flutter, cloud

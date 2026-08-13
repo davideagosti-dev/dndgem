@@ -2,9 +2,11 @@
  * @dndgem/dom public entry.
  *
  * DND-1.5: DOM measurement and ResizeObserver-driven snapshot updates.
- * Depends on @dndgem/core. Must not depend on React or dnd-kit.
+ * DND-1.6: vendor-isolated drag interaction that produces LayoutIntent
+ * proposals for the Core solver. Depends on @dndgem/core. Must not depend
+ * on React. @dnd-kit/dom is an internal implementation detail.
  *
- * Out of scope here: drag/drop, layout style application, React bindings.
+ * Out of scope here: layout style application, React bindings (DND-1.7).
  */
 
 import { getCorePackageInfo } from '@dndgem/core';
@@ -45,3 +47,25 @@ export {
   type ObserveLayoutInput,
   type ResizeObserverConstructor,
 } from './observe.js';
+
+export {
+  createDragInteraction,
+  type DragCancelEvent,
+  type DragDropEvent,
+  type DragDropResult,
+  type DragInteraction,
+  type DragInteractionInput,
+  type DragInteractionState,
+  type DragMechanicsAdapter,
+  type DragMechanicsContext,
+  type DragMechanicsSession,
+  type DragPhase,
+  type DragPointerCancel,
+  type DragPointerEnd,
+  type DragPointerMove,
+  type DragPointerStart,
+  type DragProposal,
+  type DragProposalEvent,
+  type DragStartEvent,
+  type DragTranslation,
+} from './interaction.js';

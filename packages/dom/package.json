@@ -1,7 +1,7 @@
 {
   "name": "@dndgem/dom",
   "version": "0.0.0",
-  "description": "DOM adapter for DnDGem — measurement, coordinate normalization, and resize observation.",
+  "description": "DOM adapter for DnDGem — measurement, resize observation, and vendor-isolated drag interaction.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -24,6 +24,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@dnd-kit/dom": "0.5.0",
     "@dndgem/core": "workspace:*"
   },
   "devDependencies": {

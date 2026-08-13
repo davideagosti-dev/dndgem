@@ -16,4 +16,4 @@ DnDGem owns an interaction abstraction. Low-level DnD libraries are adapters beh
 
 - Core never imports a DnD provider.
 - Provider upgrades, contract tests, and rollbacks remain possible.
-- Implementation deferred to DND-1.6.
+- Implementation delivered in DND-1.6 (`createDragInteraction`; see ADR-0012).

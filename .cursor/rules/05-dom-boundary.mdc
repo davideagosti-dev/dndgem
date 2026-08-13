@@ -1,18 +1,20 @@
 ---
-description: DOM package boundary for measurement and later interaction
+description: DOM package boundary for measurement and interaction
 globs: packages/dom/**/*
 alwaysApply: false
 ---
 
 # DOM Boundary
 
-`@dndgem/dom` may depend on `@dndgem/core` and on browser/DOM APIs.
+`@dndgem/dom` may depend on `@dndgem/core`, browser/DOM APIs, and `@dnd-kit/dom` as an internal provider.
 
 It must not depend on React or `@dndgem/react`.
 
 DND-1.5 owns measurement, coordinate normalization, and ResizeObserver lifecycle in this package.
 
+DND-1.6 owns the DnDGem interaction abstraction (`createDragInteraction`). `@dnd-kit/dom` is an implementation detail and must not leak through public types.
+
 Still deferred:
 
-- drag / resize product behaviour (DND-1.6)
-- leaking raw HTMLElement types into core public contracts
+- React/vanilla consumer APIs (DND-1.7)
+- leaking raw HTMLElement or dnd-kit types into Core public contracts

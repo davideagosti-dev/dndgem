@@ -2,13 +2,13 @@
 
 ## Layers
 
-| Layer          | Tool                                      | Scope                                                                            | Phase 1 timing                            |
-| -------------- | ----------------------------------------- | -------------------------------------------------------------------------------- | ----------------------------------------- |
-| Unit           | Vitest                                    | Core domain/solver; DOM measurement with mocked geometry / fake `ResizeObserver` | DND-1.1+                                  |
-| Package smoke  | Vitest                                    | Public export / workspace link checks                                            | DND-1.1                                   |
-| Browser / E2E  | Playwright                                | DOM, drag, resize, React, cross-browser                                          | smoke now; product later                  |
-| Property-based | Table-driven Vitest (fast-check deferred) | Validity / solver invariants                                                     | DND-1.3 table-driven; library TBD for 1.4 |
-| Benchmarks     | Vitest bench / dedicated suites           | Solver & MVP perf                                                                | DND-1.4 / DND-1.8                         |
+| Layer          | Tool                                      | Scope                                                                                                                  | Phase 1 timing                            |
+| -------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| Unit           | Vitest                                    | Core domain/solver; DOM measurement with mocked geometry / fake `ResizeObserver`; drag interaction with fake mechanics | DND-1.1+                                  |
+| Package smoke  | Vitest                                    | Public export / workspace link checks                                                                                  | DND-1.1                                   |
+| Browser / E2E  | Playwright                                | Playground boot smoke; DND-1.6 drag fixture; later React/vanilla product surfaces                                      | smoke + focused drag proof now            |
+| Property-based | Table-driven Vitest (fast-check deferred) | Validity / solver invariants                                                                                           | DND-1.3 table-driven; library TBD for 1.4 |
+| Benchmarks     | Vitest bench / dedicated suites           | Solver & MVP perf                                                                                                      | DND-1.4 / DND-1.8                         |
 
 ## Quality gates (private Technical MVP)
 
@@ -47,5 +47,5 @@ DND-1.3 uses comprehensive table-driven Vitest cases for validity boundaries. A 
 
 - Do not write elaborate product tests before product logic exists.
 - Prefer deterministic fixtures and reproducible benchmarks.
-- Browser smoke in DND-1.1 only proves playground bootstrapping; DND-1.5 unit-tests measurement without real browser timing.
+- Browser smoke proves playground bootstrapping; DND-1.5 unit-tests measurement without real browser timing; DND-1.6 unit-tests interaction with fake mechanics and adds a focused Playwright drag fixture.
 - Do not declare a sprint complete without a passing local Sprint Final Quality Gate.
