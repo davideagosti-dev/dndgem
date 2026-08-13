@@ -96,9 +96,13 @@ function Board() {
   return (
     <main className="shell">
       <h1>DnDGem Playground</h1>
-      <p className="eyebrow">DND-1.7 React integration — drag, adaptive reflow, and resize.</p>
+      <p className="eyebrow">
+        Technical MVP proof — heterogeneous constraints, drag/reflow, resize (engine status below).
+      </p>
       <p data-testid="status">
-        {state ? `${state.solver.evaluation.state} · ${state.phase}` : 'starting'}
+        {state
+          ? `${state.solver.evaluation.state} · score ${state.solver.evaluation.score.total.toFixed(3)} · ${state.phase} · space ${Math.round(state.resolved.space.width)}×${Math.round(state.resolved.space.height)}`
+          : 'starting'}
       </p>
       <div ref={containerRef} className="board" data-testid="board">
         {ITEMS.map((item) => {

@@ -16,6 +16,6 @@ Phase 1 mapping:
 7. DND-1.7 React / Vanilla Integration
 8. DND-1.8 Technical Proof, Benchmarks & MVP Closure
 
-Do not implement later sprints early.
+DND-1.8 is evidence/closure only — do not begin post-MVP (DND-2.x / AI / Flutter / other adapters) early.
 
 Do not turn roadmap ideas into committed calendar dates in docs or code comments unless explicitly asked.

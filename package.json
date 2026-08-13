@@ -18,6 +18,11 @@
     "format:check": "prettier --check .",
     "check:boundaries": "node scripts/check-boundaries.mjs",
     "test:e2e": "playwright test",
+    "bench": "pnpm bench:core",
+    "bench:core": "pnpm --filter @dndgem/core build && pnpm bench:core:check && pnpm bench:core:timing && pnpm bench:core:stats",
+    "bench:core:check": "vitest run --config benchmarks/vitest.config.ts",
+    "bench:core:timing": "vitest bench --config benchmarks/vitest.bench.config.ts",
+    "bench:core:stats": "vitest run --config benchmarks/vitest.config.ts core/stats.test.ts",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "lint:root": "eslint . --max-warnings=0"
