@@ -41,6 +41,8 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Out of scope:** Browser measurement and pointer interaction.
 - **Dependencies:** DND-1.3.
 - **Closure:** Solver produces deterministic adapted layouts for fixtures.
+- **Status:** Implementation complete on feature branch (pending review/merge).
+- **Reference:** `docs/architecture/core-domain.md`, ADR-0003, ADR-0010.
 
 ### DND-1.5 — DOM Measurement & Resize
 

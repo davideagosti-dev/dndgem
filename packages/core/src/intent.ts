@@ -9,7 +9,7 @@ import { createLayoutSpace, type LayoutSpace, type LayoutSpaceInput } from './sp
  * Author / desired layout structure (ADR-0006).
  *
  * This is input intent — not a solved layout. Desired placements are optional
- * author preferences; the future solver may adapt them.
+ * author preferences; `solveLayout` may adapt them.
  */
 export interface LayoutIntent {
   readonly schemaVersion: typeof LAYOUT_SCHEMA_VERSION;

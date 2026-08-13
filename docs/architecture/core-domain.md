@@ -2,7 +2,7 @@
 
 Authoritative semantics for `@dndgem/core` domain types (DND-1.2) and validity/scoring (DND-1.3).
 
-Related decisions: [ADR-0001](../adr/ADR-0001-renderer-agnostic-core.md), [ADR-0002](../adr/ADR-0002-content-constraint-validity-model.md), [ADR-0006](../adr/ADR-0006-layout-intent-vs-resolved-layout.md), [ADR-0008](../adr/ADR-0008-flutter-compatibility-principle.md), [ADR-0009](../adr/ADR-0009-validity-scoring-convention.md).
+Related decisions: [ADR-0001](../adr/ADR-0001-renderer-agnostic-core.md), [ADR-0002](../adr/ADR-0002-content-constraint-validity-model.md), [ADR-0003](../adr/ADR-0003-deterministic-solver.md), [ADR-0006](../adr/ADR-0006-layout-intent-vs-resolved-layout.md), [ADR-0008](../adr/ADR-0008-flutter-compatibility-principle.md), [ADR-0009](../adr/ADR-0009-validity-scoring-convention.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md).
 
 ## Purpose
 
@@ -11,11 +11,11 @@ Core defines the **renderer-independent language** later engines consume:
 | Consumer (later)    | Uses Core for                                    |
 | ------------------- | ------------------------------------------------ |
 | DND-1.3 validity    | Constraints + geometry → state + score           |
-| DND-1.4 solver      | Intent, space, items, placements + evaluation    |
+| DND-1.4 solver      | Intent + optional previous → resolved + metadata |
 | DND-1.5 DOM adapter | Normalized sizes / measurements into Core shapes |
 | Future Flutter      | Same Core shapes without HTML/CSS semantics      |
 
-Core evaluates supplied placements. It does **not** generate candidates, reflow, measure the DOM, or drag items.
+Core evaluates supplied placements and (from DND-1.4) selects among bounded candidates. It does **not** measure the DOM or drag items.
 
 ## Public concepts
 
@@ -195,6 +195,51 @@ Item preference = mean of width and height axis scores.
 - score components = arithmetic mean of per-item components
 - Does not move, generate, or optimize placements
 
+## Adaptive solver (DND-1.4)
+
+Public entry: `solveLayout({ intent, previous? })` → `SolverResult`.
+
+Pipeline:
+
+```text
+LayoutIntent (+ optional previous ResolvedLayout)
+  → bounded candidate generation
+  → evaluateLayout (DND-1.3) per candidate
+  → rank (validity → score → stability → ordinal)
+  → ResolvedLayout + selection metadata
+```
+
+### Candidate generation
+
+Deterministic named strategies (internal generation policy), in fixed order:
+
+- `preserve-previous` / `preserve-desired` when sources cover all items (sizes shrunk to current space/max when needed)
+- `row-*` / `column-*` packs under `preferred`, `useful`, and `minimal` sizing modes
+
+No randomness, wall-clock, DOM, or unbounded search.
+
+### Ranking (ADR-0010)
+
+```text
+1. VALID > DEGRADED > INVALID
+2. higher score.total
+3. lower stability distance vs previous
+4. lower generation ordinal
+```
+
+Stability never protects `INVALID` over a better validity tier.
+
+### Reflow & unsatisfiable
+
+- `reflowed` is true when `previous` was provided and the winner differs from it
+- All-`INVALID` → best deterministic `INVALID` result (`UNSATISFIABLE`), not `DomainError`
+- Malformed solver input → `DomainError`
+- Empty intent → `VALID` / score `1` (same policy as evaluation)
+
+### Explainability
+
+`SolverResult` includes `winnerId`, `selection` (code + detail), `reflowed`, `evaluation`, and compact `candidates` summaries. Internal generators/comparators are not public.
+
 ## Numeric invariants (summary)
 
 | Question                        | Decision                                      |
@@ -225,6 +270,7 @@ import {
   createSize,
   evaluateItemPlacement,
   evaluateLayout,
+  solveLayout,
   LAYOUT_SCHEMA_VERSION,
 } from '@dndgem/core';
 ```
@@ -233,10 +279,8 @@ Internal modules under `src/` are not a supported public surface.
 
 ## Explicit non-goals
 
-- Solver / candidate generation / reflow (DND-1.4)
-- Collision resolution / packing (DND-1.4)
-- Layout stability / movement-cost scoring (DND-1.4)
 - DOM measurement (DND-1.5)
 - Drag/drop / dnd-kit (DND-1.6)
 - React bindings (DND-1.7)
+- Generic CSP/SAT solvers, random/AI search
 - Flutter / AI / cloud
