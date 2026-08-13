@@ -8,6 +8,7 @@ alwaysApply: false
 
 DND-1.2 defines content constraints and domain types in `@dndgem/core`.
 DND-1.3 implements validity evaluation and scoring in Core (`evaluateItemPlacement`, `evaluateLayout`).
+DND-1.4 selects layouts via `solveLayout` using that evaluator (ADR-0010).
 
 - Prefer renderer-agnostic vocabulary over HTML/CSS semantics in core.
 - Keep geometric bounds, minUseful*, and preferred* semantically distinct.
@@ -15,4 +16,4 @@ DND-1.3 implements validity evaluation and scoring in Core (`evaluateItemPlaceme
 - Do not invent persistence I/O early; layout shapes include `schemaVersion`.
 - Preferred dimensions affect score/reasons only — never validity alone.
 - Hard geometric violations → INVALID; usefulness misses (hard OK) → DEGRADED.
-- Do not implement solver, candidate generation, or reflow in DND-1.3 (DND-1.4).
+- Solver candidates must be bounded and deterministic; do not duplicate the validity engine.

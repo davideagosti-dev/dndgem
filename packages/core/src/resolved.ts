@@ -8,7 +8,7 @@ import { createLayoutSpace, type LayoutSpace, type LayoutSpaceInput } from './sp
  *
  * Distinct from {@link import('./intent.js').LayoutIntent}: this represents
  * placements after evaluation/solving/reflow. Construction does not score;
- * use `evaluateLayout` (DND-1.3) for validity. Solver/reflow remain DND-1.4.
+ * use `evaluateLayout` (DND-1.3) for validity and `solveLayout` (DND-1.4) to produce placements.
  */
 export interface ResolvedLayout {
   readonly schemaVersion: typeof LAYOUT_SCHEMA_VERSION;

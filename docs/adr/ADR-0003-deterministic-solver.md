@@ -1,6 +1,6 @@
 # ADR-0003: Deterministic Solver
 
-- **Status:** Accepted (principle approved; implementation deferred)
+- **Status:** Accepted (implemented in DND-1.4; see ADR-0010)
 - **Date:** 2026-08-12
 - **Sprint:** Decision recorded in DND-1.1; implementation in DND-1.4
 
@@ -16,4 +16,4 @@ The adaptive solver must be deterministic for a given input layout, constraints,
 
 - Randomness, wall-clock timing, and unordered iteration must not affect results unless explicitly seeded and documented.
 - Property-based tests (planned DND-1.3/1.4) will encode determinism invariants.
-- No solver implementation in DND-1.1.
+- Selection policy details live in ADR-0010 (`solveLayout`).

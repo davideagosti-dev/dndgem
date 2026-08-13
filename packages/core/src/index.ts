@@ -3,10 +3,11 @@
  *
  * DND-1.2: renderer-agnostic domain model and content constraints.
  * DND-1.3: deterministic validity evaluation and layout scoring.
+ * DND-1.4: deterministic adaptive solver and reflow.
  *
  * This package MUST remain renderer-agnostic (no DOM, React, or dnd-kit imports).
  *
- * Out of scope here: solver/reflow, DOM measurement, DnD interaction.
+ * Out of scope here: DOM measurement, DnD interaction, framework bindings.
  */
 
 export const CORE_PACKAGE_NAME = '@dndgem/core' as const;
@@ -78,3 +79,13 @@ export {
   type ValidityReasonCode,
   type ValidityReasonKind,
 } from './evaluate.js';
+
+export {
+  solveLayout,
+  type SolverCandidateSummary,
+  type SolverInput,
+  type SolverResult,
+  type SolverSelectionCode,
+  type SolverSelectionReason,
+  type SolverStrategy,
+} from './solve.js';
