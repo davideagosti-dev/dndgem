@@ -1,7 +1,7 @@
 {
   "name": "@dndgem/react",
   "version": "0.0.0",
-  "description": "React adapter package for DnDGem (framework bindings land in later sprints).",
+  "description": "React adapter for DnDGem — thin lifecycle and registration over @dndgem/dom.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -31,8 +31,12 @@
     "react": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.3.0",
     "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.3",
+    "jsdom": "^26.1.0",
     "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "typescript": "^5.9.3",
     "vitest": "^3.2.7"
   },

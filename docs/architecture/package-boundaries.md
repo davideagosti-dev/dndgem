@@ -2,11 +2,11 @@
 
 ## Allowed dependencies
 
-| Package         | May depend on                                               | Must not depend on                                    |
-| --------------- | ----------------------------------------------------------- | ----------------------------------------------------- |
-| `@dndgem/core`  | nothing DnDGem-specific / no DOM                            | `dom`, `react`, browser APIs, React, dnd-kit, AI SDKs |
-| `@dndgem/dom`   | `@dndgem/core`; browser/DOM APIs; `@dnd-kit/dom` (internal) | `@dndgem/react`, React                                |
-| `@dndgem/react` | `@dndgem/core`, `@dndgem/dom`                               | reverse imports; must keep React as peerDependency    |
+| Package         | May depend on                                               | Must not depend on                                          |
+| --------------- | ----------------------------------------------------------- | ----------------------------------------------------------- |
+| `@dndgem/core`  | nothing DnDGem-specific / no DOM                            | `dom`, `react`, browser APIs, React, dnd-kit, AI SDKs       |
+| `@dndgem/dom`   | `@dndgem/core`; browser/DOM APIs; `@dnd-kit/dom` (internal) | `@dndgem/react`, React                                      |
+| `@dndgem/react` | `@dndgem/core`, `@dndgem/dom`; React as peerDependency      | reverse imports; dnd-kit; must keep React as peerDependency |
 
 ## Public API rule
 
@@ -34,5 +34,5 @@ DOM measurement, `ResizeObserver`, and drag interaction belong in `@dndgem/dom`.
 ## Interaction provider
 
 - Provider: `@dnd-kit/dom` (internal to `@dndgem/dom`, DND-1.6)
-- Public API: `createDragInteraction` (ADR-0004 / ADR-0012)
+- Public API: `createDragInteraction` and `createLayoutSession` (ADR-0004 / ADR-0012 / ADR-0013)
 - Must remain behind DnDGem’s interaction abstraction; never imported from Core or `@dndgem/react`

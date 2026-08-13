@@ -1,8 +1,8 @@
 /**
  * @dndgem/react public entry.
  *
- * DND-1.1: package shell only. No AdaptiveGrid or interaction components yet.
- * React is a peer dependency. Product UI bindings belong to DND-1.7.
+ * Thin React adapter over `@dndgem/dom` `createLayoutSession`.
+ * Does not own solver semantics or dnd-kit types.
  */
 
 import { getCorePackageInfo } from '@dndgem/core';
@@ -28,3 +28,18 @@ export function getReactPackageInfo(): {
     dom: getDomPackageInfo(),
   };
 }
+
+export { DnDGemProvider } from './provider.js';
+export { useDnDGem, useDnDGemContainer, useDnDGemItem } from './hooks.js';
+export type {
+  DnDGemItemBinding,
+  DnDGemItemConfig,
+  DnDGemProviderProps,
+  DnDGemStore,
+} from './types.js';
+export type {
+  DragCancelEvent,
+  DragDropResult,
+  DragProposal,
+  LayoutSessionState,
+} from '@dndgem/dom';

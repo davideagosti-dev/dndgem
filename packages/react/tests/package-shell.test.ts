@@ -9,4 +9,17 @@ describe('@dndgem/react package shell', () => {
     expect(info.core.name).toBe('@dndgem/core');
     expect(info.dom.name).toBe('@dndgem/dom');
   });
+
+  it('exports the integration API without provider machinery', async () => {
+    const api = await import('../src/index.js');
+    expect(typeof api.DnDGemProvider).toBe('function');
+    expect(typeof api.useDnDGem).toBe('function');
+    expect(typeof api.useDnDGemItem).toBe('function');
+    expect(typeof api.useDnDGemContainer).toBe('function');
+    expect('DragDropManager' in api).toBe(false);
+    expect('Draggable' in api).toBe(false);
+    expect('PointerSensor' in api).toBe(false);
+    expect('KeyboardSensor' in api).toBe(false);
+    expect('createDragInteraction' in api).toBe(false);
+  });
 });

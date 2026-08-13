@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Browser/E2E strategy for DnDGem.
- * GitHub CI runs Chromium smoke (playground boot + DND-1.6 drag fixture).
+ * GitHub CI runs Chromium smoke (playground boot, DND-1.6 drag fixture, DND-1.7 integration).
  * Full sprint quality gates remain local.
  */
 export default defineConfig({
