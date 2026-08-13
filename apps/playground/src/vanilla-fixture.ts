@@ -10,6 +10,7 @@ export interface VanillaFixtureProbe {
   spaceWidth?: number;
   rejectAccepted?: boolean;
   rejectX?: number;
+  cancelCount?: number;
 }
 
 declare global {
@@ -89,6 +90,11 @@ createLayoutSession({
   onDrop: (event: { readonly result: DragDropResult }) => {
     probe.lastDropAccepted = event.result.accepted;
     probe.lastDropItemId = event.result.itemId;
+    renderLog();
+  },
+  onCancel: () => {
+    probe.cancelCount = (probe.cancelCount ?? 0) + 1;
+    probe.phase = 'idle';
     renderLog();
   },
 });

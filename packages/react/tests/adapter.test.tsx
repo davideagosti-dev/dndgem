@@ -83,6 +83,14 @@ function Board() {
       <div data-testid="phase">{state?.phase ?? 'none'}</div>
       <div data-testid="chart-x">{state?.resolved.placements.chart?.x ?? ''}</div>
       <div data-testid="validity">{state?.solver.evaluation.state ?? ''}</div>
+      <div data-testid="resolved-json">
+        {state
+          ? JSON.stringify({
+              space: state.resolved.space,
+              placements: state.resolved.placements,
+            })
+          : ''}
+      </div>
     </div>
   );
 }
@@ -280,11 +288,13 @@ describe('@dndgem/react integration', () => {
     expect(mechanics.connectCount()).toBe(connectsAfterMount);
   });
 
-  it('matches createLayoutSession resolved placements for the same inputs', () => {
+  it('matches createLayoutSession ResolvedLayout for the same normalized inputs', () => {
     const mechanics = createFakeDragMechanics();
     render(<Harness mechanics={mechanics} />);
-    const reactChartX = Number(screen.getByTestId('chart-x').textContent);
-    const reactTableLeft = screen.getByTestId('item-table').style.left;
+    const reactResolved = JSON.parse(screen.getByTestId('resolved-json').textContent ?? '{}') as {
+      space: { width: number; height: number };
+      placements: Record<string, { x: number; y: number; width: number; height: number }>;
+    };
 
     const vanillaMechanics = createFakeDragMechanics();
     const container = document.createElement('div');
@@ -306,8 +316,9 @@ describe('@dndgem/react integration', () => {
         mechanics: vanillaMechanics.adapter,
         ResizeObserver: FakeResizeObserver,
       });
-      expect(session.getState().resolved.placements.chart?.x).toBe(reactChartX);
-      expect(`${session.getState().resolved.placements.table?.x}px`).toBe(reactTableLeft);
+      const vanilla = session.getState().resolved;
+      expect(vanilla.space).toEqual(reactResolved.space);
+      expect(vanilla.placements).toEqual(reactResolved.placements);
       session.dispose();
     } finally {
       container.remove();

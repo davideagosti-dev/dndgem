@@ -8,9 +8,11 @@ Category: **Content-Aware Adaptive Layout Engine**
 
 ## Project status
 
-DnDGem is in **early technical development**.
+DnDGem’s **Technical MVP (Phase 1)** is **CLOSED** (DND-1.1 → DND-1.8).
 
-Phase 0 audits are closed with a go decision for the Technical MVP. **DND-1.1**–**DND-1.6** established engineering, Core domain, validity, the adaptive solver, DOM measurement, and vendor-isolated drag. **DND-1.7** adds Vanilla and React integration over those primitives.
+That means the repository contains reproducible evidence for content-aware constraints, deterministic validity/scoring, adaptive solve/reflow, DOM measurement/resize, provider-isolated drag, and Vanilla/React integration — within a documented dashboard-scale operating envelope.
+
+This is **not** a production-ready, fully accessible, publicly released, or commercially packaged product.
 
 | Area                              | Status                                                          |
 | --------------------------------- | --------------------------------------------------------------- |
@@ -22,14 +24,29 @@ Phase 0 audits are closed with a go decision for the Technical MVP. **DND-1.1**�
 | DOM measurement / resize          | Implemented (DND-1.5)                                           |
 | Drag & drop interaction           | Implemented (DND-1.6; `@dnd-kit/dom` internal to `@dndgem/dom`) |
 | React / vanilla integrations      | Implemented (DND-1.7)                                           |
+| Technical proof / benchmarks      | Implemented (DND-1.8)                                           |
 | AI                                | Out of Phase 1 critical path                                    |
 | Flutter / other frameworks        | Compatibility principle only; not implemented                   |
 
-This is not a production-ready, fully accessible, or benchmark-proven public release.
+Closure artifacts: `docs/technical-mvp/closure-report.md`, `docs/technical-mvp/acceptance-matrix.md`, `docs/benchmarks/technical-mvp-baseline.md`.
+
+## What the Technical MVP proves
+
+```text
+content constraints
+  → LayoutIntent
+  → validity + scoring
+  → deterministic adaptive solver
+  → ResolvedLayout
+  → DOM measurement / resize
+  → drag proposal → solver reflow
+  → accept / reject / cancel
+  → Vanilla + React (same Core semantics)
+```
 
 ## Product thesis
 
-DnDGem aims to provide framework-agnostic adaptive layouts for draggable and resizable interfaces by combining:
+DnDGem provides framework-agnostic adaptive layouts for draggable interfaces by combining:
 
 ```text
 Content Constraints
@@ -118,15 +135,40 @@ pnpm format:check
 pnpm typecheck
 pnpm test
 pnpm check:boundaries
+pnpm bench
 pnpm dev
 ```
 
-Browser smoke (Playwright):
+Browser smoke (Playwright, Chromium):
 
 ```bash
 pnpm exec playwright install chromium
 pnpm test:e2e
 ```
+
+Examples:
+
+```bash
+pnpm --filter @dndgem/example-react dev
+pnpm --filter @dndgem/example-vanilla dev
+```
+
+### Technical MVP evidence reproduction
+
+```bash
+pnpm install
+pnpm test
+pnpm test:e2e
+pnpm bench
+```
+
+## Current limitations (honest)
+
+- Dashboard-scale solver envelope (measured through tens of items); not claimed for huge item counts
+- Chromium e2e focus
+- Pointer DnD validated; keyboard product path deferred
+- Absolute positioning apply path
+- No public npm release yet
 
 ## Planned install (not published yet)
 
