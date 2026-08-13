@@ -15,6 +15,7 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Out of scope:** Solver, constraints, DOM measurement, DnD, AI, Flutter, other framework adapters.
 - **Dependencies:** Phase 0 GO decision.
 - **Closure:** Engineering baseline ready; quality gates pass.
+- **Status:** COMPLETE
 
 ### DND-1.2 — Core Domain & Constraint Model
 
@@ -24,6 +25,7 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Dependencies:** DND-1.1.
 - **Closure:** Constraint model documented and typed without renderer leakage.
 - **Reference:** `docs/architecture/core-domain.md`.
+- **Status:** COMPLETE
 
 ### DND-1.3 — Validity Engine & Layout Scoring
 
@@ -33,6 +35,7 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Dependencies:** DND-1.2.
 - **Closure:** Deterministic validity/scoring for fixture layouts.
 - **Reference:** `docs/architecture/core-domain.md`, ADR-0002, ADR-0009.
+- **Status:** COMPLETE
 
 ### DND-1.4 — Adaptive Solver & Reflow
 
@@ -41,7 +44,7 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Out of scope:** Browser measurement and pointer interaction.
 - **Dependencies:** DND-1.3.
 - **Closure:** Solver produces deterministic adapted layouts for fixtures.
-- **Status:** Implementation complete on feature branch (pending review/merge).
+- **Status:** COMPLETE
 - **Reference:** `docs/architecture/core-domain.md`, ADR-0003, ADR-0010.
 
 ### DND-1.5 — DOM Measurement & Resize
@@ -51,6 +54,8 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Out of scope:** Full DnD interaction integration.
 - **Dependencies:** DND-1.4 (core contracts).
 - **Closure:** DOM measurements feed core without leaking HTML semantics upward incorrectly.
+- **Status:** COMPLETE / READY FOR MERGE
+- **Reference:** `docs/architecture/dom-adapter.md`, ADR-0011.
 
 ### DND-1.6 — Drag & Drop Interaction
 
@@ -59,6 +64,7 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Out of scope:** Custom native DnD engine; exposing dnd-kit types publicly.
 - **Dependencies:** DND-1.5.
 - **Closure:** Drag/resize interactions respect validity constraints via adapters.
+- **Status:** NEXT
 
 ### DND-1.7 — React / Vanilla Integration
 

@@ -12,3 +12,4 @@
 | 0008 | Flutter Compatibility Principle   | Accepted (no impl)                       |
 | 0009 | Validity Scoring Convention       | Accepted (DND-1.3)                       |
 | 0010 | Adaptive Solver Selection Policy  | Accepted (DND-1.4)                       |
+| 0011 | DOM Measurement and Resize        | Accepted (DND-1.5)                       |

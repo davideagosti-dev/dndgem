@@ -8,14 +8,14 @@ Related decisions: [ADR-0001](../adr/ADR-0001-renderer-agnostic-core.md), [ADR-0
 
 Core defines the **renderer-independent language** later engines consume:
 
-| Consumer (later)    | Uses Core for                                    |
-| ------------------- | ------------------------------------------------ |
-| DND-1.3 validity    | Constraints + geometry → state + score           |
-| DND-1.4 solver      | Intent + optional previous → resolved + metadata |
-| DND-1.5 DOM adapter | Normalized sizes / measurements into Core shapes |
-| Future Flutter      | Same Core shapes without HTML/CSS semantics      |
+| Consumer (later)    | Uses Core for                                                                         |
+| ------------------- | ------------------------------------------------------------------------------------- |
+| DND-1.3 validity    | Constraints + geometry → state + score                                                |
+| DND-1.4 solver      | Intent + optional previous → resolved + metadata                                      |
+| DND-1.5 DOM adapter | Normalized sizes / measurements into Core shapes ([dom-adapter.md](./dom-adapter.md)) |
+| Future Flutter      | Same Core shapes without HTML/CSS semantics                                           |
 
-Core evaluates supplied placements and (from DND-1.4) selects among bounded candidates. It does **not** measure the DOM or drag items.
+Core evaluates supplied placements and (from DND-1.4) selects among bounded candidates. It does **not** measure the DOM or drag items. `@dndgem/dom` (DND-1.5) acquires browser geometry and maps it onto these Core shapes.
 
 ## Public concepts
 
@@ -279,7 +279,7 @@ Internal modules under `src/` are not a supported public surface.
 
 ## Explicit non-goals
 
-- DOM measurement (DND-1.5)
+- DOM measurement lives in `@dndgem/dom` (DND-1.5); Core still has no DOM types
 - Drag/drop / dnd-kit (DND-1.6)
 - React bindings (DND-1.7)
 - Generic CSP/SAT solvers, random/AI search
