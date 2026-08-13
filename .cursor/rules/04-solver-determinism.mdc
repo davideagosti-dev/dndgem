@@ -6,11 +6,12 @@ alwaysApply: false
 
 # Solver Determinism
 
-When the solver is implemented (DND-1.4):
+The adaptive solver (DND-1.4, `solveLayout`) must:
 
-- Identical inputs must produce identical outputs.
-- Do not rely on wall-clock time or unordered iteration for results.
+- Produce identical outputs for identical inputs (candidates, ranking, winner, metadata).
+- Avoid wall-clock time, `Math.random`, unordered iteration, and environment-dependent ordering.
 - Keep AI out of the critical solve path.
+- Rank with the ADR-0010 comparator: validity → score → stability → generation ordinal.
+- Reuse DND-1.3 `evaluateLayout` for candidate evaluation (no duplicate scoring engine).
 
-DND-1.1 / DND-1.3 must not implement the solver, candidate generation, or adaptive reflow.
-Evaluation and scoring (DND-1.3) must remain pure: same input → same output; no wall-clock or randomness.
+Evaluation and scoring (DND-1.3) remain pure: same input → same output.

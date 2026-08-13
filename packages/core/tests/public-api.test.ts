@@ -5,12 +5,14 @@ import {
   VALIDITY_REASON_CODES,
   VALIDITY_STATES,
   createContentConstraints,
+  createLayoutIntent,
   createLayoutItem,
   createPoint,
   createSize,
   evaluateItemPlacement,
   evaluateLayout,
   getCorePackageInfo,
+  solveLayout,
   type ContentConstraints,
   type ItemId,
   type ItemPlacementEvaluation,
@@ -19,6 +21,7 @@ import {
   type LayoutItem,
   type ResolvedLayout,
   type ScoreBreakdown,
+  type SolverResult,
   type ValidityReason,
   type ValidityState,
 } from '../src/index.js';
@@ -34,7 +37,7 @@ describe('@dndgem/core public API', () => {
     expect(VALIDITY_REASON_CODES.length).toBeGreaterThan(0);
   });
 
-  it('exports domain factories and evaluation used by later sprints', () => {
+  it('exports domain factories, evaluation, and solver used by later sprints', () => {
     const item = createLayoutItem({
       id: 'api',
       constraints: createContentConstraints({ minWidth: 1 }),
@@ -43,6 +46,23 @@ describe('@dndgem/core public API', () => {
     expect(createPoint(0, 0)).toEqual({ x: 0, y: 0 });
     expect(evaluateItemPlacement(item, createSize(10, 10)).state).toBe('VALID');
     expect(typeof evaluateLayout).toBe('function');
+    expect(typeof solveLayout).toBe('function');
+
+    const intent = createLayoutIntent({
+      space: { width: 100, height: 80 },
+      items: [item],
+    });
+    const solved = solveLayout({ intent });
+    expect(solved.resolved.placements.api).toBeDefined();
+    expect(solved.evaluation.state).toBe('VALID');
+  });
+
+  it('does not leak solver generation helpers as required public symbols', async () => {
+    const api = await import('../src/index.js');
+    expect('generateCandidates' in api).toBe(false);
+    expect('compareCandidates' in api).toBe(false);
+    expect('packPlacements' in api).toBe(false);
+    expect('SOLVER_STRATEGIES' in api).toBe(false);
   });
 });
 
@@ -74,6 +94,7 @@ describe('compile-time contracts', () => {
       readonly usefulness: number;
       readonly preference: number;
     }>();
+    expectTypeOf<SolverResult>().toHaveProperty('reflowed');
   });
 
   it('does not require renderer-specific fields on LayoutItem', () => {

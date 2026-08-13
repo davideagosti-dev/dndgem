@@ -17,14 +17,15 @@ Executable Core distinction (DND-1.3):
 GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 ```
 
-## Current status (DND-1.3)
+## Current status (DND-1.4)
 
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
 - `@dndgem/core` evaluates placements as `VALID` / `DEGRADED` / `INVALID` with deterministic scoring (DND-1.3).
-- Solver, measurement, and DnD behaviour remain later sprints.
+- `@dndgem/core` selects layouts via `solveLayout` with bounded candidates, ranking, stability, and reflow metadata (DND-1.4).
+- DOM measurement and DnD behaviour remain later sprints.
 
-See [core-domain.md](./core-domain.md) for domain and scoring semantics.
+See [core-domain.md](./core-domain.md) for domain, scoring, and solver semantics.
 
 ## Package graph
 
