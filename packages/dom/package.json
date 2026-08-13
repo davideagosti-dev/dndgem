@@ -1,7 +1,7 @@
 {
   "name": "@dndgem/dom",
   "version": "0.0.0",
-  "description": "DOM adapter package for DnDGem (measurement and resize live here in later sprints).",
+  "description": "DOM adapter for DnDGem — measurement, coordinate normalization, and resize observation.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

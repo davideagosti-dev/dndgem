@@ -10,16 +10,16 @@ Category: **Content-Aware Adaptive Layout Engine**
 
 DnDGem is in **early technical development**.
 
-Phase 0 audits are closed with a go decision for the Technical MVP. **DND-1.1** established the engineering baseline; **DND-1.2** adds the Core domain and constraint model.
+Phase 0 audits are closed with a go decision for the Technical MVP. **DND-1.1**–**DND-1.4** established engineering, Core domain, validity, and the adaptive solver. **DND-1.5** adds DOM measurement and resize observation.
 
 | Area                              | Status                                        |
 | --------------------------------- | --------------------------------------------- |
 | Monorepo / tooling                | Implemented (DND-1.1)                         |
 | Package shells (`core/dom/react`) | Implemented (DND-1.1)                         |
 | Core domain / constraints         | Implemented (DND-1.2)                         |
-| Validity engine / scoring         | Planned (DND-1.3)                             |
-| Adaptive solver / reflow          | Planned (DND-1.4)                             |
-| DOM measurement / resize          | Planned (DND-1.5)                             |
+| Validity engine / scoring         | Implemented (DND-1.3)                         |
+| Adaptive solver / reflow          | Implemented (DND-1.4)                         |
+| DOM measurement / resize          | Implemented (DND-1.5)                         |
 | Drag & drop integration           | Planned (DND-1.6; `@dnd-kit/dom` deferred)    |
 | React / vanilla integrations      | Planned (DND-1.7)                             |
 | AI                                | Out of Phase 1 critical path                  |
@@ -36,14 +36,14 @@ Content Constraints
 + Responsive Reflow
 ```
 
-Constraint domain types exist in Core; validity, solver, and reflow behaviour are not implemented yet.
+Constraint domain types, validity evaluation, and the adaptive solver exist in Core. `@dndgem/dom` normalizes browser geometry into those Core shapes. Drag/drop and framework product bindings are later sprints.
 
 ## Architecture overview
 
 ```text
-@dndgem/core          renderer-agnostic domain + constraints (validity/solver later)
+@dndgem/core          renderer-agnostic domain, validity, scoring, solver
      ▲
-@dndgem/dom           DOM adapter (future measurement/resize)
+@dndgem/dom           DOM measurement, coordinate normalization, resize observation
      ▲
 @dndgem/react         React adapter (future bindings; React is a peerDependency)
 ```
