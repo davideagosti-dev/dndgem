@@ -74,7 +74,7 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Out of scope:** Vue/Angular/Svelte/Flutter adapters.
 - **Dependencies:** DND-1.6.
 - **Closure:** Playground/examples demonstrate adaptive layouts through public APIs.
-- **Status:** COMPLETE / READY FOR REVIEW
+- **Status:** COMPLETE
 - **Reference:** `docs/architecture/dom-adapter.md`, ADR-0013.
 
 ### DND-1.8 — Technical Proof, Benchmarks & MVP Closure
@@ -84,6 +84,10 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 - **Out of scope:** Commercial platform features.
 - **Dependencies:** DND-1.7.
 - **Closure:** Phase 1 Technical MVP accepted or gaps explicitly listed.
+- **Status:** COMPLETE
+- **Reference:** `docs/technical-mvp/closure-report.md`, `docs/technical-mvp/acceptance-matrix.md`, `docs/benchmarks/technical-mvp-baseline.md`, `benchmarks/`
+
+**Technical MVP:** CLOSED
 
 ## Later phases (summary only)
 

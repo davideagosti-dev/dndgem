@@ -1,0 +1,44 @@
+# Technical MVP Acceptance Matrix
+
+- **Sprint:** DND-1.8
+- **Baseline:** `06e3874` (DND-1.7 promoted on `develop`) + DND-1.8 proof work on `feature/dnd-1.8-technical-proof-mvp-closure`
+- **Status key:** `PASS` · `PASS WITH LIMITATION` · `DEFERRED` · `FAIL`
+
+| Capability                      | Implementation                               | Automated proof                                                     | Manual / browser proof                                | Status               | Known limitation                                                                              |
+| ------------------------------- | -------------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------- |
+| Core domain                     | `@dndgem/core` types/factories               | `packages/core/tests/*`                                             | —                                                     | PASS                 | —                                                                                             |
+| Validity VALID/DEGRADED/INVALID | `evaluate.ts`                                | `evaluate.test.ts`, `mvp-proof.test.ts`                             | Playground status from engine state                   | PASS                 | —                                                                                             |
+| Scoring                         | ADR-0009 weights                             | `evaluate.test.ts`, `mvp-proof.test.ts` scoring narrative           | —                                                     | PASS                 | —                                                                                             |
+| Adaptive solver                 | `solveLayout`                                | `solve.test.ts`, benchmarks                                         | Playground / examples                                 | PASS                 | Bounded candidates only                                                                       |
+| Stability (ADR-0010)            | previous ranking                             | `solve.test.ts`, `mvp-proof.test.ts`                                | Resize idle path                                      | PASS                 | —                                                                                             |
+| Explicit intent precedence      | Session/React omit `previous` on new desired | `session.test.ts`, `adapter.test.tsx`, `mvp-proof.test.ts`          | Drag drop                                             | PASS                 | Core still _can_ prefer previous if caller passes it — adapters must omit                     |
+| Measurement                     | `measureLayout`                              | `measure.test.ts`                                                   | Vanilla/React e2e geometry                            | PASS                 | Border-box container-relative                                                                 |
+| Resize                          | `observeLayout` / session                    | `observe.test.ts`, `session.test.ts`                                | Vanilla + React e2e resize                            | PASS                 | No MutationObserver content path                                                              |
+| Drag proposal                   | `createDragInteraction`                      | `interaction*.test.ts`                                              | Drag fixture + integration e2e                        | PASS                 | Pointer path                                                                                  |
+| Drop accept                     | Session + Core                               | DOM/React unit + e2e                                                | Playground / vanilla                                  | PASS                 | —                                                                                             |
+| Drop reject                     | Unsatisfiable → reject                       | DOM/React unit + vanilla e2e                                        | Reject board                                          | PASS                 | React reject is unit-proven; browser reject is Vanilla                                        |
+| Cancel                          | Session restore                              | DOM/React unit + vanilla e2e Escape                                 | Vanilla fixture                                       | PASS WITH LIMITATION | Escape cancel via real provider path proven; keyboard _drag navigation_ not product-validated |
+| Vanilla integration             | `createLayoutSession`                        | `session.test.ts`                                                   | `e2e/vanilla-integration.spec.ts`, `examples/vanilla` | PASS                 | —                                                                                             |
+| React integration               | `DnDGemProvider` / hooks                     | `adapter.test.tsx`                                                  | `e2e/react-integration.spec.ts`, `examples/react`     | PASS                 | Client mount (see SSR row)                                                                    |
+| React / Vanilla parity          | Same session + Core                          | `adapter.test.tsx` full `ResolvedLayout`; `session.test.ts` vs Core | Equivalent examples                                   | PASS                 | Screenshot parity not used                                                                    |
+| Provider isolation              | dnd-kit internal to DOM                      | `check:boundaries`, package/public-api tests                        | —                                                     | PASS                 | —                                                                                             |
+| Framework independence          | Core purity                                  | boundaries + Core import scans                                      | —                                                     | PASS                 | Flutter adapter not implemented                                                               |
+| Lifecycle cleanup               | dispose / unmount                            | observe/session/React StrictMode tests                              | —                                                     | PASS                 | Styles left in place after dispose (documented)                                               |
+| Determinism                     | Pure solve                                   | 100× repeats in `mvp-proof` + bench semantic                        | —                                                     | PASS                 | —                                                                                             |
+| Performance baseline            | `benchmarks/core`                            | `pnpm bench` + JSON/MD baseline                                     | —                                                     | PASS WITH LIMITATION | Hardware-dependent; dashboard-scale envelope                                                  |
+| SSR                             | Import-safe React                            | `ssr-import.test.ts`                                                | —                                                     | PASS WITH LIMITATION | No full SSR/hydration                                                                         |
+| Accessibility                   | Pointer DnD                                  | —                                                                   | —                                                     | DEFERRED             | Keyboard DnD / ARIA product path not validated                                                |
+| AI / Flutter / other frameworks | Out of Phase 1                               | —                                                                   | —                                                     | DEFERRED             | Roadmap later phases                                                                          |
+
+## Counts summary
+
+| Verdict              | Count |
+| -------------------- | ----- |
+| PASS                 | 18    |
+| PASS WITH LIMITATION | 3     |
+| DEFERRED             | 2     |
+| FAIL                 | 0     |
+
+No required closure capability is `FAIL`.
+
+Recount note (final audit): Cancel, Performance baseline, and SSR are the three `PASS WITH LIMITATION` rows. React “client mount” is recorded under SSR, not as a fourth matrix limitation.

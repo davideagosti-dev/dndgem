@@ -17,7 +17,7 @@ Executable Core distinction (DND-1.3):
 GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 ```
 
-## Current status (DND-1.7)
+## Current status (DND-1.8)
 
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
@@ -26,9 +26,13 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 - `@dndgem/dom` measures DOM geometry, normalizes it to Core types, and observes resize (DND-1.5).
 - `@dndgem/dom` converts browser drag mechanics into `LayoutIntent` proposals and drop accept/reject via the Core solver (DND-1.6).
 - `@dndgem/dom` `createLayoutSession` is the Vanilla integration entry; `@dndgem/react` is a thin lifecycle adapter over that session (DND-1.7).
+- DND-1.8 adds reproducible Core benchmarks, an acceptance matrix, and a Technical MVP closure report.
+
+**Technical MVP:** CLOSED
 
 See [core-domain.md](./core-domain.md) for domain, scoring, and solver semantics.
 See [dom-adapter.md](./dom-adapter.md) for DOM measurement, resize observation (ADR-0011), drag interaction (ADR-0012), and layout application (ADR-0013).
+See [../technical-mvp/closure-report.md](../technical-mvp/closure-report.md) for closure evidence.
 
 ## Package graph
 

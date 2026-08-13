@@ -8,7 +8,7 @@
 | Package smoke  | Vitest                                    | Public export / workspace link checks                                                                                  | DND-1.1                                     |
 | Browser / E2E  | Playwright                                | Playground boot; DND-1.6 drag fixture; DND-1.7 Vanilla + React integration proofs                                      | smoke + focused drag/integration proofs now |
 | Property-based | Table-driven Vitest (fast-check deferred) | Validity / solver invariants                                                                                           | DND-1.3 table-driven; library TBD for 1.4   |
-| Benchmarks     | Vitest bench / dedicated suites           | Solver & MVP perf                                                                                                      | DND-1.4 / DND-1.8                           |
+| Benchmarks     | Vitest bench + stats collector            | Core `solveLayout` MVP perf (hardware-dependent)                                                                       | DND-1.8                                     |
 
 ## Quality gates (private Technical MVP)
 
@@ -33,7 +33,10 @@ pnpm --filter @dndgem/playground build
 pnpm --filter @dndgem/example-react build
 pnpm --filter @dndgem/example-vanilla build
 pnpm test:e2e
+pnpm bench
 ```
+
+Benchmarks (`pnpm bench`) are a **local** closure gate: they must execute and pass semantic checks. Absolute wall-clock thresholds are not hard failures. GitHub CI remains browser-smoke only during the private Technical MVP.
 
 ### Public Alpha note
 
@@ -46,6 +49,6 @@ DND-1.3 uses comprehensive table-driven Vitest cases for validity boundaries. A 
 ## Rules
 
 - Do not write elaborate product tests before product logic exists.
-- Prefer deterministic fixtures and reproducible benchmarks.
-- Browser smoke proves playground bootstrapping; DND-1.5 unit-tests measurement without real browser timing; DND-1.6 unit-tests interaction with fake mechanics and adds a focused Playwright drag fixture; DND-1.7 unit-tests `createLayoutSession` and React registration/lifecycle, plus Playwright proofs for Vanilla and React consumer paths.
+- Prefer deterministic fixtures and reproducible benchmarks (`pnpm bench`; see `benchmarks/README.md`).
+- Browser smoke proves playground bootstrapping; DND-1.5 unit-tests measurement without real browser timing; DND-1.6 unit-tests interaction with fake mechanics and adds a focused Playwright drag fixture; DND-1.7 unit-tests `createLayoutSession` and React registration/lifecycle, plus Playwright proofs for Vanilla and React consumer paths; DND-1.8 adds Core benchmarks, extended determinism/content-aware proofs, and closure docs.
 - Do not declare a sprint complete without a passing local Sprint Final Quality Gate.

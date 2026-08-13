@@ -1,36 +1,73 @@
 # Benchmarks
 
-Infrastructure for future DnDGem performance measurement.
+Reproducible Core solver performance measurement for DnDGem Technical MVP (DND-1.8).
 
-## Status (DND-1.1)
+## Status
 
-- Directory and conventions established.
-- No solver benchmarks yet (solver lands in DND-1.4).
-- No fabricated performance claims.
+- Deterministic Core fixtures and Vitest bench suites are implemented.
+- Absolute wall-clock numbers are **hardware-dependent evidence**, not universal claims.
+- Correctness of fixtures is a hard gate; absolute timing is reported, not CI-threshold gated.
 
-## Planned usage
+## Commands
 
-| Sprint  | Focus                                    |
-| ------- | ---------------------------------------- |
-| DND-1.4 | Adaptive solver micro-benchmarks         |
-| DND-1.8 | End-to-end Technical MVP benchmark suite |
+From the repository root (requires Node 20+ and a built `@dndgem/core`):
 
-## Convention
+```bash
+pnpm install
+pnpm bench
+# equivalent focused path:
+pnpm bench:core
+```
+
+Breakdown:
+
+| Script                   | Purpose                                                          |
+| ------------------------ | ---------------------------------------------------------------- |
+| `pnpm bench:core:check`  | Semantic gates + fixture determinism (`*.test.ts`)               |
+| `pnpm bench:core:timing` | Vitest bench (Tinybench) timing table                            |
+| `pnpm bench:core:stats`  | Median / p95 collector → `benchmarks/results/technical-mvp.json` |
+
+`pnpm bench` / `pnpm bench:core` runs build → check → timing → stats.
+
+## Layout
 
 ```text
 benchmarks/
-  README.md                 # this file
-  suites/                   # future named suites
-  fixtures/                 # future layout fixtures
+  README.md
+  vitest.config.ts          # semantic + stats tests
+  vitest.bench.config.ts    # vitest bench mode
+  core/
+    fixtures.ts             # deterministic heterogeneous scenarios
+    semantic.test.ts
+    stats.test.ts
+    solver.bench.ts
+  results/
+    technical-mvp.json      # machine-readable baseline from last stats run
 ```
 
-## Runner strategy
+## Build mode
 
-- Prefer Vitest bench (or a dedicated bench runner) for pure TypeScript core suites.
-- Prefer Playwright/browser timing only when DOM measurement is in scope (DND-1.5+).
-- Record methodology, hardware notes, and schemaVersion of fixtures when results exist.
+Benchmarks import **`packages/core/dist`** (compiled package output), not TypeScript sources.
+
+## Methodology
+
+- Fixtures: static / deterministic (no `Math.random`).
+- Each timed iteration rebuilds `SolverInput` then calls `solveLayout`.
+- Warm-up iterations are discarded before samples.
+- Stats report: 25 warm-up + 200 timed iterations; median and p95 in milliseconds.
+- Candidate sets remain bounded (≤ 8) regardless of item count.
+
+## CI policy
+
+GitHub CI remains **browser-smoke only** for the private Technical MVP.
+
+Benchmarks are part of the **local Sprint Final Quality Gate** (`pnpm bench`) because they finish in seconds on typical developer hardware and prove the suite still executes. Absolute timing thresholds are **not** hard CI failures.
 
 ## Rules
 
-- Do not invent FPS / solve-time / widget-count claims before measurements exist.
-- Benchmarks must be reproducible and versioned with the code under test.
+- Do not invent competitive or marketing performance claims.
+- Do not put benchmark APIs into package public exports.
+- Keep benchmark tooling as root/dev usage only (Vitest already present).
+- Re-run `pnpm bench:core:stats` before freezing documentation numbers if Core changes.
+
+Human-readable interpretation: `docs/benchmarks/technical-mvp-baseline.md`.
