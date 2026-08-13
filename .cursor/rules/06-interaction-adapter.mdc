@@ -5,10 +5,10 @@ alwaysApply: true
 
 # Interaction Adapter
 
-- DnDGem owns the interaction abstraction.
-- Planned initial web provider: `@dnd-kit/dom` (DND-1.6).
-- Do not install dnd-kit until DND-1.6 unless there is a clear infrastructure-only reason.
-- Never import dnd-kit from `@dndgem/core`.
+- DnDGem owns the interaction abstraction (`createDragInteraction` in `@dndgem/dom`).
+- Initial web provider: `@dnd-kit/dom` (internal to `@dndgem/dom` only).
+- Never import dnd-kit from `@dndgem/core` or `@dndgem/react`.
 - Never expose dnd-kit types through DnDGem public APIs.
-- Provider must remain replaceable (contract tests + rollback possible).
+- Provider must remain replaceable (optional `mechanics` seam + rollback possible).
+- Drag proposals update `LayoutIntent`; Core `solveLayout` remains authoritative.
 - No custom native DnD engine in Phase 1.

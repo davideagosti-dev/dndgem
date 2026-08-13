@@ -2,7 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Browser/E2E strategy for DnDGem.
- * DND-1.1: minimal smoke only. Product interaction tests belong to later sprints.
+ * GitHub CI runs Chromium smoke (playground boot + DND-1.6 drag fixture).
+ * Full sprint quality gates remain local.
  */
 export default defineConfig({
   testDir: './e2e',

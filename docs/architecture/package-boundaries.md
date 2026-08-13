@@ -2,11 +2,11 @@
 
 ## Allowed dependencies
 
-| Package         | May depend on                    | Must not depend on                                    |
-| --------------- | -------------------------------- | ----------------------------------------------------- |
-| `@dndgem/core`  | nothing DnDGem-specific / no DOM | `dom`, `react`, browser APIs, React, dnd-kit, AI SDKs |
-| `@dndgem/dom`   | `@dndgem/core`; browser/DOM APIs | `@dndgem/react`, React, dnd-kit                       |
-| `@dndgem/react` | `@dndgem/core`, `@dndgem/dom`    | reverse imports; must keep React as peerDependency    |
+| Package         | May depend on                                               | Must not depend on                                    |
+| --------------- | ----------------------------------------------------------- | ----------------------------------------------------- |
+| `@dndgem/core`  | nothing DnDGem-specific / no DOM                            | `dom`, `react`, browser APIs, React, dnd-kit, AI SDKs |
+| `@dndgem/dom`   | `@dndgem/core`; browser/DOM APIs; `@dnd-kit/dom` (internal) | `@dndgem/react`, React                                |
+| `@dndgem/react` | `@dndgem/core`, `@dndgem/dom`                               | reverse imports; must keep React as peerDependency    |
 
 ## Public API rule
 
@@ -29,10 +29,10 @@ import { ... } from '@dndgem/core/src/internal/...';
 2. ESLint `no-restricted-imports` for core/dom/consumers
 3. `pnpm check:boundaries` script
 
-DOM measurement and `ResizeObserver` belong in `@dndgem/dom` (DND-1.5). They must not leak `HTMLElement` / `DOMRect` into Core public contracts.
+DOM measurement, `ResizeObserver`, and drag interaction belong in `@dndgem/dom`. They must not leak `HTMLElement` / `DOMRect` / dnd-kit types into Core public contracts.
 
-## Planned interaction provider
+## Interaction provider
 
-- Provider: `@dnd-kit/dom`
-- Status: deferred to DND-1.6
-- Must remain behind DnDGem’s interaction abstraction (ADR-0004 / ADR-0005)
+- Provider: `@dnd-kit/dom` (internal to `@dndgem/dom`, DND-1.6)
+- Public API: `createDragInteraction` (ADR-0004 / ADR-0012)
+- Must remain behind DnDGem’s interaction abstraction; never imported from Core or `@dndgem/react`

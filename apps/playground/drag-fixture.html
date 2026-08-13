@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DnDGem DND-1.6 drag fixture</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+      }
+      #board {
+        position: relative;
+        margin: 40px 0 0 80px;
+        width: 480px;
+        height: 240px;
+        background: #e8eef2;
+        border: 1px solid #4d646f;
+      }
+      .item {
+        position: absolute;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        user-select: none;
+        touch-action: none;
+      }
+      #item-a {
+        left: 16px;
+        top: 16px;
+        width: 100px;
+        height: 60px;
+        background: #2f6f5e;
+      }
+      #item-b {
+        left: 140px;
+        top: 16px;
+        width: 80px;
+        height: 60px;
+        background: #3d5a80;
+      }
+      #log {
+        margin: 1rem 80px;
+        font-family: ui-monospace, monospace;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>DND-1.6 drag fixture</h1>
+    <p>Internal browser proof — not a DND-1.7 consumer API.</p>
+    <div id="board" data-testid="board">
+      <div id="item-a" class="item" data-testid="item-a">A</div>
+      <div id="item-b" class="item" data-testid="item-b">B</div>
+    </div>
+    <pre id="log" data-testid="log"></pre>
+    <script type="module" src="/src/drag-fixture.ts"></script>
+  </body>
+</html>

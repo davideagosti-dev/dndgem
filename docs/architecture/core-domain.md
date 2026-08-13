@@ -2,20 +2,21 @@
 
 Authoritative semantics for `@dndgem/core` domain types (DND-1.2) and validity/scoring (DND-1.3).
 
-Related decisions: [ADR-0001](../adr/ADR-0001-renderer-agnostic-core.md), [ADR-0002](../adr/ADR-0002-content-constraint-validity-model.md), [ADR-0003](../adr/ADR-0003-deterministic-solver.md), [ADR-0006](../adr/ADR-0006-layout-intent-vs-resolved-layout.md), [ADR-0008](../adr/ADR-0008-flutter-compatibility-principle.md), [ADR-0009](../adr/ADR-0009-validity-scoring-convention.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md).
+Related decisions: [ADR-0001](../adr/ADR-0001-renderer-agnostic-core.md), [ADR-0002](../adr/ADR-0002-content-constraint-validity-model.md), [ADR-0003](../adr/ADR-0003-deterministic-solver.md), [ADR-0006](../adr/ADR-0006-layout-intent-vs-resolved-layout.md), [ADR-0008](../adr/ADR-0008-flutter-compatibility-principle.md), [ADR-0009](../adr/ADR-0009-validity-scoring-convention.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md), [ADR-0012](../adr/ADR-0012-vendor-isolated-drag-interaction.md).
 
 ## Purpose
 
 Core defines the **renderer-independent language** later engines consume:
 
-| Consumer (later)    | Uses Core for                                                                         |
-| ------------------- | ------------------------------------------------------------------------------------- |
-| DND-1.3 validity    | Constraints + geometry → state + score                                                |
-| DND-1.4 solver      | Intent + optional previous → resolved + metadata                                      |
-| DND-1.5 DOM adapter | Normalized sizes / measurements into Core shapes ([dom-adapter.md](./dom-adapter.md)) |
-| Future Flutter      | Same Core shapes without HTML/CSS semantics                                           |
+| Consumer            | Uses Core for                                                                             |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| DND-1.3 validity    | Constraints + geometry → state + score                                                    |
+| DND-1.4 solver      | Intent + optional previous → resolved + metadata                                          |
+| DND-1.5 DOM measure | Normalized sizes / measurements into Core shapes ([dom-adapter.md](./dom-adapter.md))     |
+| DND-1.6 DOM drag    | `LayoutIntent` proposals composed with `solveLayout` ([dom-adapter.md](./dom-adapter.md)) |
+| Future Flutter      | Same Core shapes without HTML/CSS semantics                                               |
 
-Core evaluates supplied placements and (from DND-1.4) selects among bounded candidates. It does **not** measure the DOM or drag items. `@dndgem/dom` (DND-1.5) acquires browser geometry and maps it onto these Core shapes.
+Core evaluates supplied placements and (from DND-1.4) selects among bounded candidates. It does **not** measure the DOM or drag items. `@dndgem/dom` acquires browser geometry (DND-1.5) and drag proposals (DND-1.6) and maps them onto these Core shapes.
 
 ## Public concepts
 
@@ -280,7 +281,7 @@ Internal modules under `src/` are not a supported public surface.
 ## Explicit non-goals
 
 - DOM measurement lives in `@dndgem/dom` (DND-1.5); Core still has no DOM types
-- Drag/drop / dnd-kit (DND-1.6)
+- Drag/drop lives in `@dndgem/dom` (DND-1.6) as intent proposals; Core still has no provider types
 - React bindings (DND-1.7)
 - Generic CSP/SAT solvers, random/AI search
 - Flutter / AI / cloud
