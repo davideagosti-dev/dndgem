@@ -1,48 +1,26 @@
-import { vi } from 'vitest';
-import type { DragMechanicsAdapter, DragMechanicsContext } from '../src/index.js';
+import type { DragMechanicsAdapter, DragMechanicsContext } from '@dndgem/dom';
 
 export interface FakeBox {
   left: number;
   top: number;
   width: number;
   height: number;
-  connected?: boolean;
 }
 
-export function fakeElement(box: FakeBox): HTMLElement {
-  const style: Record<string, string> = {
-    position: '',
-    boxSizing: '',
-    left: '',
-    top: '',
-    width: '',
-    height: '',
-    right: '',
-    bottom: '',
-    transform: '',
-  };
-  const element = {
-    style,
-    get isConnected() {
-      return box.connected !== false;
+export function stubRect(element: HTMLElement, box: FakeBox): void {
+  element.getBoundingClientRect = () => ({
+    x: box.left,
+    y: box.top,
+    left: box.left,
+    top: box.top,
+    width: box.width,
+    height: box.height,
+    right: box.left + box.width,
+    bottom: box.top + box.height,
+    toJSON() {
+      return {};
     },
-    getBoundingClientRect() {
-      return {
-        x: box.left,
-        y: box.top,
-        left: box.left,
-        top: box.top,
-        width: box.width,
-        height: box.height,
-        right: box.left + box.width,
-        bottom: box.top + box.height,
-        toJSON() {
-          return {};
-        },
-      };
-    },
-  };
-  return element as unknown as HTMLElement;
+  });
 }
 
 export class FakeResizeObserver implements ResizeObserver {
@@ -85,18 +63,6 @@ export function resetFakeResizeObservers(): void {
   FakeResizeObserver.instances = [];
 }
 
-export function lastFakeObserver(): FakeResizeObserver {
-  const instance = FakeResizeObserver.instances.at(-1);
-  if (instance === undefined) {
-    throw new Error('expected a FakeResizeObserver instance');
-  }
-  return instance;
-}
-
-export function spyRect(element: HTMLElement) {
-  return vi.spyOn(element, 'getBoundingClientRect');
-}
-
 export interface FakeDragController {
   readonly adapter: DragMechanicsAdapter;
   start(itemId: string): void;
@@ -104,14 +70,17 @@ export interface FakeDragController {
   drop(itemId: string, translation: { readonly x: number; readonly y: number }): void;
   cancel(itemId: string): void;
   isConnected(): boolean;
+  connectCount(): number;
 }
 
 export function createFakeDragMechanics(): FakeDragController {
   let context: DragMechanicsContext | undefined;
+  let connects = 0;
 
   return {
     adapter: {
       connect(next) {
+        connects += 1;
         context = next;
         return {
           dispose() {
@@ -146,6 +115,9 @@ export function createFakeDragMechanics(): FakeDragController {
     },
     isConnected() {
       return context !== undefined;
+    },
+    connectCount() {
+      return connects;
     },
   };
 }

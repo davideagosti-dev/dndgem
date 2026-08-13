@@ -148,9 +148,10 @@ export default tseslint.config(
                 '@dndgem/*/dist/**',
                 '../packages/**',
                 '../../packages/**',
+                '@dnd-kit/*',
               ],
               message:
-                'Consumers must import public package entry points (e.g. @dndgem/core), not private source paths.',
+                'Consumers must import public package entry points (e.g. @dndgem/core), not private source paths or dnd-kit.',
             },
           ],
         },

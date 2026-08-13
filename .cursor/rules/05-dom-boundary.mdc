@@ -1,5 +1,5 @@
 ---
-description: DOM package boundary for measurement and interaction
+description: DOM package boundary for measurement, interaction, and layout session
 globs: packages/dom/**/*
 alwaysApply: false
 ---
@@ -14,7 +14,8 @@ DND-1.5 owns measurement, coordinate normalization, and ResizeObserver lifecycle
 
 DND-1.6 owns the DnDGem interaction abstraction (`createDragInteraction`). `@dnd-kit/dom` is an implementation detail and must not leak through public types.
 
+DND-1.7 owns Vanilla orchestration (`createLayoutSession`) and resolved-geometry application. React must wrap this session rather than reimplement solving.
+
 Still deferred:
 
-- React/vanilla consumer APIs (DND-1.7)
 - leaking raw HTMLElement or dnd-kit types into Core public contracts

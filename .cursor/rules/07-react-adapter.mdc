@@ -8,6 +8,8 @@ alwaysApply: false
 
 - React is a peerDependency of `@dndgem/react`.
 - Do not bundle React into the library.
-- Prefer no misleading public component API (e.g. AdaptiveGrid) before DND-1.7.
 - `@dndgem/react` may depend on `@dndgem/core` and `@dndgem/dom`.
 - Do not place solver logic in the React package.
+- Do not import `@dnd-kit/*` from React. Consume `createLayoutSession` / public DOM types only.
+- Cleanup must call the DOM session `dispose()` path. Do not invent a parallel React runtime.
+- Explicit `desiredPlacements` updates must omit Core `previous` so ADR-0010 stability cannot suppress new author intent. Constraint-only continuation and idle resize may pass `previous`.

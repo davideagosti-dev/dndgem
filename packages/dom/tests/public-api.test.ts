@@ -2,8 +2,11 @@ import { describe, expect, expectTypeOf, it } from 'vitest';
 import {
   DOM_PACKAGE_NAME,
   DomAdapterError,
+  applyLayoutPlacements,
   createDragInteraction,
+  createLayoutSession,
   getDomPackageInfo,
+  layoutPlacementStyle,
   measureLayout,
   observeLayout,
 } from '../src/index.js';
@@ -16,10 +19,13 @@ describe('@dndgem/dom public API', () => {
     expect(info.core.name).toBe('@dndgem/core');
   });
 
-  it('exports measurement, observation, and drag interaction entry points', () => {
+  it('exports measurement, observation, drag interaction, and layout session entry points', () => {
     expect(typeof measureLayout).toBe('function');
     expect(typeof observeLayout).toBe('function');
     expect(typeof createDragInteraction).toBe('function');
+    expect(typeof createLayoutSession).toBe('function');
+    expect(typeof applyLayoutPlacements).toBe('function');
+    expect(typeof layoutPlacementStyle).toBe('function');
     expect(new DomAdapterError('TEST', 'test').name).toBe('DomAdapterError');
   });
 

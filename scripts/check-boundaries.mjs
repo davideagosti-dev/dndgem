@@ -88,6 +88,9 @@ if (react) {
   if (!react.dependencies?.['@dndgem/core']) {
     errors.push('@dndgem/react must declare a dependency on @dndgem/core');
   }
+  if (!react.dependencies?.['@dndgem/dom']) {
+    errors.push('@dndgem/react must declare a dependency on @dndgem/dom');
+  }
   if (react.peerDependencies?.react === undefined) {
     errors.push('@dndgem/react must declare react as a peerDependency');
   }
@@ -118,5 +121,5 @@ if (errors.length > 0) {
 console.log('Package boundary check PASSED');
 console.log(' - core: no DOM/React/dnd-kit dependencies');
 console.log(' - dom: no React dependencies; depends on core; optional @dnd-kit/dom provider only');
-console.log(' - react: depends on core; react is a peerDependency; no dnd-kit');
+console.log(' - react: depends on core and dom; react is a peerDependency; no dnd-kit');
 console.log(' - public exports present on packages');
