@@ -3,6 +3,7 @@
  *
  * Thin React adapter over `@dndgem/dom` `createLayoutSession`.
  * Does not own solver semantics or dnd-kit types.
+ * Alpha public surface: docs/architecture/alpha-api-contract.md.
  */
 
 import { getCorePackageInfo } from '@dndgem/core';

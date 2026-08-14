@@ -1,6 +1,10 @@
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import {
   CORE_PACKAGE_NAME,
+  CORE_PACKAGE_VERSION,
   LAYOUT_SCHEMA_VERSION,
   VALIDITY_REASON_CODES,
   VALIDITY_STATES,
@@ -26,11 +30,44 @@ import {
   type ValidityState,
 } from '../src/index.js';
 
+const pkg = JSON.parse(
+  readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../package.json'), 'utf8'),
+) as { version: string };
+
+const ALPHA_RUNTIME_EXPORTS = [
+  'CORE_PACKAGE_NAME',
+  'CORE_PACKAGE_VERSION',
+  'getCorePackageInfo',
+  'DomainError',
+  'LAYOUT_SCHEMA_VERSION',
+  'VALIDITY_STATES',
+  'createPoint',
+  'createRect',
+  'createSize',
+  'createItemId',
+  'itemIdToString',
+  'itemIdsEqual',
+  'createContentConstraints',
+  'createLayoutItem',
+  'createLayoutSpace',
+  'createLayoutIntent',
+  'listLayoutIntentItemIds',
+  'createResolvedLayout',
+  'SCORE_PREFERENCE_WEIGHT',
+  'SCORE_USEFULNESS_WEIGHT',
+  'VALIDITY_REASON_CODES',
+  'evaluateConstraintsPlacement',
+  'evaluateItemPlacement',
+  'evaluateLayout',
+  'solveLayout',
+] as const;
+
 describe('@dndgem/core public API', () => {
   it('exposes package identity and schema version', () => {
+    expect(CORE_PACKAGE_VERSION).toBe(pkg.version);
     expect(getCorePackageInfo()).toEqual({
       name: CORE_PACKAGE_NAME,
-      version: '0.0.0',
+      version: pkg.version,
     });
     expect(LAYOUT_SCHEMA_VERSION).toBe(1);
     expect(VALIDITY_STATES).toEqual(['VALID', 'DEGRADED', 'INVALID']);
@@ -55,6 +92,11 @@ describe('@dndgem/core public API', () => {
     const solved = solveLayout({ intent });
     expect(solved.resolved.placements.api).toBeDefined();
     expect(solved.evaluation.state).toBe('VALID');
+  });
+
+  it('locks the Alpha runtime export surface', async () => {
+    const api = await import('../src/index.js');
+    expect(Object.keys(api).sort()).toEqual([...ALPHA_RUNTIME_EXPORTS].sort());
   });
 
   it('does not leak solver generation helpers as required public symbols', async () => {

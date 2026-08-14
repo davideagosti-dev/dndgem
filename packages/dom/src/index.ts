@@ -8,6 +8,7 @@
  *
  * Depends on @dndgem/core. Must not depend on React. @dnd-kit/dom is an
  * internal implementation detail.
+ * Alpha public surface: docs/architecture/alpha-api-contract.md.
  */
 
 import { getCorePackageInfo } from '@dndgem/core';

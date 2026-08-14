@@ -2,11 +2,11 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                                      |
-| ------- | ------------------------------- | ------------------------------------------- |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                                  |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)              |
-| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1 complete; DND-2.2 next) |
+| Phase   | Name                            | Status                                              |
+| ------- | ------------------------------- | --------------------------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                                          |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                      |
+| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1–DND-2.2 complete; DND-2.3 next) |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -114,9 +114,9 @@ Primary objective: make the closed Technical MVP consumable by external develope
 ```text
 TECHNICAL MVP CLOSED
         ↓
-DND-2.1 Engineering Baseline & CI Hardening
+DND-2.1 Engineering Baseline & CI Hardening   COMPLETE
         ↓
-DND-2.2 Alpha API Contract & Release Infrastructure
+DND-2.2 Alpha API Contract & Release Infra    COMPLETE
         ↓
     ┌───────────────┐
     ↓               ↓
@@ -174,7 +174,8 @@ Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later w
 - **Out of scope:** Auto-Layout, AI, new solver semantics, actual public Alpha release.
 - **Dependencies:** DND-2.1.
 - **Closure:** Documented Alpha API contract; release tooling ready for dry-run / publish path.
-- **Status:** PLANNED
+- **Status:** COMPLETE
+- **Reference:** `docs/architecture/alpha-api-contract.md`, `docs/architecture/release-strategy.md`.
 
 ### DND-2.3 — Developer Experience & Documentation
 

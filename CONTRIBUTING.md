@@ -48,7 +48,9 @@ See `docs/architecture/package-boundaries.md`.
 
 ## Changesets
 
-Use Changesets for package version intent when contributing library changes. Do not publish from local machines unless release maintainers authorize it.
+Use Changesets for consumer-visible library changes (`pnpm changeset`). Docs-only, CI-only, and test-only work does not need a package bump.
+
+Do not publish from local machines. The controlled publish workflow is `.github/workflows/publish.yml` (manual, dry-run by default). Public Alpha publication is DND-2.5.
 
 ## Code of conduct
 
