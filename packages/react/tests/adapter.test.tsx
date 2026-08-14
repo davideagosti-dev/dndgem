@@ -332,4 +332,76 @@ describe('@dndgem/react integration', () => {
     }
     expect(() => render(<Bare />)).toThrow('useDnDGem must be used within a DnDGemProvider');
   });
+
+  it('preserves consumer aria attributes and tabIndex across resolve and cancel', () => {
+    const mechanics = createFakeDragMechanics();
+    function AccessibleBoard() {
+      const containerRef = useDnDGemContainer();
+      const chart = useDnDGemItem('chart');
+      const table = useDnDGemItem('table');
+      return (
+        <div
+          data-testid="board"
+          ref={(node) => {
+            if (node) {
+              stubRect(node, { left: 0, top: 0, width: 400, height: 200 });
+            }
+            containerRef(node);
+          }}
+        >
+          <article
+            data-testid="item-chart"
+            aria-label="Chart card"
+            tabIndex={0}
+            ref={(node) => {
+              if (node) {
+                stubRect(node, { left: 8, top: 8, width: 120, height: 60 });
+              }
+              chart.ref(node);
+            }}
+            style={chart.style}
+          >
+            <button type="button" data-testid="chart-action">
+              Open
+            </button>
+          </article>
+          <article
+            data-testid="item-table"
+            ref={(node) => {
+              if (node) {
+                stubRect(node, { left: 140, top: 8, width: 80, height: 60 });
+              }
+              table.ref(node);
+            }}
+            style={table.style}
+          >
+            table
+          </article>
+        </div>
+      );
+    }
+    render(
+      <DnDGemProvider
+        items={ITEMS}
+        desiredPlacements={DESIRED}
+        mechanics={mechanics.adapter}
+        ResizeObserver={FakeResizeObserver}
+      >
+        <AccessibleBoard />
+      </DnDGemProvider>,
+    );
+    const chart = screen.getByTestId('item-chart');
+    expect(chart.getAttribute('aria-label')).toBe('Chart card');
+    expect(chart.tabIndex).toBe(0);
+    expect(screen.getByTestId('chart-action')).toBeTruthy();
+    act(() => {
+      mechanics.start('chart');
+      mechanics.move('chart', { x: 20, y: 10 });
+      mechanics.cancel('chart');
+    });
+    expect(screen.getByTestId('item-chart').getAttribute('aria-label')).toBe('Chart card');
+    expect(screen.getByTestId('item-chart').tabIndex).toBe(0);
+    expect(screen.getByTestId('chart-action')).toBeTruthy();
+    expect(screen.getByTestId('item-chart').style.left).toBe('8px');
+  });
 });
