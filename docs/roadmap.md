@@ -6,7 +6,7 @@
 | ------- | ------------------------------- | --------------------------------------------------- |
 | Phase 0 | Product & Architecture Baseline | **CLOSED**                                          |
 | Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                      |
-| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1–DND-2.2 complete; DND-2.3 next) |
+| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1–DND-2.3 complete; DND-2.4 next) |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -118,12 +118,10 @@ DND-2.1 Engineering Baseline & CI Hardening   COMPLETE
         ↓
 DND-2.2 Alpha API Contract & Release Infra    COMPLETE
         ↓
-    ┌───────────────┐
-    ↓               ↓
-DND-2.3         DND-2.4
-DX / Docs       Browser / A11y
-    └───────┬───────┘
-            ↓
+DND-2.3 Developer Experience & Documentation  COMPLETE
+        ↓
+DND-2.4 Browser Matrix & Accessibility Baseline  NEXT
+        ↓
 DND-2.5 Public Alpha Release Gate
             ↓
 PHASE 2 PASS
@@ -179,12 +177,13 @@ Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later w
 
 ### DND-2.3 — Developer Experience & Documentation
 
-- **Objective:** Make DnDGem understandable and integrable.
-- **Scope:** Quick Start; mental model; constraints; VALID / DEGRADED / INVALID; solver behavior; Vanilla / React integration; resize; drag; explicit intent vs previous layout; troubleshooting; performance expectations; examples.
-- **Out of scope:** Full docs website; constraint IDE; Auto-Layout.
+- **Objective:** Make DnDGem understandable and integrable; align CI with local feature gate + GitHub promotion gate.
+- **Scope:** Quick Start; mental model; constraints; VALID / DEGRADED / INVALID; solver behavior; Vanilla / React integration; resize; drag; explicit intent vs previous layout; troubleshooting; performance expectations; examples; CI trigger policy (feature → develop local-only; develop → master GitHub CI).
+- **Out of scope:** Full docs website; constraint IDE; Auto-Layout; npm publish.
 - **Dependencies:** DND-2.2 (API surface known).
-- **Closure:** A new developer can reach a first working DnDGem layout quickly.
-- **Status:** PLANNED
+- **Closure:** A new developer can reach a first working DnDGem layout from docs; CI promotion policy documented and implemented.
+- **Status:** COMPLETE
+- **Reference:** `docs/guides/`, `docs/architecture/testing-strategy.md`.
 - **Note:** Private design-partner conversations may begin during DND-2.3 → DND-2.5.
 
 ### DND-2.4 — Browser Matrix & Accessibility Baseline
@@ -194,7 +193,7 @@ Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later w
 - **Out of scope:** Full keyboard drag product; full WCAG certification; mobile browser matrix (unless evidence requires).
 - **Dependencies:** DND-2.1 infrastructure; preferably after DND-2.2 for public surface clarity.
 - **Closure:** Published browser/a11y statements with credible smoke evidence.
-- **Status:** PLANNED
+- **Status:** PLANNED (NEXT)
 
 ### DND-2.5 — Public Alpha Release Gate
 
