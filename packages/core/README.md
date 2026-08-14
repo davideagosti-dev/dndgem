@@ -9,7 +9,7 @@ This package owns the domain model, content constraints, validity evaluation, sc
 - Guides: repository `docs/guides/` (Quick Start, Core Concepts, Constraints)
 - Alpha contract: `docs/architecture/alpha-api-contract.md`
 
-Packages are **not published to npm yet**. Consume from the DnDGem workspace until the Public Alpha release gate (DND-2.5).
+Public Alpha target: `0.1.0-alpha.0` under npm dist-tag `alpha` (DND-2.5 Stage B). Until published, consume from the DnDGem workspace or packed tarballs.
 
 ```ts
 import { createLayoutIntent, evaluateItemPlacement, solveLayout } from '@dndgem/core';

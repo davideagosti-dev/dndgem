@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-DnDGem is in early technical development (`0.0.0` packages). Security fixes will target the default development branch until a stable release exists.
+DnDGem is preparing Public Alpha (`0.x` prereleases). Security fixes will target the default development branch until a stable release exists.
 
 ## Reporting a vulnerability
 

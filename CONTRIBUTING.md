@@ -4,7 +4,7 @@ Thanks for your interest in DnDGem.
 
 ## Project status
 
-DnDGem is in **early technical development**. Phase 1 Technical MVP is **CLOSED**. Active work is **Phase 2 — Public Alpha Readiness** (`docs/roadmap.md`). Large product surfaces (Auto-Layout, AI, Flutter, cloud, billing, multi-framework adapters beyond React) are out of Phase 2 unless a sprint explicitly requires them.
+DnDGem is in **early public Alpha preparation**. Phase 1 Technical MVP is **CLOSED**. Active work is **DND-2.5 — Public Alpha Release Gate** under Phase 2 (`docs/roadmap.md`). Large product surfaces (Auto-Layout, AI, Flutter, cloud, billing, multi-framework adapters beyond React) are out of Phase 2 unless a sprint explicitly requires them.
 
 ## Development setup
 
@@ -62,7 +62,7 @@ See `docs/architecture/package-boundaries.md`.
 
 Use Changesets for consumer-visible library changes (`pnpm changeset`). Docs-only, CI-only, and test-only work does not need a package bump.
 
-Do not publish from local machines. The controlled publish workflow is `.github/workflows/publish.yml` (manual, dry-run by default). Public Alpha publication is DND-2.5.
+Do not publish from local machines. The controlled publish workflow is `.github/workflows/publish.yml` (manual, dry-run by default). Public Alpha publication is DND-2.5 Stage B from the approved release ref (`master`) after promotion CI. See `docs/releases/dnd-2.5-stage-a-readiness.md`.
 
 ## Code of conduct
 

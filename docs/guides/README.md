@@ -54,9 +54,9 @@ Architecture / contract references (not the day-one path):
 
 ## Installation truth
 
-| When                         | How                                                   |
-| ---------------------------- | ----------------------------------------------------- |
-| **Now (this repository)**    | Workspace / local packages — see Quick Start          |
-| **After Public Alpha (2.5)** | `npm install @dndgem/react@alpha` (not published yet) |
+| When                              | How                                          |
+| --------------------------------- | -------------------------------------------- |
+| **Now (this repository)**         | Workspace / local packages — see Quick Start |
+| **After Stage B npm publication** | `npm install @dndgem/react@alpha`            |
 
-Packages are **not** on the public npm registry until DND-2.5.
+First intended registry version: `0.1.0-alpha.0` (dist-tag `alpha`). Release notes: [0.1.0-alpha.0](../releases/0.1.0-alpha.0.md).
