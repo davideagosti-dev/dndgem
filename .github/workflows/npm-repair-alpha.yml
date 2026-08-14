@@ -1,0 +1,114 @@
+name: npm-repair-alpha
+
+# One-shot Stage B recovery for first Alpha publish defects:
+# - npm auto-created `latest` on first publish (forbidden for Alpha)
+# - @dndgem/dom package metadata document missing while version/tarball exist
+#
+# Do not use for routine releases.
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type REPAIR to run
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    name: repair
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: ${{ inputs.confirm == 'REPAIR' }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm --filter "./packages/**" build
+
+      - name: Remove accidental latest tags
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          for pkg in @dndgem/core @dndgem/react @dndgem/dom; do
+            if npm view "$pkg" dist-tags.latest >/dev/null 2>&1; then
+              echo "Removing latest from $pkg"
+              npm dist-tag rm "$pkg" latest || true
+            else
+              echo "No latest tag (or package root missing) for $pkg"
+            fi
+            echo "Tags for $pkg:"
+            npm view "$pkg" dist-tags --json || true
+          done
+
+      - name: Recover @dndgem/dom package document
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          ROOT_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://registry.npmjs.org/@dndgem%2fdom)
+          VER_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://registry.npmjs.org/@dndgem%2fdom/0.1.0-alpha.0)
+          echo "dom root=$ROOT_CODE ver=$VER_CODE"
+          if [ "$ROOT_CODE" = "200" ]; then
+            echo "@dndgem/dom package root is healthy; no unpublish/republish needed"
+            npm view @dndgem/dom version dist-tags --json
+            exit 0
+          fi
+          if [ "$VER_CODE" = "200" ]; then
+            echo "Package root missing but version exists — unpublish version then republish"
+            npm unpublish @dndgem/dom@0.1.0-alpha.0 --force
+            # brief pause for registry consistency
+            sleep 5
+          fi
+          pnpm --filter @dndgem/dom publish --no-git-checks --tag alpha --access public
+          sleep 5
+          ROOT_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://registry.npmjs.org/@dndgem%2fdom)
+          echo "dom root after repair=$ROOT_CODE"
+          npm view @dndgem/dom version dist-tags --json
+          if npm view @dndgem/dom dist-tags.latest >/dev/null 2>&1; then
+            echo "Removing latest recreated on republish"
+            npm dist-tag rm @dndgem/dom latest || true
+          fi
+          test "$ROOT_CODE" = "200"
+
+      - name: Final registry verification
+        run: |
+          set -euo pipefail
+          for pkg in core dom react; do
+            echo "==== @dndgem/$pkg ===="
+            npm view "@dndgem/$pkg" name version dist-tags --json
+            LATEST=$(npm view "@dndgem/$pkg" dist-tags.latest 2>/dev/null || true)
+            if [ -n "${LATEST}" ]; then
+              echo "ERROR: latest still set on @dndgem/$pkg -> $LATEST"
+              exit 1
+            fi
+            ALPHA=$(npm view "@dndgem/$pkg" dist-tags.alpha)
+            test "$ALPHA" = "0.1.0-alpha.0"
+          done
