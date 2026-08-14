@@ -23,9 +23,17 @@ For Vanilla DOM, use the [Vanilla guide](./vanilla.md) (`createLayoutSession`).
 
 See [Packages](./packages.md).
 
-## 2. Install (current vs future)
+## 2. Install
 
-### Current — monorepo / local validation
+### Public Alpha (npm)
+
+```bash
+npm install @dndgem/react@alpha
+```
+
+This resolves to **`0.1.0-alpha.0`** under dist-tag `alpha`. See [release notes](../releases/0.1.0-alpha.0.md).
+
+### Local monorepo validation
 
 From this repository:
 
@@ -36,14 +44,6 @@ pnpm --filter @dndgem/example-react dev
 ```
 
 The React example under `examples/react` is the validated Quick Start companion.
-
-### Public Alpha installation — after Stage B publication
-
-```bash
-npm install @dndgem/react@alpha
-```
-
-Target first version: `0.1.0-alpha.0` under dist-tag `alpha`. Until the packages appear on the registry, consume from the workspace (or packed tarballs via `pnpm test:pack`). See [release notes](../releases/0.1.0-alpha.0.md).
 
 ## 3. Minimal React board
 

@@ -15,7 +15,7 @@ import { getCorePackageInfo } from '@dndgem/core';
 
 export const DOM_PACKAGE_NAME = '@dndgem/dom' as const;
 
-export const DOM_PACKAGE_VERSION = '0.0.0' as const;
+export const DOM_PACKAGE_VERSION = '0.1.0-alpha.0' as const;
 
 /**
  * Marker used by workspace smoke tests to prove the public export resolves
