@@ -64,6 +64,7 @@ if (core) {
   }
   if (core.type !== 'module') errors.push('packages/core should be ESM ("type": "module")');
   if (!core.exports?.['.']) errors.push('packages/core must declare a public "." export');
+  assertPublishableMetadata('core', core);
 }
 
 if (dom) {
@@ -73,6 +74,7 @@ if (dom) {
   if (!dom.dependencies?.['@dndgem/core']) {
     errors.push('@dndgem/dom must declare a dependency on @dndgem/core');
   }
+  assertPublishableMetadata('dom', dom);
   for (const dep of Object.keys(allDeps(dom))) {
     if (dep.startsWith('@dnd-kit/') && dep !== '@dnd-kit/dom') {
       errors.push(
@@ -94,6 +96,7 @@ if (react) {
   if (react.peerDependencies?.react === undefined) {
     errors.push('@dndgem/react must declare react as a peerDependency');
   }
+  assertPublishableMetadata('react', react);
   for (const dep of Object.keys(allDeps(react))) {
     if (dep.startsWith('@dnd-kit/')) {
       errors.push(
@@ -103,10 +106,31 @@ if (react) {
   }
 }
 
-// Ensure no unexpected packages under packages/ for Phase 1
+function assertPublishableMetadata(packageName, pkg) {
+  if (pkg.license !== 'MIT') {
+    errors.push(`packages/${packageName} must declare MIT license`);
+  }
+  if (pkg.publishConfig?.access !== 'public') {
+    errors.push(`packages/${packageName} must set publishConfig.access to public`);
+  }
+  if (pkg.engines?.node === undefined) {
+    errors.push(`packages/${packageName} must declare engines.node`);
+  }
+  if (typeof pkg.repository?.url !== 'string' || !pkg.repository.url.includes('dndgem')) {
+    errors.push(`packages/${packageName} must declare a repository URL`);
+  }
+  if (pkg.exports?.['.']?.import !== './dist/index.js') {
+    errors.push(`packages/${packageName} must export ESM dist/index.js`);
+  }
+  if (pkg.exports?.['.']?.types !== './dist/index.d.ts') {
+    errors.push(`packages/${packageName} must export dist/index.d.ts`);
+  }
+}
+
+// Ensure no unexpected packages under packages/ for Phase 2
 for (const name of readdirSync(packagesDir)) {
   if (!['core', 'dom', 'react'].includes(name)) {
-    errors.push(`Unexpected package folder packages/${name} (Phase 1 allows core/dom/react only)`);
+    errors.push(`Unexpected package folder packages/${name} (Phase 2 allows core/dom/react only)`);
   }
 }
 

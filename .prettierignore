@@ -7,3 +7,5 @@ test-results
 blob-report
 node_modules
 CHANGELOG.md
+.tmp
+*.tgz

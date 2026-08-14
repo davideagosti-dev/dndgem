@@ -10,11 +10,11 @@ Category: **Content-Aware Adaptive Layout Engine**
 
 DnDGem’s **Technical MVP (Phase 1)** is **CLOSED** (DND-1.1 → DND-1.8).
 
-**Active phase:** Phase 2 — Public Alpha Readiness (see `docs/roadmap.md`). Current sprint track: DND-2.1 → DND-2.5.
+**Active phase:** Phase 2 — Public Alpha Readiness (see `docs/roadmap.md`). Current sprint track: DND-2.1 (complete) → DND-2.2 (complete) → DND-2.3.
 
 That means the repository contains reproducible evidence for content-aware constraints, deterministic validity/scoring, adaptive solve/reflow, DOM measurement/resize, provider-isolated drag, and Vanilla/React integration — within a documented dashboard-scale operating envelope.
 
-This is **not** a production-ready, fully accessible, publicly released, or commercially packaged product. Packages are **not** published to npm yet.
+This is **not** a production-ready, fully accessible, publicly released, or commercially packaged product. Packages are **not** published to npm yet. DND-2.2 prepared the Alpha API contract and a controlled publish pipeline; the first public npm Alpha remains DND-2.5.
 
 | Area                              | Status                                                          |
 | --------------------------------- | --------------------------------------------------------------- |
@@ -178,11 +178,17 @@ pnpm bench
 ## Planned install (not published yet)
 
 ```bash
-# planned — not yet published
-npm install @dndgem/react
+# planned after DND-2.5 — not yet published
+npm install @dndgem/react@alpha
 ```
 
-Until then, consume packages via this workspace.
+Until then, consume packages via this workspace. Local pack/consumer validation:
+
+```bash
+pnpm test:pack
+```
+
+Alpha contract: `docs/architecture/alpha-api-contract.md`. Release pipeline: `docs/architecture/release-strategy.md`.
 
 ## npm scope note
 

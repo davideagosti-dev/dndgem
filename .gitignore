@@ -34,6 +34,10 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 
+# Pack / release scratch
+.tmp/
+*.tgz
+
 # Logs
 *.log
 npm-debug.log*

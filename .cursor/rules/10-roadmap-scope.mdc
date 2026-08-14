@@ -9,9 +9,9 @@ Phase 1 (Technical MVP) is **CLOSED**.
 
 Phase 2 — Public Alpha Readiness mapping:
 
-1. DND-2.1 Engineering Baseline & CI Hardening
-2. DND-2.2 Alpha API Contract & Release Infrastructure
-3. DND-2.3 Developer Experience & Documentation
+1. DND-2.1 Engineering Baseline & CI Hardening — COMPLETE
+2. DND-2.2 Alpha API Contract & Release Infrastructure — COMPLETE
+3. DND-2.3 Developer Experience & Documentation — NEXT
 4. DND-2.4 Browser Matrix & Accessibility Baseline
 5. DND-2.5 Public Alpha Release Gate
 

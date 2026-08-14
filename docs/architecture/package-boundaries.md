@@ -10,7 +10,7 @@
 
 ## Public API rule
 
-Cross-package and app/example imports must use package names:
+Alpha consumers may import only the package root (see [alpha-api-contract.md](./alpha-api-contract.md)). Cross-package and app/example imports must use package names:
 
 ```ts
 import { getCorePackageInfo } from '@dndgem/core';

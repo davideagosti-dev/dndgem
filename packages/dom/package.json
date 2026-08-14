@@ -2,7 +2,25 @@
   "name": "@dndgem/dom",
   "version": "0.0.0",
   "description": "DOM adapter for DnDGem — measurement, resize observation, vendor-isolated drag interaction, and Vanilla layout session.",
+  "author": "FinGem-AI",
   "license": "MIT",
+  "homepage": "https://github.com/davideagosti-dev/dndgem/tree/master/packages/dom#readme",
+  "bugs": {
+    "url": "https://github.com/davideagosti-dev/dndgem/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davideagosti-dev/dndgem.git",
+    "directory": "packages/dom"
+  },
+  "keywords": [
+    "dndgem",
+    "fingem-ai",
+    "layout",
+    "dom",
+    "drag-and-drop",
+    "resize"
+  ],
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",
@@ -17,6 +35,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint src --max-warnings=0",
