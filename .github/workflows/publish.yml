@@ -1,0 +1,109 @@
+name: Publish
+
+# Controlled Alpha publish path. Never runs on push.
+# Default is dry-run. Actual npm publish is DND-2.5 and requires:
+#   - package versions already bumped off 0.0.0 via Changesets
+#   - GitHub secret NPM_TOKEN
+#   - @dndgem npm scope ownership
+# Do not use dist-tag latest for the first Alpha.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Pack and dry-run publish without uploading to npm
+        type: boolean
+        default: true
+      dist_tag:
+        description: npm dist-tag (Alpha must use alpha, not latest)
+        type: string
+        default: alpha
+      allow_latest:
+        description: Permit dist-tag latest (forbidden for Alpha)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    name: ci
+    uses: ./.github/workflows/ci.yml
+
+  npm:
+    name: npm
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: ci
+    permissions:
+      contents: read
+      # Reserved for npm provenance once the repository is public (DND-2.5).
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Guard dist-tag
+        env:
+          DIST_TAG: ${{ inputs.dist_tag }}
+          ALLOW_LATEST: ${{ inputs.allow_latest }}
+        run: |
+          if [ "$DIST_TAG" = "latest" ] && [ "$ALLOW_LATEST" != "true" ]; then
+            echo "Refusing to publish with dist-tag latest. Alpha uses alpha."
+            exit 1
+          fi
+
+      - name: Build packages
+        run: pnpm --filter "./packages/**" build
+
+      - name: Pack validation
+        run: pnpm test:pack
+
+      - name: Dry-run publish
+        run: |
+          pnpm --filter @dndgem/core publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
+          pnpm --filter @dndgem/dom publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
+          pnpm --filter @dndgem/react publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
+
+      - name: Refuse unversioned public publish
+        if: ${{ inputs.dry_run == false || inputs.dry_run == 'false' }}
+        run: |
+          node --input-type=module -e "
+          import { readFileSync } from 'node:fs';
+          for (const name of ['core', 'dom', 'react']) {
+            const version = JSON.parse(readFileSync('packages/' + name + '/package.json', 'utf8')).version;
+            if (version === '0.0.0') {
+              console.error(name + ' is still 0.0.0. Run changeset version before a real publish.');
+              process.exit(1);
+            }
+          }
+          "
+
+      - name: Publish to npm
+        if: ${{ inputs.dry_run == false || inputs.dry_run == 'false' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          pnpm --filter @dndgem/core publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
+          pnpm --filter @dndgem/dom publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
+          pnpm --filter @dndgem/react publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public

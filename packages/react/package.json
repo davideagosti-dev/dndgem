@@ -2,7 +2,25 @@
   "name": "@dndgem/react",
   "version": "0.0.0",
   "description": "React adapter for DnDGem — thin lifecycle and registration over @dndgem/dom.",
+  "author": "FinGem-AI",
   "license": "MIT",
+  "homepage": "https://github.com/davideagosti-dev/dndgem/tree/master/packages/react#readme",
+  "bugs": {
+    "url": "https://github.com/davideagosti-dev/dndgem/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davideagosti-dev/dndgem.git",
+    "directory": "packages/react"
+  },
+  "keywords": [
+    "dndgem",
+    "fingem-ai",
+    "layout",
+    "react",
+    "drag-and-drop",
+    "hooks"
+  ],
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",
@@ -17,6 +35,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint src --max-warnings=0",

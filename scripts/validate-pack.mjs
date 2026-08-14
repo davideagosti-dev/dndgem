@@ -1,0 +1,500 @@
+#!/usr/bin/env node
+/**
+ * Pack @dndgem/core, @dndgem/dom, and @dndgem/react, then install the tarballs
+ * into an isolated consumer fixture (not the workspace). Validates contents,
+ * ESM/type entrypoints, Core solve, Vanilla session, and React mount.
+ *
+ * Does not publish.
+ */
+import { execFileSync, execSync } from 'node:child_process';
+import {
+  copyFileSync,
+  existsSync,
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
+import { tmpdir } from 'node:os';
+import { basename, dirname, isAbsolute, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const packDir = join(root, '.tmp', 'pack');
+
+const PUBLIC_PACKAGES = ['core', 'dom', 'react'];
+
+const FORBIDDEN_PATH_SNIPPETS = [
+  'tests/',
+  'src/',
+  'benchmarks/',
+  'fixtures/',
+  'vitest.config',
+  'tsconfig',
+  'eslint',
+  '.changeset',
+];
+
+function readPkg(dir) {
+  return JSON.parse(readFileSync(join(root, 'packages', dir, 'package.json'), 'utf8'));
+}
+
+function run(command, options = {}) {
+  return execSync(command, {
+    cwd: root,
+    encoding: 'utf8',
+    stdio: ['pipe', 'pipe', 'pipe'],
+    ...options,
+  });
+}
+
+function runInherit(command, options = {}) {
+  execSync(command, {
+    cwd: root,
+    stdio: 'inherit',
+    ...options,
+  });
+}
+
+function listTarball(tarballPath) {
+  const output = execFileSync('tar', ['-tf', tarballPath], { encoding: 'utf8' });
+  return output
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => line.replace(/^package\//, ''));
+}
+
+function formatBytes(bytes) {
+  if (bytes < 1024) {
+    return `${bytes} B`;
+  }
+  return `${(bytes / 1024).toFixed(1)} kB`;
+}
+
+function assert(condition, message) {
+  if (!condition) {
+    throw new Error(message);
+  }
+}
+
+function parsePackJson(raw) {
+  const start = raw.indexOf('{');
+  assert(start !== -1, `pnpm pack did not print JSON: ${raw}`);
+  return JSON.parse(raw.slice(start));
+}
+
+function packOne(dir) {
+  const pkg = readPkg(dir);
+  const raw = run(`pnpm pack --json --pack-destination "${packDir}"`, {
+    cwd: join(root, 'packages', dir),
+  }).trim();
+  const parsed = parsePackJson(raw);
+  const tarballPath = parsed.filename ?? parsed.path;
+  assert(
+    typeof tarballPath === 'string' && tarballPath.length > 0,
+    `pnpm pack did not return a path for ${dir}`,
+  );
+  const resolved = existsSync(tarballPath)
+    ? tarballPath
+    : isAbsolute(tarballPath)
+      ? tarballPath
+      : join(packDir, tarballPath);
+  assert(existsSync(resolved), `packed tarball not found: ${resolved}`);
+  const files = Array.isArray(parsed.files)
+    ? parsed.files.map((file) => file.path ?? file)
+    : listTarball(resolved);
+  const packedSize = statSync(resolved).size;
+  let unpackedSize = 0;
+  try {
+    const listing = execFileSync('tar', ['-tvf', resolved], { encoding: 'utf8' });
+    for (const line of listing.split(/\r?\n/)) {
+      const match =
+        line.match(/\s(\d+)\s+\d{4}-\d{2}-\d{2}/) ?? line.match(/\s(\d+)\s+[A-Z][a-z]{2}/);
+      if (match) {
+        unpackedSize += Number(match[1]);
+      }
+    }
+  } catch {
+    unpackedSize = packedSize;
+  }
+
+  for (const snippet of FORBIDDEN_PATH_SNIPPETS) {
+    const leaked = files.filter((file) => file.includes(snippet) && !file.startsWith('dist/'));
+    assert(
+      leaked.length === 0,
+      `${pkg.name} packed forbidden path (${snippet}): ${leaked.join(', ')}`,
+    );
+  }
+  assert(files.includes('package.json'), `${pkg.name} tarball missing package.json`);
+  assert(files.includes('LICENSE'), `${pkg.name} tarball missing LICENSE`);
+  assert(files.includes('README.md'), `${pkg.name} tarball missing README.md`);
+  assert(files.includes('dist/index.js'), `${pkg.name} tarball missing dist/index.js`);
+  assert(files.includes('dist/index.d.ts'), `${pkg.name} tarball missing dist/index.d.ts`);
+
+  const indexDts = execFileSync('tar', ['-xOf', resolved, 'package/dist/index.d.ts'], {
+    encoding: 'utf8',
+  });
+  assert(
+    !/from ['"]@dnd-kit\//.test(indexDts) && !/import\(['"]@dnd-kit\//.test(indexDts),
+    `${pkg.name} public types import @dnd-kit`,
+  );
+  assert(!indexDts.includes('packages/'), `${pkg.name} public types leak monorepo paths`);
+  assert(!/from '\.\.\/src\//.test(indexDts), `${pkg.name} public types leak source paths`);
+
+  return {
+    name: pkg.name,
+    version: pkg.version,
+    tarballPath: resolved,
+    files,
+    packedSize,
+    unpackedSize,
+    fileCount: files.length,
+  };
+}
+
+const coreSmoke = `import {
+  createLayoutIntent,
+  getCorePackageInfo,
+  solveLayout,
+} from '@dndgem/core';
+
+const info = getCorePackageInfo();
+if (info.name !== '@dndgem/core') {
+  throw new Error('core package name mismatch');
+}
+
+const result = solveLayout({
+  intent: createLayoutIntent({
+    space: { width: 400, height: 200 },
+    items: [{ id: 'chart', constraints: { minWidth: 40, preferredWidth: 120 } }],
+    desiredPlacements: { chart: { x: 8, y: 8, width: 120, height: 60 } },
+  }),
+});
+
+if (result.evaluation.state !== 'VALID' && result.evaluation.state !== 'DEGRADED') {
+  throw new Error(\`unexpected core validity: \${result.evaluation.state}\`);
+}
+if (result.resolved.placements.chart === undefined) {
+  throw new Error('core solve did not place chart');
+}
+console.log('core packed consumer smoke ok', info.version, result.evaluation.state);
+`;
+
+const vanillaSmoke = `import { JSDOM } from 'jsdom';
+import { createLayoutSession } from '@dndgem/dom';
+import { getDomPackageInfo } from '@dndgem/dom';
+
+const info = getDomPackageInfo();
+if (info.name !== '@dndgem/dom' || info.core.name !== '@dndgem/core') {
+  throw new Error('dom package info mismatch');
+}
+
+const dom = new JSDOM('<!doctype html><html><body></body></html>', { pretendToBeVisual: true });
+const { document } = dom.window;
+globalThis.window = dom.window;
+globalThis.document = document;
+globalThis.HTMLElement = dom.window.HTMLElement;
+globalThis.Element = dom.window.Element;
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
+function stub(el, box) {
+  el.getBoundingClientRect = () => ({
+    x: box.left,
+    y: box.top,
+    left: box.left,
+    top: box.top,
+    width: box.width,
+    height: box.height,
+    right: box.left + box.width,
+    bottom: box.top + box.height,
+    toJSON() {
+      return {};
+    },
+  });
+}
+
+const container = document.createElement('div');
+const chart = document.createElement('article');
+document.body.append(container, chart);
+stub(container, { left: 0, top: 0, width: 400, height: 200 });
+stub(chart, { left: 8, top: 8, width: 120, height: 60 });
+
+const mechanics = {
+  connect() {
+    return { dispose() {} };
+  },
+};
+
+const session = createLayoutSession({
+  container,
+  items: [{ id: 'chart', element: chart, constraints: { minWidth: 40, preferredWidth: 120 } }],
+  desiredPlacements: { chart: { x: 8, y: 8, width: 120, height: 60 } },
+  mechanics,
+  ResizeObserver: globalThis.ResizeObserver,
+});
+
+const state = session.getState();
+if (state.resolved.placements.chart === undefined) {
+  throw new Error('vanilla session did not resolve chart');
+}
+session.dispose();
+console.log('dom packed consumer smoke ok', info.version, state.solver.evaluation.state);
+`;
+
+const reactSmoke = `import { JSDOM } from 'jsdom';
+import { act, createElement } from 'react';
+import { createRoot } from 'react-dom/client';
+import {
+  DnDGemProvider,
+  getReactPackageInfo,
+  useDnDGem,
+  useDnDGemContainer,
+  useDnDGemItem,
+} from '@dndgem/react';
+
+const info = getReactPackageInfo();
+if (info.name !== '@dndgem/react' || info.dom.name !== '@dndgem/dom') {
+  throw new Error('react package info mismatch');
+}
+
+const jsdom = new JSDOM('<!doctype html><html><body><div id="root"></div></body></html>', {
+  pretendToBeVisual: true,
+  url: 'http://localhost/',
+});
+const { window } = jsdom;
+globalThis.window = window;
+globalThis.document = window.document;
+globalThis.HTMLElement = window.HTMLElement;
+globalThis.Element = window.Element;
+globalThis.Node = window.Node;
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
+function stub(el, box) {
+  el.getBoundingClientRect = () => ({
+    x: box.left,
+    y: box.top,
+    left: box.left,
+    top: box.top,
+    width: box.width,
+    height: box.height,
+    right: box.left + box.width,
+    bottom: box.top + box.height,
+    toJSON() {
+      return {};
+    },
+  });
+}
+
+function Board() {
+  const containerRef = useDnDGemContainer();
+  const chart = useDnDGemItem('chart');
+  const { ready } = useDnDGem();
+  return createElement(
+    'div',
+    {
+      ref: (node) => {
+        if (node) {
+          stub(node, { left: 0, top: 0, width: 400, height: 200 });
+        }
+        containerRef(node);
+      },
+    },
+    createElement('article', {
+      ref: (node) => {
+        if (node) {
+          stub(node, { left: 8, top: 8, width: 120, height: 60 });
+        }
+        chart.ref(node);
+      },
+      style: chart.style,
+      'data-ready': ready ? 'yes' : 'no',
+    }),
+  );
+}
+
+const mechanics = {
+  connect() {
+    return { dispose() {} };
+  },
+};
+
+const rootEl = window.document.getElementById('root');
+const root = createRoot(rootEl);
+await act(async () => {
+  root.render(
+    createElement(
+      DnDGemProvider,
+      {
+        items: [{ id: 'chart', constraints: { minWidth: 40, preferredWidth: 120 } }],
+        desiredPlacements: { chart: { x: 8, y: 8, width: 120, height: 60 } },
+        mechanics,
+        ResizeObserver: globalThis.ResizeObserver,
+      },
+      createElement(Board),
+    ),
+  );
+});
+
+if (!rootEl.querySelector('article')) {
+  throw new Error('react packed consumer did not mount an item');
+}
+await act(async () => {
+  root.unmount();
+});
+console.log('react packed consumer smoke ok', info.version);
+`;
+
+const typecheckSource = `import {
+  createLayoutIntent,
+  solveLayout,
+  type LayoutIntent,
+  type SolverResult,
+} from '@dndgem/core';
+import {
+  createLayoutSession,
+  type LayoutSession,
+  type LayoutSessionState,
+} from '@dndgem/dom';
+import {
+  DnDGemProvider,
+  useDnDGem,
+  useDnDGemContainer,
+  useDnDGemItem,
+  type DnDGemProviderProps,
+} from '@dndgem/react';
+
+export const intent: LayoutIntent = createLayoutIntent({
+  space: { width: 100, height: 80 },
+  items: [{ id: 'a' }],
+});
+export const solved: SolverResult = solveLayout({ intent });
+export type Session = LayoutSession;
+export type SessionState = LayoutSessionState;
+export type ProviderProps = DnDGemProviderProps;
+export const hooks = { useDnDGem, useDnDGemContainer, useDnDGemItem, DnDGemProvider };
+`;
+
+console.log('Building publishable packages…');
+runInherit('pnpm --filter "./packages/**" build');
+
+rmSync(packDir, { recursive: true, force: true });
+mkdirSync(packDir, { recursive: true });
+
+const packed = PUBLIC_PACKAGES.map(packOne);
+
+console.log('\nPackage artifacts');
+for (const item of packed) {
+  console.log(
+    `- ${item.name}@${item.version}: ${item.tarballPath}\n  packed ${formatBytes(item.packedSize)}, unpacked ~${formatBytes(item.unpackedSize)}, ${item.fileCount} files`,
+  );
+}
+
+const consumerDir = mkdtempSync(join(tmpdir(), 'dndgem-pack-consumer-'));
+const localTarballs = {};
+for (const item of packed) {
+  const localName = basename(item.tarballPath);
+  copyFileSync(item.tarballPath, join(consumerDir, localName));
+  localTarballs[item.name] = `file:./${localName}`;
+}
+
+writeFileSync(
+  join(consumerDir, 'package.json'),
+  `${JSON.stringify(
+    {
+      name: 'dndgem-pack-consumer',
+      private: true,
+      type: 'module',
+      dependencies: {
+        '@dndgem/core': localTarballs['@dndgem/core'],
+        '@dndgem/dom': localTarballs['@dndgem/dom'],
+        '@dndgem/react': localTarballs['@dndgem/react'],
+        react: '^19.0.0',
+        'react-dom': '^19.0.0',
+        jsdom: '^26.0.0',
+        typescript: '^5.0.0',
+        '@types/react': '^19.0.0',
+        '@types/react-dom': '^19.0.0',
+      },
+      pnpm: {
+        overrides: {
+          '@dndgem/core': localTarballs['@dndgem/core'],
+          '@dndgem/dom': localTarballs['@dndgem/dom'],
+          '@dndgem/react': localTarballs['@dndgem/react'],
+        },
+      },
+    },
+    null,
+    2,
+  )}\n`,
+);
+
+writeFileSync(
+  join(consumerDir, 'tsconfig.json'),
+  `${JSON.stringify(
+    {
+      compilerOptions: {
+        target: 'ES2022',
+        module: 'NodeNext',
+        moduleResolution: 'NodeNext',
+        strict: true,
+        skipLibCheck: false,
+        jsx: 'react-jsx',
+        types: [],
+      },
+      include: ['consumer-types.ts'],
+    },
+    null,
+    2,
+  )}\n`,
+);
+
+writeFileSync(
+  join(consumerDir, '.npmrc'),
+  ['engine-strict=false', 'strict-peer-dependencies=false', ''].join('\n'),
+);
+
+writeFileSync(join(consumerDir, 'core-smoke.mjs'), coreSmoke);
+writeFileSync(join(consumerDir, 'vanilla-smoke.mjs'), vanillaSmoke);
+writeFileSync(join(consumerDir, 'react-smoke.mjs'), reactSmoke);
+writeFileSync(join(consumerDir, 'consumer-types.ts'), typecheckSource);
+
+console.log(`\nInstalling packed tarballs into ${consumerDir}`);
+runInherit('pnpm install', { cwd: consumerDir });
+
+console.log('\nRuntime smokes');
+runInherit('node core-smoke.mjs', { cwd: consumerDir });
+runInherit('node vanilla-smoke.mjs', { cwd: consumerDir });
+runInherit('node react-smoke.mjs', { cwd: consumerDir });
+
+console.log('\nConsumer typecheck');
+runInherit('pnpm exec tsc --noEmit -p tsconfig.json', { cwd: consumerDir });
+
+const pre = JSON.parse(readFileSync(join(root, '.changeset', 'pre.json'), 'utf8'));
+assert(pre.mode === 'pre', 'Changesets pre mode must be active');
+assert(pre.tag === 'alpha', 'Changesets pre tag must be alpha');
+
+const status = run('pnpm exec changeset status --verbose');
+assert(
+  status.includes('0.1.0-alpha.0'),
+  `expected first prerelease 0.1.0-alpha.0, got:\n${status}`,
+);
+console.log('\nChangeset status\n', status);
+
+rmSync(consumerDir, { recursive: true, force: true });
+
+console.log('\nPacked consumer validation PASSED');
+for (const item of packed) {
+  console.log(` ${item.name} ${item.fileCount} files, packed ${formatBytes(item.packedSize)}`);
+}

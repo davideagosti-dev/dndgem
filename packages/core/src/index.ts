@@ -6,6 +6,7 @@
  * DND-1.4: deterministic adaptive solver and reflow.
  *
  * This package MUST remain renderer-agnostic (no DOM, React, or dnd-kit imports).
+ * Alpha public surface: docs/architecture/alpha-api-contract.md.
  *
  * Out of scope here: DOM measurement, DnD interaction, framework bindings.
  */

@@ -25,7 +25,10 @@
     "bench:core:timing": "vitest bench --config benchmarks/vitest.bench.config.ts",
     "bench:core:stats": "vitest run --config benchmarks/vitest.config.ts core/stats.test.ts",
     "changeset": "changeset",
+    "changeset:status": "changeset status",
     "version-packages": "changeset version",
+    "sync-package-info": "node scripts/sync-package-info.mjs",
+    "test:pack": "node scripts/validate-pack.mjs",
     "lint:root": "eslint . --max-warnings=0"
   },
   "devDependencies": {
