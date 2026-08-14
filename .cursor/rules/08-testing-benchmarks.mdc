@@ -11,13 +11,12 @@ alwaysApply: false
 - Property-based testing: DND-1.3 uses table-driven Vitest; defer fast-check until justified.
 - Benchmarks: Core `solveLayout` suites under `benchmarks/` via `pnpm bench`. Deterministic fixtures only. Absolute timings are hardware-dependent evidence, not universal guarantees. Framework adapters must not alter Core semantics to improve numbers.
 
-## Phase 2 quality gates (DND-2.1+)
+## Phase 2 quality gates (DND-2.3+)
 
-- GitHub CI is the **authoritative merge safety gate** (`.github/workflows/ci.yml`):
-  format, lint, typecheck, boundaries, unit/integration tests, build, playground/example builds,
-  benchmark **semantics** (`pnpm bench:core:semantics`), and Chromium e2e.
+- **Feature Sprint Gate (local, mandatory):** full local quality gate before feature completion/push
+  (`format:check`, lint, typecheck, boundaries, test, build, `test:pack`, docs links, playground/example builds, `test:e2e`, `bench:core:semantics`).
+- **Develop integration:** feature → develop does **not** require GitHub CI.
+- **Master Promotion Gate (GitHub, mandatory):** full CI on **develop → master** PRs only
+  (`.github/workflows/ci.yml`: `quality` + `browser-e2e`; `workflow_call` preserved for publish).
 - Absolute hardware-specific latency medians are **not** CI hard failures.
-- Sprint Final Quality Gate (local, mandatory before sprint complete / final commit/push):
-  `lint`, `format:check`, `typecheck`, `test`, `build`, `check:boundaries`,
-  playground + example builds, `test:e2e`, and `bench` (full local suite including timing/stats capture).
 - See `docs/architecture/testing-strategy.md`.

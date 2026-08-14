@@ -17,6 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check:boundaries": "node scripts/check-boundaries.mjs",
+    "check:docs-links": "node scripts/check-docs-links.mjs",
     "test:e2e": "playwright test",
     "bench": "pnpm bench:core",
     "bench:core": "pnpm --filter @dndgem/core build && pnpm bench:core:check && pnpm bench:core:timing && pnpm bench:core:stats",

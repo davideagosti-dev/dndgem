@@ -29,9 +29,11 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 - `@dndgem/dom` converts browser drag mechanics into `LayoutIntent` proposals and drop accept/reject via the Core solver (DND-1.6).
 - `@dndgem/dom` `createLayoutSession` is the Vanilla integration entry; `@dndgem/react` is a thin lifecycle adapter over that session (DND-1.7).
 - DND-1.8 adds reproducible Core benchmarks, an acceptance matrix, and a Technical MVP closure report.
+- DND-2.1–DND-2.3 complete (engineering baseline, Alpha API/release infra, developer guides + CI promotion policy). **Next:** DND-2.4 Browser Matrix & Accessibility Baseline.
 
 **Technical MVP:** CLOSED
 
+Developer journey: [../guides/README.md](../guides/README.md).
 See [alpha-api-contract.md](./alpha-api-contract.md) for the Alpha public surface and stability policy.
 See [core-domain.md](./core-domain.md) for domain, scoring, and solver semantics.
 See [dom-adapter.md](./dom-adapter.md) for DOM measurement, resize observation (ADR-0011), drag interaction (ADR-0012), and layout application (ADR-0013).
