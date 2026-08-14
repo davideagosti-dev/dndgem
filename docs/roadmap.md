@@ -2,11 +2,11 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                                              |
-| ------- | ------------------------------- | --------------------------------------------------- |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                                          |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                      |
-| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1–DND-2.4 complete; DND-2.5 next) |
+| Phase   | Name                            | Status                                                     |
+| ------- | ------------------------------- | ---------------------------------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                                                 |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                             |
+| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1–DND-2.4 complete; DND-2.5 in progress) |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -14,7 +14,7 @@ Phase 1 proved stable, deterministic, content-aware, constraint-driven adaptive 
 
 Phase 2 transforms the closed Technical MVP into a credible external developer Alpha through engineering hardening, API stabilization, release infrastructure, documentation, browser/accessibility baseline, and npm Alpha release.
 
-Repository remains **PRIVATE** during Phase 2 preparation. npm Alpha and public repository visibility are separate future gates.
+Repository remains **PRIVATE** during Phase 2 preparation unless an explicit visibility decision changes that. npm Alpha and public repository visibility remain separate gates (see `docs/releases/dnd-2.5-stage-a-readiness.md`).
 
 No committed calendar dates are attached to roadmap items.
 
@@ -122,7 +122,7 @@ DND-2.3 Developer Experience & Documentation  COMPLETE
         ↓
 DND-2.4 Browser Matrix & Accessibility Baseline  COMPLETE
         ↓
-DND-2.5 Public Alpha Release Gate                NEXT
+DND-2.5 Public Alpha Release Gate                ACTIVE
             ↓
 PHASE 2 PASS
             ↓
@@ -203,7 +203,8 @@ Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later w
 - **Out of scope:** Catch-all unfinished API/docs/browser work (those belong in 2.2–2.4); Auto-Layout; AI; Flutter.
 - **Dependencies:** DND-2.2, DND-2.3, DND-2.4.
 - **Closure:** npm `@dndgem/*` Alpha published; Phase 2 exit checklist PASS.
-- **Status:** PLANNED (NEXT)
+- **Status:** ACTIVE (Stage A release readiness — publication is Stage B after promotion to `master`)
+- **Reference:** `docs/releases/dnd-2.5-stage-a-readiness.md`, `docs/releases/0.1.0-alpha.0.md`.
 
 ### Phase 2 exit gate — PHASE 2 PASS
 
