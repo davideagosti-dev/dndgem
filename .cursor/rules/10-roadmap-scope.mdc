@@ -1,21 +1,29 @@
 ---
-description: Roadmap scope lock for Phase 1 sprints
+description: Roadmap scope lock for Phase 2 Public Alpha Readiness
 alwaysApply: true
 ---
 
 # Roadmap Scope
 
-Phase 1 mapping:
+Phase 1 (Technical MVP) is **CLOSED**.
 
-1. DND-1.1 Repository & Engineering Foundation
-2. DND-1.2 Core Domain & Constraint Model
-3. DND-1.3 Validity Engine & Layout Scoring
-4. DND-1.4 Adaptive Solver & Reflow
-5. DND-1.5 DOM Measurement & Resize
-6. DND-1.6 Drag & Drop Interaction
-7. DND-1.7 React / Vanilla Integration
-8. DND-1.8 Technical Proof, Benchmarks & MVP Closure
+Phase 2 — Public Alpha Readiness mapping:
 
-DND-1.8 is evidence/closure only — do not begin post-MVP (DND-2.x / AI / Flutter / other adapters) early.
+1. DND-2.1 Engineering Baseline & CI Hardening
+2. DND-2.2 Alpha API Contract & Release Infrastructure
+3. DND-2.3 Developer Experience & Documentation
+4. DND-2.4 Browser Matrix & Accessibility Baseline
+5. DND-2.5 Public Alpha Release Gate
+
+Phase 2 contains **only** DND-2.1 → DND-2.5.
+
+Do not pull into Phase 2:
+
+- Deterministic Auto-Layout (Phase 3)
+- AI-assisted layout intelligence (Phase 4, after Auto-Layout)
+- Flutter implementation (post-Alpha / Core-contract dependent; not blocked by AI)
+- Vue / Angular / Svelte adapters (post-alpha, demand-driven)
 
 Do not turn roadmap ideas into committed calendar dates in docs or code comments unless explicitly asked.
+
+Authoritative roadmap: `docs/roadmap.md`.

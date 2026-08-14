@@ -2,11 +2,16 @@
 
 - **Product:** DnDGem by FinGem-AI
 - **Sprint:** DND-1.8 — Technical Proof, Benchmarks & MVP Closure
-- **Authoritative develop baseline:** `06e3874d3aef7c56f8faa492595b1a72334b0335`
+- **DND-1.8 evidence / branch-point baseline (historical capture):** `06e3874d3aef7c56f8faa492595b1a72334b0335` (`06e3874`)
 - **DND-1.7 feature commit (ancestor):** `9cb02d29e7b7ef42a8bf134a03b83b6acc6a0160`
+- **DND-1.8 feature commit:** `86907565e7083f99c7d4f226b59e7d4a3957f23c` (`8690756`)
+- **Post-merge authoritative develop (PR #14):** `26ccb40f4de3f8e1368aefabe480ca2375519bf0` (`26ccb40`)
+- **Promoted master (PR #15):** `61719e615d138d02bba61e1da34ba7bc2f16a45c` (`61719e6`)
 - **Verdict:** **TECHNICAL MVP CLOSED**
 
 This report describes what was **actually proven**, not the original product imagination.
+
+**Post-merge reconciliation (DND-2.1):** DND-1.8 evidence (benchmarks, acceptance matrix, tests) was captured on the DND-1.8 working tree based on historical baseline `06e3874`. The completed Technical MVP was subsequently merged to `develop` at `26ccb40` and promoted to `master` at `61719e6`. Capture SHAs are preserved for evidence integrity; post-merge SHAs are the long-lived branch authorities.
 
 ---
 
@@ -161,9 +166,10 @@ Not claimed: production-ready, public alpha, commercially ready, or released.
 
 After final audit/commit of DND-1.8:
 
-1. Close Phase 1 Technical MVP formally
-2. Plan post-MVP work from roadmap (adapters, a11y, optional AI) without reopening Phase 0 gates
-3. Strengthen CI beyond smoke only when opening for external contribution
+1. Close Phase 1 Technical MVP formally — **done**
+2. Enter **Phase 2 — Public Alpha Readiness** (`docs/roadmap.md`: DND-2.1 → DND-2.5)
+3. Strengthen CI beyond smoke-only — **DND-2.1**
+4. Deterministic Auto-Layout (Phase 3), AI (Phase 4 after Auto-Layout), and Flutter (post-Alpha / Core-contract dependent) remain out of Phase 2
 
 ---
 

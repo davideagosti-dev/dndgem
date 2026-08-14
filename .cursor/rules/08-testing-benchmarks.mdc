@@ -7,14 +7,17 @@ alwaysApply: false
 # Testing & Benchmarks
 
 - Unit: Vitest for Core and for `@dndgem/dom` measurement (mocked geometry / fake `ResizeObserver`) and drag interaction (fake mechanics).
-- Browser/E2E: Playwright Chromium smoke (playground boot + DND-1.6 drag fixture + DND-1.7 Vanilla/React integration + DND-1.8 cancel/resize proofs); broader product surfaces later.
+- Browser/E2E: Playwright Chromium (`pnpm test:e2e`); Firefox/WebKit expansion is DND-2.4.
 - Property-based testing: DND-1.3 uses table-driven Vitest; defer fast-check until justified.
-- Benchmarks (DND-1.8): Core `solveLayout` suites under `benchmarks/` via `pnpm bench`. Deterministic fixtures only. Absolute timings are hardware-dependent evidence, not universal guarantees. Framework adapters must not alter Core semantics to improve numbers.
+- Benchmarks: Core `solveLayout` suites under `benchmarks/` via `pnpm bench`. Deterministic fixtures only. Absolute timings are hardware-dependent evidence, not universal guarantees. Framework adapters must not alter Core semantics to improve numbers.
 
-## Private Technical MVP quality gates
+## Phase 2 quality gates (DND-2.1+)
 
-- GitHub CI: browser smoke only (`pnpm test:e2e` + smoke prerequisites).
+- GitHub CI is the **authoritative merge safety gate** (`.github/workflows/ci.yml`):
+  format, lint, typecheck, boundaries, unit/integration tests, build, playground/example builds,
+  benchmark **semantics** (`pnpm bench:core:semantics`), and Chromium e2e.
+- Absolute hardware-specific latency medians are **not** CI hard failures.
 - Sprint Final Quality Gate (local, mandatory before sprint complete / final commit/push):
   `lint`, `format:check`, `typecheck`, `test`, `build`, `check:boundaries`,
-  playground + example builds, `test:e2e`, and `bench`.
-- See `docs/architecture/testing-strategy.md`. CI may be strengthened before Public Alpha.
+  playground + example builds, `test:e2e`, and `bench` (full local suite including timing/stats capture).
+- See `docs/architecture/testing-strategy.md`.

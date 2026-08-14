@@ -17,8 +17,10 @@ Executable Core distinction (DND-1.3):
 GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 ```
 
-## Current status (DND-1.8)
+## Current status
 
+- Technical MVP (Phase 1, DND-1.1 → DND-1.8) is **CLOSED**.
+- Active phase: **Phase 2 — Public Alpha Readiness** (`docs/roadmap.md`).
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
 - `@dndgem/core` evaluates placements as `VALID` / `DEGRADED` / `INVALID` with deterministic scoring (DND-1.3).
@@ -48,9 +50,10 @@ See [../technical-mvp/closure-report.md](../technical-mvp/closure-report.md) for
 
 Consumers (playground/examples) use public package exports only.
 
-## Non-goals for Phase 1 critical path
+## Non-goals for Phase 2 critical path
 
-- AI inference
+- Deterministic Auto-Layout product (Phase 3)
+- AI inference (Phase 4)
 - Billing / cloud SaaS
 - Vue / Angular / Svelte / Flutter implementations
 - Custom native DnD engine
