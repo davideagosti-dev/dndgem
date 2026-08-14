@@ -2,11 +2,11 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                         |
-| ------- | ------------------------------- | ------------------------------ |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                     |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8) |
-| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1 current)   |
+| Phase   | Name                            | Status                                      |
+| ------- | ------------------------------- | ------------------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                                  |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)              |
+| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1 complete; DND-2.2 next) |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -165,7 +165,7 @@ Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later w
 - **Out of scope:** Auto-Layout, AI, Flutter, npm publish, Alpha API freeze, package version bumps, product algorithm changes.
 - **Dependencies:** Phase 1 Technical MVP CLOSED.
 - **Closure:** Global quality gate clean; CI authoritative; Phase 2 activated.
-- **Status:** IN PROGRESS
+- **Status:** COMPLETE
 
 ### DND-2.2 — Alpha API Contract & Release Infrastructure
 
