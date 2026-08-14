@@ -4,7 +4,7 @@ Thanks for your interest in DnDGem.
 
 ## Project status
 
-DnDGem is in **early technical development**. Phase 1 focuses on a Technical MVP of the adaptive layout engine. Large product surfaces (AI, cloud, billing, multi-framework adapters beyond React) are out of scope unless a sprint explicitly requires them.
+DnDGem is in **early technical development**. Phase 1 Technical MVP is **CLOSED**. Active work is **Phase 2 — Public Alpha Readiness** (`docs/roadmap.md`). Large product surfaces (Auto-Layout, AI, Flutter, cloud, billing, multi-framework adapters beyond React) are out of Phase 2 unless a sprint explicitly requires them.
 
 ## Development setup
 

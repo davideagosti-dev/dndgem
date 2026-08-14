@@ -4,6 +4,7 @@
 - **Captured:** 2026-08-13
 - **Repository baseline (branch point / develop at capture):** `06e3874d3aef7c56f8faa492595b1a72334b0335` (`06e3874`)
 - **Measurement context:** benchmarks executed on the DND-1.8 working tree based on baseline `06e3874` (not a claim that timings belong to that commit’s tree alone)
+- **Post-merge note (DND-2.1):** Technical MVP later landed on `develop` at `26ccb40` and `master` at `61719e6`. Capture SHAs remain historical; do not reinterpret medians as measured on those merge commits.
 - **Machine-readable:** `benchmarks/results/technical-mvp.json`
 
 ## Environment

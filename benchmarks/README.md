@@ -21,11 +21,12 @@ pnpm bench:core
 
 Breakdown:
 
-| Script                   | Purpose                                                          |
-| ------------------------ | ---------------------------------------------------------------- |
-| `pnpm bench:core:check`  | Semantic gates + fixture determinism (`*.test.ts`)               |
-| `pnpm bench:core:timing` | Vitest bench (Tinybench) timing table                            |
-| `pnpm bench:core:stats`  | Median / p95 collector → `benchmarks/results/technical-mvp.json` |
+| Script                      | Purpose                                                           |
+| --------------------------- | ----------------------------------------------------------------- |
+| `pnpm bench:core:check`     | Full local semantic suite (`*.test.ts`, including stats writer)   |
+| `pnpm bench:core:semantics` | CI-safe semantics only (`semantic` + `stats.unit`; no JSON write) |
+| `pnpm bench:core:timing`    | Vitest bench (Tinybench) timing table                             |
+| `pnpm bench:core:stats`     | Median / p95 collector → `benchmarks/results/technical-mvp.json`  |
 
 `pnpm bench` / `pnpm bench:core` runs build → check → timing → stats.
 
@@ -59,9 +60,7 @@ Benchmarks import **`packages/core/dist`** (compiled package output), not TypeSc
 
 ## CI policy
 
-GitHub CI remains **browser-smoke only** for the private Technical MVP.
-
-Benchmarks are part of the **local Sprint Final Quality Gate** (`pnpm bench`) because they finish in seconds on typical developer hardware and prove the suite still executes. Absolute timing thresholds are **not** hard CI failures.
+Phase 2 (DND-2.1+) GitHub CI runs `pnpm bench:core:semantics` (fixture determinism + stats helpers). Absolute timing thresholds are **not** hard CI failures. The stats collector that overwrites `benchmarks/results/technical-mvp.json` remains **local** (`pnpm bench:core:stats` / full `pnpm bench`).
 
 ## Rules
 

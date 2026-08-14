@@ -10,9 +10,11 @@ Category: **Content-Aware Adaptive Layout Engine**
 
 DnDGem’s **Technical MVP (Phase 1)** is **CLOSED** (DND-1.1 → DND-1.8).
 
+**Active phase:** Phase 2 — Public Alpha Readiness (see `docs/roadmap.md`). Current sprint track: DND-2.1 → DND-2.5.
+
 That means the repository contains reproducible evidence for content-aware constraints, deterministic validity/scoring, adaptive solve/reflow, DOM measurement/resize, provider-isolated drag, and Vanilla/React integration — within a documented dashboard-scale operating envelope.
 
-This is **not** a production-ready, fully accessible, publicly released, or commercially packaged product.
+This is **not** a production-ready, fully accessible, publicly released, or commercially packaged product. Packages are **not** published to npm yet.
 
 | Area                              | Status                                                          |
 | --------------------------------- | --------------------------------------------------------------- |
@@ -119,9 +121,12 @@ The container should be a positioned containing block. Items are absolutely posi
 
 Importing `@dndgem/react` is safe without `window`. Rendering the provider is client-side only (not a full SSR/hydration path). Pointer drag is the validated interaction path; keyboard drag is not product-validated.
 
-## Phase 1 roadmap
+## Roadmap
 
-`DND-1.1` → `DND-1.8` — see `docs/roadmap.md`.
+- Phase 1 Technical MVP: `DND-1.1` → `DND-1.8` — **CLOSED**
+- Phase 2 Public Alpha Readiness: `DND-2.1` → `DND-2.5` — **ACTIVE**
+
+See `docs/roadmap.md`.
 
 ## Development setup
 

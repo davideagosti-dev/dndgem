@@ -21,6 +21,7 @@
     "bench": "pnpm bench:core",
     "bench:core": "pnpm --filter @dndgem/core build && pnpm bench:core:check && pnpm bench:core:timing && pnpm bench:core:stats",
     "bench:core:check": "vitest run --config benchmarks/vitest.config.ts",
+    "bench:core:semantics": "vitest run --config benchmarks/vitest.config.ts core/semantic.test.ts core/stats.unit.test.ts",
     "bench:core:timing": "vitest bench --config benchmarks/vitest.bench.config.ts",
     "bench:core:stats": "vitest run --config benchmarks/vitest.config.ts core/stats.test.ts",
     "changeset": "changeset",
