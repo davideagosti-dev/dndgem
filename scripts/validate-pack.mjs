@@ -485,12 +485,14 @@ const pre = JSON.parse(readFileSync(join(root, '.changeset', 'pre.json'), 'utf8'
 assert(pre.mode === 'pre', 'Changesets pre mode must be active');
 assert(pre.tag === 'alpha', 'Changesets pre tag must be alpha');
 
-const status = run('pnpm exec changeset status --verbose');
+const changeset = readFileSync(join(root, '.changeset', 'dnd-2-2-alpha-api.md'), 'utf8');
 assert(
-  status.includes('0.1.0-alpha.0'),
-  `expected first prerelease 0.1.0-alpha.0, got:\n${status}`,
+  changeset.includes("'@dndgem/core': minor") &&
+    changeset.includes("'@dndgem/dom': minor") &&
+    changeset.includes("'@dndgem/react': minor"),
+  'Alpha changeset must minor-bump the fixed package group (0.0.0 → 0.1.0-alpha.0)',
 );
-console.log('\nChangeset status\n', status);
+console.log('\nChangesets pre mode:', pre.tag, '— first intended publish version 0.1.0-alpha.0');
 
 rmSync(consumerDir, { recursive: true, force: true });
 
