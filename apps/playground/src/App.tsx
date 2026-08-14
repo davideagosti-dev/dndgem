@@ -6,6 +6,7 @@ export interface PlaygroundProbe {
   lastDropAccepted?: boolean;
   chartX?: number;
   spaceWidth?: number;
+  cancelCount?: number;
 }
 
 declare global {
@@ -68,12 +69,33 @@ const DESIRED = {
   metric: { x: 204, y: 168, width: 96, height: 80 },
 };
 
-const COPY: Record<string, { title: string; body: string; className: string }> = {
-  chart: { title: 'Chart', body: 'Wide card · min useful 180', className: 'item chart' },
-  table: { title: 'Table', body: 'Dense rows · min useful 220', className: 'item table' },
-  details: { title: 'Details', body: 'Text panel that needs height.', className: 'item details' },
-  metric: { title: '42', body: 'Metric', className: 'item metric' },
-};
+const COPY: Record<string, { title: string; body: string; className: string; ariaLabel: string }> =
+  {
+    chart: {
+      title: 'Chart',
+      body: 'Wide card · min useful 180',
+      className: 'item chart',
+      ariaLabel: 'Chart panel',
+    },
+    table: {
+      title: 'Table',
+      body: 'Dense rows · min useful 220',
+      className: 'item table',
+      ariaLabel: 'Table panel',
+    },
+    details: {
+      title: 'Details',
+      body: 'Text panel that needs height.',
+      className: 'item details',
+      ariaLabel: 'Details panel',
+    },
+    metric: {
+      title: '42',
+      body: 'Metric',
+      className: 'item metric',
+      ariaLabel: 'Metric panel',
+    },
+  };
 
 function Board() {
   const containerRef = useDnDGemContainer();
@@ -84,12 +106,14 @@ function Board() {
   const metric = useDnDGemItem('metric');
   const bindings = { chart, table, details, metric } as const;
 
+  const existing = window.__DNDGEM_D17;
   const probe: PlaygroundProbe = {
     phase: state?.phase,
     validity: state?.solver.evaluation.state,
     lastDropAccepted: state?.lastDrop?.accepted,
     chartX: state?.resolved.placements.chart?.x,
     spaceWidth: state?.resolved.space.width,
+    cancelCount: existing?.cancelCount,
   };
   window.__DNDGEM_D17 = probe;
 
@@ -99,6 +123,9 @@ function Board() {
       <p className="eyebrow">
         Technical MVP proof — heterogeneous constraints, drag/reflow, resize (engine status below).
       </p>
+      <button type="button" data-testid="focus-probe">
+        Focus probe
+      </button>
       <p data-testid="status">
         {state
           ? `${state.solver.evaluation.state} · score ${state.solver.evaluation.score.total.toFixed(3)} · ${state.phase} · space ${Math.round(state.resolved.space.width)}×${Math.round(state.resolved.space.height)}`
@@ -118,6 +145,7 @@ function Board() {
               style={binding.style}
               className={copy.className}
               data-testid={`item-${item.id}`}
+              aria-label={copy.ariaLabel}
             >
               <h2>{copy.title}</h2>
               <p>{copy.body}</p>
@@ -131,7 +159,15 @@ function Board() {
 
 export function App() {
   return (
-    <DnDGemProvider items={ITEMS} desiredPlacements={DESIRED}>
+    <DnDGemProvider
+      items={ITEMS}
+      desiredPlacements={DESIRED}
+      onCancel={() => {
+        const probe = window.__DNDGEM_D17 ?? {};
+        probe.cancelCount = (probe.cancelCount ?? 0) + 1;
+        window.__DNDGEM_D17 = probe;
+      }}
+    >
       <Board />
     </DnDGemProvider>
   );

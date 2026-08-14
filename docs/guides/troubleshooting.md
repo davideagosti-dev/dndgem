@@ -37,7 +37,15 @@ Symptoms map to **actual** Alpha behavior. Weak or missing runtime errors are ca
 
 - Proposal violates hard constraints → solver may reject; previous layout kept
 - Explicit drag omits `previous` by design — do not expect sticky old slots to override the drag
-- Keyboard drag is not a validated product path
+- Keyboard drag is **deferred** for Public Alpha — not a validated product path (Escape cancel during pointer drag is supported)
+
+## Browser / accessibility expectations
+
+- Alpha engines: Chromium, Firefox, WebKit — see [Browser Support](./browser-support.md)
+- If a browser is outside that matrix (mobile, older engines), treat behavior as unvalidated
+- Visual placement can differ from DOM/tab order because items are absolutely positioned
+- Do not expect DnDGem to announce drag state to screen readers yet — see [Accessibility](./accessibility.md)
+- Focus moving unexpectedly during ordinary resize is a defect; report with engine + repro
 
 ## Resize / reflow unexpected
 

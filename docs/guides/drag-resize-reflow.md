@@ -66,7 +66,7 @@ preview / accept / reject / cancel
 - Rejected drop preserves the previous committed layout
 - Cancel restores the committed layout
 
-Pointer drag is the validated path. Full keyboard drag is **not** productized (DND-2.4 assesses keyboard/a11y baselines).
+Pointer drag is the validated Alpha path (Chromium / Firefox / WebKit). Full keyboard drag is **DEFERRED** — see [Accessibility](./accessibility.md). Escape cancellation during an active pointer drag is supported.
 
 ## React / Vanilla behavior
 

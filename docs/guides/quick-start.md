@@ -132,6 +132,7 @@ export function App() {
 3. For each item id, call `useDnDGemItem(id)` and merge `…item.style` **after** your visual styles so DnDGem owns `left` / `top` / `width` / `height`.
 4. Mount on the client (browser). Importing `@dndgem/react` is safe without `window`; rendering the provider is not a full SSR path.
 5. Unmounting the provider disposes the session (ResizeObserver + drag bindings).
+6. Consumer content owns ARIA/roles; DnDGem owns layout styles. Keyboard drag is deferred — see [Accessibility](./accessibility.md).
 
 ## 4. What you should see
 
@@ -149,6 +150,8 @@ export function App() {
 | Full React API              | [React Guide](./react.md)                        |
 | Vanilla path                | [Vanilla Guide](./vanilla.md)                    |
 | Drag vs resize / `previous` | [Drag, Resize & Reflow](./drag-resize-reflow.md) |
+| Browser support             | [Browser Support](./browser-support.md)          |
+| Accessibility baseline      | [Accessibility](./accessibility.md)              |
 | Validated dashboard example | `examples/react`                                 |
 
 ## Validation

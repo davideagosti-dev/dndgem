@@ -1,10 +1,11 @@
 name: CI
 
-# Promotion / reusable quality gate (DND-2.3):
+# Promotion / reusable quality gate (DND-2.3 / DND-2.4):
 # - Automatic full CI: develop → master pull requests only
 # - Feature → develop: no GitHub CI (local Sprint Final Quality Gate is mandatory)
 # - Reusable via workflow_call (publish pipeline)
 # - Optional manual runs via workflow_dispatch
+# - browser-e2e runs the Alpha desktop engine matrix: Chromium, Firefox, WebKit
 #
 # Absolute hardware-specific benchmark timings are NOT CI thresholds.
 
@@ -135,8 +136,8 @@ jobs:
       - name: Build packages
         run: pnpm --filter "./packages/**" build
 
-      - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
+      - name: Install Playwright browsers (Alpha matrix)
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
 
-      - name: Chromium e2e
+      - name: Browser e2e (Chromium, Firefox, WebKit)
         run: pnpm test:e2e

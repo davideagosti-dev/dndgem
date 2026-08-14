@@ -21,7 +21,7 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 | Phase                          | Status                                              |
 | ------------------------------ | --------------------------------------------------- |
 | Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                      |
-| Phase 2 Public Alpha Readiness | **ACTIVE** — DND-2.1–DND-2.3 complete; DND-2.4 next |
+| Phase 2 Public Alpha Readiness | **ACTIVE** — DND-2.1–DND-2.4 complete; DND-2.5 next |
 
 Packages are **not published to npm yet**. DND-2.2 prepared the Alpha API and publish pipeline; public npm Alpha is **DND-2.5**.
 
@@ -85,10 +85,22 @@ pnpm build
 pnpm --filter @dndgem/example-react dev
 ```
 
+## Browser support
+
+Validated for Public Alpha on **Chromium**, **Firefox**, and **WebKit** (Playwright desktop engines). Mobile / touch are **not validated**.
+
+Details: [Browser Support](docs/guides/browser-support.md)
+
+## Accessibility status
+
+Pointer drag and Escape cancel are supported. Focus / consumer ARIA preservation are baseline-supported. Keyboard drag and screen-reader drag announcements are **deferred**.
+
+Details: [Accessibility](docs/guides/accessibility.md)
+
 ## Alpha limitations (short)
 
-- Chromium currently validated (Firefox/WebKit → DND-2.4)
-- Pointer drag validated; full keyboard drag not productized
+- Desktop Chromium / Firefox / WebKit validated; mobile not validated
+- Pointer drag + Escape cancel supported; keyboard drag deferred
 - `DnDGemProvider` is client-mount only (no full SSR claim)
 - No Auto-Layout, AI, Flutter, or other framework adapters yet
 - Not on public npm until DND-2.5
@@ -121,6 +133,8 @@ pnpm test:pack
 pnpm test:e2e
 pnpm bench:core:semantics
 ```
+
+`pnpm test:e2e` runs the Alpha browser matrix (Chromium + Firefox + WebKit). Install browsers once with `pnpm test:e2e:install`. Chromium-only: `pnpm test:e2e:chromium`.
 
 Quality policy: **feature → develop** uses the full **local** Sprint Final Quality Gate (no GitHub CI). **develop → master** runs full GitHub CI. See [Testing Strategy](docs/architecture/testing-strategy.md).
 

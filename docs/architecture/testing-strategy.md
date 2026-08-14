@@ -2,14 +2,14 @@
 
 ## Layers
 
-| Layer          | Tool                                      | Scope                                                                                                                  | Timing                                  |
-| -------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| Unit           | Vitest                                    | Core domain/solver; DOM measurement with mocked geometry / fake `ResizeObserver`; drag interaction with fake mechanics | DND-1.1+                                |
-| Package smoke  | Vitest                                    | Public export / workspace link checks                                                                                  | DND-1.1                                 |
-| Browser / E2E  | Playwright                                | Playground boot; drag fixture; Vanilla + React integration proofs                                                      | Chromium now; Firefox/WebKit in DND-2.4 |
-| Property-based | Table-driven Vitest (fast-check deferred) | Validity / solver invariants                                                                                           | DND-1.3 table-driven; library TBD       |
-| Benchmarks     | Vitest bench + stats collector            | Core `solveLayout` perf (hardware-dependent); semantics gated in CI                                                    | DND-1.8+                                |
-| Docs links     | `pnpm check:docs-links`                   | Relative markdown link integrity for guides / entry docs                                                               | DND-2.3+                                |
+| Layer          | Tool                                      | Scope                                                                                                                  | Timing                                |
+| -------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| Unit           | Vitest                                    | Core domain/solver; DOM measurement with mocked geometry / fake `ResizeObserver`; drag interaction with fake mechanics | DND-1.1+                              |
+| Package smoke  | Vitest                                    | Public export / workspace link checks                                                                                  | DND-1.1                               |
+| Browser / E2E  | Playwright                                | Playground boot; drag fixture; Vanilla + React integration; a11y baseline                                              | Chromium + Firefox + WebKit (DND-2.4) |
+| Property-based | Table-driven Vitest (fast-check deferred) | Validity / solver invariants                                                                                           | DND-1.3 table-driven; library TBD     |
+| Benchmarks     | Vitest bench + stats collector            | Core `solveLayout` perf (hardware-dependent); semantics gated in CI                                                    | DND-1.8+                              |
+| Docs links     | `pnpm check:docs-links`                   | Relative markdown link integrity for guides / entry docs                                                               | DND-2.3+                              |
 
 ## Quality gates (Phase 2 / DND-2.3+)
 
@@ -51,6 +51,8 @@ pnpm test:e2e
 pnpm bench:core:semantics
 ```
 
+`pnpm test:e2e` is the Alpha browser matrix (Chromium, Firefox, WebKit). Optional: `pnpm test:e2e:chromium` for a faster local Chromium-only loop. Install browsers with `pnpm test:e2e:install`.
+
 Full local `pnpm bench` (including timings/stats capture) remains useful evidence but absolute wall-clock thresholds are not hard failures.
 
 ### GitHub CI — promotion only
@@ -74,7 +76,7 @@ Jobs (unchanged substance from DND-2.1):
 
 1. **promote-gate** — on `pull_request` only; fails if head ≠ `develop`
 2. **quality** — install, `format:check`, lint, typecheck, `check:boundaries`, tests, build, `test:pack`, playground + example builds, `check:docs-links`, `bench:core:semantics`
-3. **browser-e2e** — Chromium Playwright (`pnpm test:e2e`) after packages build
+3. **browser-e2e** — Playwright Alpha matrix (`pnpm test:e2e` after installing Chromium, Firefox, and WebKit). Job name remains `browser-e2e` for stable branch-protection matching.
 
 `bench:core:semantics` validates fixture determinism and stats helpers. It does **not** enforce historical Ryzen median latencies and does **not** overwrite `benchmarks/results/technical-mvp.json` (that write path is `pnpm bench:core:stats`, local only).
 
