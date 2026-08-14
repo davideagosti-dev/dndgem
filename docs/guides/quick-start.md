@@ -37,14 +37,13 @@ pnpm --filter @dndgem/example-react dev
 
 The React example under `examples/react` is the validated Quick Start companion.
 
-### Public Alpha installation — available after DND-2.5
+### Public Alpha installation — after Stage B publication
 
 ```bash
-# Not published yet — do not expect this to work today
 npm install @dndgem/react@alpha
 ```
 
-Until DND-2.5, consume packages from the workspace (or packed tarballs via `pnpm test:pack`).
+Target first version: `0.1.0-alpha.0` under dist-tag `alpha`. Until the packages appear on the registry, consume from the workspace (or packed tarballs via `pnpm test:pack`). See [release notes](../releases/0.1.0-alpha.0.md).
 
 ## 3. Minimal React board
 

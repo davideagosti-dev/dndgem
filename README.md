@@ -18,12 +18,12 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 
 ## Project status
 
-| Phase                          | Status                                              |
-| ------------------------------ | --------------------------------------------------- |
-| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                      |
-| Phase 2 Public Alpha Readiness | **ACTIVE** — DND-2.1–DND-2.4 complete; DND-2.5 next |
+| Phase                          | Status                                                             |
+| ------------------------------ | ------------------------------------------------------------------ |
+| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                                     |
+| Phase 2 Public Alpha Readiness | **ACTIVE** — DND-2.5 Public Alpha Release Gate (Stage A readiness) |
 
-Packages are **not published to npm yet**. DND-2.2 prepared the Alpha API and publish pipeline; public npm Alpha is **DND-2.5**.
+First intended npm version: **`0.1.0-alpha.0`** under dist-tag **`alpha`**. Publication is Stage B after promotion to `master` and external npm gates. Draft notes: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md).
 
 ## Packages
 
@@ -41,7 +41,33 @@ Packages are **not published to npm yet**. DND-2.2 prepared the Alpha API and pu
 | Vanilla browser integration | `@dndgem/dom`   |
 | React integration           | `@dndgem/react` |
 
-## Illustrative React snippet
+## Installation
+
+### After Public Alpha publication
+
+```bash
+# React (pulls @dndgem/dom + @dndgem/core)
+npm install @dndgem/react@alpha
+
+# Vanilla / DOM
+npm install @dndgem/dom@alpha
+```
+
+Until the packages appear on the registry, consume from this workspace (or packed tarballs via `pnpm test:pack`).
+
+### Local workspace
+
+```bash
+pnpm install
+pnpm build
+pnpm --filter @dndgem/example-react dev
+```
+
+## Quick Start
+
+See [Quick Start](docs/guides/quick-start.md) (~10–15 minutes once packages are available to your app).
+
+### Illustrative React snippet
 
 ```tsx
 import { DnDGemProvider, useDnDGemContainer, useDnDGemItem } from '@dndgem/react';
@@ -75,15 +101,10 @@ export function App() {
 ## Where to start
 
 1. [Developer guides](docs/guides/README.md) — full journey
-2. [Quick Start](docs/guides/quick-start.md) — first layout (~10–15 minutes once packages are available)
-3. [Core Concepts](docs/guides/core-concepts.md) — mental model
+2. [Quick Start](docs/guides/quick-start.md)
+3. [Core Concepts](docs/guides/core-concepts.md)
 4. Validated examples: `examples/react`, `examples/vanilla`
-
-```bash
-pnpm install
-pnpm build
-pnpm --filter @dndgem/example-react dev
-```
+5. Playground: `apps/playground` (`pnpm --filter @dndgem/playground build`)
 
 ## Browser support
 
@@ -103,18 +124,24 @@ Details: [Accessibility](docs/guides/accessibility.md)
 - Pointer drag + Escape cancel supported; keyboard drag deferred
 - `DnDGemProvider` is client-mount only (no full SSR claim)
 - No Auto-Layout, AI, Flutter, or other framework adapters yet
-- Not on public npm until DND-2.5
+- Absolute-positioning rendering model
 
-Details: [Limitations](docs/guides/limitations.md) · [Alpha API Contract](docs/architecture/alpha-api-contract.md)
+Details: [Limitations](docs/guides/limitations.md) · [Alpha API Contract](docs/architecture/alpha-api-contract.md) · [Release notes](docs/releases/0.1.0-alpha.0.md)
 
-## Public Alpha installation — after DND-2.5
+## Playground / demo
+
+The Alpha playground is a static client-side demo under `apps/playground`. Build with:
 
 ```bash
-# Not published yet
-npm install @dndgem/react@alpha
+pnpm --filter @dndgem/playground build
 ```
 
-Until then, consume packages from this workspace. Pack validation: `pnpm test:pack`.
+Public hosting is a separate DND-2.5 decision (no in-repo Pages/hosting workflow yet). Readiness: [Stage A report](docs/releases/dnd-2.5-stage-a-readiness.md).
+
+## Feedback
+
+- Security: `security@fingem.ai` (`SECURITY.md`)
+- Product / Alpha developer feedback: while this GitHub repository is **PRIVATE**, Issues are not reachable to external Alpha users. Confirm a public feedback email **or** make the repository public before treating feedback as Phase 2 complete. See release notes.
 
 ## Development
 

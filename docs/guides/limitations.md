@@ -12,7 +12,7 @@ Honest boundaries for Public Alpha readiness. Deferred items are planned work, n
 | DOM vs visual order    | Absolute placement may diverge from DOM/tab order                   | consumer guidance                       |
 | SSR / hydration        | Module import-safe without `window`; provider is client-mount only  | —                                       |
 | Next.js / Remix        | Not validated / not claimed                                         | —                                       |
-| npm packages           | **Not published** yet                                               | DND-2.5                                 |
+| npm packages           | First Alpha target `0.1.0-alpha.0` / dist-tag `alpha` (Stage B)     | DND-2.5                                 |
 | Auto-Layout            | Not implemented                                                     | Phase 3                                 |
 | AI layout              | Not implemented                                                     | Phase 4                                 |
 | Flutter                | Not implemented (Core-contract dependent later)                     | post-Alpha                              |
@@ -21,7 +21,8 @@ Honest boundaries for Public Alpha readiness. Deferred items are planned work, n
 | Persistence helpers    | Absent (`schemaVersion` principle only)                             | later                                   |
 | Nested layouts         | Not a productized feature                                           | later                                   |
 | Large-N scale          | Dashboard-scale evidence (~tens of items); not proven huge-N        | later                                   |
-| Public playground      | Internal playground only                                            | DND-2.5                                 |
+| Public playground      | Static artifact ready (`apps/playground`); public hosting TBD       | DND-2.5                                 |
+| Feedback path          | Private Issues not external; email/visibility decision required     | DND-2.5                                 |
 
 ## Positioning model
 

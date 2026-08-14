@@ -84,17 +84,21 @@ Provenance via GitHub OIDC is intended for a public repository publishing public
 
 Target scope: `@dndgem`.
 
-Ownership/availability of the npm organization is an **external DND-2.5 blocker**. DND-2.2 does not create accounts or change registry ownership. Package names remain `@dndgem/*` in-repo.
+Ownership/publish permission for the npm organization remains an **external Stage B blocker** until a release maintainer verifies it with an authenticated npm identity. Package names remain `@dndgem/*` in-repo. Stage A registry probes showed `@dndgem/{core,dom,react}` unpublished (HTTP 404).
 
-## External blockers (do not block DND-2.2)
+## External blockers (Stage B / Phase 2)
 
-| Item                         | Blocks                  |
-| ---------------------------- | ----------------------- |
-| `@dndgem` npm org ownership  | DND-2.5                 |
-| GitHub secret `NPM_TOKEN`    | DND-2.5                 |
-| GitHub Environment approvals | DND-2.5 optional        |
-| Public repository visibility | separate from npm Alpha |
-| Actual `npm publish`         | DND-2.5                 |
+| Item                         | Blocks                            |
+| ---------------------------- | --------------------------------- |
+| `@dndgem` npm org ownership  | Stage B publication               |
+| GitHub secret `NPM_TOKEN`    | Stage B publication               |
+| External feedback path       | Phase 2 PASS (if repo private)    |
+| Public playground hosting    | Phase 2 PASS (or npm-only waiver) |
+| GitHub Environment approvals | optional                          |
+| Public repository visibility | separate explicit decision        |
+| Actual `npm publish`         | Stage B after master promotion    |
+
+Authoritative Stage A register: `docs/releases/dnd-2.5-stage-a-readiness.md`.
 
 ## Historical
 
@@ -102,6 +106,6 @@ Ownership/availability of the npm organization is an **external DND-2.5 blocker*
 - **DND-2.1:** full CI quality gate; no version bumps; no npm publish.
 - **DND-2.2:** Alpha API contract, package metadata, pack validation, controlled publish workflow, dry-run only.
 - **DND-2.3:** Developer guides + CI promotion policy (GitHub CI on develop → master only).
-- **DND-2.5:** npm Alpha publication gate.
+- **DND-2.5:** Public Alpha Release Gate — Stage A readiness docs; Stage B executes npm Alpha from `master`.
 
 Repository visibility (private → public) remains a **separate** gate from npm Alpha.

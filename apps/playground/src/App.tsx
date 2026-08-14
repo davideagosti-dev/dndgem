@@ -121,7 +121,8 @@ function Board() {
     <main className="shell">
       <h1>DnDGem Playground</h1>
       <p className="eyebrow">
-        Technical MVP proof — heterogeneous constraints, drag/reflow, resize (engine status below).
+        Public Alpha demo — content-aware constraints, VALID / DEGRADED, pointer drag, and resize
+        reflow. Fit ≠ useful (engine status below).
       </p>
       <button type="button" data-testid="focus-probe">
         Focus probe

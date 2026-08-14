@@ -41,11 +41,9 @@ Authoritative list: [Alpha API Contract](../architecture/alpha-api-contract.md).
 
 ## Installation truth
 
-Packages are **not published** to public npm during DND-2.3.
-
 ```bash
-# After DND-2.5 Public Alpha — not available today
+# After DND-2.5 Stage B publication
 npm install @dndgem/react@alpha
 ```
 
-Local validation of packed consumers: `pnpm test:pack`.
+First intended version: `0.1.0-alpha.0` (dist-tag `alpha`). Until then, use the workspace or `pnpm test:pack` tarballs.
