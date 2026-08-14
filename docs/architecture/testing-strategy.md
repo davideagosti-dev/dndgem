@@ -9,39 +9,83 @@
 | Browser / E2E  | Playwright                                | Playground boot; drag fixture; Vanilla + React integration proofs                                                      | Chromium now; Firefox/WebKit in DND-2.4 |
 | Property-based | Table-driven Vitest (fast-check deferred) | Validity / solver invariants                                                                                           | DND-1.3 table-driven; library TBD       |
 | Benchmarks     | Vitest bench + stats collector            | Core `solveLayout` perf (hardware-dependent); semantics gated in CI                                                    | DND-1.8+                                |
+| Docs links     | `pnpm check:docs-links`                   | Relative markdown link integrity for guides / entry docs                                                               | DND-2.3+                                |
 
-## Quality gates (Phase 2 / DND-2.1+)
+## Quality gates (Phase 2 / DND-2.3+)
 
-GitHub CI and the local Sprint Final Quality Gate are **materially aligned**. Absolute hardware-specific benchmark timings remain non-blocking.
+Quality responsibility is split on purpose:
 
-### GitHub CI
+```text
+Feature Sprint Gate
+→ full LOCAL quality gate (mandatory)
 
-GitHub Actions (`.github/workflows/ci.yml`) runs the authoritative merge safety gate:
+Develop Integration
+→ feature merged to develop WITHOUT GitHub CI requirement
 
-1. **quality** — install, `format:check`, lint, typecheck, `check:boundaries`, unit/integration tests, build, playground + example builds, `bench:core:semantics`
-2. **browser-e2e** — Chromium Playwright (`pnpm test:e2e`) after packages build
+Master Promotion Gate
+→ full GITHUB CI on develop → master PR (mandatory)
 
-`bench:core:semantics` validates fixture determinism and stats helpers. It does **not** enforce historical Ryzen median latencies and does **not** overwrite `benchmarks/results/technical-mvp.json` (that write path is `pnpm bench:core:stats`, local only).
+Release Workflow
+→ reusable CI via workflow_call (publish pipeline)
+```
+
+Absolute hardware-specific benchmark timings remain non-blocking.
 
 ### Sprint Final Quality Gate (local, mandatory)
 
-Before a sprint is considered complete and before final commit/push, the full gate must pass **locally**:
+Before a feature sprint is complete and before final commit/push to the feature branch:
 
 ```bash
-pnpm lint
 pnpm format:check
+pnpm lint
 pnpm typecheck
+pnpm check:boundaries
 pnpm test
 pnpm build
-pnpm check:boundaries
+pnpm test:pack
+pnpm check:docs-links
 pnpm --filter @dndgem/playground build
 pnpm --filter @dndgem/example-react build
 pnpm --filter @dndgem/example-vanilla build
 pnpm test:e2e
-pnpm bench
+pnpm bench:core:semantics
 ```
 
-Benchmarks (`pnpm bench`) must execute and pass semantic checks. Absolute wall-clock thresholds are not hard failures.
+Full local `pnpm bench` (including timings/stats capture) remains useful evidence but absolute wall-clock thresholds are not hard failures.
+
+### GitHub CI — promotion only
+
+Workflow: `.github/workflows/ci.yml`
+
+**Runs automatically for:**
+
+- `pull_request` with **base `master`** and **head `develop`** (promotion path)
+- `workflow_call` (publish workflow)
+- `workflow_dispatch` (manual)
+
+**Does not run automatically for:**
+
+- feature branch push
+- feature → develop PR
+- develop push
+- ordinary feature development
+
+Jobs (unchanged substance from DND-2.1):
+
+1. **promote-gate** — on `pull_request` only; fails if head ≠ `develop`
+2. **quality** — install, `format:check`, lint, typecheck, `check:boundaries`, tests, build, `test:pack`, playground + example builds, `check:docs-links`, `bench:core:semantics`
+3. **browser-e2e** — Chromium Playwright (`pnpm test:e2e`) after packages build
+
+`bench:core:semantics` validates fixture determinism and stats helpers. It does **not** enforce historical Ryzen median latencies and does **not** overwrite `benchmarks/results/technical-mvp.json` (that write path is `pnpm bench:core:stats`, local only).
+
+### Branch protection (GitHub settings outside the repo)
+
+Recommended remote settings (maintainers configure in GitHub; not applied by this repository alone):
+
+| Branch    | Required checks                                          | Notes                                          |
+| --------- | -------------------------------------------------------- | ---------------------------------------------- |
+| `develop` | none for full CI                                         | Local Sprint Final Quality Gate is the gate    |
+| `master`  | `quality`, `browser-e2e` (and optionally `promote-gate`) | Only develop → master should pass promote-gate |
 
 ## Property-based testing
 
@@ -51,4 +95,6 @@ DND-1.3 uses comprehensive table-driven Vitest cases for validity boundaries. A 
 
 - Do not write elaborate product tests before product logic exists.
 - Prefer deterministic fixtures and reproducible benchmarks (`pnpm bench`; see `benchmarks/README.md`).
-- Do not declare a sprint complete without a passing local Sprint Final Quality Gate and green GitHub CI on the feature branch.
+- Do not declare a feature sprint complete without a passing **local** Sprint Final Quality Gate.
+- Do not require GitHub CI on feature → develop.
+- Do not merge develop → master without green promotion CI.

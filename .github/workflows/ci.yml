@@ -1,11 +1,19 @@
 name: CI
 
+# Promotion / reusable quality gate (DND-2.3):
+# - Automatic full CI: develop → master pull requests only
+# - Feature → develop: no GitHub CI (local Sprint Final Quality Gate is mandatory)
+# - Reusable via workflow_call (publish pipeline)
+# - Optional manual runs via workflow_dispatch
+#
+# Absolute hardware-specific benchmark timings are NOT CI thresholds.
+
 on:
-  push:
-    branches: [master, develop, 'feature/**']
   pull_request:
-    branches: [master, develop]
+    branches:
+      - master
   workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,15 +22,39 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Phase 2 (DND-2.1+): GitHub CI is the authoritative merge safety gate.
-# Local Sprint Final Quality Gate and CI must remain materially aligned.
-# Absolute hardware-specific benchmark timings are NOT CI thresholds.
-
 jobs:
+  # GitHub filters pull_request.branches by BASE. Enforce HEAD == develop so
+  # accidental feature → master PRs are not treated as the promotion path.
+  promote-gate:
+    name: promote-gate
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require develop head for master PRs
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$HEAD_REF" != "develop" ]; then
+            echo "::error::Full CI runs only for develop → master promotion PRs (head was '$HEAD_REF')."
+            echo "Feature work merges to develop without GitHub CI; run the local Sprint Final Quality Gate instead."
+            exit 1
+          fi
+
   quality:
     name: quality
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Soft dependency: skipped promote-gate must not block workflow_call / dispatch.
+    needs: [promote-gate]
+    if: |
+      always() &&
+      !cancelled() &&
+      (
+        github.event_name == 'workflow_call' ||
+        github.event_name == 'workflow_dispatch' ||
+        (github.event_name == 'pull_request' && needs.promote-gate.result == 'success')
+      )
 
     steps:
       - name: Checkout
@@ -68,6 +100,9 @@ jobs:
           pnpm --filter @dndgem/playground build
           pnpm --filter @dndgem/example-react build
           pnpm --filter @dndgem/example-vanilla build
+
+      - name: Documentation links
+        run: pnpm check:docs-links
 
       - name: Benchmark semantics
         run: pnpm bench:core:semantics

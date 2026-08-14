@@ -2,9 +2,13 @@
 
 Thin React adapter for **DnDGem** by **FinGem-AI**. Layout solving stays in `@dndgem/core`; measurement, drag, and style application stay in `@dndgem/dom`.
 
-Packages are **not published to npm yet**. Consume from the DnDGem workspace until the Public Alpha release gate (DND-2.5).
+## Start here
 
-Alpha public contract: `docs/architecture/alpha-api-contract.md` in the DnDGem repository.
+- Guide: repository `docs/guides/react.md` and `docs/guides/quick-start.md`
+- Alpha contract: `docs/architecture/alpha-api-contract.md`
+- Example: `examples/react`
+
+Packages are **not published to npm yet**. Consume from the DnDGem workspace until the Public Alpha release gate (DND-2.5).
 
 ```tsx
 import { DnDGemProvider, useDnDGem, useDnDGemContainer, useDnDGemItem } from '@dndgem/react';
@@ -12,12 +16,12 @@ import { DnDGemProvider, useDnDGem, useDnDGemContainer, useDnDGemItem } from '@d
 function Board() {
   const containerRef = useDnDGemContainer();
   const { state } = useDnDGem();
-  const chart = useDnDGemItem('chart');
+  const revenue = useDnDGemItem('revenue');
 
   return (
-    <div ref={containerRef} className="board">
-      <article ref={chart.ref} style={{ background: 'var(--card)', ...chart.style }}>
-        Chart
+    <div ref={containerRef} className="board" style={{ position: 'relative' }}>
+      <article ref={revenue.ref} style={{ background: 'var(--card)', ...revenue.style }}>
+        Revenue
       </article>
       <p>{state?.solver.evaluation.state}</p>
     </div>
@@ -27,8 +31,8 @@ function Board() {
 export function App() {
   return (
     <DnDGemProvider
-      items={[{ id: 'chart', constraints: { minWidth: 120, preferredWidth: 240 } }]}
-      desiredPlacements={{ chart: { x: 8, y: 8, width: 240, height: 80 } }}
+      items={[{ id: 'revenue', constraints: { minWidth: 96, preferredWidth: 180 } }]}
+      desiredPlacements={{ revenue: { x: 8, y: 8, width: 180, height: 80 } }}
     >
       <Board />
     </DnDGemProvider>

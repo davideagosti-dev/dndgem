@@ -3,7 +3,7 @@
   font-family: 'Segoe UI', sans-serif;
   line-height: 1.4;
   color: #1d2a32;
-  background: #f4f1ea;
+  background: #eef2f5;
 }
 
 body {
@@ -23,7 +23,7 @@ main {
   resize: both;
   overflow: hidden;
   border: 1px solid #4d646f;
-  background: #e8eef2;
+  background: #dce5eb;
 }
 
 .item {
@@ -40,20 +40,33 @@ main {
   margin: 0;
 }
 
-.chart {
+.item p {
+  font-size: 0.85rem;
+  opacity: 0.92;
+}
+
+.revenue {
   background: #2f6f5e;
 }
 
-.table {
+.expenses {
+  background: #8a4b2f;
+}
+
+.cashflow {
   background: #3d5a80;
 }
 
-.details {
-  background: #6b4f7a;
+.transactions {
+  background: #4a5568;
 }
 
-.metric {
-  background: #8a4b2f;
+.alerts {
+  background: #9a3412;
+}
+
+.notes {
+  background: #5b4b8a;
 }
 
 code {

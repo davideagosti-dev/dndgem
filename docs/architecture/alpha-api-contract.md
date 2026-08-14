@@ -208,7 +208,7 @@ Consumers must not import `@dnd-kit/*` to use DnDGem.
 | `DomAdapterError` | dom     | Missing elements, disposed session, environment |
 | React `Error`     | react   | Hook used outside `DnDGemProvider`              |
 
-Alpha does not introduce a separate structured error taxonomy beyond these. Further DX polish belongs to DND-2.3.
+Alpha documents errors and validity honestly. Developer guides and troubleshooting live in `docs/guides/` (DND-2.3).
 
 ## Versioning
 

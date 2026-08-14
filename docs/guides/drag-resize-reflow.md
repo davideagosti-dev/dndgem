@@ -1,0 +1,79 @@
+# Drag, Resize & Reflow
+
+## Mental model
+
+```text
+DRAG   = explicit user intent
+RESIZE = environmental change
+```
+
+Both paths measure/solve/apply through the same Core solver. They differ in how **previous-layout stability** is used.
+
+## Explicit intent wins
+
+Invariant:
+
+```text
+EXPLICIT USER INTENT
+WINS OVER
+STALE PREVIOUS-LAYOUT STABILITY
+```
+
+| Situation                     | Core `previous`     |
+| ----------------------------- | ------------------- |
+| Explicit drag intent          | **omitted**         |
+| Explicit `desiredPlacements`  | **omitted**         |
+| Passive resize / idle reflow  | **may be supplied** |
+| Constraints-only continuation | **may be supplied** |
+
+Why drag does not always reuse the previous layout: a new explicit placement must not be silently defeated by stability that prefers the old geometry.
+
+## Previous-layout stability
+
+When `previous` **is** supplied (passive resize / continuation), the solver can prefer candidates that reduce unnecessary movement and preserve spatial continuity — while still respecting constraints and validity.
+
+Stability never authorizes ignoring a newly supplied desired placement or drag proposal.
+
+## Resize / reflow loop
+
+```text
+container size changes
+        ↓
+ResizeObserver / measurement snapshot
+        ↓
+new LayoutIntent (updated space)
+        ↓
+solveLayout (previous may be supplied)
+        ↓
+apply placements
+```
+
+There is **no** animation framework in Alpha. Placements update as geometry.
+
+## Drag loop
+
+```text
+pointer drag
+        ↓
+normalized DragProposal (LayoutIntent)
+        ↓
+solveLayout (previous omitted)
+        ↓
+preview / accept / reject / cancel
+```
+
+- Accepted drop commits the new resolved layout
+- Rejected drop preserves the previous committed layout
+- Cancel restores the committed layout
+
+Pointer drag is the validated path. Full keyboard drag is **not** productized (DND-2.4 assesses keyboard/a11y baselines).
+
+## React / Vanilla behavior
+
+Both adapters implement the invariant above through `createLayoutSession` / `DnDGemProvider`. Application code should not pass `previous` when pushing a new `desiredPlacements` map.
+
+## Related
+
+- [Core Concepts](./core-concepts.md)
+- [Constraints](./constraints.md)
+- [Alpha API Contract — explicit intent](../architecture/alpha-api-contract.md#explicit-intent-invariant)

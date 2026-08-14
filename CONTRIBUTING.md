@@ -28,6 +28,8 @@ Playground:
 pnpm dev
 ```
 
+Developer guides: `docs/guides/README.md`.
+
 ## Branching
 
 Long-term model:
@@ -37,6 +39,16 @@ Long-term model:
 - `feature/*`
 
 Do not expand scope beyond the active sprint.
+
+### Quality gates
+
+| Path                 | Gate                                     |
+| -------------------- | ---------------------------------------- |
+| Feature work         | Full **local** Sprint Final Quality Gate |
+| Feature → `develop`  | No GitHub CI required                    |
+| `develop` → `master` | Full GitHub CI must PASS                 |
+
+See `docs/architecture/testing-strategy.md`.
 
 ## Package boundaries
 

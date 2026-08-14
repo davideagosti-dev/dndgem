@@ -44,15 +44,18 @@ Use `pnpm changeset` on library work. Do not publish from a local machine unless
 
 ```text
 feature/*
-    → develop
-        → master
+    → develop          (local Sprint Final Quality Gate; no GitHub CI required)
+        → master       (full GitHub CI on develop → master PR must PASS)
             → changeset version (0.1.0-alpha.x)
             → pack validation
             → workflow_dispatch publish (dist-tag alpha)
 ```
 
+- Feature → develop: authoritative **local** validation only (DND-2.3 CI policy).
+- Develop → master: authoritative **GitHub** CI (`quality` + `browser-e2e`) via `.github/workflows/ci.yml`.
+- Publish still re-invokes CI through `workflow_call` (compatible with the promotion-only automatic triggers).
 - `baseBranch` for Changesets is `master`.
-- DND-2.2 prepares the pipeline; it does **not** publish.
+- DND-2.2 prepared the pipeline; it does **not** publish.
 - DND-2.5 is the Public Alpha publication gate.
 
 ## Publish workflow
@@ -98,6 +101,7 @@ Ownership/availability of the npm organization is an **external DND-2.5 blocker*
 - **DND-1.1:** Changesets initialized; no publish.
 - **DND-2.1:** full CI quality gate; no version bumps; no npm publish.
 - **DND-2.2:** Alpha API contract, package metadata, pack validation, controlled publish workflow, dry-run only.
+- **DND-2.3:** Developer guides + CI promotion policy (GitHub CI on develop → master only).
 - **DND-2.5:** npm Alpha publication gate.
 
 Repository visibility (private → public) remains a **separate** gate from npm Alpha.

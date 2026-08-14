@@ -9,26 +9,34 @@
     <main>
       <h1>DnDGem Vanilla Example</h1>
       <p>
-        Public <code>@dndgem/dom</code> layout session: measure, solve, drag preview, drop, and
-        resize.
+        Public <code>@dndgem/dom</code> <code>createLayoutSession</code>: measure, solve, drag,
+        resize. Shrink the board to observe <code>VALID</code> → <code>DEGRADED</code>.
       </p>
       <p id="status" data-testid="status">starting</p>
       <div id="board" class="board" data-testid="board">
-        <article id="item-chart" class="item chart" data-testid="item-chart">
-          <h2>Chart</h2>
-          <p>Wide card · min useful 180</p>
+        <article id="item-revenue" class="item revenue" data-testid="item-revenue">
+          <h2>Revenue</h2>
+          <p>KPI · compact OK · useful ≥ 140</p>
         </article>
-        <article id="item-table" class="item table" data-testid="item-table">
-          <h2>Table</h2>
-          <p>Dense rows · min useful 220</p>
+        <article id="item-expenses" class="item expenses" data-testid="item-expenses">
+          <h2>Expenses</h2>
+          <p>KPI · compact OK · useful ≥ 140</p>
         </article>
-        <article id="item-details" class="item details" data-testid="item-details">
-          <h2>Details</h2>
-          <p>Text panel that needs height.</p>
+        <article id="item-cashflow" class="item cashflow" data-testid="item-cashflow">
+          <h2>Cash Flow</h2>
+          <p>Chart · needs meaningful width</p>
         </article>
-        <article id="item-metric" class="item metric" data-testid="item-metric">
-          <h2>42</h2>
-          <p>Metric</p>
+        <article id="item-transactions" class="item transactions" data-testid="item-transactions">
+          <h2>Transactions</h2>
+          <p>Table · needs vertical space</p>
+        </article>
+        <article id="item-alerts" class="item alerts" data-testid="item-alerts">
+          <h2>Alerts</h2>
+          <p>Tolerates a smaller slot</p>
+        </article>
+        <article id="item-notes" class="item notes" data-testid="item-notes">
+          <h2>Notes</h2>
+          <p>Text · prefers readable height</p>
         </article>
       </div>
     </main>
