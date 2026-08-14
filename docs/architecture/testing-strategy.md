@@ -2,21 +2,26 @@
 
 ## Layers
 
-| Layer          | Tool                                      | Scope                                                                                                                  | Phase 1 timing                              |
-| -------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| Unit           | Vitest                                    | Core domain/solver; DOM measurement with mocked geometry / fake `ResizeObserver`; drag interaction with fake mechanics | DND-1.1+                                    |
-| Package smoke  | Vitest                                    | Public export / workspace link checks                                                                                  | DND-1.1                                     |
-| Browser / E2E  | Playwright                                | Playground boot; DND-1.6 drag fixture; DND-1.7 Vanilla + React integration proofs                                      | smoke + focused drag/integration proofs now |
-| Property-based | Table-driven Vitest (fast-check deferred) | Validity / solver invariants                                                                                           | DND-1.3 table-driven; library TBD for 1.4   |
-| Benchmarks     | Vitest bench + stats collector            | Core `solveLayout` MVP perf (hardware-dependent)                                                                       | DND-1.8                                     |
+| Layer          | Tool                                      | Scope                                                                                                                  | Timing                                  |
+| -------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| Unit           | Vitest                                    | Core domain/solver; DOM measurement with mocked geometry / fake `ResizeObserver`; drag interaction with fake mechanics | DND-1.1+                                |
+| Package smoke  | Vitest                                    | Public export / workspace link checks                                                                                  | DND-1.1                                 |
+| Browser / E2E  | Playwright                                | Playground boot; drag fixture; Vanilla + React integration proofs                                                      | Chromium now; Firefox/WebKit in DND-2.4 |
+| Property-based | Table-driven Vitest (fast-check deferred) | Validity / solver invariants                                                                                           | DND-1.3 table-driven; library TBD       |
+| Benchmarks     | Vitest bench + stats collector            | Core `solveLayout` perf (hardware-dependent); semantics gated in CI                                                    | DND-1.8+                                |
 
-## Quality gates (private Technical MVP)
+## Quality gates (Phase 2 / DND-2.1+)
 
-During the **private Technical MVP**, automated GitHub CI and the sprint Definition of Done are split on purpose. This does **not** weaken the Definition of Done — only where the full gate runs.
+GitHub CI and the local Sprint Final Quality Gate are **materially aligned**. Absolute hardware-specific benchmark timings remain non-blocking.
 
 ### GitHub CI
 
-GitHub Actions (`.github/workflows/ci.yml`) runs **browser smoke only** (`pnpm test:e2e`, plus install/build/Playwright prerequisites required for that smoke).
+GitHub Actions (`.github/workflows/ci.yml`) runs the authoritative merge safety gate:
+
+1. **quality** — install, `format:check`, lint, typecheck, `check:boundaries`, unit/integration tests, build, playground + example builds, `bench:core:semantics`
+2. **browser-e2e** — Chromium Playwright (`pnpm test:e2e`) after packages build
+
+`bench:core:semantics` validates fixture determinism and stats helpers. It does **not** enforce historical Ryzen median latencies and does **not** overwrite `benchmarks/results/technical-mvp.json` (that write path is `pnpm bench:core:stats`, local only).
 
 ### Sprint Final Quality Gate (local, mandatory)
 
@@ -36,19 +41,14 @@ pnpm test:e2e
 pnpm bench
 ```
 
-Benchmarks (`pnpm bench`) are a **local** closure gate: they must execute and pass semantic checks. Absolute wall-clock thresholds are not hard failures. GitHub CI remains browser-smoke only during the private Technical MVP.
-
-### Public Alpha note
-
-This split is a **private Technical MVP policy**. CI may be strengthened again before Public Alpha / external contributions. Do not treat smoke-only GitHub CI as the long-term open-source contribution bar.
+Benchmarks (`pnpm bench`) must execute and pass semantic checks. Absolute wall-clock thresholds are not hard failures.
 
 ## Property-based testing
 
-DND-1.3 uses comprehensive table-driven Vitest cases for validity boundaries. A dedicated property-testing library (e.g. `fast-check`) remains deferred until solver search space testing in DND-1.4 justifies the dependency.
+DND-1.3 uses comprehensive table-driven Vitest cases for validity boundaries. A dedicated property-testing library (e.g. `fast-check`) remains deferred until solver search space testing justifies the dependency.
 
 ## Rules
 
 - Do not write elaborate product tests before product logic exists.
 - Prefer deterministic fixtures and reproducible benchmarks (`pnpm bench`; see `benchmarks/README.md`).
-- Browser smoke proves playground bootstrapping; DND-1.5 unit-tests measurement without real browser timing; DND-1.6 unit-tests interaction with fake mechanics and adds a focused Playwright drag fixture; DND-1.7 unit-tests `createLayoutSession` and React registration/lifecycle, plus Playwright proofs for Vanilla and React consumer paths; DND-1.8 adds Core benchmarks, extended determinism/content-aware proofs, and closure docs.
-- Do not declare a sprint complete without a passing local Sprint Final Quality Gate.
+- Do not declare a sprint complete without a passing local Sprint Final Quality Gate and green GitHub CI on the feature branch.

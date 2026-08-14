@@ -1,0 +1,36 @@
+# DnDGem repository EOL policy (DND-2.1):
+# Store text as LF. Prettier endOfLine=lf; avoid Windows CRLF checkout noise.
+* text=auto eol=lf
+
+# Explicit text types
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.mdc text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.svg text eol=lf
+
+# Leave lockfile to Git/text=auto (large; still LF via * rule)
+pnpm-lock.yaml text eol=lf
+
+# Binary / do not touch
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.zip binary
+*.gz binary
+*.tgz binary

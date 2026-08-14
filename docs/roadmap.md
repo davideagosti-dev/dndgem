@@ -2,11 +2,25 @@
 
 ## Phase status
 
-Phase 0 is **CLOSED — GO TO TECHNICAL MVP**.
+| Phase   | Name                            | Status                         |
+| ------- | ------------------------------- | ------------------------------ |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                     |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8) |
+| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1 current)   |
 
-Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constraint-driven adaptive layouts **without AI**.
+Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
-## Phase 1 — Technical MVP
+Phase 1 proved stable, deterministic, content-aware, constraint-driven adaptive layouts **without AI**.
+
+Phase 2 transforms the closed Technical MVP into a credible external developer Alpha through engineering hardening, API stabilization, release infrastructure, documentation, browser/accessibility baseline, and npm Alpha release.
+
+Repository remains **PRIVATE** during Phase 2 preparation. npm Alpha and public repository visibility are separate future gates.
+
+No committed calendar dates are attached to roadmap items.
+
+---
+
+## Phase 1 — Technical MVP (CLOSED)
 
 ### DND-1.1 — Repository & Engineering Foundation
 
@@ -89,10 +103,187 @@ Phase 1 is the Technical MVP: prove stable, deterministic, content-aware, constr
 
 **Technical MVP:** CLOSED
 
-## Later phases (summary only)
+---
 
-- Broader framework adapters (including Flutter)
-- Optional AI assistance outside the critical path
-- Commercial/cloud offerings (Layout CI, teams, enterprise) — not Phase 1
+## Phase 2 — Public Alpha Readiness (ACTIVE)
 
-No committed calendar dates are attached to these items.
+Primary objective: make the closed Technical MVP consumable by external developers via npm Alpha, docs, examples, and honest limitation statements.
+
+### Critical path
+
+```text
+TECHNICAL MVP CLOSED
+        ↓
+DND-2.1 Engineering Baseline & CI Hardening
+        ↓
+DND-2.2 Alpha API Contract & Release Infrastructure
+        ↓
+    ┌───────────────┐
+    ↓               ↓
+DND-2.3         DND-2.4
+DX / Docs       Browser / A11y
+    └───────┬───────┘
+            ↓
+DND-2.5 Public Alpha Release Gate
+            ↓
+PHASE 2 PASS
+            ↓
+PUBLIC ALPHA
+```
+
+Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later work may overlap technically; sequence remains authoritative).
+
+### Public Alpha hard blockers (Phase 2 aims to resolve)
+
+- Clean engineering baseline
+- Alpha API contract
+- Release infrastructure / npm readiness
+- Docs / Quick Start
+- Vanilla + React examples
+- Full CI
+- Browser support statement
+- Accessibility status
+- Known limitations documentation
+
+### Safe Alpha deferrals
+
+- Full keyboard drag product
+- Full SSR / hydration support
+- Deterministic Auto-Layout
+- AI
+- Flutter
+- Vue / Angular / Svelte
+- Animation framework
+- Persistence helpers
+- Large-N optimization
+- Nested layouts
+
+### DND-2.1 — Engineering Baseline & CI Hardening
+
+- **Objective:** Clean engineering baseline, full authoritative CI, Phase 2 roadmap/governance transition.
+- **Scope:** EOL / Prettier normalization; full quality gate in GitHub CI; Phase 2 roadmap; post-MVP documentation reconciliation.
+- **Out of scope:** Auto-Layout, AI, Flutter, npm publish, Alpha API freeze, package version bumps, product algorithm changes.
+- **Dependencies:** Phase 1 Technical MVP CLOSED.
+- **Closure:** Global quality gate clean; CI authoritative; Phase 2 activated.
+- **Status:** IN PROGRESS
+
+### DND-2.2 — Alpha API Contract & Release Infrastructure
+
+- **Objective:** Define a stable-enough Alpha public contract and prepare npm publishing.
+- **Scope:** Public exports and types; package boundaries; alpha semver policy (expected `0.1.0-alpha.x`); package metadata; Changesets/release process; npm publish workflow; dry-run validation.
+- **Out of scope:** Auto-Layout, AI, new solver semantics, actual public Alpha release.
+- **Dependencies:** DND-2.1.
+- **Closure:** Documented Alpha API contract; release tooling ready for dry-run / publish path.
+- **Status:** PLANNED
+
+### DND-2.3 — Developer Experience & Documentation
+
+- **Objective:** Make DnDGem understandable and integrable.
+- **Scope:** Quick Start; mental model; constraints; VALID / DEGRADED / INVALID; solver behavior; Vanilla / React integration; resize; drag; explicit intent vs previous layout; troubleshooting; performance expectations; examples.
+- **Out of scope:** Full docs website; constraint IDE; Auto-Layout.
+- **Dependencies:** DND-2.2 (API surface known).
+- **Closure:** A new developer can reach a first working DnDGem layout quickly.
+- **Status:** PLANNED
+- **Note:** Private design-partner conversations may begin during DND-2.3 → DND-2.5.
+
+### DND-2.4 — Browser Matrix & Accessibility Baseline
+
+- **Objective:** Define honest Alpha browser and accessibility support.
+- **Scope:** Firefox smoke; WebKit smoke; focus semantics audit; ARIA baseline; keyboard-path assessment; documented limitations.
+- **Out of scope:** Full keyboard drag product; full WCAG certification; mobile browser matrix (unless evidence requires).
+- **Dependencies:** DND-2.1 infrastructure; preferably after DND-2.2 for public surface clarity.
+- **Closure:** Published browser/a11y statements with credible smoke evidence.
+- **Status:** PLANNED
+
+### DND-2.5 — Public Alpha Release Gate
+
+- **Objective:** Ship the first credible external npm Alpha.
+- **Scope:** Final release acceptance; npm Alpha publication; release notes; simple public playground/demo; feedback path; Alpha checklist.
+- **Out of scope:** Catch-all unfinished API/docs/browser work (those belong in 2.2–2.4); Auto-Layout; AI; Flutter.
+- **Dependencies:** DND-2.2, DND-2.3, DND-2.4.
+- **Closure:** npm `@dndgem/*` Alpha published; Phase 2 exit checklist PASS.
+- **Status:** PLANNED
+
+### Phase 2 exit gate — PHASE 2 PASS
+
+Requires:
+
+- Engineering baseline clean
+- Alpha API contract stabilized
+- Release infrastructure ready
+- npm Alpha packages published
+- Quick Start / docs ready
+- Vanilla + React examples ready
+- Browser / a11y status documented
+- Public Alpha acceptance checklist PASS
+
+Then:
+
+```text
+PUBLIC ALPHA → external developer validation
+```
+
+---
+
+## Later phases (high-level)
+
+### Phase 3 — Adaptive Auto-Layout
+
+Public Alpha first; deterministic Auto-Layout second.
+
+High-level scope may include:
+
+- Layout strategy vocabulary
+- Generated `LayoutIntent`
+- Grouping / relationship model
+- Region intent
+- Deterministic strategy candidates
+- Proposal explainability
+- Strategy validation via existing Core
+
+Architectural principle:
+
+```text
+Auto-Layout proposes intent
+→ Core validates
+→ Core scores
+→ Core solves
+```
+
+### Phase 4 — AI-Assisted Layout Intelligence
+
+AI belongs **after** deterministic Auto-Layout.
+
+AI may help with semantic relationships, constraint suggestions, priority inference, and high-level intent proposals. AI must **not** become mandatory for drag, resize, validation, scoring, reflow, or deterministic solving.
+
+Preferred architecture:
+
+```text
+AI / heuristic
+        ↓
+proposed semantic / layout intent
+        ↓
+deterministic Core validation → scoring → solver
+        ↓
+ResolvedLayout
+```
+
+### Flutter ecosystem track
+
+Flutter does **not** block the first JS Public Alpha and does **not** need to wait for AI.
+
+After Public Alpha:
+
+```text
+           ┌→ Adaptive Auto-Layout (Phase 3)
+Public Alpha
+           └→ Flutter architecture / renderer work (Core-contract dependent)
+```
+
+### Additional framework adapters
+
+Vue / Angular / Svelte remain **post-alpha** and **demand-driven**.
+
+### Commercial / cloud
+
+Layout CI, teams, enterprise, billing — not Phase 2.
