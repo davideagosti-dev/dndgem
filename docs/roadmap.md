@@ -6,7 +6,7 @@
 | ------- | ------------------------------- | --------------------------------------------------- |
 | Phase 0 | Product & Architecture Baseline | **CLOSED**                                          |
 | Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                      |
-| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1–DND-2.3 complete; DND-2.4 next) |
+| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1–DND-2.4 complete; DND-2.5 next) |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -120,9 +120,9 @@ DND-2.2 Alpha API Contract & Release Infra    COMPLETE
         ↓
 DND-2.3 Developer Experience & Documentation  COMPLETE
         ↓
-DND-2.4 Browser Matrix & Accessibility Baseline  NEXT
+DND-2.4 Browser Matrix & Accessibility Baseline  COMPLETE
         ↓
-DND-2.5 Public Alpha Release Gate
+DND-2.5 Public Alpha Release Gate                NEXT
             ↓
 PHASE 2 PASS
             ↓
@@ -193,7 +193,8 @@ Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later w
 - **Out of scope:** Full keyboard drag product; full WCAG certification; mobile browser matrix (unless evidence requires).
 - **Dependencies:** DND-2.1 infrastructure; preferably after DND-2.2 for public surface clarity.
 - **Closure:** Published browser/a11y statements with credible smoke evidence.
-- **Status:** PLANNED (NEXT)
+- **Status:** COMPLETE
+- **Reference:** `docs/guides/browser-support.md`, `docs/guides/accessibility.md`, `docs/guides/browser-a11y-findings.md`.
 
 ### DND-2.5 — Public Alpha Release Gate
 
@@ -202,7 +203,7 @@ Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later w
 - **Out of scope:** Catch-all unfinished API/docs/browser work (those belong in 2.2–2.4); Auto-Layout; AI; Flutter.
 - **Dependencies:** DND-2.2, DND-2.3, DND-2.4.
 - **Closure:** npm `@dndgem/*` Alpha published; Phase 2 exit checklist PASS.
-- **Status:** PLANNED
+- **Status:** PLANNED (NEXT)
 
 ### Phase 2 exit gate — PHASE 2 PASS
 

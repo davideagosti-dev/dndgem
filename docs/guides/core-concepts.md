@@ -73,7 +73,7 @@ Details and authoring guidance: [Constraints & Validity](./constraints.md).
 
 ## Determinism
 
-For identical Core inputs, `solveLayout` produces identical outputs (candidates, ranking, winner, metadata). Do not assume bit-identical floating behavior across every JS engine beyond that contract; Alpha browser proof is Chromium.
+For identical Core inputs, `solveLayout` produces identical outputs (candidates, ranking, winner, metadata). Do not assume bit-identical floating behavior across every JS engine beyond that contract; Alpha browser validation covers Chromium, Firefox, and WebKit desktop engines.
 
 ## Explainability (what you get today)
 
@@ -91,6 +91,6 @@ There is no separate visual debugger product in Alpha.
 - Not Auto-Layout (Phase 3)
 - Not AI layout (Phase 4)
 - Not Flutter / Vue / Angular / Svelte
-- Not a claim of full accessibility or multi-browser productization (DND-2.4)
+- Not a claim of full WCAG conformance or keyboard-drag productization (see [Accessibility](./accessibility.md))
 
 See [Limitations](./limitations.md).
