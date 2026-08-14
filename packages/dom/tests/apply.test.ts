@@ -72,6 +72,25 @@ describe('applyLayoutPlacements', () => {
     expect(chart.style.left).toBe('16px');
   });
 
+  it('writes only layout style properties (no attribute-side effects in apply path)', () => {
+    const chart = fakeElement({ left: 0, top: 0, width: 10, height: 10 });
+    const beforeKeys = Object.keys(chart.style).sort();
+    applyLayoutPlacements({
+      items: { chart },
+      layout: createResolvedLayout({
+        space: { width: 400, height: 200 },
+        placements: { chart: { x: 16, y: 8, width: 180, height: 80 } },
+      }),
+    });
+    expect(Object.keys(chart.style).sort()).toEqual(beforeKeys);
+    expect(chart.style.left).toBe('16px');
+    expect(chart.style.top).toBe('8px');
+    expect(chart.style.width).toBe('180px');
+    expect(chart.style.height).toBe('80px');
+    expect(chart.style.position).toBe('absolute');
+    expect(chart.style.boxSizing).toBe('border-box');
+  });
+
   it('does not write another item id onto the wrong element', () => {
     const a = fakeElement({ left: 0, top: 0, width: 1, height: 1 });
     const b = fakeElement({ left: 0, top: 0, width: 1, height: 1 });

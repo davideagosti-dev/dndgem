@@ -153,7 +153,7 @@ Caller-owned `LayoutIntent` / `ResolvedLayout` objects are never mutated. Intera
 
 ### Accessibility status
 
-Pointer drag is implemented and covered by unit tests plus a Playwright fixture. The provider’s keyboard sensor and ARIA plugin remain enabled by default but are **not** a tested DnDGem keyboard/screen-reader product path. Do not claim accessible drag-and-drop yet. The public API is translation-based so a future keyboard path can reuse it.
+Pointer drag and Escape cancel are Alpha-supported across Chromium / Firefox / WebKit. The internal provider may enable keyboard sensors and ARIA plugins by default; those remain **provider capabilities**, not a DnDGem-productized keyboard or screen-reader drag path. DnDGem does not overwrite consumer `aria-*` / `tabIndex` in its apply/binding path. See [Accessibility](../guides/accessibility.md).
 
 ### Cleanup
 

@@ -44,7 +44,7 @@ The container must be a positioned containing block (`relative` is enough). Item
 
 Unmounting the provider disposes the shared DOM session. Layout inline styles are not restored. Importing this package does not require `window`; rendering `DnDGemProvider` is a client-side mount (not full SSR/hydration).
 
-Keyboard drag is not a product-validated path yet. Pointer drag is.
+Keyboard drag is **DEFERRED** for Public Alpha. Pointer drag and Escape cancel are supported. See repository `docs/guides/accessibility.md`.
 
 `react` is a peer dependency (`^18 || ^19`). This package does not import `react-dom`; applications that render still provide it themselves.
 

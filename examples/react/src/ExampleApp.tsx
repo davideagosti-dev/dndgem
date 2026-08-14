@@ -150,6 +150,7 @@ function Board() {
               style={binding.style}
               className={copy.className}
               data-testid={`item-${item.id}`}
+              aria-label={copy.title}
             >
               <h2>{copy.title}</h2>
               <p>{copy.body}</p>

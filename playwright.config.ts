@@ -1,9 +1,16 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Browser/E2E strategy for DnDGem.
- * GitHub CI runs Chromium smoke (playground boot, DND-1.6 drag fixture, DND-1.7 integration).
- * Full sprint quality gates remain local.
+ * Browser/E2E strategy for DnDGem (DND-2.4).
+ *
+ * `pnpm test:e2e` runs the Public Alpha desktop engine matrix:
+ * Chromium, Firefox, and WebKit.
+ *
+ * Promotion CI (`develop` → `master`) installs and executes the same matrix.
+ * Feature branches do not run GitHub CI; the local Sprint Final Quality Gate is mandatory.
+ *
+ * This is engine-level automated validation, not certification of every
+ * real-world browser version, mobile browser, or embedded webview.
  */
 export default defineConfig({
   testDir: './e2e',
@@ -26,6 +33,14 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
     },
   ],
 });

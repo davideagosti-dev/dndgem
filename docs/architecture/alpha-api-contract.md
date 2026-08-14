@@ -44,18 +44,19 @@ Module shape:
 
 ## Environment assumptions
 
-| Area            | Alpha statement                                                                                    |
-| --------------- | -------------------------------------------------------------------------------------------------- |
-| Node            | `>=20` for tooling and ESM import of published packages                                            |
-| Bundlers        | Vite / modern bundlers with ESM are the expected app path                                          |
-| Browser         | Chromium is the validated Alpha browser. Firefox / WebKit are DND-2.4                              |
-| DOM             | `@dndgem/dom` and React rendering require a browser-like DOM at runtime                            |
-| Pointer drag    | Validated interaction path                                                                         |
-| Keyboard drag   | Not a product-validated path                                                                       |
-| SSR / hydration | Module import is safe without `window`. Full SSR/hydration is **not** claimed                      |
-| Next.js / Remix | Not validated. Do not market as supported                                                          |
-| React           | Peer `react@^18 \|\| ^19`. Client mount required for `DnDGemProvider`                              |
-| Positioning     | Container is a positioned containing block; items are absolutely positioned from resolved geometry |
+| Area            | Alpha statement                                                                                             |
+| --------------- | ----------------------------------------------------------------------------------------------------------- |
+| Node            | `>=20` for tooling and ESM import of published packages                                                     |
+| Bundlers        | Vite / modern bundlers with ESM are the expected app path                                                   |
+| Browser         | Chromium / Firefox / WebKit desktop engines **SUPPORTED FOR ALPHA** (Playwright). Mobile **NOT VALIDATED**. |
+| DOM             | `@dndgem/dom` and React rendering require a browser-like DOM at runtime                                     |
+| Pointer drag    | Validated interaction path                                                                                  |
+| Keyboard drag   | **DEFERRED** — not a product-validated path                                                                 |
+| Accessibility   | Baseline: Escape cancel + focus/ARIA preservation; no full WCAG / SR drag claim — see a11y guide            |
+| SSR / hydration | Module import is safe without `window`. Full SSR/hydration is **not** claimed                               |
+| Next.js / Remix | Not validated. Do not market as supported                                                                   |
+| React           | Peer `react@^18 \|\| ^19`. Client mount required for `DnDGemProvider`                                       |
+| Positioning     | Container is a positioned containing block; items are absolutely positioned from resolved geometry          |
 
 Repository metadata URLs point at `https://github.com/davideagosti-dev/dndgem`. The GitHub repository is currently **PRIVATE**; those links are canonical, not a claim of public accessibility. Public visibility is a separate DND-2.5 decision.
 
