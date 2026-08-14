@@ -57,15 +57,35 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           set -euo pipefail
-          for pkg in @dndgem/core @dndgem/react @dndgem/dom; do
-            if npm view "$pkg" dist-tags.latest >/dev/null 2>&1; then
-              echo "Removing latest from $pkg"
-              npm dist-tag rm "$pkg" latest || true
-            else
-              echo "No latest tag (or package root missing) for $pkg"
-            fi
-            echo "Tags for $pkg:"
+          # First npm publish always creates `latest` even with --tag alpha.
+          # Removal requires a token that can mutate dist-tags (Automation / full publish).
+          for name in core dom react; do
+            pkg="@dndgem/${name}"
+            encoded="%40dndgem%2f${name}"
+            echo "Tags before for $pkg:"
             npm view "$pkg" dist-tags --json || true
+            if npm view "$pkg" dist-tags.latest >/dev/null 2>&1; then
+              echo "Removing latest from $pkg via npm CLI"
+              if ! npm dist-tag rm "$pkg" latest; then
+                echo "CLI failed — trying registry DELETE"
+                code=$(curl -s -o /tmp/dist-tag-rm.json -w "%{http_code}" \
+                  -X DELETE \
+                  -H "Authorization: Bearer ${NODE_AUTH_TOKEN}" \
+                  -H "Accept: application/json" \
+                  "https://registry.npmjs.org/-/package/${encoded}/dist-tags/latest")
+                echo "DELETE status=$code body=$(cat /tmp/dist-tag-rm.json)"
+                if [ "$code" != "200" ] && [ "$code" != "204" ]; then
+                  echo "Failed to remove latest from $pkg"
+                  exit 1
+                fi
+              fi
+            fi
+            echo "Tags after for $pkg:"
+            npm view "$pkg" dist-tags --json
+            if npm view "$pkg" dist-tags.latest >/dev/null 2>&1; then
+              echo "latest still present on $pkg"
+              exit 1
+            fi
           done
 
       - name: Recover @dndgem/dom package document
