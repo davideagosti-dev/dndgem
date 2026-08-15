@@ -5,6 +5,13 @@ name: npm-repair-alpha
 # - @dndgem/dom package metadata document missing while version/tarball exist
 #
 # Do not use for routine releases.
+#
+# Auth classification:
+# npm Trusted Publishing / OIDC supports npm publish (and npm stage publish) only.
+# dist-tag mutation, access changes, unpublish, and other admin ops require
+# traditional authentication — NOT OIDC. This workflow therefore uses
+# secrets.NPM_TOKEN (LEGACY FALLBACK) and must NOT be granted publish OIDC
+# privileges. Prefer interactive maintainer auth when possible.
 
 on:
   workflow_dispatch:
@@ -29,7 +36,6 @@ jobs:
     if: ${{ inputs.confirm == 'REPAIR' }}
     permissions:
       contents: read
-      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v5

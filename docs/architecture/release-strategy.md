@@ -79,17 +79,83 @@ Workflow: `.github/workflows/publish.yml`
 - Refuses `latest` unless `allow_latest` is explicitly set (Alpha must not)
 - Re-runs the full CI workflow first (`workflow_call`)
 - Builds packages and runs `pnpm test:pack`
-- Authenticates to npm with GitHub secret `NPM_TOKEN` (never committed)
+- Non-dry-run publish is refused unless the workflow runs on `master`
 - Actual `pnpm publish` is skipped when `dry_run` is true
 - Actual publish is refused while package versions are still `0.0.0`
 
-Release authority: repository maintainers via the dispatch UI (and optional future GitHub Environment reviewers). Rollback: npm dist-tag adjustment / deprecate; Alpha makes no compatibility guarantee beyond documenting the break.
+### Authentication (Trusted Publishing / OIDC)
+
+Primary publish authentication:
+
+```text
+GitHub Actions (publish.yml npm job)
+      │  permissions: id-token: write
+      ▼
+GitHub OIDC identity
+      │
+      ▼
+npm Trusted Publisher (per package)
+      │
+      ▼
+short-lived publish token → npm registry
+```
+
+- **No long-lived write token** is used on the primary publish path.
+- Each of `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` must have its own Trusted Publisher on npmjs.com pointing at:
+  - Provider: GitHub Actions
+  - Owner: `davideagosti-dev`
+  - Repository: `dndgem`
+  - Workflow filename: `publish.yml`
+  - Environment: _(blank / none — no GitHub Environment is required today)_
+  - Allowed action: `npm publish`
+- `pnpm publish` packs the package (including `workspace:*` rewrite) and invokes `npm publish` on the tarball; the **npm CLI** performs the OIDC exchange. Publish runners use Node **24** and npm CLI **≥ 11.5.1**.
+- GitHub-hosted runners only (`ubuntu-latest`). Self-hosted runners are not supported by npm Trusted Publishing.
+- `npm publish --dry-run` / `pnpm publish --dry-run` validates pack safety only — it does **not** prove Trusted Publishing.
+
+`NPM_TOKEN` GitHub secret classification:
+
+| State                                                                    | Meaning                                                           |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| ~~PRIMARY~~                                                              | Former token-based publish path (retired for routine publish)     |
+| **LEGACY FALLBACK — DO NOT REVOKE UNTIL FIRST REAL OIDC RELEASE PASSES** | Keep until a legitimate non-dry-run publish succeeds via OIDC     |
+| REMOVED                                                                  | Only after verified OIDC publish + optional token lockdown on npm |
+
+Do **not** revoke `NPM_TOKEN` solely because the workflow YAML was migrated.
+
+Optional CLI equivalent (do not run without maintainer approval / 2FA):
+
+```bash
+npm trust github @dndgem/core  --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
+npm trust github @dndgem/dom   --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
+npm trust github @dndgem/react --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
+```
+
+(`npm trust` requires npm ≥ 11.15.0, package write access, and account 2FA.)
+
+### workflow_call / OIDC identity
+
+`publish.yml` calls `ci.yml` for the quality gate, then publishes in its own `npm` job.
+
+- The workflow filename npm validates for Trusted Publishing is **`publish.yml`** (the workflow that performs publish under `workflow_dispatch`).
+- `id-token: write` is granted only on the `npm` publish job (least privilege). The reusable `ci.yml` jobs do not publish and do not need OIDC.
+- Dist-tag / admin repair remains in `.github/workflows/npm-repair-alpha.yml` and uses token auth — OIDC does **not** authorize `dist-tag`, `access`, `unpublish`, or other non-publish admin commands.
+
+### GitHub Environment (optional, not enabled)
+
+A future `npm-release` Environment (required reviewers, `master`-only) could add an approval gate. It is **not** required for Trusted Publishing. If introduced later, the same Environment name must be entered on each package’s Trusted Publisher config.
+
+Release authority: repository maintainers via the dispatch UI. Rollback: npm dist-tag adjustment / deprecate; Alpha makes no compatibility guarantee beyond documenting the break.
 
 ## Provenance
 
-npm `--provenance` is **prepared as a DND-2.5 item**, not enabled in DND-2.2.
+OIDC Trusted Publishing and npm provenance are independent.
 
-Provenance via GitHub OIDC is intended for a public repository publishing public packages. This repository is currently **PRIVATE**. Enabling provenance before a visibility decision would be premature.
+| Capability                             | Status while repository is **PRIVATE**                                           |
+| -------------------------------------- | -------------------------------------------------------------------------------- |
+| Trusted Publishing (OIDC publish auth) | **SUPPORTED** (configure + verify on next real publish)                          |
+| npm provenance attestations            | **NOT AVAILABLE** for private repositories, even when publishing public packages |
+
+Do **not** pass `--provenance` while the repository remains private. Lack of provenance is **not** a Trusted Publishing blocker. Provenance may be reconsidered only after an explicit public-visibility decision.
 
 ## npm scope
 
@@ -99,15 +165,17 @@ Target scope: `@dndgem`.
 
 ## Historical Stage B external gates (resolved)
 
-| Item                         | Blocks                            |
-| ---------------------------- | --------------------------------- |
-| `@dndgem` npm org ownership  | Stage B publication               |
-| GitHub secret `NPM_TOKEN`    | Stage B publication               |
-| External feedback path       | Phase 2 PASS (if repo private)    |
-| Public playground hosting    | Phase 2 PASS (or npm-only waiver) |
-| GitHub Environment approvals | optional                          |
-| Public repository visibility | separate explicit decision        |
-| Actual `npm publish`         | Stage B after master promotion    |
+| Item                         | Blocks                                                                             |
+| ---------------------------- | ---------------------------------------------------------------------------------- |
+| `@dndgem` npm org ownership  | Stage B publication                                                                |
+| GitHub secret `NPM_TOKEN`    | Stage B publication (legacy; superseded by Trusted Publishing for routine publish) |
+| External feedback path       | Phase 2 PASS (if repo private)                                                     |
+| Public playground hosting    | Phase 2 PASS (or npm-only waiver)                                                  |
+| GitHub Environment approvals | optional                                                                           |
+| Public repository visibility | separate explicit decision                                                         |
+| Actual `npm publish`         | Stage B after master promotion                                                     |
+
+Post-Alpha security follow-up: migrate primary publish auth to npm Trusted Publishing + GitHub Actions OIDC. Status: **CONFIGURED — PENDING FIRST REAL OIDC RELEASE** until a legitimate non-dry-run publish succeeds.
 
 Authoritative Stage A register: `docs/releases/dnd-2.5-stage-a-readiness.md`.
 
