@@ -12,7 +12,8 @@ Honest boundaries for Public Alpha readiness. Deferred items are planned work, n
 | DOM vs visual order    | Absolute placement may diverge from DOM/tab order                   | consumer guidance                       |
 | SSR / hydration        | Module import-safe without `window`; provider is client-mount only  | —                                       |
 | Next.js / Remix        | Not validated / not claimed                                         | —                                       |
-| npm packages           | Target Public Alpha `0.1.0-alpha.0` / dist-tag `alpha`              | DND-2.5                                 |
+| npm packages           | Public Alpha `0.1.0-alpha.0`; install with `@alpha` only            | DND-2.5                                 |
+| npm `latest` dist-tag  | Aliases sole published prerelease; not a stable channel             | future stable release                   |
 | Auto-Layout            | Not implemented                                                     | Phase 3                                 |
 | AI layout              | Not implemented                                                     | Phase 4                                 |
 | Flutter                | Not implemented (Core-contract dependent later)                     | post-Alpha                              |

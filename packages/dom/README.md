@@ -10,13 +10,13 @@ This package measures DOM geometry, observes resize, converts pointer drag into 
 - Guide: repository `docs/guides/vanilla.md`
 - Alpha contract: `docs/architecture/alpha-api-contract.md`
 
-Public Alpha version: **`0.1.0-alpha.0`** (npm dist-tag `alpha`).
+Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 
 ```bash
 npm install @dndgem/dom@alpha
 ```
 
-Feedback: `support@fingem-ai.com`. Playground: https://dndgem-playground.pages.dev/
+Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://dndgem-playground.pages.dev/
 
 ```ts
 import { createLayoutSession } from '@dndgem/dom';

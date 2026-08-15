@@ -18,12 +18,12 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 
 ## Project status
 
-| Phase                          | Status                                                   |
-| ------------------------------ | -------------------------------------------------------- |
-| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                           |
-| Phase 2 Public Alpha Readiness | **ACTIVE** — DND-2.5 Stage B (versioned `0.1.0-alpha.0`) |
+| Phase                          | Status                                             |
+| ------------------------------ | -------------------------------------------------- |
+| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                     |
+| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE** (`0.1.0-alpha.0`) |
 
-First npm Alpha version: **`0.1.0-alpha.0`** under dist-tag **`alpha`**. Release notes: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md).
+First npm Alpha: **`0.1.0-alpha.0`**. Install with dist-tag **`alpha` only** (`npm install @dndgem/react@alpha`). Release notes: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md).
 
 ## Packages
 
@@ -53,7 +53,7 @@ npm install @dndgem/react@alpha
 npm install @dndgem/dom@alpha
 ```
 
-Install with dist-tag **`alpha`** (targets **`0.1.0-alpha.0`**; not `latest`).
+Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.0`). This is not a stable release; do not treat `latest` as a stable channel.
 
 ### Local workspace
 

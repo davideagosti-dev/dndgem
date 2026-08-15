@@ -31,7 +31,7 @@ See [Packages](./packages.md).
 npm install @dndgem/react@alpha
 ```
 
-This resolves to **`0.1.0-alpha.0`** under dist-tag `alpha`. See [release notes](../releases/0.1.0-alpha.0.md).
+This installs Public Alpha **`0.1.0-alpha.0`** via dist-tag **`alpha`**. Always use `@alpha` — do not treat bare installs / `latest` as a stable channel. See [release notes](../releases/0.1.0-alpha.0.md).
 
 ### Local monorepo validation
 

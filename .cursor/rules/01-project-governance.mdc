@@ -1,5 +1,5 @@
 ---
-description: DnDGem project governance and Phase 2 hard exclusions
+description: DnDGem project governance and hard exclusions
 alwaysApply: true
 ---
 
@@ -11,18 +11,18 @@ Phase 0 is CLOSED. Do not reopen gates without a hard contradiction (stop, docum
 
 Phase 1 Technical MVP is **CLOSED** (DND-1.1 → DND-1.8). Do not reopen Phase 1 product/architecture decisions without a hard contradiction.
 
-**Active phase:** Phase 2 — Public Alpha Readiness (`docs/roadmap.md`).
+Phase 2 Public Alpha Readiness is **PASS** — Public Alpha **LIVE** (`0.1.0-alpha.0` / `@alpha`).
 
-Active sprint work must stay within the declared sprint scope (currently DND-2.5).
+**Next phase:** Phase 3 — Adaptive Auto-Layout (`docs/roadmap.md`). Do not begin Phase 3 implementation unless the active sprint explicitly requires it.
 
 ## CI policy (DND-2.3+)
 
 - Feature → develop: full **local** quality gate; GitHub CI not required / should not run.
 - Develop → master: full **GitHub** CI must run and pass before merge.
 
-## Phase 2 hard exclusions
+## Hard exclusions (until an explicit sprint requires them)
 
-During Phase 2, Cursor MUST NOT introduce:
+Cursor MUST NOT introduce:
 
 - AI / Gemini / OpenAI / Anthropic / local model runtimes
 - Flutter implementation
@@ -35,8 +35,10 @@ During Phase 2, Cursor MUST NOT introduce:
 
 unless the active sprint explicitly requires it.
 
-Flutter compatibility may be considered architecturally (types, ADRs), but not implemented in Phase 2.
+Flutter compatibility may be considered architecturally (types, ADRs), but not implemented until scheduled.
 
 AI is optional and outside the critical path; it follows deterministic Auto-Layout (Phase 4).
 
 Repository remains PRIVATE unless an explicit release decision changes visibility.
+
+Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.0`). Do not document bare / `latest` installs as the supported Alpha path.

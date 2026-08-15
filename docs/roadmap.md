@@ -2,19 +2,20 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                                                     |
-| ------- | ------------------------------- | ---------------------------------------------------------- |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                                                 |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                             |
-| Phase 2 | Public Alpha Readiness          | **ACTIVE** (DND-2.1–DND-2.4 complete; DND-2.5 in progress) |
+| Phase   | Name                            | Status                           |
+| ------- | ------------------------------- | -------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                       |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)   |
+| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE** |
+| Phase 3 | Adaptive Auto-Layout            | **NEXT**                         |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
 Phase 1 proved stable, deterministic, content-aware, constraint-driven adaptive layouts **without AI**.
 
-Phase 2 transforms the closed Technical MVP into a credible external developer Alpha through engineering hardening, API stabilization, release infrastructure, documentation, browser/accessibility baseline, and npm Alpha release.
+Phase 2 is **COMPLETE**: npm Public Alpha `0.1.0-alpha.0` is live under dist-tag `alpha`, with docs, examples, playground, and feedback path.
 
-Repository remains **PRIVATE** during Phase 2 preparation unless an explicit visibility decision changes that. npm Alpha and public repository visibility remain separate gates (see `docs/releases/dnd-2.5-stage-a-readiness.md`).
+Repository remains **PRIVATE** by explicit decision for this first Alpha. npm packages are public; GitHub source/Issues may be inaccessible externally (see [release notes](./releases/0.1.0-alpha.0.md)).
 
 No committed calendar dates are attached to roadmap items.
 
@@ -105,7 +106,7 @@ No committed calendar dates are attached to roadmap items.
 
 ---
 
-## Phase 2 — Public Alpha Readiness (ACTIVE)
+## Phase 2 — Public Alpha Readiness (PASS)
 
 Primary objective: make the closed Technical MVP consumable by external developers via npm Alpha, docs, examples, and honest limitation statements.
 
@@ -122,16 +123,16 @@ DND-2.3 Developer Experience & Documentation  COMPLETE
         ↓
 DND-2.4 Browser Matrix & Accessibility Baseline  COMPLETE
         ↓
-DND-2.5 Public Alpha Release Gate                ACTIVE
+DND-2.5 Public Alpha Release Gate                COMPLETE
             ↓
 PHASE 2 PASS
             ↓
-PUBLIC ALPHA
+PUBLIC ALPHA LIVE
 ```
 
 Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later work may overlap technically; sequence remains authoritative).
 
-### Public Alpha hard blockers (Phase 2 aims to resolve)
+### Public Alpha hard blockers (resolved)
 
 - Clean engineering baseline
 - Alpha API contract
@@ -142,6 +143,8 @@ Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later w
 - Browser support statement
 - Accessibility status
 - Known limitations documentation
+- npm Alpha publication (`0.1.0-alpha.0` / `@alpha`)
+- Public playground + external feedback path
 
 ### Safe Alpha deferrals
 
@@ -202,27 +205,19 @@ Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later w
 - **Scope:** Final release acceptance; npm Alpha publication; release notes; simple public playground/demo; feedback path; Alpha checklist.
 - **Out of scope:** Catch-all unfinished API/docs/browser work (those belong in 2.2–2.4); Auto-Layout; AI; Flutter.
 - **Dependencies:** DND-2.2, DND-2.3, DND-2.4.
-- **Closure:** npm `@dndgem/*` Alpha published; Phase 2 exit checklist PASS.
-- **Status:** ACTIVE (Stage A release readiness — publication is Stage B after promotion to `master`)
-- **Reference:** `docs/releases/dnd-2.5-stage-a-readiness.md`, `docs/releases/0.1.0-alpha.0.md`.
+- **Closure:** npm `@dndgem/*@0.1.0-alpha.0` published under dist-tag `alpha`; Phase 2 exit checklist PASS; Public Alpha LIVE.
+- **Status:** COMPLETE
+- **Reference:** `docs/releases/0.1.0-alpha.0.md`, `docs/releases/dnd-2.5-stage-a-readiness.md`.
+- **Registry note:** Official channel is `@alpha`. `latest` currently aliases the same sole prerelease; documented as a non-blocking limitation until a future stable release owns `latest`.
 
 ### Phase 2 exit gate — PHASE 2 PASS
 
-Requires:
-
-- Engineering baseline clean
-- Alpha API contract stabilized
-- Release infrastructure ready
-- npm Alpha packages published
-- Quick Start / docs ready
-- Vanilla + React examples ready
-- Browser / a11y status documented
-- Public Alpha acceptance checklist PASS
-
-Then:
+**PASS.** Public Alpha is LIVE:
 
 ```text
-PUBLIC ALPHA → external developer validation
+PUBLIC ALPHA LIVE → external developer validation
+        ↓
+NEXT: Phase 3 — Adaptive Auto-Layout
 ```
 
 ---

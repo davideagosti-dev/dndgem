@@ -8,13 +8,13 @@ Thin React adapter for **DnDGem** by **FinGem-AI**. Layout solving stays in `@dn
 - Alpha contract: `docs/architecture/alpha-api-contract.md`
 - Example: `examples/react`
 
-Public Alpha version: **`0.1.0-alpha.0`** (npm dist-tag `alpha`).
+Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 
 ```bash
 npm install @dndgem/react@alpha
 ```
 
-Feedback: `support@fingem-ai.com`. Playground: https://dndgem-playground.pages.dev/
+Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://dndgem-playground.pages.dev/
 
 ```tsx
 import { DnDGemProvider, useDnDGem, useDnDGemContainer, useDnDGemItem } from '@dndgem/react';
