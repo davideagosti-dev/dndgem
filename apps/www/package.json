@@ -1,0 +1,14 @@
+{
+  "name": "@dndgem/www",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Canonical public Alpha landing for dndgem.dev",
+  "scripts": {
+    "build": "node ./scripts/build.mjs",
+    "dev": "node ./scripts/dev.mjs",
+    "lint": "node -e \"process.exit(0)\"",
+    "typecheck": "node -e \"process.exit(0)\"",
+    "test": "node ./scripts/check-site.mjs"
+  }
+}

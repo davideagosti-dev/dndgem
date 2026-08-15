@@ -4,9 +4,9 @@ Thin React adapter for **DnDGem** by **FinGem-AI**. Layout solving stays in `@dn
 
 ## Start here
 
-- Guide: repository `docs/guides/react.md` and `docs/guides/quick-start.md`
-- Alpha contract: `docs/architecture/alpha-api-contract.md`
-- Example: `examples/react`
+- Website: https://dndgem.dev
+- Quick Start: https://dndgem.dev/docs/quick-start/
+- Support: https://dndgem.dev/support/
 
 Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 
@@ -14,7 +14,7 @@ Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 npm install @dndgem/react@alpha
 ```
 
-Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://dndgem-playground.pages.dev/
+Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/).
 
 ```tsx
 import { DnDGemProvider, useDnDGem, useDnDGemContainer, useDnDGemItem } from '@dndgem/react';
@@ -50,7 +50,7 @@ The container must be a positioned containing block (`relative` is enough). Item
 
 Unmounting the provider disposes the shared DOM session. Layout inline styles are not restored. Importing this package does not require `window`; rendering `DnDGemProvider` is a client-side mount (not full SSR/hydration).
 
-Keyboard drag is **DEFERRED** for Public Alpha. Pointer drag and Escape cancel are supported. See repository `docs/guides/accessibility.md`.
+Keyboard drag is **DEFERRED** for Public Alpha. Pointer drag and Escape cancel are supported.
 
 `react` is a peer dependency (`^18 || ^19`). This package does not import `react-dom`; applications that render still provide it themselves.
 

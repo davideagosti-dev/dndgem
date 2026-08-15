@@ -6,9 +6,10 @@ This package measures DOM geometry, observes resize, converts pointer drag into 
 
 ## Start here
 
+- Website: https://dndgem.dev
+- Quick Start: https://dndgem.dev/docs/quick-start/
+- Support: https://dndgem.dev/support/
 - Recommended path: `createLayoutSession`
-- Guide: repository `docs/guides/vanilla.md`
-- Alpha contract: `docs/architecture/alpha-api-contract.md`
 
 Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 
@@ -16,14 +17,12 @@ Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 npm install @dndgem/dom@alpha
 ```
 
-Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://dndgem-playground.pages.dev/
+Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/).
 
 ```ts
 import { createLayoutSession } from '@dndgem/dom';
 ```
 
 Advanced escape hatches (`measureLayout`, `observeLayout`, `createDragInteraction`, …) are documented as advanced — prefer the session for ordinary apps.
-
-Validated example: `examples/vanilla`.
 
 License: MIT.

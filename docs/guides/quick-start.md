@@ -33,6 +33,8 @@ npm install @dndgem/react@alpha
 
 This installs Public Alpha **`0.1.0-alpha.0`** via dist-tag **`alpha`**. Always use `@alpha` — do not treat bare installs / `latest` as a stable channel. See [release notes](../releases/0.1.0-alpha.0.md).
 
+Public product home: [https://dndgem.dev](https://dndgem.dev). Hosted Quick Start mirror: [https://dndgem.dev/docs/quick-start/](https://dndgem.dev/docs/quick-start/).
+
 ### Local monorepo validation
 
 From this repository:

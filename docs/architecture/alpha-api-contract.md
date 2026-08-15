@@ -58,7 +58,7 @@ Module shape:
 | React           | Peer `react@^18 \|\| ^19`. Client mount required for `DnDGemProvider`                                       |
 | Positioning     | Container is a positioned containing block; items are absolutely positioned from resolved geometry          |
 
-Repository metadata URLs point at `https://github.com/davideagosti-dev/dndgem`. The GitHub repository is currently **PRIVATE**; those links are canonical, not a claim of public accessibility. Public visibility is a separate DND-2.5 decision.
+Repository metadata `repository.url` points at `https://github.com/davideagosti-dev/dndgem`. The GitHub repository is currently **PRIVATE**; those links are source-of-truth for maintainers, not a claim of public accessibility. Package `homepage` / public support point at **https://dndgem.dev** (see [Public site & domain hosting](./public-site.md)).
 
 ## Stability policy (0.x Alpha)
 

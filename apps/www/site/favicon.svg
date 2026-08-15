@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="DnDGem">
+  <rect width="64" height="64" rx="12" fill="#0f6b5c"/>
+  <path fill="#f3f7f9" d="M14 18h16c8 0 14 5.5 14 14s-6 14-14 14H14V18zm10 8v12h6c3.8 0 6.5-2.6 6.5-6s-2.7-6-6.5-6H24z"/>
+  <circle cx="46" cy="46" r="7" fill="#d9ebe3"/>
+</svg>
