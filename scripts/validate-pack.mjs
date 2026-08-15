@@ -485,14 +485,34 @@ const pre = JSON.parse(readFileSync(join(root, '.changeset', 'pre.json'), 'utf8'
 assert(pre.mode === 'pre', 'Changesets pre mode must be active');
 assert(pre.tag === 'alpha', 'Changesets pre tag must be alpha');
 
-const changeset = readFileSync(join(root, '.changeset', 'dnd-2-2-alpha-api.md'), 'utf8');
-assert(
-  changeset.includes("'@dndgem/core': minor") &&
-    changeset.includes("'@dndgem/dom': minor") &&
-    changeset.includes("'@dndgem/react': minor"),
-  'Alpha changeset must minor-bump the fixed package group (0.0.0 → 0.1.0-alpha.0)',
+const pendingChangesetPath = join(root, '.changeset', 'dnd-2-2-alpha-api.md');
+const consumedChangesetPath = join(root, '.changeset', 'pre', 'dnd-2-2-alpha-api.md');
+const versions = ['core', 'dom', 'react'].map(
+  (name) => JSON.parse(readFileSync(join(root, 'packages', name, 'package.json'), 'utf8')).version,
 );
-console.log('\nChangesets pre mode:', pre.tag, '— first intended publish version 0.1.0-alpha.0');
+const allAlpha = versions.every((v) => v === '0.1.0-alpha.0');
+const allZero = versions.every((v) => v === '0.0.0');
+
+if (existsSync(pendingChangesetPath)) {
+  const changeset = readFileSync(pendingChangesetPath, 'utf8');
+  assert(
+    changeset.includes("'@dndgem/core': minor") &&
+      changeset.includes("'@dndgem/dom': minor") &&
+      changeset.includes("'@dndgem/react': minor"),
+    'Alpha changeset must minor-bump the fixed package group (0.0.0 → 0.1.0-alpha.0)',
+  );
+  assert(
+    allZero,
+    'Pending Alpha changeset expects package versions to remain 0.0.0 until versioned',
+  );
+  console.log('\nChangesets pre mode:', pre.tag, '— first intended publish version 0.1.0-alpha.0');
+} else if (existsSync(consumedChangesetPath) && allAlpha) {
+  console.log('\nChangesets pre mode:', pre.tag, '— packages versioned at 0.1.0-alpha.0');
+} else {
+  throw new Error(
+    'Expected pending Alpha changeset at 0.0.0, or consumed changeset with packages at 0.1.0-alpha.0',
+  );
+}
 
 rmSync(consumerDir, { recursive: true, force: true });
 

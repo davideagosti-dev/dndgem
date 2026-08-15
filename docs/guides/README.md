@@ -54,9 +54,9 @@ Architecture / contract references (not the day-one path):
 
 ## Installation truth
 
-| When                              | How                                          |
-| --------------------------------- | -------------------------------------------- |
-| **Now (this repository)**         | Workspace / local packages — see Quick Start |
-| **After Stage B npm publication** | `npm install @dndgem/react@alpha`            |
+| When                   | How                               |
+| ---------------------- | --------------------------------- |
+| **Public Alpha (npm)** | `npm install @dndgem/react@alpha` |
+| **This repository**    | Workspace / local packages        |
 
-First intended registry version: `0.1.0-alpha.0` (dist-tag `alpha`). Release notes: [0.1.0-alpha.0](../releases/0.1.0-alpha.0.md).
+Published version: `0.1.0-alpha.0`. Always use **`@alpha`**. Release notes: [0.1.0-alpha.0](../releases/0.1.0-alpha.0.md).

@@ -1,5 +1,5 @@
 ---
-description: Roadmap scope lock for Phase 2 Public Alpha Readiness
+description: Roadmap scope lock after Phase 2 Public Alpha LIVE
 alwaysApply: true
 ---
 
@@ -7,15 +7,15 @@ alwaysApply: true
 
 Phase 1 (Technical MVP) is **CLOSED**.
 
-Phase 2 — Public Alpha Readiness mapping:
+Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE**:
 
 1. DND-2.1 Engineering Baseline & CI Hardening — COMPLETE
 2. DND-2.2 Alpha API Contract & Release Infrastructure — COMPLETE
 3. DND-2.3 Developer Experience & Documentation — COMPLETE
 4. DND-2.4 Browser Matrix & Accessibility Baseline — COMPLETE
-5. DND-2.5 Public Alpha Release Gate — ACTIVE
+5. DND-2.5 Public Alpha Release Gate — COMPLETE
 
-Phase 2 contains **only** DND-2.1 → DND-2.5.
+**Next phase:** Phase 3 — Adaptive Auto-Layout (do not start unless the active sprint requires it).
 
 ## CI policy (DND-2.3+)
 
@@ -27,7 +27,7 @@ develop → master
 = full GitHub CI promotion gate (required)
 ```
 
-Do not pull into Phase 2:
+Do not pull into active work unless the sprint explicitly requires it:
 
 - Deterministic Auto-Layout (Phase 3)
 - AI-assisted layout intelligence (Phase 4, after Auto-Layout)

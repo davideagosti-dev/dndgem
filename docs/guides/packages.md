@@ -42,8 +42,7 @@ Authoritative list: [Alpha API Contract](../architecture/alpha-api-contract.md).
 ## Installation truth
 
 ```bash
-# After DND-2.5 Stage B publication
 npm install @dndgem/react@alpha
 ```
 
-First intended version: `0.1.0-alpha.0` (dist-tag `alpha`). Until then, use the workspace or `pnpm test:pack` tarballs.
+Published version: `0.1.0-alpha.0`. Always use dist-tag **`alpha`**. Do not rely on bare `npm install @dndgem/*` (`latest` currently aliases the same prerelease and is not a stable channel).

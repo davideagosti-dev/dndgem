@@ -13,16 +13,27 @@
 
 ## Dist-tags
 
-| Tag      | Use                                               |
-| -------- | ------------------------------------------------- |
-| `alpha`  | First Public Alpha and subsequent 0.x prereleases |
-| `latest` | Forbidden for the first Alpha                     |
+| Tag      | Use                                                                  |
+| -------- | -------------------------------------------------------------------- |
+| `alpha`  | Official Public Alpha channel (`0.1.0-alpha.0` and later 0.x alphas) |
+| `latest` | Reserved for a future **stable** release                             |
 
-Install (after DND-2.5 publish, not before):
+Install (Public Alpha):
 
 ```bash
 npm install @dndgem/react@alpha
 ```
+
+Always document and use **`@alpha`**. Do not describe this Alpha as stable.
+
+### First Alpha registry note (`0.1.0-alpha.0`)
+
+After the first publish, verified registry state is:
+
+- `alpha` → `0.1.0-alpha.0` (correct / official)
+- `latest` → `0.1.0-alpha.0` (aliases the only published version)
+
+Removal of `latest` was attempted through verified release/admin paths and refused by the registry. Document this as a **non-blocking** Alpha limitation. A future stable release must take ownership of `latest`. See [0.1.0-alpha.0 release notes](../releases/0.1.0-alpha.0.md).
 
 ## Changeset policy
 
@@ -84,9 +95,9 @@ Provenance via GitHub OIDC is intended for a public repository publishing public
 
 Target scope: `@dndgem`.
 
-Ownership/publish permission for the npm organization remains an **external Stage B blocker** until a release maintainer verifies it with an authenticated npm identity. Package names remain `@dndgem/*` in-repo. Stage A registry probes showed `@dndgem/{core,dom,react}` unpublished (HTTP 404).
+`@dndgem` scope ownership and first Alpha publication are complete for DND-2.5. Package names remain `@dndgem/{core,dom,react}`.
 
-## External blockers (Stage B / Phase 2)
+## Historical Stage B external gates (resolved)
 
 | Item                         | Blocks                            |
 | ---------------------------- | --------------------------------- |
@@ -106,6 +117,6 @@ Authoritative Stage A register: `docs/releases/dnd-2.5-stage-a-readiness.md`.
 - **DND-2.1:** full CI quality gate; no version bumps; no npm publish.
 - **DND-2.2:** Alpha API contract, package metadata, pack validation, controlled publish workflow, dry-run only.
 - **DND-2.3:** Developer guides + CI promotion policy (GitHub CI on develop → master only).
-- **DND-2.5:** Public Alpha Release Gate — Stage A readiness docs; Stage B executes npm Alpha from `master`.
+- **DND-2.5:** Public Alpha LIVE — `@dndgem/{core,dom,react}@0.1.0-alpha.0` under dist-tag `alpha`.
 
 Repository visibility (private → public) remains a **separate** gate from npm Alpha.

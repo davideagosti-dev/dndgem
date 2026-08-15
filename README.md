@@ -18,12 +18,12 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 
 ## Project status
 
-| Phase                          | Status                                                             |
-| ------------------------------ | ------------------------------------------------------------------ |
-| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                                     |
-| Phase 2 Public Alpha Readiness | **ACTIVE** — DND-2.5 Public Alpha Release Gate (Stage A readiness) |
+| Phase                          | Status                                             |
+| ------------------------------ | -------------------------------------------------- |
+| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                     |
+| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE** (`0.1.0-alpha.0`) |
 
-First intended npm version: **`0.1.0-alpha.0`** under dist-tag **`alpha`**. Publication is Stage B after promotion to `master` and external npm gates. Draft notes: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md).
+First npm Alpha: **`0.1.0-alpha.0`**. Install with dist-tag **`alpha` only** (`npm install @dndgem/react@alpha`). Release notes: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md).
 
 ## Packages
 
@@ -43,7 +43,7 @@ First intended npm version: **`0.1.0-alpha.0`** under dist-tag **`alpha`**. Publ
 
 ## Installation
 
-### After Public Alpha publication
+### Public Alpha (npm)
 
 ```bash
 # React (pulls @dndgem/dom + @dndgem/core)
@@ -53,7 +53,7 @@ npm install @dndgem/react@alpha
 npm install @dndgem/dom@alpha
 ```
 
-Until the packages appear on the registry, consume from this workspace (or packed tarballs via `pnpm test:pack`).
+Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.0`). This is not a stable release; do not treat `latest` as a stable channel.
 
 ### Local workspace
 
@@ -104,7 +104,7 @@ export function App() {
 2. [Quick Start](docs/guides/quick-start.md)
 3. [Core Concepts](docs/guides/core-concepts.md)
 4. Validated examples: `examples/react`, `examples/vanilla`
-5. Playground: `apps/playground` (`pnpm --filter @dndgem/playground build`)
+5. Public playground: https://dndgem-playground.pages.dev/
 
 ## Browser support
 
@@ -130,18 +130,19 @@ Details: [Limitations](docs/guides/limitations.md) · [Alpha API Contract](docs/
 
 ## Playground / demo
 
-The Alpha playground is a static client-side demo under `apps/playground`. Build with:
+Public playground (no authentication): **https://dndgem-playground.pages.dev/**
+
+Local static build:
 
 ```bash
 pnpm --filter @dndgem/playground build
 ```
 
-Public hosting is a separate DND-2.5 decision (no in-repo Pages/hosting workflow yet). Readiness: [Stage A report](docs/releases/dnd-2.5-stage-a-readiness.md).
-
 ## Feedback
 
+- Product / Alpha developer feedback: **`support@fingem-ai.com`**
 - Security: `security@fingem.ai` (`SECURITY.md`)
-- Product / Alpha developer feedback: while this GitHub repository is **PRIVATE**, Issues are not reachable to external Alpha users. Confirm a public feedback email **or** make the repository public before treating feedback as Phase 2 complete. See release notes.
+- GitHub Issues are not reachable to external Alpha users while this repository remains **PRIVATE**.
 
 ## Development
 

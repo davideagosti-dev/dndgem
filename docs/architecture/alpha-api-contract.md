@@ -216,7 +216,7 @@ Alpha documents errors and validity honestly. Developer guides and troubleshooti
 In-repo package versions remain `0.0.0` until Changesets generates the first prerelease at the publish gate.
 
 - First intended publish version: `0.1.0-alpha.0`
-- Dist-tag: `alpha` (never `latest` for the first Alpha)
+- Official dist-tag: `alpha` (always install with `@alpha`; `latest` is not the Alpha channel)
 - `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` are a **fixed** Changesets group and stay version-aligned
 - `get*PackageInfo().version` must match that package's `package.json` `version`
 
