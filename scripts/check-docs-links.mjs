@@ -15,6 +15,7 @@ const ENTRY_FILES = [
   'docs/roadmap.md',
   'docs/architecture/alpha-api-contract.md',
   'docs/architecture/release-strategy.md',
+  'docs/architecture/public-site.md',
   'docs/architecture/testing-strategy.md',
   'docs/releases/README.md',
   'docs/releases/0.1.0-alpha.0.md',

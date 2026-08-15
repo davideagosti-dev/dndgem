@@ -4,9 +4,10 @@
   "description": "DOM adapter for DnDGem — measurement, resize observation, vendor-isolated drag interaction, and Vanilla layout session.",
   "author": "FinGem-AI",
   "license": "MIT",
-  "homepage": "https://github.com/davideagosti-dev/dndgem/tree/master/packages/dom#readme",
+  "homepage": "https://dndgem.dev",
   "bugs": {
-    "url": "https://github.com/davideagosti-dev/dndgem/issues"
+    "url": "https://dndgem.dev/support/",
+    "email": "support@fingem-ai.com"
   },
   "repository": {
     "type": "git",

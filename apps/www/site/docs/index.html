@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Documentation — DnDGem</title>
+    <meta
+      name="description"
+      content="DnDGem Public Alpha documentation entry — Quick Start, packages, browsers, accessibility, and limitations."
+    />
+    <link rel="canonical" href="https://dndgem.dev/docs/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Documentation — DnDGem" />
+    <meta
+      property="og:description"
+      content="Developer documentation entry for DnDGem Public Alpha."
+    />
+    <meta property="og:url" content="https://dndgem.dev/docs/" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-name">DnDGem</span>
+        <span class="brand-by">by FinGem-AI</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/docs/" aria-current="page">Docs</a>
+        <a href="/docs/quick-start/">Quick Start</a>
+        <a href="https://playground.dndgem.dev/">Playground</a>
+        <a href="/support/">Support</a>
+      </nav>
+    </header>
+
+    <main id="main" class="page prose">
+      <h1>Documentation</h1>
+      <p class="lede">
+        Public Alpha developer entry for DnDGem. Source repository remains private; this site is the
+        canonical public home.
+      </p>
+
+      <h2>Start here</h2>
+      <ul>
+        <li>
+          <a href="/docs/quick-start/">Quick Start</a> — first React layout with <code>@alpha</code>
+        </li>
+        <li>
+          <a href="https://playground.dndgem.dev/">Playground</a> — interactive VALID / DEGRADED
+          demo
+        </li>
+        <li><a href="/support/">Support</a> — product feedback and security contacts</li>
+      </ul>
+
+      <h2>Install</h2>
+      <pre class="install"><code>npm install @dndgem/react@alpha
+npm install @dndgem/dom@alpha</code></pre>
+      <p class="note">
+        Official channel is <strong>@alpha</strong> → <code>0.1.0-alpha.0</code>. Do not treat
+        <code>latest</code> as a stable release channel.
+      </p>
+
+      <h2>Package overview</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>@dndgem/core</code></td>
+              <td>Renderer-agnostic constraints, validity, scoring, solver</td>
+            </tr>
+            <tr>
+              <td><code>@dndgem/dom</code></td>
+              <td>DOM measurement, resize, drag, Vanilla layout session</td>
+            </tr>
+            <tr>
+              <td><code>@dndgem/react</code></td>
+              <td>React provider + hooks (peer: <code>react@^18 || ^19</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Core distinction</h2>
+      <pre class="distinction">GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL</pre>
+      <p>
+        Layouts are selected deterministically. Engine status is
+        <strong>VALID</strong>, <strong>DEGRADED</strong>, or <strong>INVALID</strong>.
+      </p>
+
+      <h2>Browser support (Alpha)</h2>
+      <ul>
+        <li>Chromium — supported for Alpha</li>
+        <li>Firefox — supported for Alpha</li>
+        <li>WebKit — supported for Alpha</li>
+        <li>Mobile — not validated</li>
+      </ul>
+
+      <h2>Accessibility baseline</h2>
+      <ul>
+        <li>
+          Supported: pointer drag, Escape cancellation, baseline focus, consumer ARIA preservation
+        </li>
+        <li>Deferred: keyboard drag, screen-reader drag announcements</li>
+        <li>Known: visual order may differ from DOM / tab order under absolute positioning</li>
+        <li>Not claimed: full WCAG conformance</li>
+      </ul>
+
+      <h2>Known limitations</h2>
+      <ul>
+        <li>0.x Alpha API may break between prereleases</li>
+        <li>Full SSR / hydration not validated</li>
+        <li>Auto-Layout, AI, Flutter, and other framework adapters not implemented</li>
+        <li>Large-N behavior not established</li>
+        <li>Absolute-positioning rendering model</li>
+      </ul>
+    </main>
+
+    <footer class="site-footer">
+      <nav aria-label="Footer">
+        <a href="/">Home</a>
+        <a href="/docs/quick-start/">Quick Start</a>
+        <a href="/support/">Support</a>
+      </nav>
+      <p>DnDGem by FinGem-AI · Public Alpha · MIT</p>
+    </footer>
+  </body>
+</html>

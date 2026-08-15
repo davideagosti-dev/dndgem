@@ -4,9 +4,10 @@
   "description": "React adapter for DnDGem — thin lifecycle and registration over @dndgem/dom.",
   "author": "FinGem-AI",
   "license": "MIT",
-  "homepage": "https://github.com/davideagosti-dev/dndgem/tree/master/packages/react#readme",
+  "homepage": "https://dndgem.dev",
   "bugs": {
-    "url": "https://github.com/davideagosti-dev/dndgem/issues"
+    "url": "https://dndgem.dev/support/",
+    "email": "support@fingem-ai.com"
   },
   "repository": {
     "type": "git",

@@ -60,3 +60,5 @@ Architecture / contract references (not the day-one path):
 | **This repository**    | Workspace / local packages        |
 
 Published version: `0.1.0-alpha.0`. Always use **`@alpha`**. Release notes: [0.1.0-alpha.0](../releases/0.1.0-alpha.0.md).
+
+Canonical public home: [https://dndgem.dev](https://dndgem.dev). Public Quick Start: [https://dndgem.dev/docs/quick-start/](https://dndgem.dev/docs/quick-start/). Support: [https://dndgem.dev/support/](https://dndgem.dev/support/).

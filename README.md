@@ -6,6 +6,8 @@
 
 Category: **Content-Aware Adaptive Layout Engine**
 
+**Canonical website:** [https://dndgem.dev](https://dndgem.dev)
+
 ## What it is
 
 DnDGem lays out draggable dashboard-style content using **content-aware constraints**, **deterministic solving**, and **adaptive reflow** — so a layout that geometrically fits can still be classified as less useful when content needs are missed.
@@ -24,6 +26,8 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 | Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE** (`0.1.0-alpha.0`) |
 
 First npm Alpha: **`0.1.0-alpha.0`**. Install with dist-tag **`alpha` only** (`npm install @dndgem/react@alpha`). Release notes: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md).
+
+Public product home: **https://dndgem.dev** (see [Public site & domain hosting](docs/architecture/public-site.md)).
 
 ## Packages
 
@@ -65,7 +69,7 @@ pnpm --filter @dndgem/example-react dev
 
 ## Quick Start
 
-See [Quick Start](docs/guides/quick-start.md) (~10–15 minutes once packages are available to your app).
+See [Quick Start](docs/guides/quick-start.md) (~10–15 minutes once packages are available to your app), or the public page once live: https://dndgem.dev/docs/quick-start/
 
 ### Illustrative React snippet
 
@@ -100,11 +104,12 @@ export function App() {
 
 ## Where to start
 
-1. [Developer guides](docs/guides/README.md) — full journey
-2. [Quick Start](docs/guides/quick-start.md)
-3. [Core Concepts](docs/guides/core-concepts.md)
-4. Validated examples: `examples/react`, `examples/vanilla`
-5. Public playground: https://dndgem-playground.pages.dev/
+1. [https://dndgem.dev](https://dndgem.dev) — canonical public product home
+2. [Developer guides](docs/guides/README.md) — full journey (in-repo)
+3. [Quick Start](docs/guides/quick-start.md)
+4. [Core Concepts](docs/guides/core-concepts.md)
+5. Validated examples: `examples/react`, `examples/vanilla`
+6. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/)
 
 ## Browser support
 
@@ -130,7 +135,9 @@ Details: [Limitations](docs/guides/limitations.md) · [Alpha API Contract](docs/
 
 ## Playground / demo
 
-Public playground (no authentication): **https://dndgem-playground.pages.dev/**
+Preferred public playground: **https://playground.dndgem.dev/**
+
+Provider URL (keep available): **https://dndgem-playground.pages.dev/**
 
 Local static build:
 
@@ -138,9 +145,16 @@ Local static build:
 pnpm --filter @dndgem/playground build
 ```
 
+Public landing site (static):
+
+```bash
+pnpm --filter @dndgem/www build
+```
+
 ## Feedback
 
 - Product / Alpha developer feedback: **`support@fingem-ai.com`**
+- Public support page: https://dndgem.dev/support/
 - Security: `security@fingem.ai` (`SECURITY.md`)
 - GitHub Issues are not reachable to external Alpha users while this repository remains **PRIVATE**.
 
