@@ -96,9 +96,10 @@ jobs:
       - name: Pack and packed-consumer validation
         run: pnpm test:pack
 
-      - name: Build playground and examples
+      - name: Build playground, www, and examples
         run: |
           pnpm --filter @dndgem/playground build
+          pnpm --filter @dndgem/www build
           pnpm --filter @dndgem/example-react build
           pnpm --filter @dndgem/example-vanilla build
 

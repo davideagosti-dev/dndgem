@@ -6,8 +6,9 @@ This package owns the domain model, content constraints, validity evaluation, sc
 
 ## Start here
 
-- Guides: repository `docs/guides/` (Quick Start, Core Concepts, Constraints)
-- Alpha contract: `docs/architecture/alpha-api-contract.md`
+- Website: https://dndgem.dev
+- Quick Start: https://dndgem.dev/docs/quick-start/
+- Support: https://dndgem.dev/support/
 
 Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 
@@ -15,7 +16,7 @@ Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 npm install @dndgem/core@alpha
 ```
 
-Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://dndgem-playground.pages.dev/
+Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/).
 
 ```ts
 import { createLayoutIntent, evaluateItemPlacement, solveLayout } from '@dndgem/core';

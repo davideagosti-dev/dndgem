@@ -4,9 +4,10 @@
   "description": "Renderer-agnostic core for DnDGem — domain model, content constraints, validity evaluation, layout scoring, and adaptive solver.",
   "author": "FinGem-AI",
   "license": "MIT",
-  "homepage": "https://github.com/davideagosti-dev/dndgem/tree/master/packages/core#readme",
+  "homepage": "https://dndgem.dev",
   "bugs": {
-    "url": "https://github.com/davideagosti-dev/dndgem/issues"
+    "url": "https://dndgem.dev/support/",
+    "email": "support@fingem-ai.com"
   },
   "repository": {
     "type": "git",

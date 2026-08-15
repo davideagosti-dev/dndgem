@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quick Start — DnDGem</title>
+    <meta
+      name="description"
+      content="Install @dndgem/react@alpha and reach a first working DnDGem layout in about 10–15 minutes."
+    />
+    <link rel="canonical" href="https://dndgem.dev/docs/quick-start/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Quick Start — DnDGem" />
+    <meta
+      property="og:description"
+      content="First working DnDGem React layout with the Public Alpha @alpha channel."
+    />
+    <meta property="og:url" content="https://dndgem.dev/docs/quick-start/" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-name">DnDGem</span>
+        <span class="brand-by">by FinGem-AI</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/docs/">Docs</a>
+        <a href="/docs/quick-start/" aria-current="page">Quick Start</a>
+        <a href="https://playground.dndgem.dev/">Playground</a>
+        <a href="/support/">Support</a>
+      </nav>
+    </header>
+
+    <main id="main" class="page prose">
+      <h1>Quick Start</h1>
+      <p class="lede">
+        Reach a first working DnDGem layout as a React developer in about 10–15 minutes once
+        packages are available to your app.
+      </p>
+
+      <h2>1. Install</h2>
+      <pre class="install"><code>npm install @dndgem/react@alpha</code></pre>
+      <p>
+        This pulls <code>@dndgem/dom</code> and <code>@dndgem/core</code>. For Vanilla DOM, install
+        <code>@dndgem/dom@alpha</code> instead. Always use <code>@alpha</code>
+        (<code>0.1.0-alpha.0</code>).
+      </p>
+      <p class="note">
+        Do not use bare <code>npm install @dndgem/react</code> as the documented Alpha path while
+        <code>latest</code> aliases the sole prerelease.
+      </p>
+
+      <h2>2. Minimal React board</h2>
+      <pre
+        class="install"
+      ><code>import { DnDGemProvider, useDnDGem, useDnDGemContainer, useDnDGemItem } from '@dndgem/react';
+
+const ITEMS = [
+  {
+    id: 'revenue',
+    constraints: {
+      minWidth: 96,
+      minHeight: 64,
+      minUsefulWidth: 140,
+      preferredWidth: 180,
+      preferredHeight: 88,
+    },
+  },
+];
+
+const DESIRED = {
+  revenue: { x: 12, y: 12, width: 180, height: 88 },
+};
+
+function Board() {
+  const containerRef = useDnDGemContainer();
+  const { state, ready } = useDnDGem();
+  const revenue = useDnDGemItem('revenue');
+
+  return (
+    &lt;main&gt;
+      &lt;p&gt;{ready &amp;&amp; state ? `${state.solver.evaluation.state} · ${state.phase}` : 'measuring…'}&lt;/p&gt;
+      &lt;div
+        ref={containerRef}
+        style={{ position: 'relative', width: 480, height: 240, resize: 'both', overflow: 'hidden' }}
+      &gt;
+        &lt;article ref={revenue.ref} style={{ background: '#2f6f5e', color: '#fff', ...revenue.style }}&gt;
+          Revenue
+        &lt;/article&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  );
+}
+
+export function App() {
+  return (
+    &lt;DnDGemProvider items={ITEMS} desiredPlacements={DESIRED}&gt;
+      &lt;Board /&gt;
+    &lt;/DnDGemProvider&gt;
+  );
+}</code></pre>
+
+      <h2>3. Rules that make this work</h2>
+      <ul>
+        <li>
+          Wrap the board in <code>DnDGemProvider</code> with <code>items</code> and
+          <code>desiredPlacements</code>.
+        </li>
+        <li>
+          Attach <code>useDnDGemContainer()</code> to a positioned containing block (<code
+            >position: relative</code
+          >).
+        </li>
+        <li>Merge <code>…item.style</code> after your visual styles so DnDGem owns geometry.</li>
+        <li>Mount on the client — provider is not a full SSR path.</li>
+        <li>Pointer drag and Escape cancel are supported; keyboard drag is deferred.</li>
+      </ul>
+
+      <h2>4. What you should see</h2>
+      <ul>
+        <li>Items absolutely positioned from the resolved layout</li>
+        <li>
+          Status showing <code>VALID</code> (or <code>DEGRADED</code> when usefulness is missed)
+        </li>
+        <li>Pointer drag proposing a new layout through Core</li>
+        <li>Container resize triggering measurement → reflow</li>
+      </ul>
+
+      <p>
+        Try the interactive demo:
+        <a href="https://playground.dndgem.dev/">playground.dndgem.dev</a>
+        (provider URL:
+        <a href="https://dndgem-playground.pages.dev/">dndgem-playground.pages.dev</a>).
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <nav aria-label="Footer">
+        <a href="/">Home</a>
+        <a href="/docs/">Docs</a>
+        <a href="/support/">Support</a>
+      </nav>
+      <p>DnDGem by FinGem-AI · Public Alpha · MIT</p>
+    </footer>
+  </body>
+</html>

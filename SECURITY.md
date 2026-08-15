@@ -10,6 +10,8 @@ Please report security issues privately. Do not open public issues for undisclos
 
 Preferred contact: **security@fingem.ai**
 
+Product / Alpha support (non-security): **support@fingem-ai.com** · https://dndgem.dev/support/
+
 Include:
 
 - description of the issue

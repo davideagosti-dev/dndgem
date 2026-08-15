@@ -1,0 +1,8 @@
+# Prefer trailing-slash routes for static Pages hosting.
+/docs/quick-start /docs/quick-start/ 301
+/support /support/ 301
+/docs /docs/ 301
+
+# Optional www → apex once www is attached in Cloudflare Pages.
+# Cloudflare custom-domain setup can also enforce this; keep as belt-and-suspenders.
+https://www.dndgem.dev/* https://dndgem.dev/:splat 301

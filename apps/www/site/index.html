@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DnDGem — Content-Aware Adaptive Layout Engine</title>
+    <meta
+      name="description"
+      content="DnDGem by FinGem-AI — drag, resize, and adapt dashboard layouts with content-aware constraints. Public Alpha."
+    />
+    <link rel="canonical" href="https://dndgem.dev/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="DnDGem — Content-Aware Adaptive Layout Engine" />
+    <meta
+      property="og:description"
+      content="Drag. Resize. Adapt. Without breaking your content. Public Alpha by FinGem-AI."
+    />
+    <meta property="og:url" content="https://dndgem.dev/" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-name">DnDGem</span>
+        <span class="brand-by">by FinGem-AI</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/docs/">Docs</a>
+        <a href="/docs/quick-start/">Quick Start</a>
+        <a href="https://playground.dndgem.dev/">Playground</a>
+        <a href="/support/">Support</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="hero-mark">DnDGem</p>
+        <p class="hero-by">by FinGem-AI</p>
+        <h1>Drag. Resize. Adapt. Without breaking your content.</h1>
+        <p class="hero-lead">
+          Content-aware adaptive layout for dashboard-style UIs. Geometric fit is not the same as
+          useful content — DnDGem evaluates both.
+        </p>
+        <div class="cta-row">
+          <a class="button button-primary" href="/docs/quick-start/">Quick Start</a>
+          <a class="button button-secondary" href="https://playground.dndgem.dev/"
+            >Open Playground</a
+          >
+        </div>
+        <p class="status-pill">Public Alpha live · 0.1.0-alpha.0 · channel @alpha</p>
+      </section>
+
+      <section class="section" aria-labelledby="distinction">
+        <h2 id="distinction">Fit ≠ useful</h2>
+        <p>
+          DnDGem solves layouts with content constraints, deterministic selection, and adaptive
+          reflow. A placement can be geometrically valid and still miss usefulness thresholds.
+        </p>
+        <pre class="distinction">GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL</pre>
+      </section>
+
+      <section class="section" aria-labelledby="install">
+        <h2 id="install">Install (Public Alpha)</h2>
+        <p>
+          Always install with the <code>@alpha</code> dist-tag. Bare / <code>latest</code> installs
+          are not the supported Alpha path while only a prerelease is published.
+        </p>
+        <pre class="install"><code># React (pulls @dndgem/dom + @dndgem/core)
+npm install @dndgem/react@alpha
+
+# Vanilla / DOM
+npm install @dndgem/dom@alpha</code></pre>
+      </section>
+
+      <section class="section" aria-labelledby="packages">
+        <h2 id="packages">Packages</h2>
+        <div class="grid grid-3">
+          <article class="tile">
+            <h3><code>@dndgem/core</code></h3>
+            <p>Domain model, constraints, validity, scoring, deterministic solver.</p>
+          </article>
+          <article class="tile">
+            <h3><code>@dndgem/dom</code></h3>
+            <p>Measurement, resize observation, drag interaction, Vanilla layout session.</p>
+          </article>
+          <article class="tile">
+            <h3><code>@dndgem/react</code></h3>
+            <p>Thin React adapter — provider and hooks over the DOM session.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="capabilities">
+        <h2 id="capabilities">Alpha capabilities</h2>
+        <div class="grid grid-2">
+          <article class="tile">
+            <h3>Shipped</h3>
+            <ul>
+              <li>Content-aware constraints</li>
+              <li>Deterministic solving</li>
+              <li>VALID / DEGRADED / INVALID</li>
+              <li>Responsive reflow</li>
+              <li>Pointer drag + Escape cancel</li>
+              <li>React and Vanilla / DOM</li>
+            </ul>
+          </article>
+          <article class="tile">
+            <h3>Browsers &amp; a11y</h3>
+            <ul>
+              <li>Chromium / Firefox / WebKit: supported for Alpha</li>
+              <li>Mobile: not validated</li>
+              <li>Baseline focus + consumer ARIA preservation</li>
+              <li>Keyboard drag deferred</li>
+              <li>Screen-reader drag announcements deferred</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="limits">
+        <h2 id="limits">Known Alpha limitations</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Area</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>API stability</td>
+                <td>0.x Alpha — may break between prereleases</td>
+              </tr>
+              <tr>
+                <td>Keyboard / SR drag</td>
+                <td>Deferred</td>
+              </tr>
+              <tr>
+                <td>Mobile / SSR / large-N</td>
+                <td>Not validated / not established</td>
+              </tr>
+              <tr>
+                <td>Auto-Layout / AI / Flutter</td>
+                <td>Not implemented</td>
+              </tr>
+              <tr>
+                <td>Rendering model</td>
+                <td>Absolute positioning inside a positioned container</td>
+              </tr>
+              <tr>
+                <td>npm <code>latest</code></td>
+                <td>Currently aliases the sole Alpha prerelease — use <code>@alpha</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="next">
+        <h2 id="next">Where to go next</h2>
+        <div class="grid grid-3">
+          <article class="tile">
+            <h3><a href="/docs/">Documentation</a></h3>
+            <p>Developer entry for concepts, packages, and Alpha boundaries.</p>
+          </article>
+          <article class="tile">
+            <h3><a href="/docs/quick-start/">Quick Start</a></h3>
+            <p>First working React layout in about 10–15 minutes.</p>
+          </article>
+          <article class="tile">
+            <h3><a href="https://playground.dndgem.dev/">Playground</a></h3>
+            <p>Interactive demo — no authentication. Provider URL remains available on Pages.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a>
+        <a href="/support/">Support</a>
+        <a href="https://playground.dndgem.dev/">Playground</a>
+        <a href="https://www.npmjs.com/package/@dndgem/react">npm</a>
+      </nav>
+      <p>
+        © FinGem-AI · MIT License · Support
+        <a href="mailto:support@fingem-ai.com">support@fingem-ai.com</a>
+        · Security
+        <a href="mailto:security@fingem.ai">security@fingem.ai</a>
+      </p>
+    </footer>
+  </body>
+</html>
