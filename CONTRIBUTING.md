@@ -62,7 +62,7 @@ See `docs/architecture/package-boundaries.md`.
 
 Use Changesets for consumer-visible library changes (`pnpm changeset`). Docs-only, CI-only, and test-only work does not need a package bump.
 
-Do not publish from local machines. The controlled publish workflow is `.github/workflows/publish.yml` (manual, dry-run by default). Public Alpha publication is DND-2.5 Stage B from the approved release ref (`master`) after promotion CI. See `docs/releases/dnd-2.5-stage-a-readiness.md`.
+Do not publish from local machines. The controlled publish workflow is `.github/workflows/publish.yml` (manual, dry-run by default, real publish from `master` only). Primary npm authentication is GitHub Actions OIDC → npm Trusted Publishing (not a long-lived `NPM_TOKEN` on the publish path). See `docs/architecture/release-strategy.md` and `docs/releases/dnd-2.5-stage-a-readiness.md`.
 
 ## Code of conduct
 
