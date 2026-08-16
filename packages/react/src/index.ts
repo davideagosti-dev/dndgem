@@ -11,7 +11,7 @@ import { getDomPackageInfo } from '@dndgem/dom';
 
 export const REACT_PACKAGE_NAME = '@dndgem/react' as const;
 
-export const REACT_PACKAGE_VERSION = '0.1.0-alpha.0' as const;
+export const REACT_PACKAGE_VERSION = '0.1.0-alpha.1' as const;
 
 /**
  * Marker used by workspace smoke tests to prove public exports and workspace links.

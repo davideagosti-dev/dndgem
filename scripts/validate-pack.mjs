@@ -692,12 +692,15 @@ assert(pre.tag === 'alpha', 'Changesets pre tag must be alpha');
 const pendingFirstAlphaPath = join(root, '.changeset', 'dnd-2-2-alpha-api.md');
 const consumedFirstAlphaPath = join(root, '.changeset', 'pre', 'dnd-2-2-alpha-api.md');
 const pendingAutoLayoutPath = join(root, '.changeset', 'dnd-3-4-auto-layout-dom-react.md');
+const consumedAutoLayoutPath = join(root, '.changeset', 'pre', 'dnd-3-4-auto-layout-dom-react.md');
 const versions = ['core', 'dom', 'react'].map(
   (name) => JSON.parse(readFileSync(join(root, 'packages', name, 'package.json'), 'utf8')).version,
 );
 const allAlpha0 = versions.every((v) => v === '0.1.0-alpha.0');
 const allZero = versions.every((v) => v === '0.0.0');
 const aligned = versions.every((v) => v === versions[0]);
+const alphaPrerelease = /^0\.1\.0-alpha\.\d+$/;
+const allAlphaPrerelease = versions.every((v) => alphaPrerelease.test(v));
 assert(aligned, `fixed package group versions must stay aligned; got ${versions.join(', ')}`);
 
 if (existsSync(pendingFirstAlphaPath)) {
@@ -734,9 +737,23 @@ if (existsSync(pendingFirstAlphaPath)) {
   } else {
     console.log('\nChangesets pre mode:', pre.tag, '— packages versioned at 0.1.0-alpha.0');
   }
+} else if (existsSync(consumedFirstAlphaPath) && existsSync(consumedAutoLayoutPath) && allAlphaPrerelease) {
+  assert(
+    !existsSync(pendingAutoLayoutPath),
+    'DND-3.4 changeset must be consumed (not still pending) once packages leave 0.1.0-alpha.0',
+  );
+  assert(
+    versions[0] !== '0.1.0-alpha.0',
+    'Consumed DND-3.4 Auto-Layout changeset expects packages beyond 0.1.0-alpha.0',
+  );
+  console.log(
+    '\nChangesets pre mode:',
+    pre.tag,
+    `— packages versioned at ${versions[0]} (Auto-Layout Alpha)`,
+  );
 } else {
   throw new Error(
-    'Expected pending first-Alpha changeset at 0.0.0, or consumed first-Alpha changeset with packages at 0.1.0-alpha.0',
+    'Expected pending first-Alpha changeset at 0.0.0, consumed first-Alpha at 0.1.0-alpha.0, or consumed DND-3.4 with aligned 0.1.0-alpha.x',
   );
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@dndgem/core",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha.1",
   "description": "Renderer-agnostic core for DnDGem — domain model, content constraints, validity evaluation, layout scoring, and adaptive solver.",
   "author": "DA62",
   "license": "MIT",
