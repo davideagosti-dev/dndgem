@@ -10,7 +10,7 @@
 Each iteration rebuilds a deterministic `LayoutIntent`, then runs:
 
 ```text
-createAutoLayoutProposal (INTERNAL)
+createAutoLayoutProposal (PUBLIC ALPHA minimal — was INTERNAL at DND-3.2 baseline)
         →
 solveLayout (public)
 ```

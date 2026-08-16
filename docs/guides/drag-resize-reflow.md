@@ -72,6 +72,18 @@ Pointer drag is the validated Alpha path (Chromium / Firefox / WebKit). Full key
 
 Both adapters implement the invariant above through `createLayoutSession` / `DnDGemProvider`. Application code should not pass `previous` when pushing a new `desiredPlacements` map.
 
+## Opt-in Auto-Layout (repository / next Alpha)
+
+Published npm `0.1.0-alpha.0` does **not** include Auto-Layout. With repository / next Alpha `autoLayout: true` (DOM) or `autoLayout` on `DnDGemProvider`:
+
+| Path           | Behavior                                                                                                                                |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Drag accept    | Promotes **only** the active item to Source Intent (strong persistent intent — not a pin). Sibling generated placements stay generated. |
+| Passive resize | May supply `previous` for stability; previous is never Source Intent. Core proposal may retain or reflow automatic items.               |
+| Partial intent | `desiredPlacements` may be incomplete; automatic items fill via `createAutoLayoutProposal` → `solveLayout`.                             |
+
+Default remains explicit-only (Auto-Layout off). See [Vanilla](./vanilla.md) / [React](./react.md).
+
 ## Related
 
 - [Core Concepts](./core-concepts.md)

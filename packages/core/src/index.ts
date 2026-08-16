@@ -90,3 +90,15 @@ export {
   type SolverSelectionReason,
   type SolverStrategy,
 } from './solve.js';
+
+/**
+ * Deterministic Auto-Layout proposal (DND-3.4 public Alpha).
+ * Compose with {@link solveLayout}; does not replace solver authority.
+ * Algorithm helpers such as `maxProbeCountForOccupancy` remain INTERNAL.
+ */
+export {
+  createAutoLayoutProposal,
+  type AutoLayoutProposal,
+  type AutoLayoutProposalInput,
+  type PlacementOrigin,
+} from './auto-layout.js';

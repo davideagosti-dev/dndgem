@@ -156,6 +156,7 @@ function packOne(dir) {
 }
 
 const coreSmoke = `import {
+  createAutoLayoutProposal,
   createLayoutIntent,
   getCorePackageInfo,
   solveLayout,
@@ -180,6 +181,24 @@ if (result.evaluation.state !== 'VALID' && result.evaluation.state !== 'DEGRADED
 if (result.resolved.placements.chart === undefined) {
   throw new Error('core solve did not place chart');
 }
+
+const proposal = createAutoLayoutProposal({
+  intent: createLayoutIntent({
+    space: { width: 400, height: 200 },
+    items: [
+      { id: 'a', constraints: { preferredWidth: 80, preferredHeight: 40, minWidth: 20 } },
+      { id: 'b', constraints: { preferredWidth: 80, preferredHeight: 40, minWidth: 20 } },
+    ],
+  }),
+});
+if (proposal.unplacedItemIds.length !== 0) {
+  throw new Error('expected fully automatic proposal to place both items');
+}
+const autoSolved = solveLayout({ intent: proposal.effectiveIntent });
+if (autoSolved.resolved.placements.a === undefined || autoSolved.resolved.placements.b === undefined) {
+  throw new Error('auto-layout compose did not place items');
+}
+
 console.log('core packed consumer smoke ok', info.version, result.evaluation.state);
 `;
 
@@ -245,6 +264,33 @@ if (state.resolved.placements.chart === undefined) {
   throw new Error('vanilla session did not resolve chart');
 }
 session.dispose();
+
+const autoContainer = document.createElement('div');
+const autoA = document.createElement('article');
+const autoB = document.createElement('article');
+document.body.append(autoContainer, autoA, autoB);
+stub(autoContainer, { left: 0, top: 0, width: 400, height: 200 });
+stub(autoA, { left: 0, top: 0, width: 80, height: 40 });
+stub(autoB, { left: 0, top: 0, width: 80, height: 40 });
+const autoSession = createLayoutSession({
+  container: autoContainer,
+  items: [
+    { id: 'a', element: autoA, constraints: { preferredWidth: 80, preferredHeight: 40, minWidth: 20 } },
+    { id: 'b', element: autoB, constraints: { preferredWidth: 80, preferredHeight: 40, minWidth: 20 } },
+  ],
+  autoLayout: true,
+  mechanics,
+  ResizeObserver: globalThis.ResizeObserver,
+});
+const autoState = autoSession.getState();
+if (autoState.autoLayout?.enabled !== true) {
+  throw new Error('expected autoLayout state when enabled');
+}
+if (autoState.resolved.placements.a === undefined || autoState.resolved.placements.b === undefined) {
+  throw new Error('auto-layout session did not place items');
+}
+autoSession.dispose();
+
 console.log('dom packed consumer smoke ok', info.version, state.solver.evaluation.state);
 `;
 

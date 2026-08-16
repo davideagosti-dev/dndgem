@@ -222,7 +222,7 @@ Phase 3 — Adaptive Auto-Layout (ACTIVE; sprint map APPROVED)
 
 Post-release canonical domain follow-up (`dndgem.dev` / `playground.dndgem.dev`): **COMPLETE** — see [Public site & domain hosting](./architecture/public-site.md).
 
-Phase 3 planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-3-planning-audit.md](./architecture/phase-3-planning-audit.md). DND-3.1 contract: [auto-layout-contract.md](./architecture/auto-layout-contract.md). DND-3.2/DND-3.3 engine: [auto-layout-engine.md](./architecture/auto-layout-engine.md). **Next sprint:** DND-3.4.
+Phase 3 planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-3-planning-audit.md](./architecture/phase-3-planning-audit.md). DND-3.1 contract: [auto-layout-contract.md](./architecture/auto-layout-contract.md). DND-3.2/DND-3.3 engine: [auto-layout-engine.md](./architecture/auto-layout-engine.md). **Next sprint:** DND-3.5.
 
 ---
 
@@ -230,7 +230,7 @@ Phase 3 planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase
 
 Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-3-planning-audit.md](./architecture/phase-3-planning-audit.md).
 
-**Entry gate:** READY. **Sprint map:** APPROVED (5 sprints). **Active sprint work:** DND-3.3 COMPLETE. **Next sprint:** DND-3.4 (not started).
+**Entry gate:** READY. **Sprint map:** APPROVED (5 sprints). **Active sprint work:** DND-3.4 COMPLETE. **Next sprint:** DND-3.5.
 
 Primary objective: reduce the authoring burden of complete desired rectangles while preserving deterministic constraint-aware solving.
 
@@ -265,9 +265,9 @@ DND-3.2 Deterministic Placement Engine        COMPLETE
         ↓
 DND-3.3 Stability / Adaptive Reflow & Hybrid  COMPLETE
         ↓
-DND-3.4 Drag / Partial Intent / DOM-React DX  NEXT
+DND-3.4 Drag / Partial Intent / DOM-React DX  COMPLETE
         ↓
-DND-3.5 Phase 3 Alpha Release Gate
+DND-3.5 Phase 3 Alpha Release Gate            NEXT
             ↓
 PHASE 3 PASS → next consumer Alpha (+ first real OIDC publish)
 ```
@@ -275,7 +275,7 @@ PHASE 3 PASS → next consumer Alpha (+ first real OIDC publish)
 ### Binding refinements (from planning audit)
 
 1. **DND-3.1 is contract-only** — semantics, architecture, invariants, test model, API proposal; no production Auto-Layout API / incomplete stubs.
-2. **Public enricher export is not yet approved** — classify as `PROPOSED PUBLIC ALPHA API / NOT YET APPROVED` until DND-3.1 proves necessity (name and shape TBD).
+2. **Minimal public enricher export approved (DND-3.4)** — `createAutoLayoutProposal` + types; DOM/React `autoLayout` opt-in. Broader freeze remains DND-3.5 / review. Published `0.1.0-alpha.0` does not include Auto-Layout yet.
 3. **Drag = strong persistent user intent**, not an absolute immutable pin; solver remains authoritative when geometry becomes infeasible.
 4. **Provenance required** — source intent vs generated/effective placement must stay distinguishable so hybrid auto items are not promoted to persistent explicit intent by accident.
 
@@ -302,7 +302,7 @@ PHASE 3 PASS → next consumer Alpha (+ first real OIDC publish)
 
 - **Objective:** Resize/reflow and hybrid explicit+automatic behavior with previous-layout stability **in Core**.
 - **Scope:** Feasible retention of strong explicit intent; reflow when infeasible; hybrid occupancy; Core interaction of previous layout with generated/unplaced proposal completeness; optional internal hybrid candidate only if enricher+existing strategies are insufficient.
-- **Out of scope:** DOM/React session product wiring; adapter consumption of `unplacedItemIds`; drag runtime integration (those belong to **DND-3.4**); animation; Large-N; second stability metric; Pin/Lock API.
+- **Out of scope:** DOM/React session product wiring; adapter consumption of proposal completeness; drag runtime integration (those belong to **DND-3.4**); animation; Large-N; second stability metric; Pin/Lock API.
 - **Dependencies:** DND-3.2.
 - **Closure:** Documented Core reflow/hybrid acceptance tests PASS.
 - **Status:** COMPLETE
@@ -311,11 +311,12 @@ PHASE 3 PASS → next consumer Alpha (+ first real OIDC publish)
 ### DND-3.4 — Drag / Partial Intent / DOM-React DX
 
 - **Objective:** Wire opt-in Auto-Layout through Vanilla session and React; confirm drag→strong intent; examples/playground/docs.
-- **Scope:** `@dndgem/dom` / `@dndgem/react` opt-in options; parity; session retention of Source Intent + origins; adapter/session handling of proposal completeness / `unplacedItemIds`; DX for partial intent; limited browser smoke.
-- **Out of scope:** Default-on Auto-Layout (breaking); keyboard/SR/mobile certification; React-only semantics; Core reflow algorithm ownership (DND-3.3).
+- **Scope:** `@dndgem/dom` / `@dndgem/react` opt-in options; parity; session retention of Source Intent + origins; adapter/session handling of proposal completeness / `proposalUnplacedItemIds`; DX for partial intent; limited browser smoke.
+- **Out of scope:** Default-on Auto-Layout (breaking); keyboard/SR/mobile certification; React-only semantics; Core reflow algorithm ownership (DND-3.3); DND-3.5 publish.
 - **Dependencies:** DND-3.3.
 - **Closure:** Vanilla≡React opt-in path; guides address intent authoring without full coordinates.
-- **Status:** NEXT (not started)
+- **Status:** COMPLETE
+- **Reference:** [alpha-api-contract.md](./architecture/alpha-api-contract.md), [auto-layout-engine.md](./architecture/auto-layout-engine.md), [Vanilla](./guides/vanilla.md), [React](./guides/react.md).
 
 ### DND-3.5 — Phase 3 Alpha Release Gate
 
@@ -324,7 +325,7 @@ PHASE 3 PASS → next consumer Alpha (+ first real OIDC publish)
 - **Out of scope:** Fake OIDC-only release; taking ownership of `latest`; repository visibility change.
 - **Dependencies:** DND-3.4.
 - **Closure:** Phase 3 PASS; next `0.1.0-alpha.x` (Changesets-determined) live on `alpha`; OIDC verified.
-- **Status:** PLANNED
+- **Status:** NEXT
 
 ### Phase 3 safe deferrals
 

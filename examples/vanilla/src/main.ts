@@ -28,7 +28,11 @@ function renderStatus(state: LayoutSessionState): void {
   }
   const validity = state.solver.evaluation.state;
   const phase = state.phase;
-  status.textContent = `${validity} · ${phase}`;
+  const auto =
+    state.autoLayout !== undefined
+      ? ` · auto proposal unresolved: ${state.autoLayout.proposalUnplacedItemIds.length}`
+      : '';
+  status.textContent = `${validity} · ${phase}${auto}`;
 }
 
 const session = createLayoutSession({
@@ -108,13 +112,10 @@ const session = createLayoutSession({
     },
   ],
   desiredPlacements: {
+    // Partial Source Intent — DnDGem Auto-Layout places the rest (opt-in).
     revenue: { x: 12, y: 12, width: 180, height: 88 },
-    expenses: { x: 204, y: 12, width: 180, height: 88 },
-    cashflow: { x: 396, y: 12, width: 280, height: 160 },
-    transactions: { x: 12, y: 112, width: 300, height: 200 },
-    alerts: { x: 324, y: 184, width: 120, height: 80 },
-    notes: { x: 456, y: 184, width: 200, height: 140 },
   },
+  autoLayout: true,
   onChange: renderStatus,
 });
 

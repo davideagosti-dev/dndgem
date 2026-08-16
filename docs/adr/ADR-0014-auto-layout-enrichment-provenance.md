@@ -1,14 +1,14 @@
 # ADR-0014: Deterministic Auto-Layout Enrichment & Placement Provenance
 
-- **Status:** Accepted (contract DND-3.1; Core engine INTERNAL in DND-3.2/DND-3.3; public API still not approved)
+- **Status:** Accepted (contract DND-3.1; Core engine DND-3.2/DND-3.3; minimal public Alpha export + DOM/React wiring approved in DND-3.4)
 - **Date:** 2026-08-16
-- **Sprint:** DND-3.1 / DND-3.2 / DND-3.3
+- **Sprint:** DND-3.1 / DND-3.2 / DND-3.3 / DND-3.4
 
 ## Context
 
-Phase 3 must reduce the authoring burden of complete desired rectangles without replacing the adaptive solver (ADR-0003 / ADR-0010). The Planning Audit approved Auto-Layout as composition with existing `solveLayout`, with four binding corrections: contract-only DND-3.1; no approved public enricher export yet; drag is strong intent not an absolute pin; and **source vs generated provenance must not collapse**.
+Phase 3 must reduce the authoring burden of complete desired rectangles without replacing the adaptive solver (ADR-0003 / ADR-0010). The Planning Audit approved Auto-Layout as composition with existing `solveLayout`, with four binding corrections: contract-only DND-3.1; cautious public enricher export; drag is strong intent not an absolute pin; and **source vs generated provenance must not collapse**.
 
-Today `LayoutIntent.desiredPlacements` is a flat map. DOM session seeding and drag commits can produce a complete placement map. If that map is later treated as durable consumer intent, automatic items become accidentally “pinned” and hybrid reflow collapses.
+Today `LayoutIntent.desiredPlacements` is a flat map. DOM session seeding and drag commits can produce a complete placement map. If that map is later treated as durable consumer intent, automatic items become accidentally durable Source Intent and hybrid reflow collapses.
 
 ## Decision
 
@@ -23,15 +23,15 @@ Today `LayoutIntent.desiredPlacements` is a flat map. DOM session seeding and dr
 6. **Drag:** An accepted drop promotes that item’s placement to Source Intent (strong persistent). It is **not** a new hard constraint, pin, lock, or immutable coordinate. When geometry becomes infeasible, hard constraints + solver remain authoritative.
 7. **Hybrid / partial intent:** MVP. Explicit items are occupancy inputs for automatic generation **while feasible**; they must not become immutable hard obstacles that override constraint feasibility. Automatic items must not displace feasible source-explicit items as enricher policy. The solver may still adapt sizes/positions under existing preserve/pack rules when evaluating effective input.
 8. **Opt-in:** Phase 3 Alpha Auto-Layout is **opt-in**. Explicit-only consumers must not silently change.
-9. **Public API:** Candidate shapes are **PROPOSED / NOT YET APPROVED**. DND-3.2 implements an **INTERNAL** Core proposal (`createAutoLayoutProposal`) returning effective intent + provenance; it is **not** exported from the package root and is **not** API-locked. Preferred public direction remains Option B after review — not a silent merge of generated rects into durable source desired maps.
+9. **Public API (DND-3.4 minimal approved):** Package-root export of `createAutoLayoutProposal` plus types `AutoLayoutProposal`, `AutoLayoutProposalInput`, and `PlacementOrigin`. DOM `createLayoutSession({ autoLayout?: boolean })` and React `DnDGemProvider` prop `autoLayout?: boolean` (default off). Algorithm helpers (`maxProbeCountForOccupancy`, sizing) remain INTERNAL. Broader freeze / next npm Alpha publish is DND-3.5. Published `0.1.0-alpha.0` does **not** include Auto-Layout yet.
 10. **Representation:** Provenance is carried as a parallel structure (origin map) owned by the Auto-Layout pipeline. `LayoutIntent` schema is unchanged. Schema changes need a later ADR if evidence demands them.
 11. **Validity vocabulary:** No parallel Auto-Layout statuses. Only VALID / DEGRADED / INVALID.
 
 ## Consequences
 
 - DND-3.2/DND-3.3 Core enrichment preserves origin metadata across compose and reflow cycles (see [auto-layout-engine.md](../architecture/auto-layout-engine.md)). Previous layout remains stability-only and is never an origin.
-- DOM/React (DND-3.4) must retain Source Intent separately from last effective/resolved geometry when Auto-Layout is enabled.
+- DOM/React (DND-3.4) retain Source Intent separately from last effective/resolved geometry when Auto-Layout is enabled; drag accept promotes only the active item.
 - Pin/Lock APIs remain deferred.
-- Extending this contract (public export freeze, `LayoutIntent` schema change, second validity language) is an ADR-level reopen.
+- Extending beyond the minimal public surface (`LayoutIntent` schema change, second validity language, default-on) is an ADR-level reopen.
 
 See [auto-layout-contract.md](../architecture/auto-layout-contract.md).

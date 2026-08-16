@@ -1,4 +1,5 @@
 import {
+  createAutoLayoutProposal,
   createLayoutIntent,
   solveLayout,
   type ContentConstraintsInput,
@@ -29,6 +30,20 @@ export interface LayoutSessionItemInput {
   readonly constraints?: ContentConstraintsInput;
 }
 
+/**
+ * Opt-in Auto-Layout session state (DND-3.4).
+ * Present only when `autoLayout: true` was supplied to {@link createLayoutSession}.
+ *
+ * `proposalUnplacedItemIds` lists automatic items for which the Core Auto-Layout
+ * **proposal** layer found no non-overlapping placement. This is proposal
+ * completeness metadata only — not solver INVALID, and not “absent from
+ * {@link ResolvedLayout}” (the solver may still place those items independently).
+ */
+export interface LayoutSessionAutoLayoutState {
+  readonly enabled: true;
+  readonly proposalUnplacedItemIds: readonly string[];
+}
+
 export interface LayoutSessionState {
   readonly intent: LayoutIntent;
   readonly resolved: ResolvedLayout;
@@ -37,12 +52,25 @@ export interface LayoutSessionState {
   readonly activeItemId?: string;
   readonly proposal?: DragProposal;
   readonly lastDrop?: DragDropResult;
+  readonly autoLayout?: LayoutSessionAutoLayoutState;
 }
 
 export interface LayoutSessionInput {
   readonly container: HTMLElement;
   readonly items: readonly LayoutSessionItemInput[];
+  /**
+   * Source Intent placements. With `autoLayout: true`, may be partial or omitted;
+   * remaining items are placed automatically. With Auto-Layout off (default),
+   * the existing explicit seeding path requires complete geometry via this map,
+   * previous layout, or measurement.
+   */
   readonly desiredPlacements?: Readonly<Record<string, RectInput>>;
+  /**
+   * Opt-in Auto-Layout (default `false`). When enabled, the session retains
+   * Source Intent separately from generated placements and composes
+   * `createAutoLayoutProposal` → `solveLayout`.
+   */
+  readonly autoLayout?: boolean;
   /**
    * Optional last committed layout for *continuation* solves (constraint
    * updates, remount, idle resize after the first commit).
@@ -51,6 +79,9 @@ export interface LayoutSessionInput {
    * `desiredPlacements` (initial mount or an external intent change). Passing
    * `previous` in that case lets ADR-0010 `preserve-previous` suppress the new
    * desired placement — the same class of bug DND-1.6 avoided for drag.
+   *
+   * With `autoLayout: true`, `previous` is a stability signal for the Core
+   * proposal (and for passive resize solves). It is never treated as Source Intent.
    *
    * Never supplied on the drag proposal path (`createDragInteraction`).
    */
@@ -81,10 +112,43 @@ function assertSessionInput(input: LayoutSessionInput): void {
   if (!Array.isArray(input.items) || input.items.length === 0) {
     throw new DomAdapterError('INVALID_SESSION_INPUT', 'items must be a non-empty array');
   }
+  if (input.autoLayout !== undefined && typeof input.autoLayout !== 'boolean') {
+    throw new DomAdapterError(
+      'INVALID_SESSION_INPUT',
+      'autoLayout must be a boolean when provided',
+    );
+  }
 }
 
-function cloneRect(rect: Rect): RectInput {
+function cloneRect(rect: Rect | RectInput): RectInput {
   return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+}
+
+function cloneDesiredMap(
+  desired: Readonly<Record<string, RectInput>> | undefined,
+): Record<string, RectInput> {
+  if (desired === undefined) {
+    return {};
+  }
+  const next: Record<string, RectInput> = {};
+  for (const [key, rect] of Object.entries(desired)) {
+    if (rect !== undefined) {
+      next[key] = cloneRect(rect);
+    }
+  }
+  return next;
+}
+
+function sourceDesiredKey(desired: Readonly<Record<string, RectInput>>): string {
+  const keys = Object.keys(desired).sort();
+  const normalized: Record<string, RectInput> = {};
+  for (const key of keys) {
+    const rect = desired[key];
+    if (rect !== undefined) {
+      normalized[key] = rect;
+    }
+  }
+  return JSON.stringify(normalized);
 }
 
 function rectsEqual(a: Rect, b: Rect): boolean {
@@ -127,6 +191,12 @@ function freezeState(state: LayoutSessionState): LayoutSessionState {
   }
   if (state.lastDrop !== undefined) {
     frozen.lastDrop = state.lastDrop;
+  }
+  if (state.autoLayout !== undefined) {
+    frozen.autoLayout = Object.freeze({
+      enabled: true as const,
+      proposalUnplacedItemIds: Object.freeze([...state.autoLayout.proposalUnplacedItemIds]),
+    });
   }
   return Object.freeze(frozen) as LayoutSessionState;
 }
@@ -195,7 +265,7 @@ function seedDesiredPlacements(
   return seeded;
 }
 
-function buildIntent(
+function buildExplicitIntent(
   descriptors: readonly LayoutSessionItemInput[],
   snapshot: DomMeasurementSnapshot,
   originalDesired: Readonly<Record<string, RectInput>> | undefined,
@@ -217,12 +287,18 @@ function buildIntent(
  * `solveLayout({ intent, previous })` so ADR-0010 stability can keep a
  * still-valid layout. Explicit author `desiredPlacements` (no `previous`) and
  * drag proposals stay on `solveLayout({ intent })` without Core `previous`.
+ *
+ * With `autoLayout: true`, the session owns Source Intent separately from
+ * generated placements. Effective intent is never persisted as Source Intent.
  */
 export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
   assertSessionInput(input);
 
   const descriptors = Object.freeze([...input.items]);
   const elements = toElementMap(descriptors);
+  const autoLayoutEnabled = input.autoLayout === true;
+  /** Durable Source Intent — never overwritten by generated/effective geometry. */
+  const sourceDesired = cloneDesiredMap(input.desiredPlacements);
   const originalDesired = input.desiredPlacements;
   const onChange = input.onChange;
   const onDrop = input.onDrop;
@@ -236,6 +312,8 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
   let committedResolved: ResolvedLayout | undefined = input.previous;
   let committedSolver: SolverResult | undefined;
   let lastDrop: DragDropResult | undefined;
+  let proposalUnplacedItemIds: readonly string[] = Object.freeze([]);
+  let lastSourceKey = '';
 
   const requireState = (): LayoutSessionState => {
     if (
@@ -254,6 +332,14 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
       activeItemId: drag?.activeItemId,
       proposal: drag?.proposal,
       lastDrop: drag?.lastDrop ?? lastDrop,
+      ...(autoLayoutEnabled
+        ? {
+            autoLayout: {
+              enabled: true as const,
+              proposalUnplacedItemIds,
+            },
+          }
+        : {}),
     });
   };
 
@@ -290,6 +376,48 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
     committedSolver = solver;
   };
 
+  const buildSourceIntent = (snapshot: DomMeasurementSnapshot): LayoutIntent => {
+    const items = toItemInputs(descriptors, snapshot);
+    if (Object.keys(sourceDesired).length === 0) {
+      return createLayoutIntent({
+        space: snapshot.space,
+        items,
+      });
+    }
+    return createLayoutIntent({
+      space: snapshot.space,
+      items,
+      desiredPlacements: { ...sourceDesired },
+    });
+  };
+
+  /**
+   * Auto-Layout idle / continuation solve.
+   * `previous` feeds the proposal for generated retention. Solver `previous` is
+   * supplied only on passive continuation (unchanged Source Intent) so ADR-0010
+   * cannot suppress a newly promoted / updated Source Intent rect.
+   */
+  const solveAutoLayoutIdle = (
+    snapshot: DomMeasurementSnapshot,
+    previous: ResolvedLayout | undefined,
+    allowSolvePrevious: boolean,
+  ): { intent: LayoutIntent; solver: SolverResult; unplaced: readonly string[] } => {
+    const sourceIntent = buildSourceIntent(snapshot);
+    const proposal = createAutoLayoutProposal({
+      intent: sourceIntent,
+      ...(previous !== undefined ? { previous } : {}),
+    });
+    const solver = solveLayout({
+      intent: proposal.effectiveIntent,
+      ...(allowSolvePrevious && previous !== undefined ? { previous } : {}),
+    });
+    return {
+      intent: proposal.effectiveIntent,
+      solver,
+      unplaced: proposal.unplacedItemIds,
+    };
+  };
+
   const connectInteraction = (): void => {
     if (committedIntent === undefined || committedResolved === undefined) {
       throw new DomAdapterError('INVALID_SESSION_INPUT', 'Cannot connect interaction before solve');
@@ -317,8 +445,31 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
         }
         lastDrop = event.result;
         if (event.result.accepted && event.result.resolved !== undefined) {
-          commitSolver(event.result.intent, event.result.solver);
-          applyCommitted();
+          if (autoLayoutEnabled) {
+            const itemId = event.result.itemId;
+            const acceptedDesired = event.result.intent.desiredPlacements?.[itemId];
+            if (acceptedDesired !== undefined) {
+              // Promote ONLY the active item to Source Intent (generated → source).
+              // Sibling rects seeded for drag stability must not become Source Intent.
+              sourceDesired[itemId] = cloneRect(acceptedDesired);
+            }
+            const snapshot = lastSnapshot;
+            if (snapshot !== undefined) {
+              // Recompose from durable Source Intent + previous sibling geometry.
+              // Omit solver previous so the new Source Intent wins (ADR-0010).
+              const next = solveAutoLayoutIdle(snapshot, event.result.resolved, false);
+              proposalUnplacedItemIds = Object.freeze([...next.unplaced]);
+              lastSourceKey = sourceDesiredKey(sourceDesired);
+              commitSolver(next.intent, next.solver);
+              applyCommitted();
+            } else {
+              commitSolver(event.result.intent, event.result.solver);
+              applyCommitted();
+            }
+          } else {
+            commitSolver(event.result.intent, event.result.solver);
+            applyCommitted();
+          }
         } else {
           applyCommitted();
         }
@@ -338,7 +489,29 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
   };
 
   const handleIdleSnapshot = (snapshot: DomMeasurementSnapshot): boolean => {
-    const intent = buildIntent(descriptors, snapshot, originalDesired, committedResolved);
+    if (autoLayoutEnabled) {
+      const currentKey = sourceDesiredKey(sourceDesired);
+      // Passive continuation: Source Intent unchanged since the last idle commit.
+      // First solve (lastSourceKey === '') and post-drag recomposes omit solver previous.
+      const allowSolvePrevious =
+        committedResolved !== undefined && currentKey === lastSourceKey && lastSourceKey !== '';
+      const solved = solveAutoLayoutIdle(snapshot, committedResolved, allowSolvePrevious);
+      proposalUnplacedItemIds = Object.freeze([...solved.unplaced]);
+      lastSourceKey = currentKey;
+      if (
+        committedResolved !== undefined &&
+        resolvedLayoutsEqual(solved.solver.resolved, committedResolved)
+      ) {
+        committedIntent = solved.intent;
+        committedSolver = solved.solver;
+        return false;
+      }
+      commitSolver(solved.intent, solved.solver);
+      applyCommitted();
+      return true;
+    }
+
+    const intent = buildExplicitIntent(descriptors, snapshot, originalDesired, committedResolved);
     const solver = solveLayout({
       intent,
       ...(committedResolved !== undefined ? { previous: committedResolved } : {}),

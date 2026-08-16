@@ -1,12 +1,14 @@
-# Auto-Layout Engine (DND-3.2 / DND-3.3)
+# Auto-Layout Engine (DND-3.2 / DND-3.3 / DND-3.4)
 
-Internal Core deterministic placement proposal engine with adaptive reflow stability.
+Core deterministic placement proposal engine with adaptive reflow stability, wired through DOM/React opt-in sessions (DND-3.4).
 
-**Status:** Implemented in `@dndgem/core` as **INTERNAL / NOT YET PUBLICLY FROZEN**.  
-**Sprints:** DND-3.2 (placement) · DND-3.3 (stability / adaptive reflow / hybrid)  
+**Status:** Core proposal **PUBLIC ALPHA (minimal)** — `createAutoLayoutProposal` + types exported from `@dndgem/core`. Algorithm helpers (`maxProbeCountForOccupancy`, sizing) remain **INTERNAL**. DOM/React consumer wiring COMPLETE (pending review/commit).  
+**Sprints:** DND-3.2 (placement) · DND-3.3 (stability / adaptive reflow / hybrid) · DND-3.4 (DOM/React opt-in)  
 **Product:** DnDGem by DA62
 
-Related: [auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md), [roadmap.md](../roadmap.md).
+Published npm `0.1.0-alpha.0` does **not** include Auto-Layout; this is repository / next Alpha capability.
+
+Related: [auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md), [alpha-api-contract.md](./alpha-api-contract.md), [roadmap.md](../roadmap.md).
 
 ---
 
@@ -19,7 +21,7 @@ Constraints / Geometry
         +
 Previous ResolvedLayout (optional; stability only)
         ↓
-createAutoLayoutProposal  (INTERNAL)
+createAutoLayoutProposal  (PUBLIC ALPHA — minimal)
         ↓
 Generated Placements + placementOrigins (source | generated)
         +
@@ -40,31 +42,33 @@ VALID / DEGRADED / INVALID → ResolvedLayout
 - Unplaced recovery across cycles
 - No automatic compaction MVP
 
-**Not in this engine:**
+**Consumer wiring (DND-3.4):**
 
-- DOM/React opt-in wiring, ResizeObserver, session state (DND-3.4)
-- Public Alpha export freeze
-- Drag runtime changes
+- Opt-in `createLayoutSession({ autoLayout: true })` / `DnDGemProvider` `autoLayout`
+- Session Source Intent retention; drag accept promotes only the active item
+- `LayoutSessionState.autoLayout.proposalUnplacedItemIds` for Auto-Layout **proposal** completeness (not “missing from ResolvedLayout”)
+
+**Still out of scope:**
+
+- Default-on Auto-Layout
+- Broader public API freeze beyond the minimal surface (DND-3.5 / review)
 - Pin/lock APIs
 - Sizing DSL / AI / global packing optimization
 
-Public Alpha consumers **cannot** enable Auto-Layout through documented React/Vanilla APIs yet (DND-3.4).
-
 ---
 
-## 2. Internal entry point
+## 2. Public entry point (minimal)
 
-Module: `packages/core/src/auto-layout.ts` (compiled to `dist/auto-layout.js`).
+Module: `packages/core/src/auto-layout.ts` (exported from `@dndgem/core` package root).
 
-| Symbol                      | Visibility |
-| --------------------------- | ---------- |
-| `createAutoLayoutProposal`  | INTERNAL   |
-| `AutoLayoutProposal`        | INTERNAL   |
-| `AutoLayoutProposalInput`   | INTERNAL   |
-| `PlacementOrigin`           | INTERNAL   |
-| `maxProbeCountForOccupancy` | INTERNAL   |
-
-Not exported from `@dndgem/core` package root. Tests and benchmarks import the module directly.
+| Symbol                      | Visibility                 |
+| --------------------------- | -------------------------- |
+| `createAutoLayoutProposal`  | **PUBLIC ALPHA (minimal)** |
+| `AutoLayoutProposal`        | **PUBLIC ALPHA (minimal)** |
+| `AutoLayoutProposalInput`   | **PUBLIC ALPHA (minimal)** |
+| `PlacementOrigin`           | **PUBLIC ALPHA (minimal)** |
+| `maxProbeCountForOccupancy` | INTERNAL                   |
+| sizing helpers              | INTERNAL                   |
 
 ### Input
 
@@ -226,7 +230,6 @@ Overall ≈ **`O(n² · p̄)`** with small bounded `p̄` (dashboard-scale Alpha)
 ## 7. Composition contract
 
 ```ts
-// INTERNAL illustration — not a frozen public API
 const proposal = createAutoLayoutProposal({ intent: sourceIntent, previous });
 // proposal.unplacedItemIds signals incomplete Auto-Layout placement
 const result = solveLayout({ intent: proposal.effectiveIntent, previous });
@@ -238,7 +241,9 @@ Auto-Layout does **not** bypass `solveLayout`. It does **not** emit Auto-specifi
 proposal completeness  ≠  solver VALID / DEGRADED / INVALID
 ```
 
-Opt-in: existing `solveLayout` behavior is unchanged unless a caller explicitly invokes the proposal engine.
+Opt-in: existing `solveLayout` behavior is unchanged unless a caller explicitly invokes the proposal engine (or enables session `autoLayout`).
+
+DOM/React (DND-3.4): `createLayoutSession({ autoLayout: true })` and `DnDGemProvider` `autoLayout` compose the same path and surface `proposalUnplacedItemIds` on session state (proposal completeness metadata; Core proposal objects still use `unplacedItemIds`).
 
 ---
 
@@ -250,5 +255,4 @@ Opt-in: existing `solveLayout` behavior is unchanged unless a caller explicitly 
 - No automatic compaction when space frees (Phase 3 Alpha policy)
 - Retention uses previous x/y + current size; infeasible resized candidates reflow
 - Order-dependent retention conflicts (documented; declaration order)
-- **DND-3.4 (adapters):** DOM/React session wiring, ResizeObserver, and adapter consumption of `unplacedItemIds` are not implemented here
-- Public API shape still **PROPOSED / NOT APPROVED**
+- Published `0.1.0-alpha.0` does not ship Auto-Layout; next Alpha publish is DND-3.5

@@ -83,6 +83,14 @@ function Board() {
       <div data-testid="phase">{state?.phase ?? 'none'}</div>
       <div data-testid="chart-x">{state?.resolved.placements.chart?.x ?? ''}</div>
       <div data-testid="validity">{state?.solver.evaluation.state ?? ''}</div>
+      <div data-testid="auto-layout">
+        {state?.autoLayout
+          ? JSON.stringify({
+              enabled: state.autoLayout.enabled,
+              proposalUnplacedItemIds: state.autoLayout.proposalUnplacedItemIds,
+            })
+          : ''}
+      </div>
       <div data-testid="resolved-json">
         {state
           ? JSON.stringify({
@@ -98,11 +106,16 @@ function Board() {
 function Harness({
   items = ITEMS,
   desiredPlacements = DESIRED,
+  autoLayout = false,
   strict = false,
   mechanics,
 }: {
   items?: readonly DnDGemItemConfig[];
-  desiredPlacements?: typeof DESIRED;
+  desiredPlacements?:
+    | typeof DESIRED
+    | Record<string, { x: number; y: number; width: number; height: number }>
+    | undefined;
+  autoLayout?: boolean;
   strict?: boolean;
   mechanics?: ReturnType<typeof createFakeDragMechanics>;
 }) {
@@ -110,6 +123,7 @@ function Harness({
     <DnDGemProvider
       items={items}
       desiredPlacements={desiredPlacements}
+      autoLayout={autoLayout}
       mechanics={mechanics?.adapter}
       ResizeObserver={FakeResizeObserver}
     >
@@ -403,5 +417,79 @@ describe('@dndgem/react integration', () => {
     expect(screen.getByTestId('item-chart').tabIndex).toBe(0);
     expect(screen.getByTestId('chart-action')).toBeTruthy();
     expect(screen.getByTestId('item-chart').style.left).toBe('8px');
+  });
+
+  it('opts into Auto-Layout and places items without complete desiredPlacements', () => {
+    const mechanics = createFakeDragMechanics();
+    render(<Harness mechanics={mechanics} autoLayout desiredPlacements={undefined} />);
+    expect(screen.getByTestId('ready').textContent).toBe('yes');
+    expect(screen.getByTestId('auto-layout').textContent).toContain('"enabled":true');
+    expect(screen.getByTestId('item-chart').style.left).not.toBe('');
+    expect(screen.getByTestId('item-table').style.left).not.toBe('');
+  });
+
+  it('matches Vanilla Auto-Layout ResolvedLayout for the same inputs', () => {
+    const mechanics = createFakeDragMechanics();
+    render(
+      <Harness
+        mechanics={mechanics}
+        autoLayout
+        desiredPlacements={{ chart: { x: 8, y: 8, width: 120, height: 60 } }}
+      />,
+    );
+    const reactResolved = JSON.parse(screen.getByTestId('resolved-json').textContent ?? '{}') as {
+      space: { width: number; height: number };
+      placements: Record<string, { x: number; y: number; width: number; height: number }>;
+    };
+    const reactAuto = JSON.parse(screen.getByTestId('auto-layout').textContent ?? '{}') as {
+      enabled: boolean;
+      proposalUnplacedItemIds: string[];
+    };
+
+    const vanillaMechanics = createFakeDragMechanics();
+    const container = document.createElement('div');
+    const chartEl = document.createElement('article');
+    const tableEl = document.createElement('article');
+    stubRect(container, { left: 0, top: 0, width: 400, height: 200 });
+    stubRect(chartEl, { left: 8, top: 8, width: 120, height: 60 });
+    stubRect(tableEl, { left: 140, top: 8, width: 80, height: 60 });
+    container.append(chartEl, tableEl);
+    document.body.append(container);
+    try {
+      const session = createLayoutSession({
+        container,
+        items: [
+          { id: 'chart', element: chartEl, constraints: ITEMS[0]?.constraints },
+          { id: 'table', element: tableEl, constraints: ITEMS[1]?.constraints },
+        ],
+        autoLayout: true,
+        desiredPlacements: { chart: { x: 8, y: 8, width: 120, height: 60 } },
+        mechanics: vanillaMechanics.adapter,
+        ResizeObserver: FakeResizeObserver,
+      });
+      const vanilla = session.getState();
+      expect(vanilla.resolved.space).toEqual(reactResolved.space);
+      expect(vanilla.resolved.placements).toEqual(reactResolved.placements);
+      expect(vanilla.autoLayout?.enabled).toBe(reactAuto.enabled);
+      expect(vanilla.autoLayout?.proposalUnplacedItemIds).toEqual(
+        reactAuto.proposalUnplacedItemIds,
+      );
+      session.dispose();
+    } finally {
+      container.remove();
+    }
+  });
+
+  it('promotes only the dragged Auto-Layout item on accept', () => {
+    const mechanics = createFakeDragMechanics();
+    render(<Harness mechanics={mechanics} autoLayout desiredPlacements={undefined} />);
+    act(() => {
+      mechanics.start('table');
+      mechanics.drop('table', { x: 24, y: 8 });
+    });
+    expect(screen.getByTestId('phase').textContent).toBe('idle');
+    // stubRect baseline for table is left:140 — drag translation is additive.
+    expect(screen.getByTestId('item-table').style.left).toBe('164px');
+    expect(screen.getByTestId('item-table').style.top).toBe('16px');
   });
 });

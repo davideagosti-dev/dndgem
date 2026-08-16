@@ -15,7 +15,7 @@ Phase 2 Public Alpha Readiness is **PASS** — Public Alpha **LIVE** (`0.1.0-alp
 
 Phase 3 — Adaptive Auto-Layout is **ACTIVE** (sprint map APPROVED). See `docs/architecture/phase-3-planning-audit.md` and `docs/roadmap.md`.
 
-**DND-3.1** contract COMPLETE. **DND-3.2** Core placement engine COMPLETE (INTERNAL; not publicly frozen). **DND-3.3** Core stability / adaptive reflow COMPLETE (INTERNAL; not publicly frozen). **Next sprint:** DND-3.4 — Drag / Partial Intent / DOM-React DX. Do not start DND-3.4 until this governance is the active sprint. Engine docs: `docs/architecture/auto-layout-engine.md`. Contract: `docs/architecture/auto-layout-contract.md` + ADR-0014.
+**DND-3.1** contract COMPLETE. **DND-3.2** Core placement engine COMPLETE. **DND-3.3** Core stability / adaptive reflow COMPLETE. **DND-3.4** Drag / Partial Intent / DOM-React DX COMPLETE. **Next sprint:** DND-3.5 — Phase 3 Alpha Release Gate. Do not start DND-3.5 until this governance is the active sprint. Engine docs: `docs/architecture/auto-layout-engine.md`. Contract: `docs/architecture/auto-layout-contract.md` + ADR-0014.
 
 ## CI policy (DND-2.3+)
 
@@ -29,13 +29,12 @@ Cursor MUST NOT introduce:
 - AI / Gemini / OpenAI / Anthropic / local model runtimes
 - Flutter implementation
 - Vue / Angular / Svelte implementations
-- Deterministic Auto-Layout **adapter/product wiring** (DND-3.4) until that sprint is active
 - Pin / Lock / fixed / manual placement APIs (deferred unless a sprint explicitly requires them)
 - cloud services / billing / Stripe
 - Layout CI SaaS / team accounts / enterprise functionality
 - custom native DnD engine
 - npm publication / repository visibility changes unless the active sprint explicitly requires it
-- Public Auto-Layout API freeze / package-root exports unless an explicit review approves them
+- Broader-than-minimal Public Auto-Layout API freeze unless an explicit review / DND-3.5 requires it
 
 unless the active sprint explicitly requires it.
 
@@ -45,13 +44,13 @@ AI is optional and outside the critical path; it follows deterministic Auto-Layo
 
 Repository remains PRIVATE unless an explicit release decision changes visibility.
 
-Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.0`). Do not document bare / `latest` installs as the supported Alpha path.
+Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.0`). Do not document bare / `latest` installs as the supported Alpha path. Do not claim published `0.1.0-alpha.0` already includes Auto-Layout — that is repository / next Alpha (DND-3.4 wired; DND-3.5 publish).
 
 ## Phase 3 binding refinements
 
 - Auto-Layout enrichs intent; existing `solveLayout` remains the only selection/validity authority.
 - Source intent vs generated/effective placement provenance must stay distinguishable.
 - Drag produces strong persistent user intent, not an absolute immutable pin.
-- Auto-Layout remains opt-in for Phase 3 Alpha.
-- Proposed public enricher APIs stay **NOT YET APPROVED** / **NOT FROZEN** (DND-3.2/DND-3.3 keep the engine INTERNAL).
+- Auto-Layout remains opt-in for Phase 3 Alpha (default off).
+- Minimal public enricher API approved (DND-3.4): `createAutoLayoutProposal` + types; DOM/React `autoLayout`. Broader freeze remains DND-3.5 / review.
 - Previous layout is stability-only input to Auto-Layout proposals; it is never an origin and never Source Intent.
