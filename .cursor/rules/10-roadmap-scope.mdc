@@ -1,5 +1,5 @@
 ---
-description: Roadmap scope lock after Phase 2 Public Alpha LIVE
+description: Roadmap scope lock — Phase 3 sprint map approved
 alwaysApply: true
 ---
 
@@ -15,7 +15,17 @@ Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE**:
 4. DND-2.4 Browser Matrix & Accessibility Baseline — COMPLETE
 5. DND-2.5 Public Alpha Release Gate — COMPLETE
 
-**Next phase:** Phase 3 — Adaptive Auto-Layout (do not start unless the active sprint requires it).
+Phase 3 — Adaptive Auto-Layout is **ACTIVE**. Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**; sprint map **APPROVED**:
+
+1. DND-3.1 Auto-Layout Contract & Core Model — **COMPLETE** (contract; see `docs/architecture/auto-layout-contract.md`, ADR-0014)
+2. DND-3.2 Deterministic Placement Engine — **NEXT**
+3. DND-3.3 Stability / Adaptive Reflow & Hybrid — PLANNED
+4. DND-3.4 Drag / Partial Intent / DOM-React DX — PLANNED
+5. DND-3.5 Phase 3 Alpha Release Gate — PLANNED
+
+Authoritative records: `docs/architecture/phase-3-planning-audit.md`, `docs/architecture/auto-layout-contract.md`.
+
+Do not begin a Phase 3 sprint’s work unless that sprint is the active sprint. Do not implement Auto-Layout production code until DND-3.2 is the active sprint.
 
 ## CI policy (DND-2.3+)
 
@@ -29,7 +39,7 @@ develop → master
 
 Do not pull into active work unless the sprint explicitly requires it:
 
-- Deterministic Auto-Layout (Phase 3)
+- Phase 3 Auto-Layout work outside the active DND-3.x sprint
 - AI-assisted layout intelligence (Phase 4, after Auto-Layout)
 - Flutter implementation (post-Alpha / Core-contract dependent; not blocked by AI)
 - Vue / Angular / Svelte adapters (post-alpha, demand-driven)
