@@ -18,6 +18,7 @@
     "format:check": "prettier --check .",
     "check:boundaries": "node scripts/check-boundaries.mjs",
     "check:docs-links": "node scripts/check-docs-links.mjs",
+    "check:publish-workflow": "node scripts/check-publish-workflow.mjs",
     "test:e2e": "playwright test",
     "test:e2e:chromium": "playwright test --project=chromium",
     "test:e2e:firefox": "playwright test --project=firefox",
