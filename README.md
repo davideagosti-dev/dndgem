@@ -69,7 +69,7 @@ pnpm --filter @dndgem/example-react dev
 
 ## Quick Start
 
-See [Quick Start](docs/guides/quick-start.md) (~10–15 minutes once packages are available to your app), or the public page once live: https://dndgem.dev/docs/quick-start/
+See [Quick Start](docs/guides/quick-start.md) (~10–15 minutes once packages are available to your app), or the public page: https://dndgem.dev/docs/quick-start/
 
 ### Illustrative React snippet
 

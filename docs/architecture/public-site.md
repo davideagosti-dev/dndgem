@@ -2,35 +2,70 @@
 
 Canonical public product identity for **DnDGem by FinGem-AI**.
 
+## Status
+
+| Surface                 | Classification     |
+| ----------------------- | ------------------ |
+| `dndgem.dev`            | **OWNED AND LIVE** |
+| `playground.dndgem.dev` | **LIVE**           |
+| TLS (both hosts)        | **ACTIVE**         |
+
+Post-release canonical-domain follow-up: **COMPLETE**.
+
 ## Canonical URLs
 
-| Role                     | URL                                  | Status                                          |
-| ------------------------ | ------------------------------------ | ----------------------------------------------- |
-| Product / developer home | https://dndgem.dev/                  | Domain owned; DNS/hosting configuration pending |
-| Docs entry               | https://dndgem.dev/docs/             | Served by `apps/www` once deployed              |
-| Quick Start              | https://dndgem.dev/docs/quick-start/ | Served by `apps/www` once deployed              |
-| Support                  | https://dndgem.dev/support/          | Served by `apps/www` once deployed              |
-| Playground (preferred)   | https://playground.dndgem.dev/       | Custom domain pending on existing Pages app     |
-| Playground (provider)    | https://dndgem-playground.pages.dev/ | LIVE                                            |
+| Role                     | URL                                  | Status                                        |
+| ------------------------ | ------------------------------------ | --------------------------------------------- |
+| Product / developer home | https://dndgem.dev/                  | **OWNED AND LIVE**                            |
+| Docs entry               | https://dndgem.dev/docs/             | LIVE (`apps/www`)                             |
+| Quick Start              | https://dndgem.dev/docs/quick-start/ | LIVE (`apps/www`)                             |
+| Support                  | https://dndgem.dev/support/          | LIVE (`apps/www`)                             |
+| Playground (canonical)   | https://playground.dndgem.dev/       | **LIVE**                                      |
+| Root provider / fallback | https://dndgem.pages.dev/            | LIVE (Cloudflare Pages; not product identity) |
+| Playground provider      | https://dndgem-playground.pages.dev/ | LIVE (fallback; not product identity)         |
 
 Do **not** treat these as canonical product homes:
 
 - `https://davideagosti.com/dndgem`
 - `https://dndgem.fingem-ai.com`
+- `https://dndgem.pages.dev` (provider URL only)
+- `https://dndgem-playground.pages.dev/` (provider / historical Alpha launch URL)
 
-## Architecture decision
-
-Separate deployments:
+## Topology
 
 ```text
-apps/www  →  Cloudflare Pages project (new)  →  dndgem.dev
-apps/playground → existing Cloudflare Pages project → playground.dndgem.dev
-                                              ↘ dndgem-playground.pages.dev (keep)
+Spaceship
+  ↓ registrar (domain registration remains at Spaceship)
+
+Cloudflare authoritative DNS
+  ├── dndgem.dev
+  │     ↓
+  │   Cloudflare Pages project: dndgem
+  │     · canonical: https://dndgem.dev
+  │     · provider:  https://dndgem.pages.dev
+  │
+  └── playground.dndgem.dev
+        ↓
+      Cloudflare Pages (existing playground project)
+        · canonical: https://playground.dndgem.dev
+        · provider:  https://dndgem-playground.pages.dev
 ```
 
-Rationale: product landing/docs stay static and decoupled from the interactive playground runtime. No library package depends on website hosting.
+| Layer             | Provider                                        |
+| ----------------- | ----------------------------------------------- |
+| Registrar         | Spaceship                                       |
+| Authoritative DNS | Cloudflare (nameservers delegated at registrar) |
+| Hosting / edge    | Cloudflare Pages                                |
 
-DNS authority remains at **Spaceship** (`launch1.spaceship.net` / `launch2.spaceship.net`) unless a later operational need justifies moving nameservers to Cloudflare.
+Spaceship remains the **registrar**. Cloudflare is **authoritative DNS** and the **hosting edge**. Both custom domains are proxied through Cloudflare with TLS active.
+
+Rationale for split deployments: product landing/docs stay static and decoupled from the interactive playground runtime. No library package depends on website hosting.
+
+```text
+apps/www        → Cloudflare Pages `dndgem`           → dndgem.dev
+apps/playground → existing Cloudflare Pages project → playground.dndgem.dev
+                                                  ↘ dndgem-playground.pages.dev (keep)
+```
 
 ## Repository artifacts
 
@@ -47,46 +82,40 @@ pnpm --filter @dndgem/www build
 pnpm --filter @dndgem/www test
 ```
 
-## External configuration (required for LIVE)
+## Maintenance / recovery
 
-Repository changes alone cannot make `dndgem.dev` resolve. Complete these manually:
+Initial DNS, custom-domain, and TLS activation for `dndgem.dev` and `playground.dndgem.dev` are **complete**. The steps below are for **maintenance or recovery only**, not pending setup.
 
-### A. Cloudflare Pages — root site (`dndgem.dev`)
+### Root site (`dndgem` Pages project)
 
-1. Cloudflare Dashboard → **Workers & Pages** → **Create** → **Pages**.
-2. Create a project for the root site (suggested name: `dndgem`).
-3. Deploy `apps/www/dist` (Direct Upload) **or** connect the private GitHub repo and set:
+1. Cloudflare Dashboard → **Workers & Pages** → project **`dndgem`**.
+2. Deploy `apps/www/dist` (Direct Upload) **or** connect the private GitHub repo with:
    - build command: `pnpm --filter @dndgem/www build`
    - output directory: `apps/www/dist`
    - root directory: repository root (or follow the UI’s monorepo guidance)
-4. **Custom domains** → add `dndgem.dev` (and optionally `www.dndgem.dev` if you want the www redirect).
-5. Copy the **exact** DNS records Cloudflare displays for verification / routing.
-   - Do not invent A / AAAA / CNAME / TXT values.
-   - For apex domains, Cloudflare may require CNAME flattening / ALIAS / specific records depending on the registrar UI.
+3. Custom domain `dndgem.dev` remains attached; restore from Cloudflare’s displayed DNS guidance if records drift.
+4. Keep provider URL `https://dndgem.pages.dev` available.
 
-### B. Cloudflare Pages — playground (`playground.dndgem.dev`)
+### Playground Pages project
 
 1. Open the existing Pages project that serves `https://dndgem-playground.pages.dev/`.
-2. **Custom domains** → add `playground.dndgem.dev`.
-3. Copy the **exact** DNS record(s) Cloudflare shows (typically a CNAME to the project’s `*.pages.dev` hostname, plus any verification TXT if requested).
-4. Keep `dndgem-playground.pages.dev` available; do not delete it.
+2. Custom domain `playground.dndgem.dev` remains attached; restore DNS only if records drift.
+3. Keep `https://dndgem-playground.pages.dev/` available; do not delete it.
 
-### C. Spaceship DNS
+### Registrar / DNS recovery
 
-1. Spaceship → domain **dndgem.dev** → **DNS**.
-2. Leave nameservers on Spaceship unless you intentionally migrate DNS to Cloudflare.
-3. Add only the records Cloudflare showed in steps A/B (type / name / target / TTL as displayed).
-4. Wait for DNS propagation, then confirm Cloudflare marks each custom domain as **Active**.
+1. Spaceship → domain **dndgem.dev** — confirm Cloudflare nameservers remain delegated.
+2. Cloudflare DNS zone — restore only records Cloudflare shows for the Pages custom domains (do not invent targets).
+3. Confirm Cloudflare marks each custom domain **Active** and TLS valid.
 
-### D. Post-config verification
+### Sanity checks
 
-Confirm externally before claiming LIVE:
-
-- `https://dndgem.dev/` → 200, intended landing, valid TLS
+- `https://dndgem.dev/` → intended landing, valid TLS
 - `https://dndgem.dev/docs/`, `/docs/quick-start/`, `/support/` → intended pages
 - `http://dndgem.dev/` → HTTPS upgrade (`.dev` is HSTS-preloaded)
-- `https://www.dndgem.dev/` → redirect to `https://dndgem.dev/` **if** www was configured
-- `https://playground.dndgem.dev/` → playground loads; provider URL still works
+- `https://www.dndgem.dev/` → redirect to `https://dndgem.dev/` if www is configured
+- `https://playground.dndgem.dev/` → playground loads
+- Provider URLs still resolve as fallbacks
 - No certificate mismatch / redirect loop
 
 ## Package metadata note

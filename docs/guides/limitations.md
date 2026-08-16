@@ -22,7 +22,7 @@ Honest boundaries for Public Alpha readiness. Deferred items are planned work, n
 | Persistence helpers    | Absent (`schemaVersion` principle only)                                         | later                                   |
 | Nested layouts         | Not a productized feature                                                       | later                                   |
 | Large-N scale          | Dashboard-scale evidence (~tens of items); not proven huge-N                    | later                                   |
-| Public playground      | https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/) | DND-2.5 + domain follow-up              |
+| Public playground      | https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/) | DND-2.5 + domain follow-up (COMPLETE)   |
 | Feedback path          | `support@fingem-ai.com` / https://dndgem.dev/support/ (repo remains PRIVATE)    | DND-2.5                                 |
 
 ## Positioning model
