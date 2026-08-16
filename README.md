@@ -130,7 +130,7 @@ Details: [Accessibility](docs/guides/accessibility.md)
 - Desktop Chromium / Firefox / WebKit validated; mobile not validated
 - Pointer drag + Escape cancel supported; keyboard drag deferred
 - `DnDGemProvider` is client-mount only (no full SSR claim)
-- No Auto-Layout, AI, Flutter, or other framework adapters yet
+- No Auto-Layout runtime yet (DND-3.1 contract complete; implementation in DND-3.2+); no AI, Flutter, or other framework adapters yet
 - Absolute-positioning rendering model
 
 Details: [Limitations](docs/guides/limitations.md) · [Alpha API Contract](docs/architecture/alpha-api-contract.md) · [Release notes](docs/releases/0.1.0-alpha.0.md)

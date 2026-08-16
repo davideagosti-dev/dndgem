@@ -20,7 +20,8 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 ## Current status
 
 - Technical MVP (Phase 1, DND-1.1 → DND-1.8) is **CLOSED**.
-- Active phase: **Phase 2 — Public Alpha Readiness** (`docs/roadmap.md`).
+- Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE** (`0.1.0-alpha.0` / `@alpha`).
+- Active phase: **Phase 3 — Adaptive Auto-Layout** (`docs/roadmap.md`). Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**; sprint map **APPROVED**. DND-3.1 Auto-Layout **contract** COMPLETE ([auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md)). **Next implementation:** DND-3.2 Deterministic Placement Engine.
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
 - `@dndgem/core` evaluates placements as `VALID` / `DEGRADED` / `INVALID` with deterministic scoring (DND-1.3).
@@ -29,11 +30,13 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 - `@dndgem/dom` converts browser drag mechanics into `LayoutIntent` proposals and drop accept/reject via the Core solver (DND-1.6).
 - `@dndgem/dom` `createLayoutSession` is the Vanilla integration entry; `@dndgem/react` is a thin lifecycle adapter over that session (DND-1.7).
 - DND-1.8 adds reproducible Core benchmarks, an acceptance matrix, and a Technical MVP closure report.
-- DND-2.1–DND-2.4 complete (engineering baseline, Alpha API/release infra, developer guides, browser/a11y baseline). **Next:** DND-2.5 Public Alpha Release Gate.
+- DND-2.1–DND-2.5 complete (engineering baseline through Public Alpha release gate, plus post-release DA62 / `dndgem.dev` follow-ups).
 
-**Technical MVP:** CLOSED
+**Technical MVP:** CLOSED · **Public Alpha:** LIVE · **Phase 3:** ACTIVE (DND-3.1 contract complete; DND-3.2 next)
 
 Developer journey: [../guides/README.md](../guides/README.md).
+See [auto-layout-contract.md](./auto-layout-contract.md) for the Phase 3 Auto-Layout contract (DND-3.1).
+See [phase-3-planning-audit.md](./phase-3-planning-audit.md) for the approved Phase 3 sprint map and binding refinements.
 See [alpha-api-contract.md](./alpha-api-contract.md) for the Alpha public surface and stability policy.
 See [core-domain.md](./core-domain.md) for domain, scoring, and solver semantics.
 See [dom-adapter.md](./dom-adapter.md) for DOM measurement, resize observation (ADR-0011), drag interaction (ADR-0012), and layout application (ADR-0013).
