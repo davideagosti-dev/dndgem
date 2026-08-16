@@ -1,8 +1,8 @@
 # ADR-0014: Deterministic Auto-Layout Enrichment & Placement Provenance
 
-- **Status:** Accepted (contract only; implementation deferred to DND-3.2+)
+- **Status:** Accepted (contract DND-3.1; Core engine INTERNAL in DND-3.2; public API still not approved)
 - **Date:** 2026-08-16
-- **Sprint:** DND-3.1
+- **Sprint:** DND-3.1 / DND-3.2
 
 ## Context
 
@@ -23,13 +23,13 @@ Today `LayoutIntent.desiredPlacements` is a flat map. DOM session seeding and dr
 6. **Drag:** An accepted drop promotes that item’s placement to Source Intent (strong persistent). It is **not** a new hard constraint, pin, lock, or immutable coordinate. When geometry becomes infeasible, hard constraints + solver remain authoritative.
 7. **Hybrid / partial intent:** MVP. Explicit items are occupancy inputs for automatic generation **while feasible**; they must not become immutable hard obstacles that override constraint feasibility. Automatic items must not displace feasible source-explicit items as enricher policy. The solver may still adapt sizes/positions under existing preserve/pack rules when evaluating effective input.
 8. **Opt-in:** Phase 3 Alpha Auto-Layout is **opt-in**. Explicit-only consumers must not silently change.
-9. **Public API:** Candidate shapes are **PROPOSED / NOT YET APPROVED**. No production export in DND-3.1. Preferred direction (unfrozen): a Core proposal operation that returns **effective intent + provenance** (`source` \| `generated`), then a separate `solveLayout` call — not a silent merge of generated rects into durable source desired maps.
-10. **Representation:** DND-3.1 does **not** require changing `LayoutIntent` schema. Provenance may be carried as a parallel structure (map/set of origins) owned by the Auto-Layout pipeline and, later, session state. Schema changes need a later ADR if evidence demands them.
+9. **Public API:** Candidate shapes are **PROPOSED / NOT YET APPROVED**. DND-3.2 implements an **INTERNAL** Core proposal (`createAutoLayoutProposal`) returning effective intent + provenance; it is **not** exported from the package root and is **not** API-locked. Preferred public direction remains Option B after review — not a silent merge of generated rects into durable source desired maps.
+10. **Representation:** Provenance is carried as a parallel structure (origin map) owned by the Auto-Layout pipeline. `LayoutIntent` schema is unchanged. Schema changes need a later ADR if evidence demands them.
 11. **Validity vocabulary:** No parallel Auto-Layout statuses. Only VALID / DEGRADED / INVALID.
 
 ## Consequences
 
-- DND-3.2 must implement Core enrichment that preserves origin metadata across compose cycles.
+- DND-3.2 Core enrichment preserves origin metadata across compose cycles (see [auto-layout-engine.md](../architecture/auto-layout-engine.md)).
 - DOM/React (DND-3.4) must retain Source Intent separately from last effective/resolved geometry when Auto-Layout is enabled.
 - Pin/Lock APIs remain deferred.
 - Extending this contract (public export freeze, `LayoutIntent` schema change, second validity language) is an ADR-level reopen.

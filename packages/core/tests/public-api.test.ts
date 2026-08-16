@@ -106,6 +106,14 @@ describe('@dndgem/core public API', () => {
     expect('packPlacements' in api).toBe(false);
     expect('SOLVER_STRATEGIES' in api).toBe(false);
   });
+
+  it('does not freeze Auto-Layout as a public Alpha export (DND-3.2)', async () => {
+    const api = await import('../src/index.js');
+    expect('createAutoLayoutProposal' in api).toBe(false);
+    expect('maxProbeCountForOccupancy' in api).toBe(false);
+    expect('resolveItemSize' in api).toBe(false);
+    expect('resolveAxisSize' in api).toBe(false);
+  });
 });
 
 describe('compile-time contracts', () => {
