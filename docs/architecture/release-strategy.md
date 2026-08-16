@@ -177,7 +177,7 @@ Target scope: `@dndgem`.
 
 Post-Alpha security follow-up: migrate primary publish auth to npm Trusted Publishing + GitHub Actions OIDC. Status: **CONFIGURED — PENDING FIRST REAL OIDC RELEASE** until a legitimate non-dry-run publish succeeds.
 
-Canonical public product home: **https://dndgem.dev** (static site in `apps/www`). Playground preferred host: **https://playground.dndgem.dev/** (custom domain on the existing Pages project; provider URL `https://dndgem-playground.pages.dev/` remains). See [Public site & domain hosting](./public-site.md).
+Canonical public product home: **https://dndgem.dev** (**OWNED AND LIVE**; static site in `apps/www`). Canonical playground: **https://playground.dndgem.dev/** (**LIVE**; provider fallback `https://dndgem-playground.pages.dev/` remains). See [Public site & domain hosting](./public-site.md).
 
 Authoritative Stage A register: `docs/releases/dnd-2.5-stage-a-readiness.md`.
 
