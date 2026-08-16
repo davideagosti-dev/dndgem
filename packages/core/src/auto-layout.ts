@@ -3,6 +3,7 @@ import { createRect, type Rect, type Size } from './geometry.js';
 import { itemIdToString } from './identity.js';
 import { createLayoutIntent, type LayoutIntent } from './intent.js';
 import type { LayoutItem } from './item.js';
+import type { ResolvedLayout } from './resolved.js';
 import { resolveItemSize, type SizingMode } from './sizing.js';
 
 /**
@@ -20,6 +21,9 @@ export type PlacementOrigin = 'source' | 'generated';
  * `intent.desiredPlacements` is treated as **Source Intent** (partial or complete).
  * Items without a desired placement are automatic and may receive generated geometry.
  *
+ * `previous` (optional) is a **stability signal only** (DND-3.3 / ADR-0010).
+ * It is never Source Intent, never an origin, and never a pin/lock.
+ *
  * INTERNAL — not part of the public Alpha API.
  */
 export interface AutoLayoutProposalInput {
@@ -29,6 +33,12 @@ export interface AutoLayoutProposalInput {
    * Defaults to `preferred`.
    */
   readonly sizingMode?: SizingMode;
+  /**
+   * Optional prior {@link ResolvedLayout} used only to retain feasible previous
+   * geometry for automatic items (retain-first / reflow-second).
+   * Callers must not treat this as provenance promotion.
+   */
+  readonly previous?: ResolvedLayout;
 }
 
 /**
@@ -156,6 +166,15 @@ function assertProposalInput(input: AutoLayoutProposalInput): void {
       'AutoLayoutProposalInput.intent.items must be an array',
     );
   }
+  if (
+    input.previous !== undefined &&
+    (input.previous === null || typeof input.previous !== 'object')
+  ) {
+    throw new DomainError(
+      'INVALID_AUTO_LAYOUT_INPUT',
+      'AutoLayoutProposalInput.previous must be a ResolvedLayout when provided',
+    );
+  }
 }
 
 function freezeOrigins(
@@ -168,21 +187,41 @@ function freezePlacements(placements: Record<string, Rect>): Readonly<Record<str
   return Object.freeze({ ...placements });
 }
 
+function commitGenerated(
+  key: string,
+  rect: Rect,
+  effectivePlacements: Record<string, Rect>,
+  origins: Record<string, PlacementOrigin>,
+  generatedPlacements: Record<string, Rect>,
+  occupied: OccupiedEntry[],
+): void {
+  effectivePlacements[key] = rect;
+  origins[key] = 'generated';
+  generatedPlacements[key] = rect;
+  occupied.push({ key, rect });
+}
+
 /**
- * Deterministic Auto-Layout proposal (DND-3.2).
+ * Deterministic Auto-Layout proposal (DND-3.2 + DND-3.3 stability).
  *
  * Pipeline:
  *   Source Intent (partial desiredPlacements)
- *     → greedy first-fit around feasible source occupancy
+ *     + optional previous ResolvedLayout (stability only)
+ *     → Stage A: feasible Source Intent occupancy
+ *     → Stage B: retain previous x/y with current size when feasible
+ *     → Stage C: bounded first-fit reflow for remaining automatic items
+ *     → Stage D: unplacedItemIds when no-fit
  *     → Generated Placements + origins (source | generated)
- *     → Effective LayoutIntent (+ unplacedItemIds when incomplete)
+ *     → Effective LayoutIntent
  *
- * Does not mutate the caller's intent. Does not declare VALID/DEGRADED/INVALID.
- * Does not replace `solveLayout`. Opt-in: existing `solveLayout` is unchanged
- * unless a caller explicitly invokes this function.
+ * Does not mutate the caller's intent or previous layout.
+ * Does not declare VALID/DEGRADED/INVALID. Does not replace `solveLayout`.
  *
  * Ordering: `LayoutIntent.items` declaration order (stable; no public priority).
  * Sizing: reuses {@link resolveItemSize} (preferred / useful / minimal).
+ * Retention: previous x/y is a stability preference; current width/height are
+ * authoritative. Size change alone does not force position change.
+ * Compaction: Phase 3 Alpha does **not** opportunistically repack when space frees.
  *
  * No-fit: when no probe yields a non-overlapping in-container placement, the item
  * remains **unplaced** (listed in `unplacedItemIds`). No fabricated rectangle is
@@ -197,6 +236,7 @@ export function createAutoLayoutProposal(input: AutoLayoutProposalInput): AutoLa
   const sizingMode: SizingMode = input.sizingMode ?? 'preferred';
   const space = intent.space;
   const sourcePlacements = intent.desiredPlacements;
+  const previousPlacements = input.previous?.placements;
 
   const effectivePlacements: Record<string, Rect> = {};
   const origins: Record<string, PlacementOrigin> = {};
@@ -204,7 +244,7 @@ export function createAutoLayoutProposal(input: AutoLayoutProposalInput): AutoLa
   const unplacedItemIds: string[] = [];
   const occupied: OccupiedEntry[] = [];
 
-  // Pass 1: lock feasible Source Intent as occupancy (do not relocate sources).
+  // Stage A — establish Source Intent occupancy (do not relocate sources).
   for (const item of intent.items) {
     const key = itemIdToString(item.id);
     const source = sourcePlacements?.[key];
@@ -220,24 +260,58 @@ export function createAutoLayoutProposal(input: AutoLayoutProposalInput): AutoLa
     }
   }
 
-  // Pass 2: generate for automatic items in declaration order.
+  // Stage B — retain previous x/y with current size for automatic items (declaration order).
+  // Retention is a preference, not a pin. Origin remains `generated` — never promoted to source.
+  // Current sizing is authoritative; previous width/height are not copied.
+  // No automatic compaction: free space does not force first-fit relocation.
+  if (previousPlacements !== undefined) {
+    for (const item of intent.items) {
+      const key = itemIdToString(item.id);
+      if (origins[key] === 'source') {
+        continue;
+      }
+
+      const previous = previousPlacements[key];
+      if (previous === undefined) {
+        continue;
+      }
+
+      const size = resolveItemSize(item, sizingMode, space);
+      // previous x/y + current size — never mutate previous ResolvedLayout entries.
+      const candidate = createRect({
+        x: previous.x,
+        y: previous.y,
+        width: size.width,
+        height: size.height,
+      });
+      if (!fitsInContainer(candidate, space)) {
+        continue;
+      }
+      if (overlapsAny(candidate, occupied)) {
+        continue;
+      }
+
+      commitGenerated(key, candidate, effectivePlacements, origins, generatedPlacements, occupied);
+    }
+  }
+
+  // Stage C — deterministic reflow / first placement for remaining automatic items.
+  // Previously unplaced items are retried here in declaration order (no starvation priority).
   for (const item of intent.items) {
     const key = itemIdToString(item.id);
-    if (origins[key] === 'source') {
+    if (origins[key] !== undefined) {
       continue;
     }
 
     const size = resolveItemSize(item, sizingMode, space);
     const rect = tryPlaceAutomaticItem(item, size, space, occupied);
     if (rect === undefined) {
+      // Stage D — no-fit: list as unplaced; no fabricated geometry; no origin entry.
       unplacedItemIds.push(key);
       continue;
     }
 
-    effectivePlacements[key] = rect;
-    origins[key] = 'generated';
-    generatedPlacements[key] = rect;
-    occupied.push({ key, rect });
+    commitGenerated(key, rect, effectivePlacements, origins, generatedPlacements, occupied);
   }
 
   const intentInput: {

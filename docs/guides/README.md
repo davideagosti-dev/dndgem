@@ -49,7 +49,7 @@ Architecture / contract references (not the day-one path):
 
 - [Alpha API Contract](../architecture/alpha-api-contract.md)
 - [Auto-Layout Contract (Phase 3 / DND-3.1)](../architecture/auto-layout-contract.md)
-- [Auto-Layout Engine (Phase 3 / DND-3.2 INTERNAL)](../architecture/auto-layout-engine.md)
+- [Auto-Layout Engine (Phase 3 / DND-3.2–3.3 INTERNAL)](../architecture/auto-layout-engine.md)
 - [Release Strategy](../architecture/release-strategy.md)
 - [Testing Strategy](../architecture/testing-strategy.md)
 - [Core Domain](../architecture/core-domain.md)

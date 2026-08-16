@@ -2,8 +2,8 @@
 
 Authoritative Phase 3 contract for deterministic Adaptive Auto-Layout.
 
-**Status:** Contract COMPLETE; Core engine implemented in DND-3.2 (**INTERNAL / not publicly frozen**).  
-**Sprint:** DND-3.1 (contract) → DND-3.2 (engine)  
+**Status:** Contract COMPLETE; Core engine implemented in DND-3.2 + DND-3.3 (**INTERNAL / not publicly frozen**).  
+**Sprint:** DND-3.1 (contract) → DND-3.2 (engine) → DND-3.3 (stability / reflow)  
 **Product:** DnDGem by DA62
 
 Related: [phase-3-planning-audit.md](./phase-3-planning-audit.md), [auto-layout-engine.md](./auto-layout-engine.md), [core-domain.md](./core-domain.md), [ADR-0006](../adr/ADR-0006-layout-intent-vs-resolved-layout.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [dom-adapter.md](./dom-adapter.md), [roadmap.md](../roadmap.md).
@@ -43,7 +43,7 @@ VALID / DEGRADED / INVALID → ResolvedLayout
 
 ### Sprint boundary
 
-DND-3.1 defined this contract. DND-3.2 implements the Core proposal engine as **INTERNAL** (see [auto-layout-engine.md](./auto-layout-engine.md)). Public exports and adapter wiring remain DND-3.4+ / API review.
+DND-3.1 defined this contract. DND-3.2/DND-3.3 implement the Core proposal + stability/reflow engine as **INTERNAL** (see [auto-layout-engine.md](./auto-layout-engine.md)). Public exports and adapter wiring remain DND-3.4+ / API review.
 
 ---
 
@@ -101,9 +101,7 @@ Not sources:
 
 ### Layer B — Generated Auto-Layout state
 
-Deterministic geometry for automatic items. May use previous resolved positions as **hints** for stability, without promoting them to Source Intent.
-
-Retention across cycles is allowed for stability, but retention **must keep origin = generated**.
+Deterministic geometry for automatic items. May use previous resolved **positions** (x/y) as **hints** for stability, applying the **current** authoritative size. Retention across cycles is allowed for stability, but retention **must keep origin = generated**. Size change alone does not force position change when the resized candidate remains feasible.
 
 ### Layer C — Effective Solver Input
 

@@ -15,7 +15,7 @@ Phase 2 Public Alpha Readiness is **PASS** — Public Alpha **LIVE** (`0.1.0-alp
 
 Phase 3 — Adaptive Auto-Layout is **ACTIVE** (sprint map APPROVED). See `docs/architecture/phase-3-planning-audit.md` and `docs/roadmap.md`.
 
-**DND-3.1** contract COMPLETE. **DND-3.2** Core placement engine COMPLETE (INTERNAL; not publicly frozen). **Next sprint:** DND-3.3 — Stability / Adaptive Reflow & Hybrid (**Core** reflow/stability only — not DOM/React adapters). Do not start DND-3.3 until this governance is the active sprint. Engine docs: `docs/architecture/auto-layout-engine.md`. Contract: `docs/architecture/auto-layout-contract.md` + ADR-0014.
+**DND-3.1** contract COMPLETE. **DND-3.2** Core placement engine COMPLETE (INTERNAL; not publicly frozen). **DND-3.3** Core stability / adaptive reflow COMPLETE (INTERNAL; not publicly frozen). **Next sprint:** DND-3.4 — Drag / Partial Intent / DOM-React DX. Do not start DND-3.4 until this governance is the active sprint. Engine docs: `docs/architecture/auto-layout-engine.md`. Contract: `docs/architecture/auto-layout-contract.md` + ADR-0014.
 
 ## CI policy (DND-2.3+)
 
@@ -29,7 +29,7 @@ Cursor MUST NOT introduce:
 - AI / Gemini / OpenAI / Anthropic / local model runtimes
 - Flutter implementation
 - Vue / Angular / Svelte implementations
-- Deterministic Auto-Layout **adapter/product wiring** (DND-3.4) or **stability/reflow product work** (DND-3.3) until that sprint is active
+- Deterministic Auto-Layout **adapter/product wiring** (DND-3.4) until that sprint is active
 - Pin / Lock / fixed / manual placement APIs (deferred unless a sprint explicitly requires them)
 - cloud services / billing / Stripe
 - Layout CI SaaS / team accounts / enterprise functionality
@@ -53,4 +53,5 @@ Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.0`). Do not document b
 - Source intent vs generated/effective placement provenance must stay distinguishable.
 - Drag produces strong persistent user intent, not an absolute immutable pin.
 - Auto-Layout remains opt-in for Phase 3 Alpha.
-- Proposed public enricher APIs stay **NOT YET APPROVED** / **NOT FROZEN** (DND-3.2 keeps the engine INTERNAL).
+- Proposed public enricher APIs stay **NOT YET APPROVED** / **NOT FROZEN** (DND-3.2/DND-3.3 keep the engine INTERNAL).
+- Previous layout is stability-only input to Auto-Layout proposals; it is never an origin and never Source Intent.

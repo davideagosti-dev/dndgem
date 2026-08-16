@@ -143,15 +143,15 @@ describe('createAutoLayoutProposal — provenance', () => {
     const intent = intentWith({ width: 400, height: 300 }, [
       { id: 'a', constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 } },
     ]);
-    // Previous is only a solve-time stability signal — proposal ignores it by design.
+    // Previous is a stability signal only — may retain geometry, never origin = source.
     const previous = createResolvedLayout({
       space: { width: 400, height: 300 },
       placements: { a: { x: 50, y: 50, width: 100, height: 80 } },
     });
 
-    const proposal = createAutoLayoutProposal({ intent });
+    const proposal = createAutoLayoutProposal({ intent, previous });
     expect(proposal.placementOrigins.a).toBe('generated');
-    expect(proposal.effectiveIntent.desiredPlacements?.a).not.toEqual(previous.placements.a);
+    expect(proposal.effectiveIntent.desiredPlacements?.a).toEqual(previous.placements.a);
 
     const solved = solveLayout({ intent: proposal.effectiveIntent, previous });
     expect(solved.evaluation.state).toBeDefined();
@@ -629,5 +629,771 @@ describe('createAutoLayoutProposal — opt-in / public surface', () => {
     expect('createAutoLayoutProposal' in api).toBe(false);
     expect('PlacementOrigin' in api).toBe(false);
     expect('AutoLayoutProposal' in api).toBe(false);
+  });
+});
+
+describe('createAutoLayoutProposal — DND-3.3 stability / adaptive reflow', () => {
+  const itemConstraints = {
+    preferredWidth: 100,
+    preferredHeight: 80,
+    minWidth: 40,
+    minHeight: 20,
+  };
+
+  it('retains a feasible previous generated placement', () => {
+    const intent = intentWith({ width: 400, height: 300 }, [
+      { id: 'a', constraints: itemConstraints },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 400, height: 300 },
+      placements: { a: { x: 120, y: 40, width: 100, height: 80 } },
+    });
+
+    const cold = createAutoLayoutProposal({ intent });
+    expect(cold.effectiveIntent.desiredPlacements?.a).toEqual({
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 80,
+    });
+
+    const stable = createAutoLayoutProposal({ intent, previous });
+    expect(stable.placementOrigins.a).toBe('generated');
+    expect(stable.effectiveIntent.desiredPlacements?.a).toEqual({
+      x: 120,
+      y: 40,
+      width: 100,
+      height: 80,
+    });
+    expect(stable.generatedPlacements.a).toEqual(stable.effectiveIntent.desiredPlacements?.a);
+  });
+
+  it('retains multiple generated placements and keeps declaration-order retention', () => {
+    const intent = intentWith({ width: 200, height: 200 }, [
+      { id: 'b', constraints: itemConstraints },
+      { id: 'c', constraints: itemConstraints },
+    ]);
+    // Both previous rects overlap — earlier declaration (b) retains; c must reflow/unplace.
+    const previous = createResolvedLayout({
+      space: { width: 200, height: 200 },
+      placements: {
+        b: { x: 0, y: 0, width: 100, height: 80 },
+        c: { x: 40, y: 20, width: 100, height: 80 },
+      },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.placementOrigins.b).toBe('generated');
+    expect(proposal.effectiveIntent.desiredPlacements?.b).toEqual({
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 80,
+    });
+    expect(proposal.placementOrigins.c).toBe('generated');
+    expect(proposal.effectiveIntent.desiredPlacements?.c).not.toEqual({
+      x: 40,
+      y: 20,
+      width: 100,
+      height: 80,
+    });
+    expect(
+      rectsOverlap(
+        proposal.effectiveIntent.desiredPlacements!.b!,
+        proposal.effectiveIntent.desiredPlacements!.c!,
+      ),
+    ).toBe(false);
+  });
+
+  it('reflows only the displaced generated item and keeps unaffected items stable', () => {
+    const previous = createResolvedLayout({
+      space: { width: 400, height: 200 },
+      placements: {
+        a: { x: 0, y: 0, width: 100, height: 80 },
+        b: { x: 100, y: 0, width: 100, height: 80 },
+        c: { x: 250, y: 0, width: 100, height: 80 },
+      },
+    });
+
+    // Insert source A occupying c's previous space — c must reflow; b retains.
+    const withSource = intentWith(
+      { width: 300, height: 200 },
+      [
+        { id: 'a', constraints: itemConstraints },
+        { id: 'b', constraints: itemConstraints },
+        { id: 'c', constraints: itemConstraints },
+      ],
+      {
+        a: { x: 250, y: 0, width: 100, height: 80 },
+      },
+    );
+
+    const proposal = createAutoLayoutProposal({ intent: withSource, previous });
+    expect(proposal.placementOrigins).toEqual({
+      a: 'source',
+      b: 'generated',
+      c: 'generated',
+    });
+    expect(proposal.effectiveIntent.desiredPlacements?.b).toEqual({
+      x: 100,
+      y: 0,
+      width: 100,
+      height: 80,
+    });
+    expect(proposal.effectiveIntent.desiredPlacements?.c).not.toEqual({
+      x: 250,
+      y: 0,
+      width: 100,
+      height: 80,
+    });
+    expect(proposal.effectiveIntent.desiredPlacements?.a).toEqual({
+      x: 250,
+      y: 0,
+      width: 100,
+      height: 80,
+    });
+  });
+
+  it('retains feasible placements on shrink and unplaces no-fit without fabrication', () => {
+    const constraints = {
+      preferredWidth: 80,
+      preferredHeight: 80,
+      minWidth: 20,
+      minHeight: 20,
+    };
+    const intent = intentWith({ width: 160, height: 80 }, [
+      { id: 'a', constraints },
+      { id: 'b', constraints },
+      { id: 'c', constraints },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 240, height: 80 },
+      placements: {
+        a: { x: 0, y: 0, width: 80, height: 80 },
+        b: { x: 80, y: 0, width: 80, height: 80 },
+        c: { x: 160, y: 0, width: 80, height: 80 },
+      },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.effectiveIntent.desiredPlacements?.a).toEqual({
+      x: 0,
+      y: 0,
+      width: 80,
+      height: 80,
+    });
+    expect(proposal.effectiveIntent.desiredPlacements?.b).toEqual({
+      x: 80,
+      y: 0,
+      width: 80,
+      height: 80,
+    });
+    expect(proposal.unplacedItemIds).toEqual(['c']);
+    expect(proposal.placementOrigins.c).toBeUndefined();
+    expect(proposal.effectiveIntent.desiredPlacements?.c).toBeUndefined();
+    expect(proposal.generatedPlacements.c).toBeUndefined();
+  });
+
+  it('keeps existing generated placements stable on growth and recovers unplaced items', () => {
+    const constraints = {
+      preferredWidth: 80,
+      preferredHeight: 80,
+      minWidth: 20,
+      minHeight: 20,
+    };
+    const smallIntent = intentWith({ width: 80, height: 80 }, [
+      { id: 'a', constraints },
+      { id: 'b', constraints },
+    ]);
+    const cycle1 = createAutoLayoutProposal({ intent: smallIntent });
+    expect(cycle1.placementOrigins.a).toBe('generated');
+    expect(cycle1.unplacedItemIds).toEqual(['b']);
+
+    const previous = createResolvedLayout({
+      space: { width: 80, height: 80 },
+      placements: { a: cycle1.generatedPlacements.a! },
+    });
+
+    const grown = intentWith({ width: 200, height: 80 }, [
+      { id: 'a', constraints },
+      { id: 'b', constraints },
+    ]);
+    const cycle2 = createAutoLayoutProposal({ intent: grown, previous });
+    expect(cycle2.effectiveIntent.desiredPlacements?.a).toEqual(previous.placements.a);
+    expect(cycle2.placementOrigins).toEqual({ a: 'generated', b: 'generated' });
+    expect(cycle2.unplacedItemIds).toEqual([]);
+    expect(cycle2.generatedPlacements.b).toBeDefined();
+  });
+
+  it('hybrid: retains source + stable generated and reflows blocked generated', () => {
+    const previous = createResolvedLayout({
+      space: { width: 400, height: 200 },
+      placements: {
+        a: { x: 0, y: 0, width: 100, height: 80 },
+        b: { x: 100, y: 0, width: 100, height: 80 },
+        c: { x: 200, y: 0, width: 100, height: 80 },
+        d: { x: 300, y: 0, width: 100, height: 80 },
+      },
+    });
+
+    // New source for A occupies former C space — C must reflow; B retains; A/D source.
+    const next = intentWith(
+      { width: 400, height: 200 },
+      [
+        { id: 'a', constraints: itemConstraints },
+        { id: 'b', constraints: itemConstraints },
+        { id: 'c', constraints: itemConstraints },
+        { id: 'd', constraints: itemConstraints },
+      ],
+      {
+        a: { x: 200, y: 0, width: 100, height: 80 },
+        d: { x: 300, y: 0, width: 100, height: 80 },
+      },
+    );
+
+    const proposal = createAutoLayoutProposal({ intent: next, previous });
+    expect(proposal.placementOrigins).toEqual({
+      a: 'source',
+      b: 'generated',
+      c: 'generated',
+      d: 'source',
+    });
+    expect(proposal.effectiveIntent.desiredPlacements?.b).toEqual({
+      x: 100,
+      y: 0,
+      width: 100,
+      height: 80,
+    });
+    expect(proposal.effectiveIntent.desiredPlacements?.c).not.toEqual({
+      x: 200,
+      y: 0,
+      width: 100,
+      height: 80,
+    });
+    expect(proposal.unplacedItemIds).toEqual([]);
+  });
+
+  it('hybrid + unplaced: source retained, generated retained, no-fit stays unplaced', () => {
+    const constraints = {
+      preferredWidth: 100,
+      preferredHeight: 100,
+      minWidth: 10,
+      minHeight: 10,
+    };
+    const intent = intentWith(
+      { width: 200, height: 100 },
+      [
+        { id: 'a', constraints },
+        { id: 'b', constraints },
+        { id: 'c', constraints },
+      ],
+      {
+        a: { x: 0, y: 0, width: 100, height: 100 },
+      },
+    );
+    const previous = createResolvedLayout({
+      space: { width: 300, height: 100 },
+      placements: {
+        a: { x: 0, y: 0, width: 100, height: 100 },
+        b: { x: 100, y: 0, width: 100, height: 100 },
+        c: { x: 200, y: 0, width: 100, height: 100 },
+      },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.placementOrigins).toEqual({ a: 'source', b: 'generated' });
+    expect(proposal.unplacedItemIds).toEqual(['c']);
+    expect(proposal.placementOrigins.c).toBeUndefined();
+    expect(proposal.effectiveIntent.desiredPlacements?.c).toBeUndefined();
+  });
+
+  it('source wins occupancy over previous generated geometry', () => {
+    const intent = intentWith(
+      { width: 300, height: 200 },
+      [
+        { id: 'a', constraints: itemConstraints },
+        { id: 'b', constraints: itemConstraints },
+      ],
+      {
+        a: { x: 50, y: 50, width: 100, height: 80 },
+      },
+    );
+    const previous = createResolvedLayout({
+      space: { width: 300, height: 200 },
+      placements: {
+        b: { x: 50, y: 50, width: 100, height: 80 },
+      },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.placementOrigins.a).toBe('source');
+    expect(proposal.effectiveIntent.desiredPlacements?.a).toEqual({
+      x: 50,
+      y: 50,
+      width: 100,
+      height: 80,
+    });
+    expect(proposal.placementOrigins.b).toBe('generated');
+    expect(proposal.effectiveIntent.desiredPlacements?.b).not.toEqual({
+      x: 50,
+      y: 50,
+      width: 100,
+      height: 80,
+    });
+    expect(
+      rectsOverlap(
+        proposal.effectiveIntent.desiredPlacements!.a!,
+        proposal.effectiveIntent.desiredPlacements!.b!,
+      ),
+    ).toBe(false);
+  });
+
+  it('generated → unplaced → generated keeps origin generated', () => {
+    const constraints = {
+      preferredWidth: 80,
+      preferredHeight: 80,
+      minWidth: 10,
+      minHeight: 10,
+    };
+    const large = intentWith({ width: 200, height: 80 }, [
+      { id: 'a', constraints },
+      { id: 'b', constraints },
+    ]);
+    const cycle1 = createAutoLayoutProposal({ intent: large });
+    expect(cycle1.placementOrigins).toEqual({ a: 'generated', b: 'generated' });
+
+    const midPrevious = createResolvedLayout({
+      space: { width: 200, height: 80 },
+      placements: {
+        a: cycle1.generatedPlacements.a!,
+        b: cycle1.generatedPlacements.b!,
+      },
+    });
+
+    const shrunk = intentWith({ width: 80, height: 80 }, [
+      { id: 'a', constraints },
+      { id: 'b', constraints },
+    ]);
+    const cycle2 = createAutoLayoutProposal({ intent: shrunk, previous: midPrevious });
+    expect(cycle2.placementOrigins.a).toBe('generated');
+    expect(cycle2.unplacedItemIds).toEqual(['b']);
+    expect(cycle2.placementOrigins.b).toBeUndefined();
+
+    const shrinkPrevious = createResolvedLayout({
+      space: { width: 80, height: 80 },
+      placements: { a: cycle2.generatedPlacements.a! },
+    });
+    const cycle3 = createAutoLayoutProposal({ intent: large, previous: shrinkPrevious });
+    expect(cycle3.placementOrigins).toEqual({ a: 'generated', b: 'generated' });
+    expect(cycle3.unplacedItemIds).toEqual([]);
+    expect(cycle3.effectiveIntent.desiredPlacements?.a).toEqual(shrinkPrevious.placements.a);
+  });
+
+  it('source → generated after source removal; generated → source via explicit input', () => {
+    const constraints = itemConstraints;
+    const asSource = intentWith({ width: 400, height: 300 }, [{ id: 'a', constraints }], {
+      a: { x: 80, y: 40, width: 100, height: 80 },
+    });
+    const cycle1 = createAutoLayoutProposal({ intent: asSource });
+    expect(cycle1.placementOrigins.a).toBe('source');
+
+    const previous = createResolvedLayout({
+      space: { width: 400, height: 300 },
+      placements: { a: { x: 80, y: 40, width: 100, height: 80 } },
+    });
+    const automatic = intentWith({ width: 400, height: 300 }, [{ id: 'a', constraints }]);
+    const cycle2 = createAutoLayoutProposal({ intent: automatic, previous });
+    expect(cycle2.placementOrigins.a).toBe('generated');
+    expect(cycle2.effectiveIntent.desiredPlacements?.a).toEqual({
+      x: 80,
+      y: 40,
+      width: 100,
+      height: 80,
+    });
+
+    const againSource = intentWith({ width: 400, height: 300 }, [{ id: 'a', constraints }], {
+      a: { x: 10, y: 10, width: 100, height: 80 },
+    });
+    const cycle3 = createAutoLayoutProposal({
+      intent: againSource,
+      previous: createResolvedLayout({
+        space: { width: 400, height: 300 },
+        placements: { a: cycle2.generatedPlacements.a! },
+      }),
+    });
+    expect(cycle3.placementOrigins.a).toBe('source');
+    expect(cycle3.effectiveIntent.desiredPlacements?.a).toEqual({
+      x: 10,
+      y: 10,
+      width: 100,
+      height: 80,
+    });
+  });
+
+  it('retains previous x/y with current size when size changes and position remains feasible', () => {
+    // Regression A: size change alone must not force first-fit relocation.
+    const intent = intentWith({ width: 500, height: 400 }, [
+      {
+        id: 'b',
+        constraints: {
+          preferredWidth: 220,
+          preferredHeight: 150,
+          minWidth: 40,
+          minHeight: 20,
+        },
+      },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 500, height: 400 },
+      placements: { b: { x: 100, y: 100, width: 200, height: 150 } },
+    });
+
+    const cold = createAutoLayoutProposal({ intent });
+    expect(cold.effectiveIntent.desiredPlacements?.b).toEqual({
+      x: 0,
+      y: 0,
+      width: 220,
+      height: 150,
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.placementOrigins.b).toBe('generated');
+    expect(proposal.effectiveIntent.desiredPlacements?.b).toEqual({
+      x: 100,
+      y: 100,
+      width: 220,
+      height: 150,
+    });
+  });
+
+  it('rejects retention when current-size rectangle at previous x/y is infeasible', () => {
+    // Regression B: grow at same x/y exits container → Stage C reflow.
+    const intent = intentWith({ width: 500, height: 300 }, [
+      {
+        id: 'b',
+        constraints: {
+          preferredWidth: 400,
+          preferredHeight: 150,
+          minWidth: 40,
+          minHeight: 20,
+        },
+      },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 500, height: 300 },
+      placements: { b: { x: 300, y: 100, width: 200, height: 150 } },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.placementOrigins.b).toBe('generated');
+    // 300+400 exceeds container → not retained; first-fit takes (0,0).
+    expect(proposal.effectiveIntent.desiredPlacements?.b).toEqual({
+      x: 0,
+      y: 0,
+      width: 400,
+      height: 150,
+    });
+  });
+
+  it('rejects resized retention that would overlap Source Intent', () => {
+    // Regression C: grow into source occupancy → source wins; generated reflows.
+    const intent = intentWith(
+      { width: 500, height: 300 },
+      [
+        {
+          id: 'a',
+          constraints: {
+            preferredWidth: 100,
+            preferredHeight: 100,
+            minWidth: 40,
+            minHeight: 20,
+          },
+        },
+        {
+          id: 'b',
+          constraints: {
+            preferredWidth: 160,
+            preferredHeight: 100,
+            minWidth: 40,
+            minHeight: 20,
+          },
+        },
+      ],
+      {
+        a: { x: 0, y: 0, width: 100, height: 100 },
+      },
+    );
+    const previous = createResolvedLayout({
+      space: { width: 500, height: 300 },
+      placements: {
+        a: { x: 0, y: 0, width: 100, height: 100 },
+        b: { x: 80, y: 0, width: 100, height: 100 },
+      },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.placementOrigins.a).toBe('source');
+    expect(proposal.effectiveIntent.desiredPlacements?.a).toEqual({
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    });
+    expect(proposal.placementOrigins.b).toBe('generated');
+    expect(proposal.effectiveIntent.desiredPlacements?.b).not.toEqual({
+      x: 80,
+      y: 0,
+      width: 160,
+      height: 100,
+    });
+    expect(
+      rectsOverlap(
+        proposal.effectiveIntent.desiredPlacements!.a!,
+        proposal.effectiveIntent.desiredPlacements!.b!,
+      ),
+    ).toBe(false);
+  });
+
+  it('retains earlier resized generated; later overlapping resized candidate reflows', () => {
+    // Regression D: declaration order — B retains; C overlaps B after grow → reflow.
+    const intent = intentWith({ width: 500, height: 300 }, [
+      {
+        id: 'b',
+        constraints: {
+          preferredWidth: 150,
+          preferredHeight: 100,
+          minWidth: 40,
+          minHeight: 20,
+        },
+      },
+      {
+        id: 'c',
+        constraints: {
+          preferredWidth: 150,
+          preferredHeight: 100,
+          minWidth: 40,
+          minHeight: 20,
+        },
+      },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 500, height: 300 },
+      placements: {
+        b: { x: 0, y: 0, width: 100, height: 100 },
+        c: { x: 120, y: 0, width: 100, height: 100 },
+      },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.effectiveIntent.desiredPlacements?.b).toEqual({
+      x: 0,
+      y: 0,
+      width: 150,
+      height: 100,
+    });
+    expect(proposal.placementOrigins.c).toBe('generated');
+    expect(proposal.effectiveIntent.desiredPlacements?.c).not.toEqual({
+      x: 120,
+      y: 0,
+      width: 150,
+      height: 100,
+    });
+    expect(
+      rectsOverlap(
+        proposal.effectiveIntent.desiredPlacements!.b!,
+        proposal.effectiveIntent.desiredPlacements!.c!,
+      ),
+    ).toBe(false);
+  });
+
+  it('retains previous x/y when dimensions shrink and does not compact to origin', () => {
+    const intent = intentWith({ width: 600, height: 400 }, [
+      {
+        id: 'b',
+        constraints: {
+          preferredWidth: 220,
+          preferredHeight: 180,
+          minWidth: 40,
+          minHeight: 20,
+        },
+      },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 600, height: 400 },
+      placements: { b: { x: 200, y: 100, width: 300, height: 200 } },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.placementOrigins.b).toBe('generated');
+    expect(proposal.effectiveIntent.desiredPlacements?.b).toEqual({
+      x: 200,
+      y: 100,
+      width: 220,
+      height: 180,
+    });
+  });
+
+  it('retains previous geometry when size is unchanged', () => {
+    const intent = intentWith({ width: 400, height: 300 }, [
+      {
+        id: 'a',
+        constraints: {
+          preferredWidth: 100,
+          preferredHeight: 80,
+          minWidth: 40,
+          minHeight: 20,
+        },
+      },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 400, height: 300 },
+      placements: { a: { x: 50, y: 50, width: 100, height: 80 } },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.effectiveIntent.desiredPlacements?.a).toEqual({
+      x: 50,
+      y: 50,
+      width: 100,
+      height: 80,
+    });
+  });
+
+  it('adding a new automatic item does not move retained existing items', () => {
+    const intent = intentWith({ width: 500, height: 200 }, [
+      { id: 'a', constraints: itemConstraints },
+      { id: 'b', constraints: itemConstraints },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 500, height: 200 },
+      placements: {
+        a: { x: 100, y: 20, width: 100, height: 80 },
+      },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.effectiveIntent.desiredPlacements?.a).toEqual({
+      x: 100,
+      y: 20,
+      width: 100,
+      height: 80,
+    });
+    expect(proposal.placementOrigins.b).toBe('generated');
+    expect(proposal.generatedPlacements.b).toBeDefined();
+  });
+
+  it('removing an item does not trigger automatic compaction', () => {
+    const intent = intentWith({ width: 500, height: 200 }, [
+      { id: 'b', constraints: itemConstraints },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 500, height: 200 },
+      placements: {
+        a: { x: 0, y: 0, width: 100, height: 80 },
+        b: { x: 150, y: 0, width: 100, height: 80 },
+      },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    // B stays at previous position even though (0,0) is free — no opportunistic compaction.
+    expect(proposal.effectiveIntent.desiredPlacements?.b).toEqual({
+      x: 150,
+      y: 0,
+      width: 100,
+      height: 80,
+    });
+    expect(proposal.placementOrigins.b).toBe('generated');
+  });
+
+  it('same current input + same previous → identical proposals (determinism)', () => {
+    const buildIntent = () =>
+      intentWith(
+        { width: 400, height: 300 },
+        [
+          { id: 'a', constraints: itemConstraints },
+          { id: 'b', constraints: itemConstraints },
+          { id: 'c', constraints: itemConstraints },
+        ],
+        {
+          a: { x: 0, y: 0, width: 100, height: 80 },
+        },
+      );
+    const previous = createResolvedLayout({
+      space: { width: 500, height: 300 },
+      placements: {
+        a: { x: 0, y: 0, width: 100, height: 80 },
+        b: { x: 120, y: 40, width: 100, height: 80 },
+        c: { x: 240, y: 40, width: 100, height: 80 },
+      },
+    });
+
+    const first = createAutoLayoutProposal({ intent: buildIntent(), previous });
+    for (let i = 0; i < 50; i += 1) {
+      expect(createAutoLayoutProposal({ intent: buildIntent(), previous })).toEqual(first);
+    }
+  });
+
+  it('does not mutate previous ResolvedLayout', () => {
+    const intent = intentWith({ width: 400, height: 300 }, [
+      { id: 'a', constraints: itemConstraints },
+      { id: 'b', constraints: itemConstraints },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 400, height: 300 },
+      placements: {
+        a: { x: 10, y: 10, width: 100, height: 80 },
+        b: { x: 120, y: 10, width: 100, height: 80 },
+      },
+    });
+    const before = structuredClone(previous);
+
+    createAutoLayoutProposal({ intent, previous });
+    expect(previous).toEqual(before);
+  });
+
+  it('adaptive reflow never fabricates no-fit geometry', () => {
+    const intent = intentWith(
+      { width: 100, height: 100 },
+      [
+        { id: 'a', constraints: { preferredWidth: 100, preferredHeight: 100, minWidth: 10 } },
+        { id: 'b', constraints: { preferredWidth: 80, preferredHeight: 80, minWidth: 10 } },
+      ],
+      {
+        a: { x: 0, y: 0, width: 100, height: 100 },
+      },
+    );
+    const previous = createResolvedLayout({
+      space: { width: 200, height: 100 },
+      placements: {
+        a: { x: 0, y: 0, width: 100, height: 100 },
+        b: { x: 100, y: 0, width: 80, height: 80 },
+      },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    expect(proposal.unplacedItemIds).toEqual(['b']);
+    expect(proposal.effectiveIntent.desiredPlacements?.b).toBeUndefined();
+    expect(proposal.generatedPlacements.b).toBeUndefined();
+    expect(proposal.placementOrigins.b).toBeUndefined();
+  });
+
+  it('composes stable proposal through solveLayout without new validity vocabulary', () => {
+    const intent = intentWith({ width: 400, height: 300 }, [
+      { id: 'a', constraints: itemConstraints },
+      { id: 'b', constraints: itemConstraints },
+    ]);
+    const previous = createResolvedLayout({
+      space: { width: 500, height: 300 },
+      placements: {
+        a: { x: 40, y: 20, width: 100, height: 80 },
+        b: { x: 160, y: 20, width: 100, height: 80 },
+      },
+    });
+
+    const proposal = createAutoLayoutProposal({ intent, previous });
+    const result = solveLayout({ intent: proposal.effectiveIntent, previous });
+    expect(['VALID', 'DEGRADED', 'INVALID']).toContain(result.evaluation.state);
+    expect(result.evaluation.state).toBe('VALID');
+    expect(proposal.placementOrigins).toEqual({ a: 'generated', b: 'generated' });
   });
 });
