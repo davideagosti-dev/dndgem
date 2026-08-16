@@ -195,7 +195,7 @@ When `autoLayout: true`:
 - `LayoutSessionState.autoLayout` is `{ enabled: true; proposalUnplacedItemIds }` (proposal completeness ≠ solver INVALID; ≠ final placement absence)
 - Passive resize may pass `previous` as stability input only — never as Source Intent
 
-Published npm `0.1.0-alpha.0` does **not** include this option. React mirrors it via `DnDGemProvider` prop `autoLayout?: boolean`.
+Available on published npm `@alpha` (`0.1.0-alpha.1`). React mirrors it via `DnDGemProvider` prop `autoLayout?: boolean`.
 
 `dispose()` disconnects interaction and observers and is idempotent. Layout-related inline styles are left in place; the consumer resets them if a pre-session look is required. Unrelated visual styles (color, font, z-index, …) are never written by the library.
 

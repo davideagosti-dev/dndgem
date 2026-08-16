@@ -29,13 +29,13 @@ SPRINT COUNT:
 5
 ```
 
-| Sprint      | Title                                | Decision                      | Implementation status                  |
-| ----------- | ------------------------------------ | ----------------------------- | -------------------------------------- |
-| **DND-3.1** | Auto-Layout Contract & Core Model    | **APPROVED with corrections** | COMPLETE (contract)                    |
-| **DND-3.2** | Deterministic Placement Engine       | **APPROVED**                  | COMPLETE                               |
-| **DND-3.3** | Stability / Adaptive Reflow & Hybrid | **APPROVED**                  | COMPLETE                               |
-| **DND-3.4** | Drag / Partial Intent / DOM-React DX | **APPROVED**                  | COMPLETE                               |
-| **DND-3.5** | Phase 3 Alpha Release Gate           | **APPROVED**                  | VALIDATION COMPLETE — READY TO RELEASE |
+| Sprint      | Title                                | Decision                      | Implementation status                |
+| ----------- | ------------------------------------ | ----------------------------- | ------------------------------------ |
+| **DND-3.1** | Auto-Layout Contract & Core Model    | **APPROVED with corrections** | COMPLETE (contract)                  |
+| **DND-3.2** | Deterministic Placement Engine       | **APPROVED**                  | COMPLETE                             |
+| **DND-3.3** | Stability / Adaptive Reflow & Hybrid | **APPROVED**                  | COMPLETE                             |
+| **DND-3.4** | Drag / Partial Intent / DOM-React DX | **APPROVED**                  | COMPLETE                             |
+| **DND-3.5** | Phase 3 Alpha Release Gate           | **APPROVED**                  | COMPLETE — `0.1.0-alpha.1` published |
 
 ---
 
@@ -188,4 +188,4 @@ AI / LLM inference · Flutter · Vue / Angular / Svelte · Pin/Lock API · group
 
 **Next action**
 
-DND-3.1–DND-3.4 are **COMPLETE**. **DND-3.5** local release-gate validation is **PASSED — READY TO RELEASE** (no npm publish, tag, or GitHub Release executed in the validation sprint). Published npm `0.1.0-alpha.0` still does **not** include Auto-Layout until release execution publishes the next Alpha.
+DND-3.1–DND-3.5 are **COMPLETE**. npm `0.1.0-alpha.1` is published under dist-tag `alpha` via Trusted Publishing / OIDC (see [0.1.0-alpha.1](../releases/0.1.0-alpha.1.md)). Phase 3 is **COMPLETE / RELEASED**.
