@@ -177,7 +177,7 @@ Target scope: `@dndgem`.
 | Public repository visibility | separate explicit decision                                                         |
 | Actual `npm publish`         | Stage B after master promotion                                                     |
 
-Post-Alpha security follow-up: migrate primary publish auth to npm Trusted Publishing + GitHub Actions OIDC. Status: **CONFIGURED — PENDING FIRST REAL OIDC RELEASE** until a legitimate non-dry-run publish succeeds.
+Post-Alpha security follow-up: migrate primary publish auth to npm Trusted Publishing + GitHub Actions OIDC. Status: **VERIFIED** on the first real OIDC publish (`0.1.0-alpha.1`, workflow run `31956912662`). `NPM_TOKEN` remains legacy fallback for non-publish admin/repair only until maintainers revoke it.
 
 Canonical public product home: **https://dndgem.dev** (**OWNED AND LIVE**; static site in `apps/www`). Canonical playground: **https://playground.dndgem.dev/** (**LIVE**; provider fallback `https://dndgem-playground.pages.dev/` remains). See [Public site & domain hosting](./public-site.md).
 
@@ -190,5 +190,6 @@ Authoritative Stage A register: `docs/releases/dnd-2.5-stage-a-readiness.md`.
 - **DND-2.2:** Alpha API contract, package metadata, pack validation, controlled publish workflow, dry-run only.
 - **DND-2.3:** Developer guides + CI promotion policy (GitHub CI on develop → master only).
 - **DND-2.5:** Public Alpha LIVE — `@dndgem/{core,dom,react}@0.1.0-alpha.0` under dist-tag `alpha`.
+- **DND-3.5:** Phase 3 Auto-Layout Alpha LIVE — `@dndgem/{core,dom,react}@0.1.0-alpha.1` under dist-tag `alpha` via Trusted Publishing / OIDC.
 
 Repository visibility (private → public) remains a **separate** gate from npm Alpha.

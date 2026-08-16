@@ -2,20 +2,22 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                           |
-| ------- | ------------------------------- | -------------------------------- |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                       |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)   |
-| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE** |
-| Phase 3 | Adaptive Auto-Layout            | **ACTIVE — RELEASE GATE PASSED** |
+| Phase   | Name                            | Status                                    |
+| ------- | ------------------------------- | ----------------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                                |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)            |
+| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**          |
+| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`) |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
 Phase 1 proved stable, deterministic, content-aware, constraint-driven adaptive layouts **without AI**.
 
-Phase 2 is **COMPLETE**: npm Public Alpha `0.1.0-alpha.0` is live under dist-tag `alpha`, with docs, examples, playground, and feedback path.
+Phase 2 is **COMPLETE**: first npm Public Alpha `0.1.0-alpha.0` shipped under dist-tag `alpha`.
 
-Repository remains **PRIVATE** by explicit decision for this first Alpha. npm packages are public; GitHub source/Issues may be inaccessible externally (see [release notes](./releases/0.1.0-alpha.0.md)).
+Phase 3 is **COMPLETE / RELEASED**: Adaptive Auto-Layout is live on npm as **`0.1.0-alpha.1`** (`@alpha`), published via Trusted Publishing / OIDC (see [0.1.0-alpha.1](./releases/0.1.0-alpha.1.md)).
+
+Repository remains **PRIVATE** by explicit decision. npm packages are public; GitHub source/Issues may be inaccessible externally.
 
 No committed calendar dates are attached to roadmap items.
 
@@ -217,20 +219,20 @@ Canonical founder-driven order: **2.1 → 2.2 → 2.3 → 2.4 → 2.5** (later w
 ```text
 PUBLIC ALPHA LIVE → external developer validation
         ↓
-Phase 3 — Adaptive Auto-Layout (ACTIVE; sprint map APPROVED)
+Phase 3 — Adaptive Auto-Layout (COMPLETE / RELEASED — 0.1.0-alpha.1)
 ```
 
 Post-release canonical domain follow-up (`dndgem.dev` / `playground.dndgem.dev`): **COMPLETE** — see [Public site & domain hosting](./architecture/public-site.md).
 
-Phase 3 planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-3-planning-audit.md](./architecture/phase-3-planning-audit.md). DND-3.1 contract: [auto-layout-contract.md](./architecture/auto-layout-contract.md). DND-3.2/DND-3.3 engine: [auto-layout-engine.md](./architecture/auto-layout-engine.md). **Next sprint:** DND-3.5.
+Phase 3 planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-3-planning-audit.md](./architecture/phase-3-planning-audit.md). DND-3.1 contract: [auto-layout-contract.md](./architecture/auto-layout-contract.md). DND-3.2/DND-3.3 engine: [auto-layout-engine.md](./architecture/auto-layout-engine.md). Release notes: [0.1.0-alpha.1](./releases/0.1.0-alpha.1.md).
 
 ---
 
-## Phase 3 — Adaptive Auto-Layout (ACTIVE)
+## Phase 3 — Adaptive Auto-Layout (COMPLETE / RELEASED)
 
 Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-3-planning-audit.md](./architecture/phase-3-planning-audit.md).
 
-**Entry gate:** READY. **Sprint map:** APPROVED (5 sprints). **Active sprint work:** DND-3.4 COMPLETE. **Next sprint:** DND-3.5.
+**Entry gate:** READY. **Sprint map:** APPROVED (5 sprints). **Status:** DND-3.1–DND-3.5 **COMPLETE**; npm `0.1.0-alpha.1` live on `@alpha`.
 
 Primary objective: reduce the authoring burden of complete desired rectangles while preserving deterministic constraint-aware solving.
 
@@ -267,15 +269,15 @@ DND-3.3 Stability / Adaptive Reflow & Hybrid  COMPLETE
         ↓
 DND-3.4 Drag / Partial Intent / DOM-React DX  COMPLETE
         ↓
-DND-3.5 Phase 3 Alpha Release Gate            NEXT
+DND-3.5 Phase 3 Alpha Release Gate            COMPLETE
             ↓
-PHASE 3 PASS → next consumer Alpha (+ first real OIDC publish)
+PHASE 3 COMPLETE / RELEASED → 0.1.0-alpha.1 @alpha (OIDC verified)
 ```
 
 ### Binding refinements (from planning audit)
 
 1. **DND-3.1 is contract-only** — semantics, architecture, invariants, test model, API proposal; no production Auto-Layout API / incomplete stubs.
-2. **Minimal public enricher export approved (DND-3.4)** — `createAutoLayoutProposal` + types; DOM/React `autoLayout` opt-in. Broader freeze remains DND-3.5 / review. Published `0.1.0-alpha.0` does not include Auto-Layout yet.
+2. **Minimal public enricher export approved (DND-3.4)** — `createAutoLayoutProposal` + types; DOM/React `autoLayout` opt-in. Broader freeze remains an explicit later review. Published on npm as of `0.1.0-alpha.1`.
 3. **Drag = strong persistent user intent**, not an absolute immutable pin; solver remains authoritative when geometry becomes infeasible.
 4. **Provenance required** — source intent vs generated/effective placement must stay distinguishable so hybrid auto items are not promoted to persistent explicit intent by accident.
 
@@ -324,8 +326,9 @@ PHASE 3 PASS → next consumer Alpha (+ first real OIDC publish)
 - **Scope:** Quality gates; Changesets version; develop→master CI; `@alpha` publish; release notes; API contract update; verify next package tarball/README metadata uses current DA62 / `dndgem.dev` identity (`support@dndgem.dev`, `https://playground.dndgem.dev/`, `https://dndgem.dev/`) — published `0.1.0-alpha.0` may still show legacy npm metadata and is not a DND-3.2 blocker.
 - **Out of scope:** Fake OIDC-only release; taking ownership of `latest`; repository visibility change.
 - **Dependencies:** DND-3.4.
-- **Closure:** Phase 3 PASS; next `0.1.0-alpha.x` (Changesets-determined) live on `alpha`; OIDC verified.
-- **Status:** VALIDATION COMPLETE — READY TO RELEASE (publish pending separate release execution)
+- **Closure:** Phase 3 PASS; `0.1.0-alpha.1` live on `alpha`; Trusted Publishing / OIDC verified (workflow run `31956912662`).
+- **Status:** COMPLETE
+- **Reference:** [0.1.0-alpha.1 release notes](./releases/0.1.0-alpha.1.md).
 
 ### Phase 3 safe deferrals
 

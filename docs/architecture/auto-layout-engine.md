@@ -2,11 +2,11 @@
 
 Core deterministic placement proposal engine with adaptive reflow stability, wired through DOM/React opt-in sessions (DND-3.4).
 
-**Status:** Core proposal **PUBLIC ALPHA (minimal)** — `createAutoLayoutProposal` + types exported from `@dndgem/core`. Algorithm helpers (`maxProbeCountForOccupancy`, sizing) remain **INTERNAL**. DOM/React consumer wiring COMPLETE (pending review/commit).  
-**Sprints:** DND-3.2 (placement) · DND-3.3 (stability / adaptive reflow / hybrid) · DND-3.4 (DOM/React opt-in)  
+**Status:** Core proposal **PUBLIC ALPHA (minimal)** — `createAutoLayoutProposal` + types exported from `@dndgem/core`. Algorithm helpers (`maxProbeCountForOccupancy`, sizing) remain **INTERNAL**. DOM/React consumer wiring COMPLETE.  
+**Sprints:** DND-3.2 (placement) · DND-3.3 (stability / adaptive reflow / hybrid) · DND-3.4 (DOM/React opt-in) · DND-3.5 (Alpha publish)  
 **Product:** DnDGem by DA62
 
-Published npm `0.1.0-alpha.0` does **not** include Auto-Layout; this is repository / next Alpha capability.
+Published on npm `@alpha` as of **`0.1.0-alpha.1`** (opt-in; default off).
 
 Related: [auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md), [alpha-api-contract.md](./alpha-api-contract.md), [roadmap.md](../roadmap.md).
 
@@ -255,4 +255,4 @@ DOM/React (DND-3.4): `createLayoutSession({ autoLayout: true })` and `DnDGemProv
 - No automatic compaction when space frees (Phase 3 Alpha policy)
 - Retention uses previous x/y + current size; infeasible resized candidates reflow
 - Order-dependent retention conflicts (documented; declaration order)
-- Published `0.1.0-alpha.0` does not ship Auto-Layout; next Alpha publish is DND-3.5
+- Published on npm `@alpha` as **`0.1.0-alpha.1`** (DND-3.5)

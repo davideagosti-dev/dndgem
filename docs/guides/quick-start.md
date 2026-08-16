@@ -31,7 +31,7 @@ See [Packages](./packages.md).
 npm install @dndgem/react@alpha
 ```
 
-This installs Public Alpha **`0.1.0-alpha.0`** via dist-tag **`alpha`**. Always use `@alpha` — do not treat bare installs / `latest` as a stable channel. See [release notes](../releases/0.1.0-alpha.0.md).
+This installs Public Alpha **`0.1.0-alpha.1`** via dist-tag **`alpha`**. Always use `@alpha` — do not treat bare installs / `latest` as a stable channel (`latest` still points at historical `0.1.0-alpha.0`). See [release notes](../releases/0.1.0-alpha.1.md).
 
 Public product home: [https://dndgem.dev](https://dndgem.dev). Hosted Quick Start mirror: [https://dndgem.dev/docs/quick-start/](https://dndgem.dev/docs/quick-start/).
 
@@ -125,6 +125,29 @@ export function App() {
   );
 }
 ```
+
+### Opt-in Auto-Layout (partial intent)
+
+Auto-Layout is **off by default**. Pass `autoLayout` when some desired rectangles may be omitted:
+
+```tsx
+export function AppAuto() {
+  return (
+    <DnDGemProvider
+      autoLayout
+      items={ITEMS}
+      desiredPlacements={{
+        revenue: DESIRED.revenue,
+        // cashflow omitted — Auto-Layout proposes it
+      }}
+    >
+      <Board />
+    </DnDGemProvider>
+  );
+}
+```
+
+Proposal completeness (distinct from solver validity) is available on session state as `state.autoLayout?.proposalUnplacedItemIds` when Auto-Layout is enabled. See [Vanilla](./vanilla.md) / [React](./react.md) and [0.1.0-alpha.1](../releases/0.1.0-alpha.1.md).
 
 ### Rules that make this work
 

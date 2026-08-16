@@ -135,7 +135,7 @@ const proposal = createAutoLayoutProposal({ intent, previous? });
 const result = solveLayout({ intent: proposal.effectiveIntent, previous? });
 ```
 
-Auto-Layout is **opt-in**. Calling `solveLayout` alone is unchanged. Published npm `0.1.0-alpha.0` does **not** include this export yet; it is repository / next Alpha capability (DND-3.4). Alpha breaking-change policy above is unchanged.
+Auto-Layout is **opt-in**. Calling `solveLayout` alone is unchanged. Available on published npm `@alpha` (`0.1.0-alpha.1`). Alpha breaking-change policy above is unchanged.
 
 ### Internal to Core (not public)
 
@@ -170,7 +170,7 @@ Types include measurement snapshots, session/interaction state, drag events, and
 - `LayoutSessionState.autoLayout` is `{ enabled: true; proposalUnplacedItemIds: readonly string[] }` (Auto-Layout **proposal** completeness only — not solver INVALID, and not “missing from ResolvedLayout”)
 - Accepted drag promotes **only** the active item to Source Intent (strong persistent intent — not a pin/lock)
 
-Default / omitted `autoLayout` keeps the existing explicit-only seeding path. Published npm `0.1.0-alpha.0` does **not** include this option yet.
+Default / omitted `autoLayout` keeps the existing explicit-only seeding path. Available on published npm `@alpha` (`0.1.0-alpha.1`).
 
 ### Advanced / escape-hatch (supported, not the default app API)
 
@@ -208,7 +208,7 @@ Types:
 - `createDragInteraction` / `createLayoutSession` (consume via `@dndgem/dom` if needed)
 - `@dnd-kit/*`
 
-`DnDGemProvider` accepts optional `autoLayout?: boolean` (default off; mirrors DOM session), plus optional `mechanics` and `ResizeObserver` for tests. Application consumers do not need the test seams. Published npm `0.1.0-alpha.0` does **not** include `autoLayout` yet.
+`DnDGemProvider` accepts optional `autoLayout?: boolean` (default off; mirrors DOM session), plus optional `mechanics` and `ResizeObserver` for tests. Application consumers do not need the test seams. Available on published npm `@alpha` (`0.1.0-alpha.1`).
 
 Hook contract:
 

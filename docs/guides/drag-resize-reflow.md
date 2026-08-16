@@ -72,9 +72,9 @@ Pointer drag is the validated Alpha path (Chromium / Firefox / WebKit). Full key
 
 Both adapters implement the invariant above through `createLayoutSession` / `DnDGemProvider`. Application code should not pass `previous` when pushing a new `desiredPlacements` map.
 
-## Opt-in Auto-Layout (repository / next Alpha)
+## Opt-in Auto-Layout
 
-Published npm `0.1.0-alpha.0` does **not** include Auto-Layout. With repository / next Alpha `autoLayout: true` (DOM) or `autoLayout` on `DnDGemProvider`:
+Available on published npm `@alpha` (`0.1.0-alpha.1`). With `autoLayout: true` (DOM) or `autoLayout` on `DnDGemProvider`:
 
 | Path           | Behavior                                                                                                                                |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
