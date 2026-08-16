@@ -21,7 +21,7 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 
 - Technical MVP (Phase 1, DND-1.1 → DND-1.8) is **CLOSED**.
 - Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE** (`0.1.0-alpha.0` / `@alpha`).
-- Active phase: **Phase 3 — Adaptive Auto-Layout** (`docs/roadmap.md`). Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**; sprint map **APPROVED**. DND-3.1 Auto-Layout **contract** COMPLETE ([auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md)). **Next implementation:** DND-3.2 Deterministic Placement Engine.
+- Active phase: **Phase 3 — Adaptive Auto-Layout** (`docs/roadmap.md`). Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**; sprint map **APPROVED**. DND-3.1 Auto-Layout **contract** COMPLETE ([auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md)). DND-3.2 Core placement engine **COMPLETE** as **INTERNAL** ([auto-layout-engine.md](./auto-layout-engine.md)). **Next:** DND-3.3 Stability / Adaptive Reflow & Hybrid (Core; not started).
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
 - `@dndgem/core` evaluates placements as `VALID` / `DEGRADED` / `INVALID` with deterministic scoring (DND-1.3).
@@ -32,10 +32,11 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 - DND-1.8 adds reproducible Core benchmarks, an acceptance matrix, and a Technical MVP closure report.
 - DND-2.1–DND-2.5 complete (engineering baseline through Public Alpha release gate, plus post-release DA62 / `dndgem.dev` follow-ups).
 
-**Technical MVP:** CLOSED · **Public Alpha:** LIVE · **Phase 3:** ACTIVE (DND-3.1 contract complete; DND-3.2 next)
+**Technical MVP:** CLOSED · **Public Alpha:** LIVE · **Phase 3:** ACTIVE (DND-3.1 + DND-3.2 COMPLETE; DND-3.3 NEXT)
 
 Developer journey: [../guides/README.md](../guides/README.md).
 See [auto-layout-contract.md](./auto-layout-contract.md) for the Phase 3 Auto-Layout contract (DND-3.1).
+See [auto-layout-engine.md](./auto-layout-engine.md) for the DND-3.2 INTERNAL Core placement engine.
 See [phase-3-planning-audit.md](./phase-3-planning-audit.md) for the approved Phase 3 sprint map and binding refinements.
 See [alpha-api-contract.md](./alpha-api-contract.md) for the Alpha public surface and stability policy.
 See [core-domain.md](./core-domain.md) for domain, scoring, and solver semantics.
