@@ -7,7 +7,7 @@
 | Phase 0 | Product & Architecture Baseline | **CLOSED**                       |
 | Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)   |
 | Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE** |
-| Phase 3 | Adaptive Auto-Layout            | **ACTIVE** — sprint map APPROVED |
+| Phase 3 | Adaptive Auto-Layout            | **ACTIVE — RELEASE GATE PASSED** |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -325,7 +325,7 @@ PHASE 3 PASS → next consumer Alpha (+ first real OIDC publish)
 - **Out of scope:** Fake OIDC-only release; taking ownership of `latest`; repository visibility change.
 - **Dependencies:** DND-3.4.
 - **Closure:** Phase 3 PASS; next `0.1.0-alpha.x` (Changesets-determined) live on `alpha`; OIDC verified.
-- **Status:** NEXT
+- **Status:** VALIDATION COMPLETE — READY TO RELEASE (publish pending separate release execution)
 
 ### Phase 3 safe deferrals
 
