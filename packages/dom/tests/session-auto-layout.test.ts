@@ -1,0 +1,609 @@
+import { describe, expect, it } from 'vitest';
+import { createAutoLayoutProposal, createLayoutIntent } from '@dndgem/core';
+import { createLayoutSession, type LayoutSessionState } from '../src/index.js';
+import {
+  FakeResizeObserver,
+  createFakeDragMechanics,
+  fakeElement,
+  lastFakeObserver,
+  resetFakeResizeObservers,
+  type FakeBox,
+} from './helpers.js';
+
+const SMALL = {
+  minWidth: 20,
+  minHeight: 10,
+  preferredWidth: 80,
+  preferredHeight: 40,
+} as const;
+
+describe('createLayoutSession — Auto-Layout (DND-3.4)', () => {
+  it('keeps Auto-Layout off by default and omits autoLayout state', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 400, height: 200 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+      ],
+      desiredPlacements: { a: { x: 0, y: 0, width: 80, height: 40 } },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    expect(session.getState().autoLayout).toBeUndefined();
+    expect(session.getState().resolved.placements.a).toEqual({
+      x: 0,
+      y: 0,
+      width: 80,
+      height: 40,
+    });
+    session.dispose();
+  });
+
+  it('places all items when fully automatic (no desiredPlacements)', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 400, height: 200 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 60, height: 40 }),
+          constraints: {
+            minWidth: 20,
+            minHeight: 10,
+            preferredWidth: 60,
+            preferredHeight: 40,
+          },
+        },
+      ],
+      autoLayout: true,
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    const state = session.getState();
+    expect(state.autoLayout?.enabled).toBe(true);
+    expect(state.autoLayout?.proposalUnplacedItemIds).toEqual([]);
+    expect(state.resolved.placements.a).toBeDefined();
+    expect(state.resolved.placements.b).toBeDefined();
+    session.dispose();
+  });
+
+  it('preserves hybrid Source Intent and generates the remainder', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 600, height: 300 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+        {
+          id: 'c',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+        {
+          id: 'd',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+      ],
+      autoLayout: true,
+      desiredPlacements: {
+        a: { x: 0, y: 0, width: 100, height: 80 },
+        d: { x: 400, y: 0, width: 100, height: 80 },
+      },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    const state = session.getState();
+    expect(state.resolved.placements.a).toEqual({ x: 0, y: 0, width: 100, height: 80 });
+    expect(state.resolved.placements.d).toEqual({ x: 400, y: 0, width: 100, height: 80 });
+    expect(state.resolved.placements.b).toBeDefined();
+    expect(state.resolved.placements.c).toBeDefined();
+    expect(state.autoLayout?.proposalUnplacedItemIds).toEqual([]);
+    session.dispose();
+  });
+
+  it('surfaces proposalUnplacedItemIds without fabricating Auto-Layout geometry', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 100, height: 100 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 100 }),
+          constraints: { preferredWidth: 100, preferredHeight: 100, minWidth: 10 },
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 80 }),
+          constraints: { preferredWidth: 80, preferredHeight: 80, minWidth: 10 },
+        },
+      ],
+      autoLayout: true,
+      desiredPlacements: {
+        a: { x: 0, y: 0, width: 100, height: 100 },
+      },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    expect(session.getState().autoLayout?.proposalUnplacedItemIds).toEqual(['b']);
+    session.dispose();
+  });
+
+  it('keeps proposalUnplacedItemIds when the solver still resolves that item', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 100, height: 100 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 100 }),
+          constraints: { preferredWidth: 100, preferredHeight: 100, minWidth: 10 },
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 80 }),
+          constraints: { preferredWidth: 80, preferredHeight: 80, minWidth: 10 },
+        },
+      ],
+      autoLayout: true,
+      desiredPlacements: {
+        a: { x: 0, y: 0, width: 100, height: 100 },
+      },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    const state = session.getState();
+    // Proposal layer: B has no non-overlapping Auto-Layout placement.
+    expect(state.autoLayout?.proposalUnplacedItemIds).toEqual(['b']);
+    // Solver may still pack B independently — completeness ≠ final placement existence.
+    expect(state.resolved.placements.b).toBeDefined();
+    expect(['VALID', 'DEGRADED', 'INVALID']).toContain(state.solver.evaluation.state);
+    session.dispose();
+  });
+
+  it('keeps proposalUnplacedItemIds independent when the solver is INVALID', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 50, height: 50 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 50, height: 50 }),
+          constraints: { preferredWidth: 50, preferredHeight: 50, minWidth: 10, minHeight: 10 },
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 40, height: 40 }),
+          // Individually infeasible hard mins → solver INVALID; proposal also cannot place B.
+          constraints: {
+            preferredWidth: 200,
+            preferredHeight: 200,
+            minWidth: 200,
+            minHeight: 200,
+          },
+        },
+      ],
+      autoLayout: true,
+      desiredPlacements: {
+        a: { x: 0, y: 0, width: 50, height: 50 },
+      },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    const state = session.getState();
+    expect(state.autoLayout?.proposalUnplacedItemIds).toEqual(['b']);
+    expect(state.solver.evaluation.state).toBe('INVALID');
+    session.dispose();
+  });
+
+  it('passive resize keeps Source Intent and does not promote generated to source', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const containerBox: FakeBox = { left: 0, top: 0, width: 600, height: 300 };
+    const session = createLayoutSession({
+      container: fakeElement(containerBox),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+        {
+          id: 'c',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+      ],
+      autoLayout: true,
+      desiredPlacements: {
+        a: { x: 10, y: 10, width: 100, height: 80 },
+      },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    const before = session.getState();
+    const bBefore = before.resolved.placements.b;
+    expect(bBefore).toBeDefined();
+
+    containerBox.width = 580;
+    lastFakeObserver().deliver();
+
+    const after = session.getState();
+    expect(after.resolved.placements.a).toEqual({ x: 10, y: 10, width: 100, height: 80 });
+    expect(after.resolved.placements.b).toEqual(bBefore);
+
+    // Source Intent remains only A: Core proposal with only A as source + previous matches.
+    const proposal = createAutoLayoutProposal({
+      intent: createLayoutIntent({
+        space: after.resolved.space,
+        items: [
+          { id: 'a', constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 } },
+          { id: 'b', constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 } },
+          { id: 'c', constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 } },
+        ],
+        desiredPlacements: { a: { x: 10, y: 10, width: 100, height: 80 } },
+      }),
+      previous: before.resolved,
+    });
+    expect(proposal.placementOrigins).toEqual({
+      a: 'source',
+      b: 'generated',
+      c: 'generated',
+    });
+    session.dispose();
+  });
+
+  it('promotes only the dragged item from generated to Source Intent on accept', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 600, height: 300 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+        {
+          id: 'c',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+      ],
+      autoLayout: true,
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    const initial = session.getState();
+    expect(initial.resolved.placements.a).toBeDefined();
+    expect(initial.resolved.placements.c).toBeDefined();
+
+    mechanics.start('b');
+    mechanics.move('b', { x: 40, y: 20 });
+    mechanics.drop('b', { x: 40, y: 20 });
+
+    expect(session.getState().lastDrop?.accepted).toBe(true);
+    const after = session.getState();
+    // Fake elements do not update getBoundingClientRect after apply, so drag
+    // baseline is the measurement box (0,0) + translation — not the prior
+    // Auto-Layout resolved coordinate. Provenance is what this sprint locks.
+    expect(after.resolved.placements.b).toEqual({
+      x: 40,
+      y: 20,
+      width: 80,
+      height: 40,
+    });
+
+    // Durable Source Intent is only B — siblings must remain automatic/generated.
+    const proposal = createAutoLayoutProposal({
+      intent: createLayoutIntent({
+        space: after.resolved.space,
+        items: [
+          { id: 'a', constraints: SMALL },
+          { id: 'b', constraints: SMALL },
+          { id: 'c', constraints: SMALL },
+        ],
+        desiredPlacements: {
+          b: after.resolved.placements.b!,
+        },
+      }),
+      previous: after.resolved,
+    });
+    expect(proposal.placementOrigins).toEqual({
+      a: 'generated',
+      b: 'source',
+      c: 'generated',
+    });
+    expect(proposal.placementOrigins.a).not.toBe('source');
+    expect(proposal.placementOrigins.c).not.toBe('source');
+    session.dispose();
+  });
+
+  it('does not promote provenance on cancel', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 400, height: 200 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+      ],
+      autoLayout: true,
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    const before = session.getState().resolved;
+    mechanics.start('b');
+    mechanics.move('b', { x: 24, y: 12 });
+    mechanics.cancel('b');
+    expect(session.getState().resolved.placements).toEqual(before.placements);
+
+    const proposal = createAutoLayoutProposal({
+      intent: createLayoutIntent({
+        space: before.space,
+        items: [
+          { id: 'a', constraints: SMALL },
+          { id: 'b', constraints: SMALL },
+        ],
+      }),
+      previous: before,
+    });
+    expect(proposal.placementOrigins).toEqual({ a: 'generated', b: 'generated' });
+    session.dispose();
+  });
+
+  it('does not promote provenance on reject', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const a = fakeElement({ left: 10, top: 10, width: 80, height: 80 });
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 50, height: 50 }),
+      items: [
+        {
+          id: 'a',
+          element: a,
+          constraints: { minWidth: 200, minHeight: 200 },
+        },
+      ],
+      autoLayout: true,
+      desiredPlacements: { a: { x: 10, y: 10, width: 80, height: 80 } },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    const before = session.getState().resolved;
+    mechanics.start('a');
+    mechanics.drop('a', { x: 5, y: 5 });
+    expect(session.getState().lastDrop?.accepted).toBe(false);
+    expect(session.getState().resolved).toBe(before);
+    session.dispose();
+  });
+
+  it('keeps an existing Source Intent item as source after accepted drag', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 400, height: 200 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 60, height: 40 }),
+          constraints: { minWidth: 20, minHeight: 10, preferredWidth: 60, preferredHeight: 40 },
+        },
+      ],
+      autoLayout: true,
+      desiredPlacements: {
+        a: { x: 0, y: 0, width: 80, height: 40 },
+      },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    mechanics.start('a');
+    mechanics.drop('a', { x: 16, y: 8 });
+    expect(session.getState().lastDrop?.accepted).toBe(true);
+    expect(session.getState().resolved.placements.a).toEqual({
+      x: 16,
+      y: 8,
+      width: 80,
+      height: 40,
+    });
+
+    const after = session.getState();
+    const proposal = createAutoLayoutProposal({
+      intent: createLayoutIntent({
+        space: after.resolved.space,
+        items: [
+          { id: 'a', constraints: SMALL },
+          {
+            id: 'b',
+            constraints: { minWidth: 20, minHeight: 10, preferredWidth: 60, preferredHeight: 40 },
+          },
+        ],
+        desiredPlacements: { a: { x: 16, y: 8, width: 80, height: 40 } },
+      }),
+      previous: after.resolved,
+    });
+    expect(proposal.placementOrigins.a).toBe('source');
+    expect(proposal.placementOrigins.b).toBe('generated');
+    session.dispose();
+  });
+
+  it('retains dragged Source Intent across passive resize when feasible', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const containerBox: FakeBox = { left: 0, top: 0, width: 600, height: 300 };
+    const session = createLayoutSession({
+      container: fakeElement(containerBox),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+      ],
+      autoLayout: true,
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    mechanics.start('b');
+    mechanics.drop('b', { x: 30, y: 10 });
+    const dragged = session.getState().resolved.placements.b;
+    expect(dragged).toBeDefined();
+
+    containerBox.width = 580;
+    lastFakeObserver().deliver();
+    expect(session.getState().resolved.placements.b).toEqual(dragged);
+    session.dispose();
+  });
+
+  it('allows a later session to drop Source Intent so the item becomes automatic again', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const items = [
+      {
+        id: 'a',
+        element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+        constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+      },
+      {
+        id: 'b',
+        element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+        constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+      },
+    ] as const;
+    const first = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 500, height: 300 }),
+      items: [...items],
+      autoLayout: true,
+      desiredPlacements: { a: { x: 20, y: 20, width: 100, height: 80 } },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    const previous = first.getState().resolved;
+    first.dispose();
+
+    resetFakeResizeObservers();
+    const second = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 500, height: 300 }),
+      items: [...items],
+      autoLayout: true,
+      previous,
+      mechanics: createFakeDragMechanics().adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+    const proposal = createAutoLayoutProposal({
+      intent: createLayoutIntent({
+        space: { width: 500, height: 300 },
+        items: [
+          { id: 'a', constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 } },
+          { id: 'b', constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 } },
+        ],
+      }),
+      previous,
+    });
+    expect(proposal.placementOrigins.a).toBe('generated');
+    expect(second.getState().resolved.placements.a).toEqual(
+      proposal.effectiveIntent.desiredPlacements?.a,
+    );
+    second.dispose();
+  });
+
+  it('does not emit a runaway resize loop with Auto-Layout enabled', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const changes: LayoutSessionState[] = [];
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 400, height: 200 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 80, height: 40 }),
+          constraints: SMALL,
+        },
+      ],
+      autoLayout: true,
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+      onChange: (state) => {
+        changes.push(state);
+      },
+    });
+    const afterMount = changes.length;
+    lastFakeObserver().deliver();
+    lastFakeObserver().deliver();
+    expect(changes.length).toBe(afterMount);
+    session.dispose();
+  });
+});
+
+describe('createLayoutSession — Auto-Layout input validation', () => {
+  it('rejects non-boolean autoLayout', () => {
+    resetFakeResizeObservers();
+    expect(() =>
+      createLayoutSession({
+        container: fakeElement({ left: 0, top: 0, width: 100, height: 100 }),
+        items: [
+          {
+            id: 'a',
+            element: fakeElement({ left: 0, top: 0, width: 40, height: 20 }),
+            constraints: { minWidth: 10, minHeight: 10 },
+          },
+        ],
+        // @ts-expect-error intentional invalid input
+        autoLayout: 'yes',
+        mechanics: createFakeDragMechanics().adapter,
+        ResizeObserver: FakeResizeObserver,
+      }),
+    ).toThrow(/autoLayout/);
+  });
+});

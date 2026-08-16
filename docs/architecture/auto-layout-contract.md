@@ -2,9 +2,11 @@
 
 Authoritative Phase 3 contract for deterministic Adaptive Auto-Layout.
 
-**Status:** Contract COMPLETE; Core engine implemented in DND-3.2 + DND-3.3 (**INTERNAL / not publicly frozen**).  
-**Sprint:** DND-3.1 (contract) → DND-3.2 (engine) → DND-3.3 (stability / reflow)  
+**Status:** Contract COMPLETE; Core engine DND-3.2 + DND-3.3; consumer wiring DND-3.4 COMPLETE (pending review/commit). Minimal public Alpha surface approved (`createAutoLayoutProposal` + types; DOM/React `autoLayout`).  
+**Sprint:** DND-3.1 (contract) → DND-3.2 (engine) → DND-3.3 (stability / reflow) → DND-3.4 (DOM/React)  
 **Product:** DnDGem by DA62
+
+Published npm `0.1.0-alpha.0` does **not** include Auto-Layout yet.
 
 Related: [phase-3-planning-audit.md](./phase-3-planning-audit.md), [auto-layout-engine.md](./auto-layout-engine.md), [core-domain.md](./core-domain.md), [ADR-0006](../adr/ADR-0006-layout-intent-vs-resolved-layout.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [dom-adapter.md](./dom-adapter.md), [roadmap.md](../roadmap.md).
 
@@ -43,7 +45,7 @@ VALID / DEGRADED / INVALID → ResolvedLayout
 
 ### Sprint boundary
 
-DND-3.1 defined this contract. DND-3.2/DND-3.3 implement the Core proposal + stability/reflow engine as **INTERNAL** (see [auto-layout-engine.md](./auto-layout-engine.md)). Public exports and adapter wiring remain DND-3.4+ / API review.
+DND-3.1 defined this contract. DND-3.2/DND-3.3 implement the Core proposal + stability/reflow engine. DND-3.4 wires opt-in DOM/React sessions and exports the **minimal** public Core surface (`createAutoLayoutProposal` + types). Broader API freeze / next Alpha publish remains DND-3.5.
 
 ---
 
@@ -57,7 +59,7 @@ DND-3.1 defined this contract. DND-3.2/DND-3.3 implement the Core proposal + sta
 | 4   | Drag = strong intent, not pin | Accepted drag promotes Source Intent. Feasibility remains under hard constraints + solver; not an immutable hard pin.                |
 | 5   | Partial / hybrid MVP          | Explicit and automatic items must coexist under defined precedence.                                                                  |
 | 6   | Opt-in Alpha                  | Existing explicit-only path remains valid; Auto-Layout does not silently change consumers.                                           |
-| 7   | No public API approved yet    | Enricher/proposal signatures are **PROPOSED / NOT YET APPROVED**. DND-3.1 exports nothing.                                           |
+| 7   | Minimal public API approved   | DND-3.4 approves the minimal enricher + session/provider `autoLayout` surface. Broader freeze remains DND-3.5 / review. Opt-in only. |
 
 ---
 
@@ -256,7 +258,7 @@ solver/constraints authoritative when infeasible
 | Previous `ResolvedLayout` | Stability / reflow continuity for `solveLayout` |
 | Measurement               | Geometry input to sizes/space; not intent       |
 
-Session code today seeds desired placements from previous/desired/snapshot (`createLayoutSession`). That path remains the **explicit-only / current Alpha** behavior. Auto-Layout-enabled sessions (DND-3.4) must **not** treat measurement/previous seeding as Source Intent promotion.
+Session code seeds desired placements from previous/desired/snapshot when Auto-Layout is **off** (`createLayoutSession` default). That remains the **explicit-only** path (including published `0.1.0-alpha.0`). Auto-Layout-enabled sessions (`autoLayout: true`, DND-3.4) must **not** treat measurement/previous seeding as Source Intent promotion.
 
 ---
 
@@ -327,7 +329,7 @@ Vanilla and React must expose **equivalent** Auto-Layout capability (DND-3.4). F
 
 ---
 
-## 13. Public API design exercise (not exported)
+## 13. Public API (minimal approved — DND-3.4)
 
 ### Option A — Direct Core enricher returning only `LayoutIntent`
 
@@ -342,19 +344,19 @@ const result = solveLayout({ intent: enriched })
 | Risks      | Easy to drop provenance if return is only `LayoutIntent`                 |
 | Verdict    | **ACCEPTABLE only if** return includes origins (then collapses toward B) |
 
-### Option B — Dedicated proposal operation (preferred direction)
+### Option B — Dedicated proposal operation (**APPROVED minimal public**)
 
 ```ts
-const proposal = createAutoLayoutProposal(...) // name TBD
-// proposal.effectiveIntent + proposal.origins (+ optional generated map)
-const result = solveLayout({ intent: proposal.effectiveIntent, previous })
+const proposal = createAutoLayoutProposal({ intent, previous? });
+// proposal.effectiveIntent + proposal.placementOrigins + proposal.unplacedItemIds
+const result = solveLayout({ intent: proposal.effectiveIntent, previous? });
 ```
 
 |            |                                                                                                                           |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Advantages | Separates enrich vs solve; provenance first-class; Core-portable; testable; future AI can feed Source Intent the same way |
 | Risks      | Extra type/shape to design carefully                                                                                      |
-| Verdict    | **PREFERRED**                                                                                                             |
+| Verdict    | **APPROVED** as the minimal public Core surface (DND-3.4)                                                                 |
 
 ### Option C — `solveLayout({ autoLayout: ... })`
 
@@ -373,29 +375,27 @@ const result = solveLayout({ intent: proposal.effectiveIntent, previous })
 | Verdict    | **REJECT** as sole design                                                       |
 
 ```text
-Preferred direction:
-  Core proposal/enrichment operation that returns effective intent + provenance,
-  then existing solveLayout.
-
-Public API status:
-  PROPOSED / NOT YET APPROVED
+Approved minimal public direction (DND-3.4):
+  createAutoLayoutProposal → solveLayout
+  + session/provider autoLayout?: boolean (default off)
 ```
 
-DOM/React would later accept opt-in options and own durable Source Intent + origins in session state (DND-3.4). Exact export names undecided.
+DOM/React accept opt-in `autoLayout` and own durable Source Intent + origins in session state. Drag accept promotes only the active item to Source Intent.
 
 ---
 
 ## 14. Classification table
 
-| Concept                                                                 | Classification                                                       |
-| ----------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `solveLayout` / `evaluateLayout` / `LayoutIntent` / constraints         | **PUBLIC EXISTING**                                                  |
-| Source Intent / Generated Placement / Effective Solver Input (layers)   | **INTERNAL** conceptual (effective is composed input, not an origin) |
-| Placement origin map (`source` \| `generated` only)                     | **INTERNAL** (proposed companion to proposal result — not approved)  |
-| `createAutoLayoutProposal` / `enrichLayoutIntent` / `autoLayout` option | **PROPOSED PUBLIC — NOT APPROVED**                                   |
-| Session/Provider `autoLayout` option                                    | **PROPOSED PUBLIC — NOT APPROVED**                                   |
-| Pin / Lock / priority / region / grouping / spans                       | **DEFERRED**                                                         |
-| AI layout                                                               | **DEFERRED**                                                         |
+| Concept                                                               | Classification                                                       |
+| --------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `solveLayout` / `evaluateLayout` / `LayoutIntent` / constraints       | **PUBLIC EXISTING**                                                  |
+| Source Intent / Generated Placement / Effective Solver Input (layers) | **INTERNAL** conceptual (effective is composed input, not an origin) |
+| Placement origin map (`source` \| `generated` only)                   | **PUBLIC ALPHA (minimal)** via `PlacementOrigin` / proposal result   |
+| `createAutoLayoutProposal` + proposal types                           | **PUBLIC ALPHA (minimal)** — approved DND-3.4                        |
+| Session/Provider `autoLayout` option                                  | **PUBLIC ALPHA (minimal)** — approved DND-3.4; default off           |
+| `maxProbeCountForOccupancy` / sizing helpers                          | **INTERNAL**                                                         |
+| Pin / Lock / priority / region / grouping / spans                     | **DEFERRED**                                                         |
+| AI layout                                                             | **DEFERRED**                                                         |
 
 ---
 
@@ -465,22 +465,22 @@ Documented invariants — prefer acceptance matrices until production APIs exist
 
 ## 18. Acceptance matrix (DND-3.1)
 
-| Criterion                                  | Status                               |
-| ------------------------------------------ | ------------------------------------ |
-| Auto-Layout = compose with existing solver | PASS                                 |
-| No second solver/score/validity proposed   | PASS                                 |
-| Three layers + previous distinct           | PASS                                 |
-| Provenance lifecycle A–F defined           | PASS                                 |
-| Hybrid/partial MVP defined                 | PASS                                 |
-| Drag strong intent, not pin                | PASS                                 |
-| Opt-in Alpha                               | PASS                                 |
-| Public API proposed, not approved/exported | PASS                                 |
-| DND-3.2 may/must-not defined               | PASS                                 |
-| Future tests documented                    | PASS                                 |
-| Production Auto-Layout code                | DND-3.2 INTERNAL (not public export) |
+| Criterion                                  | Status                                               |
+| ------------------------------------------ | ---------------------------------------------------- |
+| Auto-Layout = compose with existing solver | PASS                                                 |
+| No second solver/score/validity proposed   | PASS                                                 |
+| Three layers + previous distinct           | PASS                                                 |
+| Provenance lifecycle A–F defined           | PASS                                                 |
+| Hybrid/partial MVP defined                 | PASS                                                 |
+| Drag strong intent, not pin                | PASS                                                 |
+| Opt-in Alpha                               | PASS                                                 |
+| Public API proposed, not approved/exported | SUPERSEDED — minimal surface approved DND-3.4        |
+| DND-3.2 may/must-not defined               | PASS                                                 |
+| Future tests documented                    | PASS                                                 |
+| Production Auto-Layout code                | PASS (Core + DOM/React wiring; next publish DND-3.5) |
 
 ---
 
 ## 19. Explicit non-goals (Phase 3 / this contract)
 
-AI · Flutter · Vue/Angular/Svelte · Pin/Lock · grouping/regions · CSS layout clone · mobile/touch certification · full keyboard/SR drag product · monetization · freezing public Auto-Layout exports in DND-3.1 · implementing placement in DND-3.1.
+AI · Flutter · Vue/Angular/Svelte · Pin/Lock · grouping/regions · CSS layout clone · mobile/touch certification · full keyboard/SR drag product · monetization · freezing a broader-than-minimal public Auto-Layout surface without review · implementing placement in DND-3.1.

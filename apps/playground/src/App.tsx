@@ -7,6 +7,8 @@ export interface PlaygroundProbe {
   chartX?: number;
   spaceWidth?: number;
   cancelCount?: number;
+  autoLayoutEnabled?: boolean;
+  unplacedCount?: number;
 }
 
 declare global {
@@ -63,10 +65,8 @@ const ITEMS = [
 ] as const;
 
 const DESIRED = {
+  // Partial Source Intent — Auto-Layout places table/details/metric.
   chart: { x: 12, y: 12, width: 240, height: 96 },
-  table: { x: 264, y: 12, width: 280, height: 140 },
-  details: { x: 12, y: 120, width: 180, height: 160 },
-  metric: { x: 204, y: 168, width: 96, height: 80 },
 };
 
 const COPY: Record<string, { title: string; body: string; className: string; ariaLabel: string }> =
@@ -114,6 +114,8 @@ function Board() {
     chartX: state?.resolved.placements.chart?.x,
     spaceWidth: state?.resolved.space.width,
     cancelCount: existing?.cancelCount,
+    autoLayoutEnabled: state?.autoLayout?.enabled,
+    unplacedCount: state?.autoLayout?.proposalUnplacedItemIds.length,
   };
   window.__DNDGEM_D17 = probe;
 
@@ -121,15 +123,17 @@ function Board() {
     <main className="shell">
       <h1>DnDGem Playground</h1>
       <p className="eyebrow">
-        Public Alpha demo — content-aware constraints, VALID / DEGRADED, pointer drag, and resize
-        reflow. Fit ≠ useful (engine status below).
+        Opt-in Auto-Layout demo — partial Source Intent, adaptive resize, drag promotes only the
+        active card. Fit ≠ useful (engine status below).
       </p>
       <button type="button" data-testid="focus-probe">
         Focus probe
       </button>
       <p data-testid="status">
         {state
-          ? `${state.solver.evaluation.state} · score ${state.solver.evaluation.score.total.toFixed(3)} · ${state.phase} · space ${Math.round(state.resolved.space.width)}×${Math.round(state.resolved.space.height)}`
+          ? `${state.solver.evaluation.state} · score ${state.solver.evaluation.score.total.toFixed(3)} · ${state.phase} · space ${Math.round(state.resolved.space.width)}×${Math.round(state.resolved.space.height)}${
+              state.autoLayout ? ` · auto` : ''
+            }`
           : 'starting'}
       </p>
       <div ref={containerRef} className="board" data-testid="board">
@@ -163,6 +167,7 @@ export function App() {
     <DnDGemProvider
       items={ITEMS}
       desiredPlacements={DESIRED}
+      autoLayout
       onCancel={() => {
         const probe = window.__DNDGEM_D17 ?? {};
         probe.cancelCount = (probe.cancelCount ?? 0) + 1;

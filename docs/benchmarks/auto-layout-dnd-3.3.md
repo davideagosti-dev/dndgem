@@ -11,7 +11,7 @@
 Each single-cycle iteration rebuilds a deterministic `LayoutIntent` (and optional `previous` `ResolvedLayout`), then runs:
 
 ```text
-createAutoLayoutProposal (INTERNAL; may use previous for retention)
+createAutoLayoutProposal (PUBLIC ALPHA minimal; may use previous for retention)
         →
 solveLayout (public; may receive same previous for ADR-0010 ranking)
 ```

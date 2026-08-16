@@ -108,6 +108,7 @@ Runtime:
 - `SCORE_PREFERENCE_WEIGHT`, `SCORE_USEFULNESS_WEIGHT`, `VALIDITY_REASON_CODES`
 - `evaluateConstraintsPlacement`, `evaluateItemPlacement`, `evaluateLayout`
 - `solveLayout`
+- `createAutoLayoutProposal` — opt-in Auto-Layout enricher (compose with `solveLayout`; does not select/score/validate)
 
 Types (non-exhaustive of type-only aliases re-exported with the values above):
 
@@ -123,14 +124,25 @@ Types (non-exhaustive of type-only aliases re-exported with the values above):
 - `ItemPlacementEvaluation`, `LayoutEvaluation`, `ScoreBreakdown`
 - `ValidityAxis`, `ValidityReason`, `ValidityReasonCode`, `ValidityReasonKind`
 - `SolverCandidateSummary`, `SolverInput`, `SolverResult`, `SolverSelectionCode`, `SolverSelectionReason`, `SolverStrategy`
+- `AutoLayoutProposal`, `AutoLayoutProposalInput`, `PlacementOrigin`
 
 Core remains framework-agnostic, renderer-agnostic, and deterministic.
+
+#### Auto-Layout compose (opt-in)
+
+```ts
+const proposal = createAutoLayoutProposal({ intent, previous? });
+const result = solveLayout({ intent: proposal.effectiveIntent, previous? });
+```
+
+Auto-Layout is **opt-in**. Calling `solveLayout` alone is unchanged. Published npm `0.1.0-alpha.0` does **not** include this export yet; it is repository / next Alpha capability (DND-3.4). Alpha breaking-change policy above is unchanged.
 
 ### Internal to Core (not public)
 
 Not exported from the package root, and not supported if reached via dist files:
 
 - Candidate generation / ranking helpers (`generateCandidates`, `compareCandidates`, `packPlacements`, `SOLVER_STRATEGIES`)
+- Auto-Layout sizing helpers and `maxProbeCountForOccupancy`
 - Numeric assertion helpers (`numbers.ts`)
 - Any file under `tests/` or `benchmarks/`
 
@@ -146,9 +158,19 @@ Runtime:
 - `observeLayout`
 - `createDragInteraction`
 - `applyLayoutPlacements`, `layoutPlacementStyle`, `prepareLayoutContainer`
-- `createLayoutSession`
+- `createLayoutSession` — optional `autoLayout?: boolean` (default off / undefined = explicit-only path)
 
 Types include measurement snapshots, session/interaction state, drag events, and the replaceable `DragMechanicsAdapter` seam.
+
+#### Session Auto-Layout (opt-in, DND-3.4)
+
+`createLayoutSession({ autoLayout?: boolean })` — when `autoLayout: true`:
+
+- `desiredPlacements` may be partial or absent (Source Intent); remaining items are proposed automatically
+- `LayoutSessionState.autoLayout` is `{ enabled: true; proposalUnplacedItemIds: readonly string[] }` (Auto-Layout **proposal** completeness only — not solver INVALID, and not “missing from ResolvedLayout”)
+- Accepted drag promotes **only** the active item to Source Intent (strong persistent intent — not a pin/lock)
+
+Default / omitted `autoLayout` keeps the existing explicit-only seeding path. Published npm `0.1.0-alpha.0` does **not** include this option yet.
 
 ### Advanced / escape-hatch (supported, not the default app API)
 
@@ -186,7 +208,7 @@ Types:
 - `createDragInteraction` / `createLayoutSession` (consume via `@dndgem/dom` if needed)
 - `@dnd-kit/*`
 
-`DnDGemProvider` accepts optional `mechanics` and `ResizeObserver` for tests. Application consumers do not need them.
+`DnDGemProvider` accepts optional `autoLayout?: boolean` (default off; mirrors DOM session), plus optional `mechanics` and `ResizeObserver` for tests. Application consumers do not need the test seams. Published npm `0.1.0-alpha.0` does **not** include `autoLayout` yet.
 
 Hook contract:
 

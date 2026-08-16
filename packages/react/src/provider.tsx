@@ -127,12 +127,17 @@ export function DnDGemProvider(props: DnDGemProviderProps): JSX.Element {
     const desiredChanged =
       lastDesiredKeyRef.current !== undefined && lastDesiredKeyRef.current !== desiredKey;
     lastDesiredKeyRef.current = desiredKey;
-    const previous = desiredChanged ? undefined : previousRef.current;
+    // Explicit-only: omit previous when desiredPlacements change so ADR-0010
+    // cannot suppress new author intent. Auto-Layout: keep previous so removed
+    // Source Intent items can retain as generated; the session omits solver
+    // previous on non-passive Source Intent cycles.
+    const previous = desiredChanged && props.autoLayout !== true ? undefined : previousRef.current;
 
     const session = createLayoutSession({
       container,
       items: descriptors,
       desiredPlacements: desiredRef.current,
+      ...(props.autoLayout === true ? { autoLayout: true } : {}),
       previous,
       mechanics: props.mechanics,
       ResizeObserver: props.ResizeObserver,
@@ -154,7 +159,14 @@ export function DnDGemProvider(props: DnDGemProviderProps): JSX.Element {
     return () => {
       session.dispose();
     };
-  }, [registryGeneration, itemIds, desiredKey, props.mechanics, props.ResizeObserver]);
+  }, [
+    registryGeneration,
+    itemIds,
+    desiredKey,
+    props.autoLayout,
+    props.mechanics,
+    props.ResizeObserver,
+  ]);
 
   return (
     <DnDGemRegistryContext.Provider value={registry}>

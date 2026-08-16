@@ -29,13 +29,13 @@ SPRINT COUNT:
 5
 ```
 
-| Sprint      | Title                                | Decision                      |
-| ----------- | ------------------------------------ | ----------------------------- |
-| **DND-3.1** | Auto-Layout Contract & Core Model    | **APPROVED with corrections** |
-| **DND-3.2** | Deterministic Placement Engine       | **APPROVED**                  |
-| **DND-3.3** | Stability / Adaptive Reflow & Hybrid | **APPROVED**                  |
-| **DND-3.4** | Drag / Partial Intent / DOM-React DX | **APPROVED**                  |
-| **DND-3.5** | Phase 3 Alpha Release Gate           | **APPROVED**                  |
+| Sprint      | Title                                | Decision                      | Implementation status |
+| ----------- | ------------------------------------ | ----------------------------- | --------------------- |
+| **DND-3.1** | Auto-Layout Contract & Core Model    | **APPROVED with corrections** | COMPLETE (contract)   |
+| **DND-3.2** | Deterministic Placement Engine       | **APPROVED**                  | COMPLETE              |
+| **DND-3.3** | Stability / Adaptive Reflow & Hybrid | **APPROVED**                  | COMPLETE              |
+| **DND-3.4** | Drag / Partial Intent / DOM-React DX | **APPROVED**                  | COMPLETE              |
+| **DND-3.5** | Phase 3 Alpha Release Gate           | **APPROVED**                  | NEXT                  |
 
 ---
 
@@ -188,4 +188,4 @@ AI / LLM inference · Flutter · Vue / Angular / Svelte · Pin/Lock API · group
 
 **Next action**
 
-DND-3.2 Core placement engine is COMPLETE (INTERNAL). DND-3.3 Core stability / adaptive reflow is COMPLETE (INTERNAL). **Next sprint:** DND-3.4 — Drag / Partial Intent / DOM-React DX. DOM/React/`unplacedItemIds` adapter consumption belongs to **DND-3.4**.
+DND-3.2 Core placement engine is COMPLETE. DND-3.3 Core stability / adaptive reflow is COMPLETE. DND-3.4 DOM/React opt-in wiring (`autoLayout`, `proposalUnplacedItemIds`, drag→Source Intent) is **COMPLETE**. **Next sprint:** DND-3.5 — Phase 3 Alpha Release Gate. Published npm `0.1.0-alpha.0` does **not** include Auto-Layout yet.
