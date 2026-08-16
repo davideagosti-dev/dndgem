@@ -558,6 +558,131 @@ describe('createLayoutSession — Auto-Layout (DND-3.4)', () => {
     second.dispose();
   });
 
+  it('keeps committed solver VALID during drag even when desired placement overlaps a sibling', () => {
+    // Contract: visual / desired overlap during pointer drag is a transient preview.
+    // Session `solver` remains the last committed evaluation; VALID ≠ “no preview overlap”.
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const a = fakeElement({ left: 0, top: 0, width: 100, height: 80 });
+    const b = fakeElement({ left: 120, top: 0, width: 100, height: 80 });
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 600, height: 300 }),
+      items: [
+        {
+          id: 'a',
+          element: a,
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+        {
+          id: 'b',
+          element: b,
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+      ],
+      autoLayout: true,
+      desiredPlacements: {
+        a: { x: 0, y: 0, width: 100, height: 80 },
+        b: { x: 120, y: 0, width: 100, height: 80 },
+      },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+
+    const before = session.getState();
+    expect(before.solver.evaluation.state).toBe('VALID');
+    expect(before.phase).toBe('idle');
+
+    // Drag B onto A's footprint (desired overlaps committed A).
+    mechanics.start('b');
+    mechanics.move('b', { x: -100, y: 0 });
+
+    const mid = session.getState();
+    expect(mid.phase).toBe('dragging');
+    expect(mid.solver.evaluation.state).toBe(before.solver.evaluation.state);
+    expect(mid.solver.evaluation.score.total).toBe(before.solver.evaluation.score.total);
+    expect(mid.proposal?.desiredPlacement).toEqual({
+      x: 20,
+      y: 0,
+      width: 100,
+      height: 80,
+    });
+    // Active item left/top are not rewritten during preview (pointer / provider owns motion).
+    expect(b.style.left).toBe('120px');
+    // Desired proposal overlaps sibling A's committed rect — intentional transient geometry.
+    const desired = mid.proposal!.desiredPlacement;
+    const sibling = mid.resolved.placements.a!;
+    expect(desired.x).toBeLessThan(sibling.x + sibling.width);
+    expect(desired.x + desired.width).toBeGreaterThan(sibling.x);
+
+    mechanics.cancel('b');
+    expect(session.getState().phase).toBe('idle');
+    expect(session.getState().resolved.placements).toEqual(before.resolved.placements);
+    session.dispose();
+  });
+
+  it('recomposes generated siblings without overlap after an accepted drag into free space', () => {
+    // Narrow contract: free-space / generated reflow. Does not claim that every
+    // accepted drop (e.g. source→source onto another source) is overlap-free —
+    // Auto-Layout does not relocate explicit Source Intent.
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const session = createLayoutSession({
+      container: fakeElement({ left: 0, top: 0, width: 600, height: 300 }),
+      items: [
+        {
+          id: 'a',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+        {
+          id: 'b',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+        {
+          id: 'c',
+          element: fakeElement({ left: 0, top: 0, width: 100, height: 80 }),
+          constraints: { preferredWidth: 100, preferredHeight: 80, minWidth: 40 },
+        },
+      ],
+      autoLayout: true,
+      desiredPlacements: {
+        a: { x: 0, y: 0, width: 100, height: 80 },
+      },
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+
+    const before = session.getState();
+    expect(before.autoLayout?.proposalUnplacedItemIds).toEqual([]);
+    expect(before.resolved.placements.b).toBeDefined();
+
+    // Translation is relative to the fake measurement baseline (0,0), not Auto-Layout x/y.
+    mechanics.start('b');
+    mechanics.move('b', { x: 400, y: 200 });
+    mechanics.drop('b', { x: 400, y: 200 });
+
+    const after = session.getState();
+    expect(after.lastDrop?.accepted).toBe(true);
+    expect(after.phase).toBe('idle');
+    expect(after.autoLayout?.proposalUnplacedItemIds).toEqual([]);
+    const placements = Object.values(after.resolved.placements);
+    for (let i = 0; i < placements.length; i += 1) {
+      for (let j = i + 1; j < placements.length; j += 1) {
+        const left = placements[i]!;
+        const right = placements[j]!;
+        const overlaps = !(
+          left.x + left.width <= right.x ||
+          right.x + right.width <= left.x ||
+          left.y + left.height <= right.y ||
+          right.y + right.height <= left.y
+        );
+        expect(overlaps).toBe(false);
+      }
+    }
+    session.dispose();
+  });
+
   it('does not emit a runaway resize loop with Auto-Layout enabled', () => {
     resetFakeResizeObservers();
     const mechanics = createFakeDragMechanics();
