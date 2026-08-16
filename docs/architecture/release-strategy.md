@@ -110,7 +110,9 @@ short-lived publish token → npm registry
   - Allowed action: `npm publish`
 - `pnpm publish` packs the package (including `workspace:*` rewrite) and invokes `npm publish` on the tarball; the **npm CLI** performs the OIDC exchange. Publish runners use Node **24** and npm CLI **≥ 11.5.1**.
 - GitHub-hosted runners only (`ubuntu-latest`). Self-hosted runners are not supported by npm Trusted Publishing.
+- Do **not** pass `registry-url` to `actions/setup-node` on the OIDC publish job: it writes `_authToken=${NODE_AUTH_TOKEN}` into the runner npmrc and can prevent the OIDC exchange (`E404` / `ENEEDAUTH`). Keep Node setup separate from classic token registry auth.
 - `npm publish --dry-run` / `pnpm publish --dry-run` validates pack safety only — it does **not** prove Trusted Publishing.
+- Static workflow invariants: `pnpm check:publish-workflow`.
 
 `NPM_TOKEN` GitHub secret classification:
 

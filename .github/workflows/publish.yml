@@ -64,9 +64,12 @@ jobs:
         with:
           # Trusted Publishing requires Node >= 22.14.0 and npm CLI >= 11.5.1.
           # Node 24 ships a compatible npm; we still pin/verify npm explicitly below.
+          # Do NOT set registry-url: setup-node would write
+          # //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN} into NPM_CONFIG_USERCONFIG
+          # and export NODE_AUTH_TOKEN, which prevents npm from performing the OIDC exchange
+          # (E404 / ENEEDAUTH). See actions/setup-node#1551 and npm/cli Trusted Publishing docs.
           node-version: 24
           cache: pnpm
-          registry-url: https://registry.npmjs.org
 
       - name: Ensure npm CLI for Trusted Publishing
         run: |
@@ -139,12 +142,41 @@ jobs:
           }
           "
 
+      - name: Prepare OIDC publish environment
+        if: ${{ inputs.dry_run == false || inputs.dry_run == 'false' }}
+        # Strip any residual classic-token npmrc / env so npm uses GitHub OIDC.
+        # Print only presence booleans — never secret values.
+        run: |
+          if [ -n "${NODE_AUTH_TOKEN+x}" ] && [ -n "${NODE_AUTH_TOKEN}" ]; then
+            echo "NODE_AUTH_TOKEN present: YES (will unset for OIDC)"
+          else
+            echo "NODE_AUTH_TOKEN present: NO"
+          fi
+          if [ -n "${NPM_TOKEN+x}" ] && [ -n "${NPM_TOKEN}" ]; then
+            echo "NPM_TOKEN present: YES (unexpected on OIDC path — failing)"
+            exit 1
+          else
+            echo "NPM_TOKEN present: NO"
+          fi
+          unset NODE_AUTH_TOKEN || true
+          if [ -n "${NPM_CONFIG_USERCONFIG:-}" ] && [ -f "${NPM_CONFIG_USERCONFIG}" ]; then
+            if grep -E '_authToken|always-auth' "${NPM_CONFIG_USERCONFIG}" >/dev/null 2>&1; then
+              echo "Sanitizing classic auth lines from NPM_CONFIG_USERCONFIG"
+              sed -i '/_authToken/d;/^always-auth=/d' "${NPM_CONFIG_USERCONFIG}"
+            else
+              echo "NPM_CONFIG_USERCONFIG has no classic auth lines"
+            fi
+          else
+            echo "NPM_CONFIG_USERCONFIG unset or missing (OK for OIDC)"
+          fi
+
       - name: Publish to npm (OIDC Trusted Publishing)
         if: ${{ inputs.dry_run == false || inputs.dry_run == 'false' }}
         # No NODE_AUTH_TOKEN / NPM_TOKEN — pnpm publish packs then invokes npm publish,
         # which exchanges the GitHub OIDC token via the configured Trusted Publisher.
         # Do not pass --provenance: repository is PRIVATE; provenance is unavailable.
         run: |
+          unset NODE_AUTH_TOKEN NPM_TOKEN || true
           pnpm --filter @dndgem/core publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/dom publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/react publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public

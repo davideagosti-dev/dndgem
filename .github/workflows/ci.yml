@@ -87,6 +87,9 @@ jobs:
       - name: Boundaries
         run: pnpm check:boundaries
 
+      - name: Publish workflow invariants
+        run: pnpm check:publish-workflow
+
       - name: Test
         run: pnpm test
 
