@@ -15,17 +15,17 @@ Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE**:
 4. DND-2.4 Browser Matrix & Accessibility Baseline — COMPLETE
 5. DND-2.5 Public Alpha Release Gate — COMPLETE
 
-Phase 3 — Adaptive Auto-Layout is **ACTIVE**. Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**; sprint map **APPROVED**:
+Phase 3 — Adaptive Auto-Layout is **ACTIVE — RELEASE GATE PASSED**. Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**; sprint map **APPROVED**:
 
 1. DND-3.1 Auto-Layout Contract & Core Model — **COMPLETE** (contract; see `docs/architecture/auto-layout-contract.md`, ADR-0014)
 2. DND-3.2 Deterministic Placement Engine — **COMPLETE** (Core engine; see `docs/architecture/auto-layout-engine.md`)
 3. DND-3.3 Stability / Adaptive Reflow & Hybrid — **COMPLETE** (Core reflow/stability; see `docs/architecture/auto-layout-engine.md`)
 4. DND-3.4 Drag / Partial Intent / DOM-React DX — **COMPLETE** (session/adapters/`proposalUnplacedItemIds` product wiring done)
-5. DND-3.5 Phase 3 Alpha Release Gate — **NEXT**
+5. DND-3.5 Phase 3 Alpha Release Gate — **VALIDATION COMPLETE — READY TO RELEASE** (publish not executed)
 
 Authoritative records: `docs/architecture/phase-3-planning-audit.md`, `docs/architecture/auto-layout-contract.md`, `docs/architecture/auto-layout-engine.md`.
 
-Do not begin a Phase 3 sprint’s work unless that sprint is the active sprint. Do not broaden the minimal public Auto-Layout export without explicit review. Adapter wiring (DND-3.4) is done; DND-3.5 owns the next Alpha publish / release gate.
+Do not begin Phase 4. Do not broaden the minimal public Auto-Layout export without explicit review. Do not publish npm, create release tags, or mutate dist-tags until an explicit **DND-3.5 Release Execution** authorization.
 
 ## CI policy (DND-2.3+)
 
