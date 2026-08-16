@@ -1,12 +1,14 @@
 # DnDGem
 
-**DnDGem** by **FinGem-AI**
+**DnDGem** by **DA62**
 
 > Drag. Resize. Adapt. Without breaking your content.
 
 Category: **Content-Aware Adaptive Layout Engine**
 
 **Canonical website:** [https://dndgem.dev](https://dndgem.dev)
+
+**DA62:** [https://davideagosti.com](https://davideagosti.com)
 
 ## What it is
 
@@ -153,9 +155,9 @@ pnpm --filter @dndgem/www build
 
 ## Feedback
 
-- Product / Alpha developer feedback: **`support@fingem-ai.com`**
+- Product / Alpha developer feedback: **`support@dndgem.dev`**
 - Public support page: https://dndgem.dev/support/
-- Security: `security@fingem.ai` (`SECURITY.md`)
+- Security: `security@dndgem.dev` (`SECURITY.md`)
 - GitHub Issues are not reachable to external Alpha users while this repository remains **PRIVATE**.
 
 ## Development

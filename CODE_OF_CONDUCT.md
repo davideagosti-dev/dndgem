@@ -47,7 +47,7 @@ an individual is officially representing the community in public spaces.
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement at:
 
-**security@fingem.ai**
+**security@dndgem.dev**
 
 (Replace with the project’s preferred public contact if different.)
 

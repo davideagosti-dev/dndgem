@@ -2,12 +2,12 @@
   "name": "@dndgem/dom",
   "version": "0.1.0-alpha.0",
   "description": "DOM adapter for DnDGem — measurement, resize observation, vendor-isolated drag interaction, and Vanilla layout session.",
-  "author": "FinGem-AI",
+  "author": "DA62",
   "license": "MIT",
   "homepage": "https://dndgem.dev",
   "bugs": {
     "url": "https://dndgem.dev/support/",
-    "email": "support@fingem-ai.com"
+    "email": "support@dndgem.dev"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
   },
   "keywords": [
     "dndgem",
-    "fingem-ai",
+    "da62",
     "layout",
     "dom",
     "drag-and-drop",

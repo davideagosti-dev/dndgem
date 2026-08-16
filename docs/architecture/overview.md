@@ -1,6 +1,6 @@
 # Architecture Overview
 
-DnDGem (by FinGem-AI) is a content-aware adaptive layout engine for draggable/resizable interfaces.
+DnDGem (by DA62) is a content-aware adaptive layout engine for draggable/resizable interfaces.
 
 ## Product thesis
 
