@@ -188,4 +188,4 @@ AI / LLM inference · Flutter · Vue / Angular / Svelte · Pin/Lock API · group
 
 **Next action**
 
-DND-3.2 Core placement engine is COMPLETE (INTERNAL). **Next sprint:** DND-3.3 — Stability / Adaptive Reflow & Hybrid (**Core** only). DOM/React/`unplacedItemIds` adapter consumption belongs to **DND-3.4**.
+DND-3.2 Core placement engine is COMPLETE (INTERNAL). DND-3.3 Core stability / adaptive reflow is COMPLETE (INTERNAL). **Next sprint:** DND-3.4 — Drag / Partial Intent / DOM-React DX. DOM/React/`unplacedItemIds` adapter consumption belongs to **DND-3.4**.

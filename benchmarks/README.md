@@ -6,6 +6,7 @@ Reproducible Core solver and Auto-Layout proposal performance measurement for Dn
 
 - Deterministic Core solver fixtures and Vitest bench suites (DND-1.8) are implemented.
 - DND-3.2 adds Auto-Layout proposal + solve fixtures (INTERNAL module + public `solveLayout`).
+- DND-3.3 extends fixtures with previous-layout reflow scenarios and multi-cycle sequences.
 - Absolute wall-clock numbers are **hardware-dependent evidence**, not universal claims.
 - Correctness of fixtures is a hard gate; absolute timing is reported, not CI-threshold gated.
 
@@ -40,7 +41,7 @@ benchmarks/
   vitest.bench.config.ts    # vitest bench mode
   core/
     fixtures.ts             # deterministic heterogeneous solver scenarios
-    auto-layout-fixtures.ts # DND-3.2 proposal + solve scenarios
+    auto-layout-fixtures.ts # DND-3.2/3.3 proposal + solve + reflow scenarios
     semantic.test.ts
     auto-layout.semantic.test.ts
     stats.test.ts
@@ -49,7 +50,8 @@ benchmarks/
     auto-layout.bench.ts
   results/
     technical-mvp.json          # solver baseline from last stats run
-    auto-layout-dnd-3.2.json    # Auto-Layout baseline from last stats run
+    auto-layout-dnd-3.2.json    # Auto-Layout cold-start baseline (DND-3.2)
+    auto-layout-dnd-3.3.json    # Auto-Layout + reflow baseline (DND-3.3)
 ```
 
 ## Build mode
@@ -61,11 +63,13 @@ Auto-Layout benches import the compiled **INTERNAL** `dist/auto-layout.js` modul
 
 - Fixtures: static / deterministic (no `Math.random`).
 - Solver timings: each iteration rebuilds `SolverInput` then calls `solveLayout`.
-- Auto-Layout timings: each iteration rebuilds `LayoutIntent` then `createAutoLayoutProposal` + `solveLayout`.
+- Auto-Layout timings: each iteration rebuilds `LayoutIntent` (+ optional `previous`) then `createAutoLayoutProposal` + `solveLayout`.
+- Reflow sequence timings: multi-cycle propose→solve chains (no DOM observers).
 - Warm-up iterations are discarded before samples.
 - Stats report: 25 warm-up + 200 timed iterations; median and p95 in milliseconds.
 - Candidate sets remain bounded (≤ 8) regardless of item count.
 - Auto-Layout probe sets remain bounded (`1 + 2·k` per placement step).
+- Retention checks are finite and declaration-order deterministic.
 
 ## CI policy
 

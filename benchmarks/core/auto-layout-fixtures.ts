@@ -1,15 +1,18 @@
 /**
- * Deterministic Auto-Layout + solve fixtures for DND-3.2 benchmarks.
+ * Deterministic Auto-Layout + solve fixtures for DND-3.2 / DND-3.3 benchmarks.
  *
  * Imports the compiled INTERNAL proposal module from Core `dist/` (not a public
  * package export). Timings measure proposal enrichment + existing `solveLayout`.
+ * DND-3.3 adds reflow sequences that pass previous ResolvedLayout as stability only.
  */
 import {
   createContentConstraints,
   createLayoutIntent,
   createLayoutItem,
+  createResolvedLayout,
   solveLayout,
   type LayoutIntent,
+  type ResolvedLayout,
   type SolverResult,
 } from '@dndgem/core';
 import {
@@ -24,7 +27,15 @@ export type AutoScenarioClass =
   | 'hybrid-explicit-auto'
   | 'constrained-auto'
   | 'unsat-auto'
-  | 'spatial-nofit';
+  | 'spatial-nofit'
+  | 'reflow-stable'
+  | 'reflow-shrink'
+  | 'reflow-grow'
+  | 'reflow-hybrid'
+  | 'reflow-source-insert'
+  | 'reflow-unplaced-recovery'
+  | 'reflow-size-change-stable'
+  | 'reflow-size-change-displaced';
 
 export interface AutoBenchScenario {
   readonly id: string;
@@ -37,6 +48,23 @@ export interface AutoBenchScenario {
   /** Automatic items expected to remain unplaced (spatial no-fit). */
   readonly expectUnplaced?: readonly string[];
   readonly buildIntent: () => LayoutIntent;
+  /**
+   * Optional previous layout for DND-3.3 reflow scenarios.
+   * When set, proposal uses `{ intent, previous }` then solve uses the same previous.
+   */
+  readonly buildPrevious?: () => ResolvedLayout;
+}
+
+export interface ReflowSequenceScenario {
+  readonly id: string;
+  readonly label: string;
+  readonly itemCount: number;
+  readonly scenarioClass: AutoScenarioClass;
+  /** Run a multi-cycle propose→solve sequence; returns final cycle results. */
+  readonly run: () => {
+    readonly proposals: readonly AutoLayoutProposal[];
+    readonly results: readonly SolverResult[];
+  };
 }
 
 type ItemSpec = {
@@ -98,15 +126,25 @@ function specs(count: number): ItemSpec[] {
   return out;
 }
 
-export function proposeAndSolve(intent: LayoutIntent): {
+export function proposeAndSolve(
+  intent: LayoutIntent,
+  previous?: ResolvedLayout,
+): {
   readonly proposal: AutoLayoutProposal;
   readonly result: SolverResult;
 } {
-  const proposal = createAutoLayoutProposal({ intent });
-  const result = solveLayout({ intent: proposal.effectiveIntent });
+  const proposal = createAutoLayoutProposal(
+    previous === undefined ? { intent } : { intent, previous },
+  );
+  const result = solveLayout(
+    previous === undefined
+      ? { intent: proposal.effectiveIntent }
+      : { intent: proposal.effectiveIntent, previous },
+  );
   return { proposal, result };
 }
 
+/** Single-cycle DND-3.2 scenarios (still measured). */
 export const AUTO_SCENARIOS: readonly AutoBenchScenario[] = [
   {
     id: 'auto-small',
@@ -216,5 +254,252 @@ export const AUTO_SCENARIOS: readonly AutoBenchScenario[] = [
           a: { x: 0, y: 0, width: 100, height: 100 },
         },
       ),
+  },
+];
+
+const reflowItem = {
+  minWidth: 40,
+  minHeight: 30,
+  preferredWidth: 100,
+  preferredHeight: 70,
+};
+
+/** DND-3.3 single-cycle reflow scenarios (intent + previous). */
+export const REFLOW_SCENARIOS: readonly AutoBenchScenario[] = [
+  {
+    id: 'reflow-stable',
+    label: 'Reflow stable — retain feasible previous generated (8 items)',
+    itemCount: 8,
+    scenarioClass: 'reflow-stable',
+    expectedState: 'VALID',
+    buildIntent: () => intentOf({ width: 1200, height: 800 }, specs(8)),
+    buildPrevious: () => {
+      const initial = proposeAndSolve(intentOf({ width: 1200, height: 800 }, specs(8)));
+      return initial.result.resolved;
+    },
+  },
+  {
+    id: 'reflow-shrink',
+    label: 'Reflow shrink — retain feasible, reflow/unplace displaced (6 items)',
+    itemCount: 6,
+    scenarioClass: 'reflow-shrink',
+    expectedState: 'VALID',
+    buildIntent: () => intentOf({ width: 500, height: 400 }, specs(6)),
+    buildPrevious: () => {
+      const initial = proposeAndSolve(intentOf({ width: 900, height: 600 }, specs(6)));
+      return initial.result.resolved;
+    },
+  },
+  {
+    id: 'reflow-grow',
+    label: 'Reflow grow — stable retain + room for recovery (6 items)',
+    itemCount: 6,
+    scenarioClass: 'reflow-grow',
+    expectedState: 'VALID',
+    buildIntent: () => intentOf({ width: 1200, height: 800 }, specs(6)),
+    buildPrevious: () => {
+      const initial = proposeAndSolve(intentOf({ width: 700, height: 500 }, specs(6)));
+      return initial.result.resolved;
+    },
+  },
+  {
+    id: 'reflow-hybrid',
+    label: 'Reflow hybrid — source + retained + reflowed generated (8 items)',
+    itemCount: 8,
+    scenarioClass: 'reflow-hybrid',
+    expectedState: 'VALID',
+    expectOrigins: {
+      i0: 'source',
+      i3: 'source',
+    },
+    buildIntent: () => {
+      const itemSpecs = specs(8);
+      return intentOf({ width: 1200, height: 800 }, itemSpecs, {
+        i0: { x: 0, y: 0, width: 100, height: 70 },
+        i3: { x: 600, y: 0, width: 110, height: 80 },
+      });
+    },
+    buildPrevious: () => {
+      const itemSpecs = specs(8);
+      const initial = proposeAndSolve(
+        intentOf({ width: 1200, height: 800 }, itemSpecs, {
+          i0: { x: 200, y: 0, width: 100, height: 70 },
+          i3: { x: 600, y: 0, width: 110, height: 80 },
+        }),
+      );
+      return initial.result.resolved;
+    },
+  },
+  {
+    id: 'reflow-source-insert',
+    label: 'Reflow source-insert — source wins over previous generated (4 items)',
+    itemCount: 4,
+    scenarioClass: 'reflow-source-insert',
+    expectedState: 'VALID',
+    expectOrigins: { a: 'source' },
+    buildIntent: () =>
+      intentOf(
+        { width: 600, height: 400 },
+        [
+          { id: 'a', constraints: reflowItem },
+          { id: 'b', constraints: reflowItem },
+          { id: 'c', constraints: reflowItem },
+          { id: 'd', constraints: reflowItem },
+        ],
+        {
+          a: { x: 100, y: 0, width: 100, height: 70 },
+        },
+      ),
+    buildPrevious: () => {
+      const initial = proposeAndSolve(
+        intentOf({ width: 600, height: 400 }, [
+          { id: 'a', constraints: reflowItem },
+          { id: 'b', constraints: reflowItem },
+          { id: 'c', constraints: reflowItem },
+          { id: 'd', constraints: reflowItem },
+        ]),
+      );
+      return initial.result.resolved;
+    },
+  },
+  {
+    id: 'reflow-unplaced-recovery',
+    label: 'Reflow unplaced recovery — grow after no-fit (2 items)',
+    itemCount: 2,
+    scenarioClass: 'reflow-unplaced-recovery',
+    expectedState: 'VALID',
+    expectOrigins: { a: 'generated', b: 'generated' },
+    buildIntent: () =>
+      intentOf({ width: 300, height: 100 }, [
+        {
+          id: 'a',
+          constraints: { minWidth: 10, preferredWidth: 100, preferredHeight: 100 },
+        },
+        {
+          id: 'b',
+          constraints: { minWidth: 10, preferredWidth: 100, preferredHeight: 100 },
+        },
+      ]),
+    buildPrevious: () => {
+      const small = proposeAndSolve(
+        intentOf({ width: 100, height: 100 }, [
+          {
+            id: 'a',
+            constraints: { minWidth: 10, preferredWidth: 100, preferredHeight: 100 },
+          },
+          {
+            id: 'b',
+            constraints: { minWidth: 10, preferredWidth: 100, preferredHeight: 100 },
+          },
+        ]),
+      );
+      return createResolvedLayout({
+        space: { width: 100, height: 100 },
+        placements: {
+          a: small.proposal.generatedPlacements.a!,
+        },
+      });
+    },
+  },
+  {
+    id: 'reflow-size-change-stable',
+    label: 'Reflow size-change stable — previous x/y + larger current size (1 item)',
+    itemCount: 1,
+    scenarioClass: 'reflow-size-change-stable',
+    expectedState: 'VALID',
+    expectOrigins: { b: 'generated' },
+    buildIntent: () =>
+      intentOf({ width: 600, height: 400 }, [
+        {
+          id: 'b',
+          constraints: {
+            minWidth: 40,
+            minHeight: 30,
+            preferredWidth: 220,
+            preferredHeight: 150,
+          },
+        },
+      ]),
+    buildPrevious: () =>
+      createResolvedLayout({
+        space: { width: 600, height: 400 },
+        placements: { b: { x: 100, y: 100, width: 200, height: 150 } },
+      }),
+  },
+  {
+    id: 'reflow-size-change-displaced',
+    label: 'Reflow size-change displaced — resized previous x/y exits container (1 item)',
+    itemCount: 1,
+    scenarioClass: 'reflow-size-change-displaced',
+    expectedState: 'VALID',
+    expectOrigins: { b: 'generated' },
+    buildIntent: () =>
+      intentOf({ width: 500, height: 300 }, [
+        {
+          id: 'b',
+          constraints: {
+            minWidth: 40,
+            minHeight: 30,
+            preferredWidth: 400,
+            preferredHeight: 150,
+          },
+        },
+      ]),
+    buildPrevious: () =>
+      createResolvedLayout({
+        space: { width: 500, height: 300 },
+        placements: { b: { x: 300, y: 100, width: 200, height: 150 } },
+      }),
+  },
+];
+
+/** All single-cycle Auto-Layout bench scenarios (DND-3.2 + DND-3.3). */
+export const ALL_AUTO_SCENARIOS: readonly AutoBenchScenario[] = [
+  ...AUTO_SCENARIOS,
+  ...REFLOW_SCENARIOS,
+];
+
+/** Multi-cycle sequence benchmarks (pure Core; no DOM observers). */
+export const REFLOW_SEQUENCE_SCENARIOS: readonly ReflowSequenceScenario[] = [
+  {
+    id: 'reflow-seq-resize',
+    label: 'Sequence: initial → solve → resize reflow → solve',
+    itemCount: 8,
+    scenarioClass: 'reflow-stable',
+    run: () => {
+      const intent1 = intentOf({ width: 1000, height: 700 }, specs(8));
+      const cycle1 = proposeAndSolve(intent1);
+      const intent2 = intentOf({ width: 900, height: 650 }, specs(8));
+      const cycle2 = proposeAndSolve(intent2, cycle1.result.resolved);
+      return {
+        proposals: [cycle1.proposal, cycle2.proposal],
+        results: [cycle1.result, cycle2.result],
+      };
+    },
+  },
+  {
+    id: 'reflow-seq-grow-shrink-grow',
+    label: 'Sequence: grow → shrink → grow',
+    itemCount: 6,
+    scenarioClass: 'reflow-grow',
+    run: () => {
+      const c1 = proposeAndSolve(intentOf({ width: 600, height: 400 }, specs(6)));
+      const c2 = proposeAndSolve(
+        intentOf({ width: 1000, height: 700 }, specs(6)),
+        c1.result.resolved,
+      );
+      const c3 = proposeAndSolve(
+        intentOf({ width: 700, height: 450 }, specs(6)),
+        c2.result.resolved,
+      );
+      const c4 = proposeAndSolve(
+        intentOf({ width: 1100, height: 750 }, specs(6)),
+        c3.result.resolved,
+      );
+      return {
+        proposals: [c1.proposal, c2.proposal, c3.proposal, c4.proposal],
+        results: [c1.result, c2.result, c3.result, c4.result],
+      };
+    },
   },
 ];
