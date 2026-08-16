@@ -2,11 +2,11 @@
 
 Authoritative Phase 3 contract for deterministic Adaptive Auto-Layout.
 
-**Status:** Contract COMPLETE for architectural review (no production implementation).  
-**Sprint:** DND-3.1  
+**Status:** Contract COMPLETE; Core engine implemented in DND-3.2 (**INTERNAL / not publicly frozen**).  
+**Sprint:** DND-3.1 (contract) → DND-3.2 (engine)  
 **Product:** DnDGem by DA62
 
-Related: [phase-3-planning-audit.md](./phase-3-planning-audit.md), [core-domain.md](./core-domain.md), [ADR-0006](../adr/ADR-0006-layout-intent-vs-resolved-layout.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [dom-adapter.md](./dom-adapter.md), [roadmap.md](../roadmap.md).
+Related: [phase-3-planning-audit.md](./phase-3-planning-audit.md), [auto-layout-engine.md](./auto-layout-engine.md), [core-domain.md](./core-domain.md), [ADR-0006](../adr/ADR-0006-layout-intent-vs-resolved-layout.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [dom-adapter.md](./dom-adapter.md), [roadmap.md](../roadmap.md).
 
 ---
 
@@ -43,7 +43,7 @@ VALID / DEGRADED / INVALID → ResolvedLayout
 
 ### Sprint boundary
 
-DND-3.1 defines this contract only. Production enrichment, occupancy algorithms, public exports, and adapter wiring belong to DND-3.2+.
+DND-3.1 defined this contract. DND-3.2 implements the Core proposal engine as **INTERNAL** (see [auto-layout-engine.md](./auto-layout-engine.md)). Public exports and adapter wiring remain DND-3.4+ / API review.
 
 ---
 
@@ -429,6 +429,7 @@ DOM/React would later accept opt-in options and own durable Source Intent + orig
 - Existing size mode reuse
 - Provenance-preserving compose into Effective Solver Input
 - Partial/hybrid support
+- Spatial no-fit as **unplaced** (no fabricated overlapping geometry); proposal incompleteness ≠ solver validity
 - Unit tests and Core benches for enrich+solve
 - **No** public API freeze unless a follow-up review explicitly approves Option B (or other) signature
 
@@ -466,19 +467,19 @@ Documented invariants — prefer acceptance matrices until production APIs exist
 
 ## 18. Acceptance matrix (DND-3.1)
 
-| Criterion                                  | Status          |
-| ------------------------------------------ | --------------- |
-| Auto-Layout = compose with existing solver | PASS            |
-| No second solver/score/validity proposed   | PASS            |
-| Three layers + previous distinct           | PASS            |
-| Provenance lifecycle A–F defined           | PASS            |
-| Hybrid/partial MVP defined                 | PASS            |
-| Drag strong intent, not pin                | PASS            |
-| Opt-in Alpha                               | PASS            |
-| Public API proposed, not approved/exported | PASS            |
-| DND-3.2 may/must-not defined               | PASS            |
-| Future tests documented                    | PASS            |
-| Production Auto-Layout code                | NONE (required) |
+| Criterion                                  | Status                               |
+| ------------------------------------------ | ------------------------------------ |
+| Auto-Layout = compose with existing solver | PASS                                 |
+| No second solver/score/validity proposed   | PASS                                 |
+| Three layers + previous distinct           | PASS                                 |
+| Provenance lifecycle A–F defined           | PASS                                 |
+| Hybrid/partial MVP defined                 | PASS                                 |
+| Drag strong intent, not pin                | PASS                                 |
+| Opt-in Alpha                               | PASS                                 |
+| Public API proposed, not approved/exported | PASS                                 |
+| DND-3.2 may/must-not defined               | PASS                                 |
+| Future tests documented                    | PASS                                 |
+| Production Auto-Layout code                | DND-3.2 INTERNAL (not public export) |
 
 ---
 

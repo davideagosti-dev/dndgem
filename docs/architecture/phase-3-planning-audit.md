@@ -186,8 +186,6 @@ AI / LLM inference · Flutter · Vue / Angular / Svelte · Pin/Lock API · group
 
 ---
 
-## Next action
+**Next action**
 
-DND-3.1 contract work: see [auto-layout-contract.md](./auto-layout-contract.md) and [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md).
-
-**Next implementation sprint:** DND-3.2 — Deterministic Placement Engine (after DND-3.1 architectural review / merge).
+DND-3.2 Core placement engine is COMPLETE (INTERNAL). **Next sprint:** DND-3.3 — Stability / Adaptive Reflow & Hybrid (**Core** only). DOM/React/`unplacedItemIds` adapter consumption belongs to **DND-3.4**.

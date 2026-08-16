@@ -18,14 +18,14 @@ Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE**:
 Phase 3 — Adaptive Auto-Layout is **ACTIVE**. Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**; sprint map **APPROVED**:
 
 1. DND-3.1 Auto-Layout Contract & Core Model — **COMPLETE** (contract; see `docs/architecture/auto-layout-contract.md`, ADR-0014)
-2. DND-3.2 Deterministic Placement Engine — **NEXT**
-3. DND-3.3 Stability / Adaptive Reflow & Hybrid — PLANNED
-4. DND-3.4 Drag / Partial Intent / DOM-React DX — PLANNED
+2. DND-3.2 Deterministic Placement Engine — **COMPLETE** (INTERNAL Core engine; see `docs/architecture/auto-layout-engine.md`)
+3. DND-3.3 Stability / Adaptive Reflow & Hybrid — **NEXT** (not started; **Core** reflow/stability — not DOM/React adapters)
+4. DND-3.4 Drag / Partial Intent / DOM-React DX — PLANNED (session/adapters/`unplacedItemIds` product wiring)
 5. DND-3.5 Phase 3 Alpha Release Gate — PLANNED
 
-Authoritative records: `docs/architecture/phase-3-planning-audit.md`, `docs/architecture/auto-layout-contract.md`.
+Authoritative records: `docs/architecture/phase-3-planning-audit.md`, `docs/architecture/auto-layout-contract.md`, `docs/architecture/auto-layout-engine.md`.
 
-Do not begin a Phase 3 sprint’s work unless that sprint is the active sprint. Do not implement Auto-Layout production code until DND-3.2 is the active sprint.
+Do not begin a Phase 3 sprint’s work unless that sprint is the active sprint. Do not freeze public Auto-Layout exports without explicit review. Do not assign DOM/React adapter work to DND-3.3.
 
 ## CI policy (DND-2.3+)
 
