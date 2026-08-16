@@ -59,9 +59,9 @@ export function App() {
 | `mechanics`           | no       | **Advanced / tests** — replace drag mechanics                      |
 | `ResizeObserver`      | no       | **Advanced / tests** — inject observer constructor                 |
 
-## Opt-in Auto-Layout (repository / next Alpha)
+## Opt-in Auto-Layout
 
-Published npm `0.1.0-alpha.0` does **not** include Auto-Layout. In the repository (DND-3.4), pass `autoLayout`:
+Available on published npm `@alpha` (`0.1.0-alpha.1`). Pass `autoLayout`:
 
 ```tsx
 <DnDGemProvider

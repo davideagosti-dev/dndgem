@@ -122,7 +122,7 @@ Initial DNS, custom-domain, and TLS activation for `dndgem.dev` and `playground.
 
 ## Package metadata note
 
-`homepage` / `bugs` in `@dndgem/*` package.json point at `https://dndgem.dev`. Published npm tarball `0.1.0-alpha.0` is unchanged until the next legitimate Alpha release. Do not republish solely for metadata.
+`homepage` / `bugs` in `@dndgem/*` package.json point at `https://dndgem.dev`. Published npm `0.1.0-alpha.1` carries current DA62 / `dndgem.dev` metadata. Historical `0.1.0-alpha.0` tarballs are unchanged.
 
 ## Contacts
 

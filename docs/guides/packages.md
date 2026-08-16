@@ -45,4 +45,4 @@ Authoritative list: [Alpha API Contract](../architecture/alpha-api-contract.md).
 npm install @dndgem/react@alpha
 ```
 
-Published version: `0.1.0-alpha.0`. Always use dist-tag **`alpha`**. Do not rely on bare `npm install @dndgem/*` (`latest` currently aliases the same prerelease and is not a stable channel).
+Published version: `0.1.0-alpha.1`. Always use dist-tag **`alpha`**. Do not rely on bare `npm install @dndgem/*` (`latest` still points at historical `0.1.0-alpha.0` and is not a stable channel).

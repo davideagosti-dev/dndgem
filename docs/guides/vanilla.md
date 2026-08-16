@@ -96,9 +96,9 @@ dispose → disconnect observers / drag
 | `mechanics`         | Advanced test seam                                                   |
 | `ResizeObserver`    | Advanced test / environment injection                                |
 
-## Opt-in Auto-Layout (repository / next Alpha)
+## Opt-in Auto-Layout
 
-Published npm `0.1.0-alpha.0` does **not** include Auto-Layout. In the repository (DND-3.4), set `autoLayout: true`:
+Available on published npm `@alpha` (`0.1.0-alpha.1`). Default remains off. Set `autoLayout: true`:
 
 ```ts
 const session = createLayoutSession({

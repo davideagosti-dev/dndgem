@@ -21,7 +21,7 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 
 - Technical MVP (Phase 1, DND-1.1 → DND-1.8) is **CLOSED**.
 - Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE** (`0.1.0-alpha.0` / `@alpha`).
-- Active phase: **Phase 3 — Adaptive Auto-Layout** (`docs/roadmap.md`). Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**; sprint map **APPROVED**. DND-3.1 Auto-Layout **contract** COMPLETE ([auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md)). DND-3.2/DND-3.3 Core engine COMPLETE; DND-3.4 DOM/React opt-in wiring COMPLETE — minimal public `createAutoLayoutProposal` + session/provider `autoLayout` ([auto-layout-engine.md](./auto-layout-engine.md)). **DND-3.5** release-gate validation **PASSED — READY TO RELEASE** (publish not executed). Published `0.1.0-alpha.0` does **not** include Auto-Layout yet.
+- Active phase status: **Phase 3 — Adaptive Auto-Layout** is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `@alpha`). Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**; sprint map **APPROVED**. DND-3.1 Auto-Layout **contract** COMPLETE ([auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md)). DND-3.2/DND-3.3 Core engine COMPLETE; DND-3.4 DOM/React opt-in wiring COMPLETE — minimal public `createAutoLayoutProposal` + session/provider `autoLayout` ([auto-layout-engine.md](./auto-layout-engine.md)). **DND-3.5** COMPLETE — published [0.1.0-alpha.1](../releases/0.1.0-alpha.1.md).
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
 - `@dndgem/core` evaluates placements as `VALID` / `DEGRADED` / `INVALID` with deterministic scoring (DND-1.3).
@@ -60,7 +60,7 @@ Consumers (playground/examples) use public package exports only.
 
 ## Non-goals for Phase 2 critical path
 
-- Deterministic Auto-Layout product (Phase 3 — in progress; not in published `0.1.0-alpha.0`)
+- Deterministic Auto-Layout product (Phase 3 — **RELEASED** in `0.1.0-alpha.1`)
 - AI inference (Phase 4)
 - Billing / cloud SaaS
 - Vue / Angular / Svelte / Flutter implementations
