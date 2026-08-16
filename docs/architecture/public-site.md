@@ -1,6 +1,8 @@
 # Public site & domain hosting
 
-Canonical public product identity for **DnDGem by FinGem-AI**.
+Canonical public product identity for **DnDGem by DA62**.
+
+See also [Product identity](./product-identity.md).
 
 ## Status
 
@@ -124,5 +126,5 @@ Initial DNS, custom-domain, and TLS activation for `dndgem.dev` and `playground.
 
 ## Contacts
 
-- Support: `support@fingem-ai.com`
-- Security: `security@fingem.ai`
+- Support: `support@dndgem.dev`
+- Security: `security@dndgem.dev`

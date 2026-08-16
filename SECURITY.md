@@ -8,9 +8,9 @@ DnDGem is preparing Public Alpha (`0.x` prereleases). Security fixes will target
 
 Please report security issues privately. Do not open public issues for undisclosed vulnerabilities.
 
-Preferred contact: **security@fingem.ai**
+Preferred contact: **security@dndgem.dev**
 
-Product / Alpha support (non-security): **support@fingem-ai.com** · https://dndgem.dev/support/
+Product / Alpha support (non-security): **support@dndgem.dev** · https://dndgem.dev/support/
 
 Include:
 

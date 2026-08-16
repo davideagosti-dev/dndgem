@@ -1,6 +1,6 @@
 # Browser Support (Public Alpha)
 
-Authoritative Public Alpha browser support statement for **DnDGem by FinGem-AI**.
+Authoritative Public Alpha browser support statement for **DnDGem by DA62**.
 
 Sprint evidence: **DND-2.4** (engine-level Playwright validation). This is **not** certification of every Chrome / Firefox / Safari version, mobile browser, or embedded webview.
 

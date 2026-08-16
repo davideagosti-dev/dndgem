@@ -2,7 +2,7 @@
   "name": "dndgem",
   "private": true,
   "version": "0.0.0",
-  "description": "DnDGem monorepo — content-aware adaptive layout engine by FinGem-AI",
+  "description": "DnDGem monorepo — content-aware adaptive layout engine by DA62",
   "type": "module",
   "packageManager": "pnpm@10.34.5",
   "engines": {

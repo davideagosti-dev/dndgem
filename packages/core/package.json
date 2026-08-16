@@ -2,12 +2,12 @@
   "name": "@dndgem/core",
   "version": "0.1.0-alpha.0",
   "description": "Renderer-agnostic core for DnDGem — domain model, content constraints, validity evaluation, layout scoring, and adaptive solver.",
-  "author": "FinGem-AI",
+  "author": "DA62",
   "license": "MIT",
   "homepage": "https://dndgem.dev",
   "bugs": {
     "url": "https://dndgem.dev/support/",
-    "email": "support@fingem-ai.com"
+    "email": "support@dndgem.dev"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
   },
   "keywords": [
     "dndgem",
-    "fingem-ai",
+    "da62",
     "layout",
     "constraints",
     "adaptive-layout",

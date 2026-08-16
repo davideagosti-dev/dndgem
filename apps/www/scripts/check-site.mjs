@@ -60,8 +60,11 @@ for (const [label, html] of [
 }
 
 const support = readFileSync(join(site, 'support/index.html'), 'utf8');
-if (!support.includes('support@fingem-ai.com') || !support.includes('security@fingem.ai')) {
+if (!support.includes('support@dndgem.dev') || !support.includes('security@dndgem.dev')) {
   failures.push('support/index.html: missing support/security contacts');
+}
+if (!landing.includes('by DA62') || !support.includes('by DA62')) {
+  failures.push('site: missing DnDGem by DA62 attribution');
 }
 
 if (failures.length > 0) {
