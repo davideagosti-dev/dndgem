@@ -1,8 +1,8 @@
 # ADR-0014: Deterministic Auto-Layout Enrichment & Placement Provenance
 
-- **Status:** Accepted (contract DND-3.1; Core engine INTERNAL in DND-3.2; public API still not approved)
+- **Status:** Accepted (contract DND-3.1; Core engine INTERNAL in DND-3.2/DND-3.3; public API still not approved)
 - **Date:** 2026-08-16
-- **Sprint:** DND-3.1 / DND-3.2
+- **Sprint:** DND-3.1 / DND-3.2 / DND-3.3
 
 ## Context
 
@@ -29,7 +29,7 @@ Today `LayoutIntent.desiredPlacements` is a flat map. DOM session seeding and dr
 
 ## Consequences
 
-- DND-3.2 Core enrichment preserves origin metadata across compose cycles (see [auto-layout-engine.md](../architecture/auto-layout-engine.md)).
+- DND-3.2/DND-3.3 Core enrichment preserves origin metadata across compose and reflow cycles (see [auto-layout-engine.md](../architecture/auto-layout-engine.md)). Previous layout remains stability-only and is never an origin.
 - DOM/React (DND-3.4) must retain Source Intent separately from last effective/resolved geometry when Auto-Layout is enabled.
 - Pin/Lock APIs remain deferred.
 - Extending this contract (public export freeze, `LayoutIntent` schema change, second validity language) is an ADR-level reopen.

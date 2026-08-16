@@ -288,4 +288,4 @@ Internal modules under `src/` are not a supported public surface.
 
 ## Phase 3 Auto-Layout (contract)
 
-Deterministic Adaptive Auto-Layout (Phase 3) is defined as intent enrichment composed with existing `solveLayout` — not a second solver. Provenance (Source Intent vs Generated Placement vs Effective Solver Input) is mandatory. See [auto-layout-contract.md](./auto-layout-contract.md), [auto-layout-engine.md](./auto-layout-engine.md), and [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md). DND-3.2 implements the Core proposal engine as **INTERNAL** (not publicly frozen).
+Deterministic Adaptive Auto-Layout (Phase 3) is defined as intent enrichment composed with existing `solveLayout` — not a second solver. Provenance (Source Intent vs Generated Placement vs Effective Solver Input) is mandatory. Previous layout remains stability-only (not an origin). See [auto-layout-contract.md](./auto-layout-contract.md), [auto-layout-engine.md](./auto-layout-engine.md), and [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md). DND-3.2/DND-3.3 implement the Core proposal + reflow engine as **INTERNAL** (not publicly frozen).
