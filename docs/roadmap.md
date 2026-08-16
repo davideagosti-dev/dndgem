@@ -269,9 +269,9 @@ DND-3.3 Stability / Adaptive Reflow & Hybrid  COMPLETE
         ↓
 DND-3.4 Drag / Partial Intent / DOM-React DX  COMPLETE
         ↓
-DND-3.5 Phase 3 Alpha Release Gate            NEXT
+DND-3.5 Phase 3 Alpha Release Gate            COMPLETE
             ↓
-PHASE 3 PASS → next consumer Alpha (+ first real OIDC publish)
+PHASE 3 COMPLETE / RELEASED → 0.1.0-alpha.1 @alpha (OIDC verified)
 ```
 
 ### Binding refinements (from planning audit)
