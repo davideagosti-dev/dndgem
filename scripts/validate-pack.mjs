@@ -134,6 +134,41 @@ function packOne(dir) {
   assert(files.includes('dist/index.js'), `${pkg.name} tarball missing dist/index.js`);
   assert(files.includes('dist/index.d.ts'), `${pkg.name} tarball missing dist/index.d.ts`);
 
+  const packedPkgJson = JSON.parse(
+    execFileSync('tar', ['-xOf', resolved, 'package/package.json'], { encoding: 'utf8' }),
+  );
+  assert(packedPkgJson.author === 'DA62', `${pkg.name} packed author must be DA62`);
+  assert(
+    typeof packedPkgJson.homepage === 'string' &&
+      packedPkgJson.homepage.replace(/\/$/, '') === 'https://dndgem.dev',
+    `${pkg.name} packed homepage must be https://dndgem.dev`,
+  );
+  assert(
+    packedPkgJson.bugs?.email === 'support@dndgem.dev',
+    `${pkg.name} packed bugs.email must be support@dndgem.dev`,
+  );
+  assert(
+    !JSON.stringify(packedPkgJson).includes('fingem-ai.com'),
+    `${pkg.name} packed package.json must not contain fingem-ai.com`,
+  );
+
+  const packedReadme = execFileSync('tar', ['-xOf', resolved, 'package/README.md'], {
+    encoding: 'utf8',
+  });
+  assert(
+    packedReadme.includes('support@dndgem.dev'),
+    `${pkg.name} packed README must include support@dndgem.dev`,
+  );
+  assert(
+    packedReadme.includes('https://playground.dndgem.dev/'),
+    `${pkg.name} packed README must include canonical playground URL`,
+  );
+  assert(
+    !packedReadme.includes('support@fingem-ai.com'),
+    `${pkg.name} packed README must not advertise support@fingem-ai.com`,
+  );
+  assert(packedReadme.includes('DA62'), `${pkg.name} packed README must attribute DA62`);
+
   const indexDts = execFileSync('tar', ['-xOf', resolved, 'package/dist/index.d.ts'], {
     encoding: 'utf8',
   });
@@ -143,6 +178,47 @@ function packOne(dir) {
   );
   assert(!indexDts.includes('packages/'), `${pkg.name} public types leak monorepo paths`);
   assert(!/from '\.\.\/src\//.test(indexDts), `${pkg.name} public types leak source paths`);
+
+  if (dir === 'dom') {
+    const sessionDts = execFileSync('tar', ['-xOf', resolved, 'package/dist/session.d.ts'], {
+      encoding: 'utf8',
+    });
+    assert(
+      sessionDts.includes('proposalUnplacedItemIds'),
+      `${pkg.name} public types must expose proposalUnplacedItemIds`,
+    );
+    assert(
+      /readonly proposalUnplacedItemIds:\s*readonly string\[\]/.test(sessionDts),
+      `${pkg.name} proposalUnplacedItemIds must be readonly string[]`,
+    );
+    assert(
+      !/interface LayoutSessionAutoLayoutState \{[^}]*\bunplacedItemIds\b/.test(
+        sessionDts.replace(/\s+/g, ' '),
+      ),
+      `${pkg.name} must not expose ambiguous session-level unplacedItemIds`,
+    );
+  }
+  if (dir === 'core') {
+    assert(
+      /export \{[^}]*createAutoLayoutProposal/.test(indexDts) &&
+        /export \{[^}]*PlacementOrigin/.test(indexDts),
+      `${pkg.name} public types must expose Auto-Layout proposal surface`,
+    );
+    assert(
+      !/export \{[^}]*maxProbeCountForOccupancy/.test(indexDts) &&
+        !/export declare function maxProbeCountForOccupancy/.test(indexDts),
+      `${pkg.name} must not export maxProbeCountForOccupancy`,
+    );
+  }
+  if (dir === 'react') {
+    const typesDts = execFileSync('tar', ['-xOf', resolved, 'package/dist/types.d.ts'], {
+      encoding: 'utf8',
+    });
+    assert(
+      /autoLayout\??:\s*boolean/.test(typesDts),
+      `${pkg.name} public types must expose autoLayout?: boolean`,
+    );
+  }
 
   return {
     name: pkg.name,
@@ -286,6 +362,12 @@ const autoState = autoSession.getState();
 if (autoState.autoLayout?.enabled !== true) {
   throw new Error('expected autoLayout state when enabled');
 }
+if (!Array.isArray(autoState.autoLayout.proposalUnplacedItemIds)) {
+  throw new Error('expected proposalUnplacedItemIds on autoLayout state');
+}
+if ('unplacedItemIds' in autoState.autoLayout) {
+  throw new Error('session autoLayout must not expose ambiguous unplacedItemIds');
+}
 if (autoState.resolved.placements.a === undefined || autoState.resolved.placements.b === undefined) {
   throw new Error('auto-layout session did not place items');
 }
@@ -399,18 +481,88 @@ if (!rootEl.querySelector('article')) {
 await act(async () => {
   root.unmount();
 });
+
+function AutoBoard() {
+  const containerRef = useDnDGemContainer();
+  const itemA = useDnDGemItem('a');
+  const itemB = useDnDGemItem('b');
+  const { state } = useDnDGem();
+  return createElement(
+    'div',
+    {
+      ref: (node) => {
+        if (node) {
+          stub(node, { left: 0, top: 0, width: 400, height: 200 });
+        }
+        containerRef(node);
+      },
+      'data-auto': state?.autoLayout?.enabled ? 'yes' : 'no',
+      'data-unplaced': state?.autoLayout?.proposalUnplacedItemIds?.join(',') ?? '',
+    },
+    createElement('article', {
+      ref: (node) => {
+        if (node) {
+          stub(node, { left: 0, top: 0, width: 80, height: 40 });
+        }
+        itemA.ref(node);
+      },
+      style: itemA.style,
+    }),
+    createElement('article', {
+      ref: (node) => {
+        if (node) {
+          stub(node, { left: 0, top: 0, width: 80, height: 40 });
+        }
+        itemB.ref(node);
+      },
+      style: itemB.style,
+    }),
+  );
+}
+
+const autoRootEl = window.document.createElement('div');
+window.document.body.append(autoRootEl);
+const autoRoot = createRoot(autoRootEl);
+await act(async () => {
+  autoRoot.render(
+    createElement(
+      DnDGemProvider,
+      {
+        autoLayout: true,
+        items: [
+          { id: 'a', constraints: { preferredWidth: 80, preferredHeight: 40, minWidth: 20 } },
+          { id: 'b', constraints: { preferredWidth: 80, preferredHeight: 40, minWidth: 20 } },
+        ],
+        mechanics,
+        ResizeObserver: globalThis.ResizeObserver,
+      },
+      createElement(AutoBoard),
+    ),
+  );
+});
+if (autoRootEl.querySelector('[data-auto="yes"]') === null) {
+  throw new Error('react packed consumer autoLayout did not enable session state');
+}
+await act(async () => {
+  autoRoot.unmount();
+});
 console.log('react packed consumer smoke ok', info.version);
 `;
 
 const typecheckSource = `import {
+  createAutoLayoutProposal,
   createLayoutIntent,
   solveLayout,
+  type AutoLayoutProposal,
+  type AutoLayoutProposalInput,
   type LayoutIntent,
+  type PlacementOrigin,
   type SolverResult,
 } from '@dndgem/core';
 import {
   createLayoutSession,
   type LayoutSession,
+  type LayoutSessionAutoLayoutState,
   type LayoutSessionState,
 } from '@dndgem/dom';
 import {
@@ -425,10 +577,16 @@ export const intent: LayoutIntent = createLayoutIntent({
   space: { width: 100, height: 80 },
   items: [{ id: 'a' }],
 });
-export const solved: SolverResult = solveLayout({ intent });
+export const proposalInput: AutoLayoutProposalInput = { intent };
+export const proposal: AutoLayoutProposal = createAutoLayoutProposal(proposalInput);
+export const origin: PlacementOrigin = 'generated';
+export const solved: SolverResult = solveLayout({ intent: proposal.effectiveIntent });
 export type Session = LayoutSession;
 export type SessionState = LayoutSessionState;
+export type AutoState = LayoutSessionAutoLayoutState;
 export type ProviderProps = DnDGemProviderProps;
+export const autoLayoutProp: ProviderProps['autoLayout'] = true;
+export const proposalUnplaced: AutoState['proposalUnplacedItemIds'] = [];
 export const hooks = { useDnDGem, useDnDGemContainer, useDnDGemItem, DnDGemProvider };
 `;
 
@@ -531,16 +689,19 @@ const pre = JSON.parse(readFileSync(join(root, '.changeset', 'pre.json'), 'utf8'
 assert(pre.mode === 'pre', 'Changesets pre mode must be active');
 assert(pre.tag === 'alpha', 'Changesets pre tag must be alpha');
 
-const pendingChangesetPath = join(root, '.changeset', 'dnd-2-2-alpha-api.md');
-const consumedChangesetPath = join(root, '.changeset', 'pre', 'dnd-2-2-alpha-api.md');
+const pendingFirstAlphaPath = join(root, '.changeset', 'dnd-2-2-alpha-api.md');
+const consumedFirstAlphaPath = join(root, '.changeset', 'pre', 'dnd-2-2-alpha-api.md');
+const pendingAutoLayoutPath = join(root, '.changeset', 'dnd-3-4-auto-layout-dom-react.md');
 const versions = ['core', 'dom', 'react'].map(
   (name) => JSON.parse(readFileSync(join(root, 'packages', name, 'package.json'), 'utf8')).version,
 );
-const allAlpha = versions.every((v) => v === '0.1.0-alpha.0');
+const allAlpha0 = versions.every((v) => v === '0.1.0-alpha.0');
 const allZero = versions.every((v) => v === '0.0.0');
+const aligned = versions.every((v) => v === versions[0]);
+assert(aligned, `fixed package group versions must stay aligned; got ${versions.join(', ')}`);
 
-if (existsSync(pendingChangesetPath)) {
-  const changeset = readFileSync(pendingChangesetPath, 'utf8');
+if (existsSync(pendingFirstAlphaPath)) {
+  const changeset = readFileSync(pendingFirstAlphaPath, 'utf8');
   assert(
     changeset.includes("'@dndgem/core': minor") &&
       changeset.includes("'@dndgem/dom': minor") &&
@@ -552,11 +713,30 @@ if (existsSync(pendingChangesetPath)) {
     'Pending Alpha changeset expects package versions to remain 0.0.0 until versioned',
   );
   console.log('\nChangesets pre mode:', pre.tag, '— first intended publish version 0.1.0-alpha.0');
-} else if (existsSync(consumedChangesetPath) && allAlpha) {
-  console.log('\nChangesets pre mode:', pre.tag, '— packages versioned at 0.1.0-alpha.0');
+} else if (existsSync(consumedFirstAlphaPath) && allAlpha0) {
+  if (existsSync(pendingAutoLayoutPath)) {
+    const changeset = readFileSync(pendingAutoLayoutPath, 'utf8');
+    assert(
+      changeset.includes("'@dndgem/core': minor") &&
+        changeset.includes("'@dndgem/dom': minor") &&
+        changeset.includes("'@dndgem/react': minor"),
+      'DND-3.4 changeset must minor-bump the fixed package group for the next Alpha',
+    );
+    assert(
+      changeset.includes('proposalUnplacedItemIds'),
+      'DND-3.4 changeset must document proposalUnplacedItemIds',
+    );
+    console.log(
+      '\nChangesets pre mode:',
+      pre.tag,
+      '— packages at 0.1.0-alpha.0; pending DND-3.4 minor → next 0.1.0-alpha.x via changeset version',
+    );
+  } else {
+    console.log('\nChangesets pre mode:', pre.tag, '— packages versioned at 0.1.0-alpha.0');
+  }
 } else {
   throw new Error(
-    'Expected pending Alpha changeset at 0.0.0, or consumed changeset with packages at 0.1.0-alpha.0',
+    'Expected pending first-Alpha changeset at 0.0.0, or consumed first-Alpha changeset with packages at 0.1.0-alpha.0',
   );
 }
 
