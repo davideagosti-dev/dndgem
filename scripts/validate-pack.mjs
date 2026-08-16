@@ -737,7 +737,11 @@ if (existsSync(pendingFirstAlphaPath)) {
   } else {
     console.log('\nChangesets pre mode:', pre.tag, '— packages versioned at 0.1.0-alpha.0');
   }
-} else if (existsSync(consumedFirstAlphaPath) && existsSync(consumedAutoLayoutPath) && allAlphaPrerelease) {
+} else if (
+  existsSync(consumedFirstAlphaPath) &&
+  existsSync(consumedAutoLayoutPath) &&
+  allAlphaPrerelease
+) {
   assert(
     !existsSync(pendingAutoLayoutPath),
     'DND-3.4 changeset must be consumed (not still pending) once packages leave 0.1.0-alpha.0',
