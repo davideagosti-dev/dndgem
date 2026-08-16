@@ -220,6 +220,8 @@ PUBLIC ALPHA LIVE → external developer validation
 NEXT: Phase 3 — Adaptive Auto-Layout
 ```
 
+Post-release canonical domain follow-up (`dndgem.dev` / `playground.dndgem.dev`): **COMPLETE** — see [Public site & domain hosting](./architecture/public-site.md).
+
 ---
 
 ## Later phases (high-level)
