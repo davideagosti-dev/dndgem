@@ -285,3 +285,7 @@ Internal modules under `src/` are not a supported public surface.
 - React bindings (DND-1.7)
 - Generic CSP/SAT solvers, random/AI search
 - Flutter / AI / cloud
+
+## Phase 3 Auto-Layout (contract)
+
+Deterministic Adaptive Auto-Layout (Phase 3) is defined as intent enrichment composed with existing `solveLayout` — not a second solver. Provenance (Source Intent vs Generated Placement vs Effective Solver Input) is mandatory. See [auto-layout-contract.md](./auto-layout-contract.md) and [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md). Production implementation starts in DND-3.2.

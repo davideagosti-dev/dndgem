@@ -13,7 +13,9 @@ Phase 1 Technical MVP is **CLOSED** (DND-1.1 → DND-1.8). Do not reopen Phase 1
 
 Phase 2 Public Alpha Readiness is **PASS** — Public Alpha **LIVE** (`0.1.0-alpha.0` / `@alpha`).
 
-**Next phase:** Phase 3 — Adaptive Auto-Layout (`docs/roadmap.md`). Do not begin Phase 3 implementation unless the active sprint explicitly requires it.
+Phase 3 — Adaptive Auto-Layout is **ACTIVE** (sprint map APPROVED). See `docs/architecture/phase-3-planning-audit.md` and `docs/roadmap.md`.
+
+**Next sprint:** DND-3.2 — Deterministic Placement Engine (only after DND-3.1 contract review/merge). DND-3.1 contract: `docs/architecture/auto-layout-contract.md` + ADR-0014. Do not implement production Auto-Layout until DND-3.2 is the active sprint.
 
 ## CI policy (DND-2.3+)
 
@@ -27,7 +29,8 @@ Cursor MUST NOT introduce:
 - AI / Gemini / OpenAI / Anthropic / local model runtimes
 - Flutter implementation
 - Vue / Angular / Svelte implementations
-- Deterministic Auto-Layout product implementation (belongs Phase 3)
+- Deterministic Auto-Layout **product implementation** (DND-3.2+ only; DND-3.1 is contract-only)
+- Pin / Lock / fixed / manual placement APIs (deferred unless a sprint explicitly requires them)
 - cloud services / billing / Stripe
 - Layout CI SaaS / team accounts / enterprise functionality
 - custom native DnD engine
@@ -42,3 +45,11 @@ AI is optional and outside the critical path; it follows deterministic Auto-Layo
 Repository remains PRIVATE unless an explicit release decision changes visibility.
 
 Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.0`). Do not document bare / `latest` installs as the supported Alpha path.
+
+## Phase 3 binding refinements
+
+- Auto-Layout enrichs intent; existing `solveLayout` remains the only selection/validity authority.
+- Source intent vs generated/effective placement provenance must stay distinguishable.
+- Drag produces strong persistent user intent, not an absolute immutable pin.
+- Auto-Layout remains opt-in for Phase 3 Alpha.
+- Proposed public enricher APIs stay **NOT YET APPROVED** until DND-3.1 closes.
