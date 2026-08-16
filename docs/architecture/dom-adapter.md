@@ -183,6 +183,20 @@ Positioning model:
 
 Idle resize and constraint-driven session recreation may pass Core `previous` for ADR-0010 stability. Drag proposals and **explicit new `desiredPlacements`** do **not**. Passing `previous` while also supplying a new equally-valid desired placement lets `preserve-previous` win (the DND-1.6 class of bug).
 
+### Opt-in Auto-Layout (DND-3.4)
+
+`createLayoutSession({ autoLayout?: boolean })` — default / omitted = off (explicit-only path unchanged).
+
+When `autoLayout: true`:
+
+- `desiredPlacements` may be partial or absent (Source Intent); Core `createAutoLayoutProposal` fills the rest before `solveLayout`
+- Session retains Source Intent separately from generated placements
+- Accepted drag promotes **only** the active item to Source Intent (strong persistent intent — not a pin)
+- `LayoutSessionState.autoLayout` is `{ enabled: true; proposalUnplacedItemIds }` (proposal completeness ≠ solver INVALID; ≠ final placement absence)
+- Passive resize may pass `previous` as stability input only — never as Source Intent
+
+Published npm `0.1.0-alpha.0` does **not** include this option. React mirrors it via `DnDGemProvider` prop `autoLayout?: boolean`.
+
 `dispose()` disconnects interaction and observers and is idempotent. Layout-related inline styles are left in place; the consumer resets them if a pre-session look is required. Unrelated visual styles (color, font, z-index, …) are never written by the library.
 
 React (`@dndgem/react`) wraps this session. It does not add a second ResizeObserver or a second solver. Importing the React package is SSR-safe; rendering the provider requires a client-side mount.

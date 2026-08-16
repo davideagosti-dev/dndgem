@@ -10,21 +10,17 @@ import { resolveItemSize, type SizingMode } from './sizing.js';
  * MVP placement provenance (ADR-0014 / DND-3.1).
  * Only `source` | `generated`. Previous layout and effective intent are not origins.
  * Unplaced automatic items are listed separately — they are not an origin value.
- *
- * INTERNAL — not part of the public Alpha API.
  */
 export type PlacementOrigin = 'source' | 'generated';
 
 /**
- * Input to the deterministic Auto-Layout proposal engine (Option B direction).
+ * Input to the deterministic Auto-Layout proposal engine (Option B).
  *
  * `intent.desiredPlacements` is treated as **Source Intent** (partial or complete).
  * Items without a desired placement are automatic and may receive generated geometry.
  *
  * `previous` (optional) is a **stability signal only** (DND-3.3 / ADR-0010).
  * It is never Source Intent, never an origin, and never a pin/lock.
- *
- * INTERNAL — not part of the public Alpha API.
  */
 export interface AutoLayoutProposalInput {
   readonly intent: LayoutIntent;
@@ -50,8 +46,6 @@ export interface AutoLayoutProposalInput {
  * `unplacedItemIds` records automatic items for which the bounded search found no
  * non-overlapping feasible placement. Those items receive **no** fabricated rectangle.
  * Proposal completeness is distinct from solver VALID / DEGRADED / INVALID.
- *
- * INTERNAL — not part of the public Alpha API.
  */
 export interface AutoLayoutProposal {
   readonly effectiveIntent: LayoutIntent;
@@ -226,8 +220,6 @@ function commitGenerated(
  * No-fit: when no probe yields a non-overlapping in-container placement, the item
  * remains **unplaced** (listed in `unplacedItemIds`). No fabricated rectangle is
  * emitted. Proposal completeness ≠ solver validity.
- *
- * INTERNAL — not part of the public Alpha API.
  */
 export function createAutoLayoutProposal(input: AutoLayoutProposalInput): AutoLayoutProposal {
   assertProposalInput(input);

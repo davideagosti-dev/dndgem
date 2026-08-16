@@ -74,12 +74,8 @@ const ITEMS = [
 ] as const;
 
 const DESIRED = {
+  // Partial Source Intent — remaining cards are Auto-Layout generated (opt-in).
   revenue: { x: 12, y: 12, width: 180, height: 88 },
-  expenses: { x: 204, y: 12, width: 180, height: 88 },
-  cashflow: { x: 396, y: 12, width: 280, height: 160 },
-  transactions: { x: 12, y: 112, width: 300, height: 200 },
-  alerts: { x: 324, y: 184, width: 120, height: 80 },
-  notes: { x: 456, y: 184, width: 200, height: 140 },
 };
 
 const COPY: Record<string, { title: string; body: string; className: string }> = {
@@ -130,11 +126,19 @@ function Board() {
     <main>
       <h1>DnDGem React Example</h1>
       <p>
-        Public <code>@dndgem/react</code> adapter. Resize the board to see usefulness degrade (
-        <code>VALID</code> → <code>DEGRADED</code>) without hard-constraint failure.
+        Opt-in Auto-Layout (<code>autoLayout</code>): one explicit Source Intent card; DnDGem places
+        the rest. Resize to see adaptive retention; drag an automatic card to promote it to Source
+        Intent. Published npm <code>0.1.0-alpha.0</code> does not include this yet — repository /
+        next Alpha.
       </p>
       <p data-testid="status">
-        {state ? `${state.solver.evaluation.state} · ${state.phase}` : 'starting'}
+        {state
+          ? `${state.solver.evaluation.state} · ${state.phase}${
+              state.autoLayout
+                ? ` · auto proposal unresolved: ${state.autoLayout.proposalUnplacedItemIds.length}`
+                : ''
+            }`
+          : 'starting'}
       </p>
       <div ref={containerRef} className="board" data-testid="board">
         {ITEMS.map((item) => {
@@ -164,7 +168,7 @@ function Board() {
 
 export function ExampleApp() {
   return (
-    <DnDGemProvider items={ITEMS} desiredPlacements={DESIRED}>
+    <DnDGemProvider items={ITEMS} desiredPlacements={DESIRED} autoLayout>
       <Board />
     </DnDGemProvider>
   );

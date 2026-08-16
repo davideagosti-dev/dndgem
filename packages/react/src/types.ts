@@ -15,7 +15,15 @@ export interface DnDGemItemConfig {
 
 export interface DnDGemProviderProps {
   readonly items: readonly DnDGemItemConfig[];
+  /**
+   * Source Intent placements. With `autoLayout`, may be partial or omitted.
+   * Without Auto-Layout (default), supply complete desired rectangles as today.
+   */
   readonly desiredPlacements?: Readonly<Record<string, RectInput>>;
+  /**
+   * Opt-in Auto-Layout (default off). Mirrors `createLayoutSession({ autoLayout })`.
+   */
+  readonly autoLayout?: boolean;
   readonly children: ReactNode;
   readonly onChange?: (state: LayoutSessionState) => void;
   readonly onDrop?: (event: { readonly result: DragDropResult }) => void;

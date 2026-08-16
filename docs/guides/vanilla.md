@@ -81,6 +81,7 @@ dispose → disconnect observers / drag
 - `state.solver.evaluation.state` — `VALID` / `DEGRADED` / `INVALID`
 - `state.phase` — drag phase
 - `state.proposal` / `state.lastDrop` — interaction outcomes
+- `state.autoLayout` — present only when `autoLayout: true` (`enabled` + `proposalUnplacedItemIds`)
 
 ## Input notes
 
@@ -90,9 +91,39 @@ dispose → disconnect observers / drag
 | `items`             | Non-empty; unique string ids; each has an `element`                  |
 | `desiredPlacements` | Explicit author intent — do not also pass `previous` for that change |
 | `previous`          | Optional continuation stability; **omit** for new desired intent     |
+| `autoLayout`        | Opt-in (`true`); default / omitted = explicit-only path (unchanged)  |
 | `onChange`          | Fired on solve / interaction updates                                 |
 | `mechanics`         | Advanced test seam                                                   |
 | `ResizeObserver`    | Advanced test / environment injection                                |
+
+## Opt-in Auto-Layout (repository / next Alpha)
+
+Published npm `0.1.0-alpha.0` does **not** include Auto-Layout. In the repository (DND-3.4), set `autoLayout: true`:
+
+```ts
+const session = createLayoutSession({
+  container,
+  items: [/* … */],
+  // Partial or omitted Source Intent — remaining items are proposed automatically
+  desiredPlacements: {
+    revenue: { x: 12, y: 12, width: 180, height: 88 },
+  },
+  autoLayout: true,
+  onChange: (state) => {
+    // Proposal completeness (not solver INVALID):
+    console.log(state.autoLayout?.proposalUnplacedItemIds);
+  },
+});
+```
+
+When Auto-Layout is on:
+
+- `desiredPlacements` may be **partial or absent** (Source Intent); other items are generated
+- Accepted drag promotes **only** the active item to Source Intent (strong persistent intent — not a pin)
+- Passive resize may pass `previous` for stability; previous is never Source Intent
+- `state.autoLayout` is `{ enabled: true; proposalUnplacedItemIds }` when enabled (proposal completeness only — the solver may still place those ids)
+
+Keep the explicit path (omit `autoLayout` / leave it false) as the default for complete rectangles.
 
 ## Advanced DOM APIs (escape hatches)
 

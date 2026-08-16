@@ -624,11 +624,10 @@ describe('createAutoLayoutProposal — opt-in / public surface', () => {
     expect(withoutAuto.resolved.placements.a).toBeDefined();
   });
 
-  it('is not exported from the package public entry', async () => {
+  it('is exported from the package public entry (DND-3.4)', async () => {
     const api = await import('../src/index.js');
-    expect('createAutoLayoutProposal' in api).toBe(false);
-    expect('PlacementOrigin' in api).toBe(false);
-    expect('AutoLayoutProposal' in api).toBe(false);
+    expect(typeof api.createAutoLayoutProposal).toBe('function');
+    expect('maxProbeCountForOccupancy' in api).toBe(false);
   });
 });
 

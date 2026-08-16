@@ -83,6 +83,7 @@ export {
 export {
   createLayoutSession,
   type LayoutSession,
+  type LayoutSessionAutoLayoutState,
   type LayoutSessionInput,
   type LayoutSessionItemInput,
   type LayoutSessionState,

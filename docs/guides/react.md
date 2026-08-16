@@ -52,18 +52,46 @@ export function App() {
 | --------------------- | -------- | ------------------------------------------------------------------ |
 | `items`               | yes      | `{ id, constraints? }[]`                                           |
 | `desiredPlacements`   | no       | Explicit author placements; omit `previous` semantics when changed |
+| `autoLayout`          | no       | Opt-in (`true`); default / omitted = explicit-only (mirrors DOM)   |
 | `children`            | yes      | Must register container + items via hooks                          |
 | `onChange`            | no       | `LayoutSessionState` updates                                       |
 | `onDrop` / `onCancel` | no       | Drag outcomes                                                      |
 | `mechanics`           | no       | **Advanced / tests** — replace drag mechanics                      |
 | `ResizeObserver`      | no       | **Advanced / tests** — inject observer constructor                 |
 
+## Opt-in Auto-Layout (repository / next Alpha)
+
+Published npm `0.1.0-alpha.0` does **not** include Auto-Layout. In the repository (DND-3.4), pass `autoLayout`:
+
+```tsx
+<DnDGemProvider
+  autoLayout
+  items={[
+    { id: 'revenue', constraints: { minWidth: 96, preferredWidth: 180 } },
+    { id: 'cashflow', constraints: { minWidth: 96, preferredWidth: 160 } },
+  ]}
+  // Partial or omitted Source Intent — remaining items are proposed automatically
+  desiredPlacements={{ revenue: { x: 12, y: 12, width: 180, height: 88 } }}
+>
+  <Board />
+</DnDGemProvider>
+```
+
+When Auto-Layout is on:
+
+- `desiredPlacements` may be **partial or absent** (Source Intent)
+- Accepted drag promotes **only** the active item to Source Intent (strong persistent intent — not a pin)
+- Passive resize may use previous-layout stability; previous is never Source Intent
+- Read `state.autoLayout?.proposalUnplacedItemIds` for Auto-Layout **proposal** completeness (not solver INVALID; not “absent from ResolvedLayout”)
+
+Omit `autoLayout` (or leave it false) to keep the explicit-only path as the default.
+
 ## Lifecycle and ownership
 
 1. Provider waits until the container and every configured item element are registered.
 2. It creates one `createLayoutSession` and applies resolved placements as absolute geometry.
 3. ResizeObserver-driven measurement updates reflow with previous-layout stability when appropriate.
-4. Pointer drag proposes new intent **without** reusing stale `previous` (explicit user intent wins).
+4. Pointer drag proposes new intent **without** reusing stale `previous` (explicit user intent wins). With `autoLayout`, an accepted drop promotes only the active item to Source Intent.
 5. Unmount calls `session.dispose()` — observers and drag bindings are released.
 
 Layout inline styles are **not** restored to pre-session values on dispose.

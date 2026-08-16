@@ -54,7 +54,7 @@ Example: a transactions panel has `minHeight: 120` but the candidate only alloca
 | Balanced (recommended) | Hard mins for true floors; minUseful for quality     |
 | Over-constrain         | Many candidates become INVALID; may yield poor/unsat |
 
-Over-constrained layouts are not a special error type: the solver reports the best remaining candidate (possibly `INVALID` / unsatisfiable metadata). There is no Auto-Layout to invent a better intent yet (Phase 3).
+Over-constrained layouts are not a special error type: the solver reports the best remaining candidate (possibly `INVALID` / unsatisfiable metadata). Opt-in Auto-Layout (Phase 3 / next Alpha) can propose placements for items without Source Intent; it does not invent a second validity language or override hard constraints. Published `0.1.0-alpha.0` is still explicit-intent only.
 
 ## Authoring `LayoutIntent`
 
@@ -118,10 +118,10 @@ These snippets use public Core exports only. The React/Vanilla examples show the
 
 ## Authoring burden (DND-2.3 assessment)
 
-| Area                              | Burden      | Evidence                                            |
-| --------------------------------- | ----------- | --------------------------------------------------- |
-| Constraint authoring              | MEDIUM      | Multiple optional fields; ordering rules to learn   |
-| LayoutIntent / desired placements | MEDIUM–HIGH | Explicit rectangles required; no Auto-Layout        |
-| Debugging validity                | MEDIUM      | State + reasons available; no dedicated UI debugger |
+| Area                              | Burden      | Evidence                                                             |
+| --------------------------------- | ----------- | -------------------------------------------------------------------- |
+| Constraint authoring              | MEDIUM      | Multiple optional fields; ordering rules to learn                    |
+| LayoutIntent / desired placements | MEDIUM–HIGH | Explicit path still default; opt-in Auto-Layout in repo / next Alpha |
+| Debugging validity                | MEDIUM      | State + reasons available; no dedicated UI debugger                  |
 
-Phase 3 Auto-Layout is the product answer to intent authoring burden — not this sprint.
+Phase 3 Auto-Layout (opt-in; DND-3.4 wired in repository) is the product answer to intent authoring burden. Published `0.1.0-alpha.0` does not include it yet — see [Vanilla](./vanilla.md) / [React](./react.md).
