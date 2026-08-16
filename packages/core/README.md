@@ -1,6 +1,6 @@
 # `@dndgem/core`
 
-Renderer-agnostic core of **DnDGem** by **FinGem-AI**.
+Renderer-agnostic core of **DnDGem** by **DA62**.
 
 This package owns the domain model, content constraints, validity evaluation, scoring, and the deterministic adaptive solver. It does not import DOM, React, or drag-provider types.
 
@@ -16,7 +16,7 @@ Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 npm install @dndgem/core@alpha
 ```
 
-Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/).
+Always use `@alpha`. Feedback: `support@dndgem.dev`. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/).
 
 ```ts
 import { createLayoutIntent, evaluateItemPlacement, solveLayout } from '@dndgem/core';

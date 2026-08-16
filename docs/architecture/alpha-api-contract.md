@@ -8,10 +8,14 @@ Related: [overview.md](./overview.md), [core-domain.md](./core-domain.md), [dom-
 
 ## Identity
 
-- Brand: FinGem-AI
+- Brand: DA62
 - Product: DnDGem
+- Attribution: DnDGem by DA62
 - Category: Content-Aware Adaptive Layout Engine
 - Distinction: geometrically fits ≠ content remains useful
+- Canonical: https://dndgem.dev
+- Support: `support@dndgem.dev`
+- Security: `security@dndgem.dev`
 
 ## Supported packages
 

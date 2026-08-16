@@ -1,6 +1,6 @@
 # `@dndgem/dom`
 
-DOM adapter for **DnDGem** by **FinGem-AI**.
+DOM adapter for **DnDGem** by **DA62**.
 
 This package measures DOM geometry, observes resize, converts pointer drag into `LayoutIntent` proposals, and orchestrates Vanilla layout sessions. `@dnd-kit/dom` is an internal provider and is not part of the public API.
 
@@ -17,7 +17,7 @@ Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 npm install @dndgem/dom@alpha
 ```
 
-Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/).
+Always use `@alpha`. Feedback: `support@dndgem.dev`. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/).
 
 ```ts
 import { createLayoutSession } from '@dndgem/dom';

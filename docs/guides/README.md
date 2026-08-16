@@ -1,6 +1,6 @@
 # Developer guides
 
-Authoritative Alpha developer journey for **DnDGem by FinGem-AI**.
+Authoritative Alpha developer journey for **DnDGem by DA62**.
 
 These guides document the **current public Alpha API** only. They are executable truth: examples use public package entrypoints (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`) and match the validated workspace examples.
 

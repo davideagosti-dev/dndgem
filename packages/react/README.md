@@ -1,6 +1,6 @@
 # `@dndgem/react`
 
-Thin React adapter for **DnDGem** by **FinGem-AI**. Layout solving stays in `@dndgem/core`; measurement, drag, and style application stay in `@dndgem/dom`.
+Thin React adapter for **DnDGem** by **DA62**. Layout solving stays in `@dndgem/core`; measurement, drag, and style application stay in `@dndgem/dom`.
 
 ## Start here
 
@@ -14,7 +14,7 @@ Public Alpha version: **`0.1.0-alpha.0`** (official npm dist-tag **`alpha`**).
 npm install @dndgem/react@alpha
 ```
 
-Always use `@alpha`. Feedback: `support@fingem-ai.com`. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/).
+Always use `@alpha`. Feedback: `support@dndgem.dev`. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/).
 
 ```tsx
 import { DnDGemProvider, useDnDGem, useDnDGemContainer, useDnDGemItem } from '@dndgem/react';

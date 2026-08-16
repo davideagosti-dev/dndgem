@@ -1,6 +1,6 @@
 # Accessibility Baseline (Public Alpha)
 
-Authoritative Public Alpha accessibility baseline for **DnDGem by FinGem-AI**.
+Authoritative Public Alpha accessibility baseline for **DnDGem by DA62**.
 
 Sprint evidence: **DND-2.4**. This is an honest **baseline**, not WCAG certification and not a complete keyboard or screen-reader drag product.
 
