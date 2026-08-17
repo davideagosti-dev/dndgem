@@ -14,7 +14,9 @@
     "@dndgem/example-react",
     "@dndgem/example-vue",
     "@dndgem/example-angular",
+    "@dndgem/example-svelte",
     "@dndgem/vue",
-    "@dndgem/angular"
+    "@dndgem/angular",
+    "@dndgem/svelte"
   ]
 }

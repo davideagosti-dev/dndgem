@@ -27,7 +27,7 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 | Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                     |
 | Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**                   |
 | Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)          |
-| Framework Expansion Gate       | **ACTIVE** (DND-FX.1–FX.3 COMPLETE; DND-FX.4 NEXT) |
+| Framework Expansion Gate       | **ACTIVE** (DND-FX.1–FX.4 COMPLETE; DND-FX.5 NEXT) |
 
 Current official npm Alpha: **`0.1.0-alpha.1`**. Install with dist-tag **`alpha` only** (`npm install @dndgem/react@alpha`). Release notes: [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md) (`latest` still points here and is **not** the Alpha channel).
 
@@ -43,6 +43,7 @@ Public product home: **https://dndgem.dev** (see [Public site & domain hosting](
 @dndgem/react         React adapter (peerDependency: react)
 @dndgem/vue           Vue 3 adapter (peerDependency: vue) — in-repo, not on npm yet
 @dndgem/angular       Angular adapter (peerDependency: @angular/core) — in-repo, not on npm yet
+@dndgem/svelte        Svelte 5 adapter (peerDependency: svelte) — in-repo, not on npm yet
 ```
 
 | Need                        | Package                                      |
@@ -52,6 +53,7 @@ Public product home: **https://dndgem.dev** (see [Public site & domain hosting](
 | React integration           | `@dndgem/react`                              |
 | Vue integration             | `@dndgem/vue` (workspace; not published)     |
 | Angular integration         | `@dndgem/angular` (workspace; not published) |
+| Svelte integration          | `@dndgem/svelte` (workspace; not published)  |
 
 ## Installation
 
@@ -75,6 +77,7 @@ pnpm build
 pnpm --filter @dndgem/example-react dev
 pnpm --filter @dndgem/example-vue dev
 pnpm --filter @dndgem/example-angular dev
+pnpm --filter @dndgem/example-svelte dev
 ```
 
 ## Quick Start
@@ -118,7 +121,7 @@ export function App() {
 2. [Developer guides](docs/guides/README.md) — full journey (in-repo)
 3. [Quick Start](docs/guides/quick-start.md)
 4. [Core Concepts](docs/guides/core-concepts.md)
-5. Validated examples: `examples/react`, `examples/vanilla`, `examples/vue`, `examples/angular` (Vue and Angular are workspace-only)
+5. Validated examples: `examples/react`, `examples/vanilla`, `examples/vue`, `examples/angular`, `examples/svelte` (Vue, Angular, and Svelte are workspace-only)
 6. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/)
 
 ## Browser support
@@ -139,7 +142,7 @@ Details: [Accessibility](docs/guides/accessibility.md)
 - Pointer drag + Escape cancel supported; keyboard drag deferred
 - `DnDGemProvider` is client-mount only (no full SSR claim; see ADR-0017)
 - Auto-Layout is opt-in on `@alpha` (`0.1.0-alpha.1`); default off
-- Vue and Angular adapters are implemented in this repository (`@dndgem/vue`, `@dndgem/angular`) and **not yet published**; Svelte is a later Framework Expansion sprint
+- Vue, Angular, and Svelte adapters are implemented in this repository (`@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`) and **not yet published**
 - No AI, no Flutter adapter yet
 - Absolute-positioning rendering model
 

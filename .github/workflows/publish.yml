@@ -129,6 +129,7 @@ jobs:
           pnpm --filter @dndgem/react publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/vue publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/angular publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
+          pnpm --filter @dndgem/svelte publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
 
       - name: Refuse unversioned public publish
         if: ${{ inputs.dry_run == false || inputs.dry_run == 'false' }}
@@ -184,8 +185,8 @@ jobs:
           pnpm --filter @dndgem/core publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/dom publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/react publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
-          # @dndgem/vue and @dndgem/angular are in-repo but unversioned (0.0.0) until DND-FX.6.
-          # Trusted Publisher for these packages is not configured in DND-FX.2 / DND-FX.3.
+          # @dndgem/vue, @dndgem/angular, and @dndgem/svelte are in-repo but unversioned (0.0.0) until DND-FX.6.
+          # Trusted Publisher for these packages is not configured in DND-FX.2 / DND-FX.3 / DND-FX.4.
           VUE_VERSION="$(node -p "require('./packages/vue/package.json').version")"
           if [ "$VUE_VERSION" != "0.0.0" ]; then
             pnpm --filter @dndgem/vue publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
@@ -197,4 +198,10 @@ jobs:
             pnpm --filter @dndgem/angular publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           else
             echo "Skipping @dndgem/angular real publish (version 0.0.0; deferred to DND-FX.6)"
+          fi
+          SVELTE_VERSION="$(node -p "require('./packages/svelte/package.json').version")"
+          if [ "$SVELTE_VERSION" != "0.0.0" ]; then
+            pnpm --filter @dndgem/svelte publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
+          else
+            echo "Skipping @dndgem/svelte real publish (version 0.0.0; deferred to DND-FX.6)"
           fi

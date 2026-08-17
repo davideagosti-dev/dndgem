@@ -2,7 +2,7 @@
 
 Authoritative Alpha developer journey for **DnDGem by DA62**.
 
-These guides document the **current public Alpha API** plus in-repository Framework Expansion adapters that are not yet on npm. Published examples use public package entrypoints (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`). `@dndgem/vue` and `@dndgem/angular` are workspace-only until DND-FX.6.
+These guides document the **current public Alpha API** plus in-repository Framework Expansion adapters that are not yet on npm. Published examples use public package entrypoints (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`). `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are workspace-only until DND-FX.6.
 
 ## Journey
 
@@ -15,7 +15,7 @@ Core Concepts
   ↓
 Packages
   ↓
-  React Guide  ·  Vue Guide (in-repo)  ·  Angular Guide (in-repo)  ·  Vanilla / DOM Guide
+  React Guide  ·  Vue Guide (in-repo)  ·  Angular Guide (in-repo)  ·  Svelte Guide (in-repo)  ·  Vanilla / DOM Guide
   ↓
 Constraints & Validity
   ↓
@@ -28,24 +28,25 @@ Performance & Limitations
 Alpha API Contract
 ```
 
-| Guide                                                 | Purpose                                      |
-| ----------------------------------------------------- | -------------------------------------------- |
-| [Quick Start](./quick-start.md)                       | First working layout in ~10–15 minutes       |
-| [Core Concepts](./core-concepts.md)                   | Mental model: intent → evaluate → solve      |
-| [Packages](./packages.md)                             | Which package to install and why             |
-| [React Guide](./react.md)                             | Provider, hooks, lifecycle                   |
-| [Vue Guide](./vue.md)                                 | Provider, composables, lifecycle (in-repo)   |
-| [Angular Guide](./angular.md)                         | Directives, board DI, signals (in-repo)      |
-| [Vanilla / DOM Guide](./vanilla.md)                   | `createLayoutSession` path                   |
-| [Constraints & Validity](./constraints.md)            | Hard vs useful; VALID / DEGRADED / INVALID   |
-| [Drag, Resize & Reflow](./drag-resize-reflow.md)      | Explicit intent vs previous-layout stability |
-| [Troubleshooting](./troubleshooting.md)               | Common integration failures                  |
-| [Browser Support](./browser-support.md)               | Alpha Chromium / Firefox / WebKit matrix     |
-| [Accessibility](./accessibility.md)                   | Alpha a11y baseline and ownership split      |
-| [Limitations](./limitations.md)                       | Honest Alpha boundaries                      |
-| [Performance](./performance.md)                       | Contextualized Core solve evidence           |
-| [DX Findings](./dx-findings.md)                       | DND-2.3 authoring / DX register              |
-| [Browser / A11y Findings](./browser-a11y-findings.md) | DND-2.4 evidence register                    |
+| Guide                                                 | Purpose                                          |
+| ----------------------------------------------------- | ------------------------------------------------ |
+| [Quick Start](./quick-start.md)                       | First working layout in ~10–15 minutes           |
+| [Core Concepts](./core-concepts.md)                   | Mental model: intent → evaluate → solve          |
+| [Packages](./packages.md)                             | Which package to install and why                 |
+| [React Guide](./react.md)                             | Provider, hooks, lifecycle                       |
+| [Vue Guide](./vue.md)                                 | Provider, composables, lifecycle (in-repo)       |
+| [Angular Guide](./angular.md)                         | Directives, board DI, signals (in-repo)          |
+| [Svelte Guide](./svelte.md)                           | Provider, actions, stores (in-repo, unpublished) |
+| [Vanilla / DOM Guide](./vanilla.md)                   | `createLayoutSession` path                       |
+| [Constraints & Validity](./constraints.md)            | Hard vs useful; VALID / DEGRADED / INVALID       |
+| [Drag, Resize & Reflow](./drag-resize-reflow.md)      | Explicit intent vs previous-layout stability     |
+| [Troubleshooting](./troubleshooting.md)               | Common integration failures                      |
+| [Browser Support](./browser-support.md)               | Alpha Chromium / Firefox / WebKit matrix         |
+| [Accessibility](./accessibility.md)                   | Alpha a11y baseline and ownership split          |
+| [Limitations](./limitations.md)                       | Honest Alpha boundaries                          |
+| [Performance](./performance.md)                       | Contextualized Core solve evidence               |
+| [DX Findings](./dx-findings.md)                       | DND-2.3 authoring / DX register                  |
+| [Browser / A11y Findings](./browser-a11y-findings.md) | DND-2.4 evidence register                        |
 
 Architecture / contract references (not the day-one path):
 

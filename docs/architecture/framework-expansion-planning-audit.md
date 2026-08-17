@@ -1,6 +1,6 @@
 # Framework Expansion Planning Audit — Decision Record
 
-**Status:** **PASSED WITH REFINEMENTS** — DND-FX.1–FX.3 **COMPLETE**; DND-FX.4 **NEXT**
+**Status:** **PASSED WITH REFINEMENTS** — DND-FX.1–FX.4 **COMPLETE**; DND-FX.5 **NEXT**
 
 **Product:** DnDGem by DA62  
 **Scope:** Framework Expansion Gate (JS/DOM adapters) — architecture / sprint mapping  
@@ -37,8 +37,8 @@ SPRINT COUNT:
 | **DND-FX.1** | Shared Framework Adapter Contract & Architecture Gate | **APPROVED** | **COMPLETE**          |
 | **DND-FX.2** | Vue Adapter                                           | **APPROVED** | **COMPLETE**          |
 | **DND-FX.3** | Angular Adapter                                       | **APPROVED** | **COMPLETE**          |
-| **DND-FX.4** | Svelte Adapter                                        | **APPROVED** | NEXT                  |
-| **DND-FX.5** | Meta-Framework Compatibility Validation               | **APPROVED** | PLANNED               |
+| **DND-FX.4** | Svelte Adapter                                        | **APPROVED** | **COMPLETE**          |
+| **DND-FX.5** | Meta-Framework Compatibility Validation               | **APPROVED** | NEXT                  |
 | **DND-FX.6** | Cross-Framework Alpha Release Gate                    | **APPROVED** | PLANNED               |
 
 ---
@@ -152,4 +152,4 @@ Phase 4 AI · Flutter implementation · Pin/Lock API · grouping / region DSL ·
 
 ## Next action
 
-**DND-FX.1**, **DND-FX.2**, and **DND-FX.3** are **COMPLETE**. **DND-FX.4 — Svelte Adapter** is **NEXT**.
+**DND-FX.1**, **DND-FX.2**, **DND-FX.3**, and **DND-FX.4** are **COMPLETE**. **DND-FX.5 — Meta-Framework Compatibility Validation** is **NEXT** and is not started.

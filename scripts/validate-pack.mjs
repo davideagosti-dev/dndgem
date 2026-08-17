@@ -211,7 +211,7 @@ function packOne(dir) {
       `${pkg.name} must not export maxProbeCountForOccupancy`,
     );
   }
-  if (dir === 'react' || dir === 'vue' || dir === 'angular') {
+  if (dir === 'react' || dir === 'vue' || dir === 'angular' || dir === 'svelte') {
     const typesDts = execFileSync('tar', ['-xOf', resolved, 'package/dist/types.d.ts'], {
       encoding: 'utf8',
     });
@@ -235,6 +235,19 @@ function packOne(dir) {
         !JSON.stringify(packedPkgJson.dependencies ?? {}).includes('@dndgem/vue') &&
         !JSON.stringify(packedPkgJson.peerDependencies ?? {}).includes('@dnd-kit/'),
       `${pkg.name} must not depend on React, Vue, or dnd-kit`,
+    );
+  }
+  if (dir === 'svelte') {
+    assert(
+      packedPkgJson.exports?.['.']?.svelte === './dist/index.js',
+      `${pkg.name} must declare a svelte export condition`,
+    );
+    assert(
+      !JSON.stringify(packedPkgJson.dependencies ?? {}).includes('@dndgem/react') &&
+        !JSON.stringify(packedPkgJson.dependencies ?? {}).includes('@dndgem/vue') &&
+        !JSON.stringify(packedPkgJson.dependencies ?? {}).includes('@dndgem/angular') &&
+        !JSON.stringify(packedPkgJson.peerDependencies ?? {}).includes('@dnd-kit/'),
+      `${pkg.name} must not depend on React, Vue, Angular, or dnd-kit`,
     );
   }
 
@@ -758,6 +771,100 @@ appRef.destroy();
 console.log('angular packed consumer smoke ok', info.version);
 `;
 
+const svelteSmoke = `import { JSDOM } from 'jsdom';
+
+const jsdom = new JSDOM('<!doctype html><html><body><div id="app"></div></body></html>', {
+  pretendToBeVisual: true,
+  url: 'http://localhost/',
+});
+const { window } = jsdom;
+globalThis.window = window;
+globalThis.document = window.document;
+for (const key of Object.getOwnPropertyNames(window)) {
+  if (typeof globalThis[key] === 'undefined') {
+    try {
+      globalThis[key] = window[key];
+    } catch {
+      // ignore host-object getters that cannot be copied
+    }
+  }
+}
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
+const { createRawSnippet, flushSync, mount, unmount } = await import('svelte');
+const {
+  DnDGemProvider,
+  getSveltePackageInfo,
+} = await import('@dndgem/svelte');
+
+const info = getSveltePackageInfo();
+if (info.name !== '@dndgem/svelte' || info.dom.name !== '@dndgem/dom') {
+  throw new Error('svelte package info mismatch');
+}
+
+function stub(el, box) {
+  el.getBoundingClientRect = () => ({
+    x: box.left,
+    y: box.top,
+    left: box.left,
+    top: box.top,
+    width: box.width,
+    height: box.height,
+    right: box.left + box.width,
+    bottom: box.top + box.height,
+    toJSON() {
+      return {};
+    },
+  });
+}
+
+const mechanics = {
+  connect() {
+    return { dispose() {} };
+  },
+};
+
+const children = createRawSnippet((raw) => ({
+  render: () => \`<div><article></article></div>\`,
+  setup(element) {
+    const props = raw();
+    const board = element;
+    const chart = element.querySelector('article');
+    stub(board, { left: 0, top: 0, width: 400, height: 200 });
+    if (chart) stub(chart, { left: 8, top: 8, width: 120, height: 60 });
+    const containerAction = props.dndgemContainer;
+    const itemAction = props.dndgemItem;
+    const containerLife = containerAction(board);
+    const itemLife = chart ? itemAction(chart, 'chart') : undefined;
+    return () => {
+      itemLife?.destroy?.();
+      containerLife?.destroy?.();
+    };
+  },
+}));
+
+const app = mount(DnDGemProvider, {
+  target: window.document.getElementById('app'),
+  props: {
+    items: [{ id: 'chart', constraints: { minWidth: 40, preferredWidth: 120 } }],
+    desiredPlacements: { chart: { x: 8, y: 8, width: 120, height: 60 } },
+    mechanics,
+    ResizeObserver: globalThis.ResizeObserver,
+    children,
+  },
+});
+flushSync();
+if (!window.document.querySelector('article')) {
+  throw new Error('svelte packed consumer did not mount an item');
+}
+unmount(app);
+console.log('svelte packed consumer smoke ok', info.version);
+`;
+
 const typecheckSource = `import {
   createAutoLayoutProposal,
   createLayoutIntent,
@@ -794,6 +901,13 @@ import {
   injectDnDGem,
   type DnDGemBoardConfig,
 } from '@dndgem/angular';
+import {
+  DnDGemProvider as SvelteDnDGemProvider,
+  getDnDGem,
+  dndgemContainer,
+  dndgemItem,
+  type DnDGemProviderProps as SvelteDnDGemProviderProps,
+} from '@dndgem/svelte';
 
 export const intent: LayoutIntent = createLayoutIntent({
   space: { width: 100, height: 80 },
@@ -825,6 +939,14 @@ export const angularApi = {
   DnDGemBoardDirective,
   injectDnDGem,
 };
+export type SvelteProviderProps = SvelteDnDGemProviderProps;
+export const svelteAutoLayoutProp: SvelteProviderProps['autoLayout'] = true;
+export const svelteApi = {
+  SvelteDnDGemProvider,
+  getDnDGem,
+  dndgemContainer,
+  dndgemItem,
+};
 `;
 
 console.log('Building publishable packages…');
@@ -841,6 +963,10 @@ assert(
 assert(
   packed.some((item) => item.name === '@dndgem/angular'),
   'expected packed @dndgem/angular while packages/angular exists',
+);
+assert(
+  packed.some((item) => item.name === '@dndgem/svelte'),
+  'expected packed @dndgem/svelte while packages/svelte exists',
 );
 
 console.log('\nPackage artifacts');
@@ -871,12 +997,14 @@ writeFileSync(
         '@dndgem/react': localTarballs['@dndgem/react'],
         '@dndgem/vue': localTarballs['@dndgem/vue'],
         '@dndgem/angular': localTarballs['@dndgem/angular'],
+        '@dndgem/svelte': localTarballs['@dndgem/svelte'],
         react: '^19.0.0',
         'react-dom': '^19.0.0',
         vue: '^3.5.0',
         '@angular/core': '~21.2.0',
         '@angular/compiler': '~21.2.0',
         '@angular/platform-browser': '~21.2.0',
+        svelte: '^5.0.0',
         rxjs: '^7.8.2',
         jsdom: '^26.0.0',
         typescript: '^5.0.0',
@@ -890,6 +1018,7 @@ writeFileSync(
           '@dndgem/react': localTarballs['@dndgem/react'],
           '@dndgem/vue': localTarballs['@dndgem/vue'],
           '@dndgem/angular': localTarballs['@dndgem/angular'],
+          '@dndgem/svelte': localTarballs['@dndgem/svelte'],
         },
       },
     },
@@ -928,6 +1057,7 @@ writeFileSync(join(consumerDir, 'vanilla-smoke.mjs'), vanillaSmoke);
 writeFileSync(join(consumerDir, 'react-smoke.mjs'), reactSmoke);
 writeFileSync(join(consumerDir, 'vue-smoke.mjs'), vueSmoke);
 writeFileSync(join(consumerDir, 'angular-smoke.mjs'), angularSmoke);
+writeFileSync(join(consumerDir, 'svelte-smoke.mjs'), svelteSmoke);
 writeFileSync(join(consumerDir, 'consumer-types.ts'), typecheckSource);
 
 console.log(`\nInstalling packed tarballs into ${consumerDir}`);
@@ -939,6 +1069,7 @@ runInherit('node vanilla-smoke.mjs', { cwd: consumerDir });
 runInherit('node react-smoke.mjs', { cwd: consumerDir });
 runInherit('node vue-smoke.mjs', { cwd: consumerDir });
 runInherit('node angular-smoke.mjs', { cwd: consumerDir });
+runInherit('node --conditions=browser svelte-smoke.mjs', { cwd: consumerDir });
 
 console.log('\nConsumer typecheck');
 runInherit('pnpm exec tsc --noEmit -p tsconfig.json', { cwd: consumerDir });

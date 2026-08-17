@@ -74,6 +74,10 @@ assert(
   /Skipping @dndgem\/angular real publish \(version 0\.0\.0/.test(text),
   'real publish must skip @dndgem/angular while the workspace placeholder version is 0.0.0',
 );
+assert(
+  /Skipping @dndgem\/svelte real publish \(version 0\.0\.0/.test(text),
+  'real publish must skip @dndgem/svelte while the workspace placeholder version is 0.0.0',
+);
 
 console.log('publish workflow check PASSED');
 console.log(' - id-token: write present');

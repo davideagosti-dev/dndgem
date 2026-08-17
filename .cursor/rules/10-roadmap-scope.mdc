@@ -28,13 +28,13 @@ Framework Expansion Gate is **unnumbered** (not Phase 4) and **ACTIVE**:
 1. DND-FX.1 Shared Framework Adapter Contract & Architecture Gate — **COMPLETE**
 2. DND-FX.2 Vue Adapter — **COMPLETE**
 3. DND-FX.3 Angular Adapter — **COMPLETE**
-4. DND-FX.4 Svelte Adapter — NEXT
-5. DND-FX.5 Meta-Framework Compatibility Validation — PLANNED
+4. DND-FX.4 Svelte Adapter — COMPLETE
+5. DND-FX.5 Meta-Framework Compatibility Validation — NEXT
 6. DND-FX.6 Cross-Framework Alpha Release Gate — PLANNED
 
 Authoritative records: `docs/architecture/framework-expansion-planning-audit.md`, `docs/architecture/framework-adapter-contract.md`, ADR-0015 / ADR-0016 / ADR-0017, `docs/roadmap.md`.
 
-Do not begin Phase 4 (AI). Do not renumber Phase 4. Do not implement Svelte except in DND-FX.4. Do not reopen Vue/Angular except for an authorized follow-up. Do not create placeholder adapter or meta-framework packages. Do not broaden the minimal public Auto-Layout export without explicit review. Do not publish npm, create release tags, or mutate dist-tags unless an explicit release authorization requires it.
+Do not begin Phase 4 (AI). Do not renumber Phase 4. Do not begin DND-FX.5 until explicitly authorized. Do not reopen Vue/Angular/Svelte except for an authorized follow-up. Do not create placeholder adapter or meta-framework packages. Do not broaden the minimal public Auto-Layout export without explicit review. Do not publish npm, create release tags, or mutate dist-tags unless an explicit release authorization requires it.
 
 ## CI policy (DND-2.3+)
 
@@ -51,7 +51,7 @@ Do not pull into active work unless the sprint explicitly requires it:
 - Phase 3 Auto-Layout work outside a dedicated follow-up sprint
 - AI-assisted layout intelligence (Phase 4)
 - Flutter implementation (separate track; Core-contract dependent)
-- Vue (DND-FX.2 COMPLETE — do not reopen unless authorized), Angular (DND-FX.3 COMPLETE — do not reopen unless authorized), Svelte (only DND-FX.4)
+- Vue (DND-FX.2 COMPLETE — do not reopen unless authorized), Angular (DND-FX.3 COMPLETE — do not reopen unless authorized), Svelte (DND-FX.4 COMPLETE — do not reopen unless authorized; do not add SvelteKit)
 
 Do not turn roadmap ideas into committed calendar dates in docs or code comments unless explicitly asked.
 
