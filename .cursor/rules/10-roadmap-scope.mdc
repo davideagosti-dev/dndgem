@@ -25,8 +25,8 @@ Phase 3 — Adaptive Auto-Layout is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `
 
 Framework Expansion Gate is **unnumbered** (not Phase 4) and **ACTIVE**:
 
-1. DND-FX.1 Shared Framework Adapter Contract & Architecture Gate — **ACTIVE**
-2. DND-FX.2 Vue Adapter — PLANNED
+1. DND-FX.1 Shared Framework Adapter Contract & Architecture Gate — **COMPLETE**
+2. DND-FX.2 Vue Adapter — **NEXT** (not started; do not implement until this sprint is active)
 3. DND-FX.3 Angular Adapter — PLANNED
 4. DND-FX.4 Svelte Adapter — PLANNED
 5. DND-FX.5 Meta-Framework Compatibility Validation — PLANNED

@@ -22,7 +22,7 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 - Technical MVP (Phase 1, DND-1.1 → DND-1.8) is **CLOSED**.
 - Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE**. Official channel: **`0.1.0-alpha.1` / `@alpha`** (first Alpha was `0.1.0-alpha.0`).
 - **Phase 3 — Adaptive Auto-Layout** is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `@alpha`). Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**. DND-3.1–DND-3.5 COMPLETE. Minimal public `createAutoLayoutProposal` + session/provider `autoLayout` ([auto-layout-engine.md](./auto-layout-engine.md)). Release notes: [0.1.0-alpha.1](../releases/0.1.0-alpha.1.md).
-- **Framework Expansion Gate** is **ACTIVE** (unnumbered; **not** Phase 4). DND-FX.1 contract gate. See [framework-expansion-planning-audit.md](./framework-expansion-planning-audit.md), [framework-adapter-contract.md](./framework-adapter-contract.md).
+- **Framework Expansion Gate** is **ACTIVE** (unnumbered; **not** Phase 4). **DND-FX.1 COMPLETE.** DND-FX.2 Vue is **NEXT** (not started). See [framework-expansion-planning-audit.md](./framework-expansion-planning-audit.md), [framework-adapter-contract.md](./framework-adapter-contract.md).
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
 - `@dndgem/core` evaluates placements as `VALID` / `DEGRADED` / `INVALID` with deterministic scoring (DND-1.3).
@@ -33,7 +33,7 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 - DND-1.8 adds reproducible Core benchmarks, an acceptance matrix, and a Technical MVP closure report.
 - DND-2.1–DND-2.5 complete (engineering baseline through Public Alpha release gate, plus post-release DA62 / `dndgem.dev` follow-ups).
 
-**Technical MVP:** CLOSED · **Public Alpha:** LIVE (`0.1.0-alpha.1` / `@alpha`) · **Phase 3:** COMPLETE / RELEASED · **Framework Expansion:** ACTIVE (DND-FX.1)
+**Technical MVP:** CLOSED · **Public Alpha:** LIVE (`0.1.0-alpha.1` / `@alpha`) · **Phase 3:** COMPLETE / RELEASED · **Framework Expansion:** ACTIVE (DND-FX.1 COMPLETE; DND-FX.2 NEXT)
 
 Developer journey: [../guides/README.md](../guides/README.md).
 See [auto-layout-contract.md](./auto-layout-contract.md) for the Phase 3 Auto-Layout contract (DND-3.1).

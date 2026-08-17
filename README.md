@@ -27,7 +27,7 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 | Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                |
 | Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**              |
 | Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)     |
-| Framework Expansion Gate       | **ACTIVE** (DND-FX.1 — contract; not Phase 4) |
+| Framework Expansion Gate       | **ACTIVE** (DND-FX.1 COMPLETE; DND-FX.2 NEXT) |
 
 Current official npm Alpha: **`0.1.0-alpha.1`**. Install with dist-tag **`alpha` only** (`npm install @dndgem/react@alpha`). Release notes: [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md) (`latest` still points here and is **not** the Alpha channel).
 

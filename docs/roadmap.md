@@ -2,14 +2,14 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                                    |
-| ------- | ------------------------------- | ----------------------------------------- |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                                |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)            |
-| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**          |
-| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`) |
-| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1)                     |
-| Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                       |
+| Phase   | Name                            | Status                                        |
+| ------- | ------------------------------- | --------------------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                                    |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                |
+| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**              |
+| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)     |
+| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1 COMPLETE; DND-FX.2 NEXT) |
+| Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                           |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -367,9 +367,9 @@ Contract: [framework-adapter-contract.md](./architecture/framework-adapter-contr
 ### Critical path
 
 ```text
-DND-FX.1 Shared Framework Adapter Contract & Architecture Gate   ACTIVE
+DND-FX.1 Shared Framework Adapter Contract & Architecture Gate   COMPLETE
         ↓
-DND-FX.2 Vue Adapter                                             PLANNED
+DND-FX.2 Vue Adapter                                             NEXT
         ↓
 DND-FX.3 Angular Adapter                                         PLANNED
         ↓
@@ -389,14 +389,14 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 - **Out of scope:** `@dndgem/vue|angular|svelte`; Core algorithm changes; AI; Flutter; npm publish.
 - **Dependencies:** Phase 3 COMPLETE (`0.1.0-alpha.1`).
 - **Closure:** Contract + ADRs accepted; DND-FX.2 can start without re-deciding cross-framework semantics.
-- **Status:** **ACTIVE**
+- **Status:** **COMPLETE**
 
 ### DND-FX.2 — Vue Adapter
 
 - **Objective:** Thin idiomatic `@dndgem/vue` with DOM/React behavioral parity.
 - **Out of scope:** Nuxt package; Angular/Svelte; default-on Auto-Layout; publish.
 - **Dependencies:** DND-FX.1.
-- **Status:** PLANNED
+- **Status:** **NEXT**
 
 ### DND-FX.3 — Angular Adapter
 
