@@ -1,0 +1,18 @@
+---
+description: Angular adapter peerDependency and API discipline
+globs: packages/angular/**/*
+alwaysApply: false
+---
+
+# Angular Adapter
+
+- DND-FX.3 is COMPLETE. Keep `@dndgem/angular` thin; do not add Universal/Svelte or a parallel runtime. Do not reopen Angular unless an explicit follow-up authorizes it.
+- `@angular/core` is a peerDependency (`^20 || ^21 || ^22`). Zone.js is not required.
+- Do not bundle Angular into the library.
+- `@dndgem/angular` may depend on `@dndgem/core` and `@dndgem/dom`.
+- Do not place solver, Auto-Layout, provenance, or drag policy in the Angular package.
+- Do not import `@dnd-kit/*`, `@dndgem/react`, or `@dndgem/vue` from Angular. Consume `createLayoutSession` / public DOM types only.
+- Board session ownership must be directive/component-scoped. Do not use `providedIn: 'root'`.
+- Cleanup must call the DOM session `dispose()` path. Do not invent a parallel Angular runtime.
+- Explicit `desiredPlacements` updates must omit Core `previous` so ADR-0010 stability cannot suppress new author intent (Auto-Layout on keeps `previous` as stability only).
+- Angular Universal is DND-FX.5. Do not claim full SSR support from this adapter.

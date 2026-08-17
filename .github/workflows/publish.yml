@@ -128,6 +128,7 @@ jobs:
           pnpm --filter @dndgem/dom publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/react publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/vue publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
+          pnpm --filter @dndgem/angular publish --dry-run --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
 
       - name: Refuse unversioned public publish
         if: ${{ inputs.dry_run == false || inputs.dry_run == 'false' }}
@@ -183,11 +184,17 @@ jobs:
           pnpm --filter @dndgem/core publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/dom publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/react publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
-          # @dndgem/vue is in-repo but unversioned (0.0.0) until DND-FX.6.
-          # Trusted Publisher for this package is not configured in DND-FX.2.
+          # @dndgem/vue and @dndgem/angular are in-repo but unversioned (0.0.0) until DND-FX.6.
+          # Trusted Publisher for these packages is not configured in DND-FX.2 / DND-FX.3.
           VUE_VERSION="$(node -p "require('./packages/vue/package.json').version")"
           if [ "$VUE_VERSION" != "0.0.0" ]; then
             pnpm --filter @dndgem/vue publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           else
             echo "Skipping @dndgem/vue real publish (version 0.0.0; deferred to DND-FX.6)"
+          fi
+          ANGULAR_VERSION="$(node -p "require('./packages/angular/package.json').version")"
+          if [ "$ANGULAR_VERSION" != "0.0.0" ]; then
+            pnpm --filter @dndgem/angular publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
+          else
+            echo "Skipping @dndgem/angular real publish (version 0.0.0; deferred to DND-FX.6)"
           fi

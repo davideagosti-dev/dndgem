@@ -2,7 +2,7 @@
 
 Authoritative Alpha developer journey for **DnDGem by DA62**.
 
-These guides document the **current public Alpha API** plus in-repository Framework Expansion adapters that are not yet on npm. Published examples use public package entrypoints (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`). `@dndgem/vue` is workspace-only until DND-FX.6.
+These guides document the **current public Alpha API** plus in-repository Framework Expansion adapters that are not yet on npm. Published examples use public package entrypoints (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`). `@dndgem/vue` and `@dndgem/angular` are workspace-only until DND-FX.6.
 
 ## Journey
 
@@ -15,7 +15,7 @@ Core Concepts
   ↓
 Packages
   ↓
-  React Guide  ·  Vue Guide (in-repo)  ·  Vanilla / DOM Guide
+  React Guide  ·  Vue Guide (in-repo)  ·  Angular Guide (in-repo)  ·  Vanilla / DOM Guide
   ↓
 Constraints & Validity
   ↓
@@ -35,6 +35,7 @@ Alpha API Contract
 | [Packages](./packages.md)                             | Which package to install and why             |
 | [React Guide](./react.md)                             | Provider, hooks, lifecycle                   |
 | [Vue Guide](./vue.md)                                 | Provider, composables, lifecycle (in-repo)   |
+| [Angular Guide](./angular.md)                         | Directives, board DI, signals (in-repo)      |
 | [Vanilla / DOM Guide](./vanilla.md)                   | `createLayoutSession` path                   |
 | [Constraints & Validity](./constraints.md)            | Hard vs useful; VALID / DEGRADED / INVALID   |
 | [Drag, Resize & Reflow](./drag-resize-reflow.md)      | Explicit intent vs previous-layout stability |

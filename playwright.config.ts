@@ -36,6 +36,12 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,
     },
+    {
+      command: 'npx pnpm@10.34.5 --filter @dndgem/example-angular run dev',
+      url: 'http://127.0.0.1:5177',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
   ],
   projects: [
     {
