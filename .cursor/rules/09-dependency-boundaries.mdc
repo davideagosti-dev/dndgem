@@ -8,14 +8,16 @@ alwaysApply: false
 
 Forbidden in `@dndgem/core` imports:
 
-- `packages/dom`, `packages/react`
+- `packages/dom` and any framework adapter (`react`, `vue`, `angular`, `svelte`)
 - browser APIs as dependencies of core logic
-- React / react-dom
+- React / Vue / Angular / Svelte runtimes
 - dnd-kit
 - AI provider SDKs
 
-`@dndgem/dom` may depend on `@dnd-kit/dom` internally. `@dndgem/react` must not.
+`@dndgem/dom` may depend on `@dnd-kit/dom` internally. Framework adapters must not.
+
+Adapters may depend on `@dndgem/dom` and, when public Core types require it, `@dndgem/core`. The UI framework is a peerDependency. Adapters must not depend on each other.
 
 Consumers (apps/examples) must import `@dndgem/*` public exports only — never `src/internal` paths or relative package source trees.
 
-Run `pnpm check:boundaries` after dependency changes.
+Topology source: `scripts/package-topology.mjs`. Run `pnpm check:boundaries` after dependency changes.

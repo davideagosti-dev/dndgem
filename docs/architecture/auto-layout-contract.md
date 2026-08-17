@@ -2,13 +2,13 @@
 
 Authoritative Phase 3 contract for deterministic Adaptive Auto-Layout.
 
-**Status:** Contract COMPLETE; Core engine DND-3.2 + DND-3.3; consumer wiring DND-3.4 COMPLETE (pending review/commit). Minimal public Alpha surface approved (`createAutoLayoutProposal` + types; DOM/React `autoLayout`).  
-**Sprint:** DND-3.1 (contract) → DND-3.2 (engine) → DND-3.3 (stability / reflow) → DND-3.4 (DOM/React)  
+**Status:** Contract COMPLETE; Core engine DND-3.2 + DND-3.3; consumer wiring DND-3.4 COMPLETE; published npm **`0.1.0-alpha.1`**. Minimal public Alpha surface: `createAutoLayoutProposal` + types; DOM/React `autoLayout`.  
+**Sprint:** DND-3.1 (contract) → DND-3.2 (engine) → DND-3.3 (stability / reflow) → DND-3.4 (DOM/React) → DND-3.5 (publish)  
 **Product:** DnDGem by DA62
 
-Published npm `0.1.0-alpha.0` does **not** include Auto-Layout yet.
+Published npm `@alpha` (`0.1.0-alpha.1`) **includes** opt-in Auto-Layout. Historical `0.1.0-alpha.0` does not.
 
-Related: [phase-3-planning-audit.md](./phase-3-planning-audit.md), [auto-layout-engine.md](./auto-layout-engine.md), [core-domain.md](./core-domain.md), [ADR-0006](../adr/ADR-0006-layout-intent-vs-resolved-layout.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [dom-adapter.md](./dom-adapter.md), [roadmap.md](../roadmap.md).
+Related: [phase-3-planning-audit.md](./phase-3-planning-audit.md), [auto-layout-engine.md](./auto-layout-engine.md), [core-domain.md](./core-domain.md), [ADR-0006](../adr/ADR-0006-layout-intent-vs-resolved-layout.md), [ADR-0010](../adr/ADR-0010-adaptive-solver-selection-policy.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [framework-adapter-contract.md](./framework-adapter-contract.md), [dom-adapter.md](./dom-adapter.md), [roadmap.md](../roadmap.md).
 
 ---
 
@@ -325,7 +325,7 @@ DND-3.2 **may** choose among existing size modes while generating placement; it 
 | `@dndgem/dom`   | Measurements; resize observation; session opt-in wiring; retain Source Intent + origins when auto enabled; drag commit → source promotion | Placement algorithm / packing policy                 |
 | `@dndgem/react` | Thin opt-in exposure mirroring DOM session semantics                                                                                      | React-only layout rules; reimplementing solve/enrich |
 
-Vanilla and React must expose **equivalent** Auto-Layout capability (DND-3.4). Flutter / Vue / Angular / Svelte remain deferred.
+Vanilla and React must expose **equivalent** Auto-Layout capability (DND-3.4). Vue / Angular / Svelte are the Framework Expansion Gate. Flutter remains a separate renderer track.
 
 ---
 
@@ -465,22 +465,22 @@ Documented invariants — prefer acceptance matrices until production APIs exist
 
 ## 18. Acceptance matrix (DND-3.1)
 
-| Criterion                                  | Status                                               |
-| ------------------------------------------ | ---------------------------------------------------- |
-| Auto-Layout = compose with existing solver | PASS                                                 |
-| No second solver/score/validity proposed   | PASS                                                 |
-| Three layers + previous distinct           | PASS                                                 |
-| Provenance lifecycle A–F defined           | PASS                                                 |
-| Hybrid/partial MVP defined                 | PASS                                                 |
-| Drag strong intent, not pin                | PASS                                                 |
-| Opt-in Alpha                               | PASS                                                 |
-| Public API proposed, not approved/exported | SUPERSEDED — minimal surface approved DND-3.4        |
-| DND-3.2 may/must-not defined               | PASS                                                 |
-| Future tests documented                    | PASS                                                 |
-| Production Auto-Layout code                | PASS (Core + DOM/React wiring; next publish DND-3.5) |
+| Criterion                                  | Status                                                    |
+| ------------------------------------------ | --------------------------------------------------------- |
+| Auto-Layout = compose with existing solver | PASS                                                      |
+| No second solver/score/validity proposed   | PASS                                                      |
+| Three layers + previous distinct           | PASS                                                      |
+| Provenance lifecycle A–F defined           | PASS                                                      |
+| Hybrid/partial MVP defined                 | PASS                                                      |
+| Drag strong intent, not pin                | PASS                                                      |
+| Opt-in Alpha                               | PASS                                                      |
+| Public API proposed, not approved/exported | SUPERSEDED — minimal surface approved DND-3.4             |
+| DND-3.2 may/must-not defined               | PASS                                                      |
+| Future tests documented                    | PASS                                                      |
+| Production Auto-Layout code                | PASS (Core + DOM/React wiring; published `0.1.0-alpha.1`) |
 
 ---
 
 ## 19. Explicit non-goals (Phase 3 / this contract)
 
-AI · Flutter · Vue/Angular/Svelte · Pin/Lock · grouping/regions · CSS layout clone · mobile/touch certification · full keyboard/SR drag product · monetization · freezing a broader-than-minimal public Auto-Layout surface without review · implementing placement in DND-3.1.
+AI · Flutter · Vue/Angular/Svelte (Framework Expansion Gate) · Pin/Lock · grouping/regions · CSS layout clone · mobile/touch certification · full keyboard/SR drag product · monetization · freezing a broader-than-minimal public Auto-Layout surface without review · implementing placement in DND-3.1.

@@ -13,26 +13,26 @@ UNRESOLVED DX BLOCKERS: 0
 
 ## Findings
 
-| ID     | Area             | Observed behavior                                                       | Developer impact                            | Severity | Resolution / Deferred                                                                           |
-| ------ | ---------------- | ----------------------------------------------------------------------- | ------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- |
-| DX-001 | Intent authoring | Developers must supply explicit `desiredPlacements` rectangles          | Slower first layout; easy to miss keys      | MEDIUM   | Documented; Auto-Layout opt-in in repo / next Alpha (DND-3.4); not in published `0.1.0-alpha.0` |
-| DX-002 | Constraints      | Three constraint families with ordering rules                           | Learning curve before useful boards         | MEDIUM   | Constraints guide + examples                                                                    |
-| DX-003 | Errors           | Validity is state, not thrown errors; few structured app-level messages | Debugging requires reading evaluation/state | LOW      | Troubleshooting guide; richer DX errors later                                                   |
-| DX-004 | Publication      | Bare `npm i @dndgem/*` resolves `latest` (aliases Alpha)                | Docs must always show `@alpha`              | MEDIUM   | Documented; future stable owns `latest`                                                         |
-| DX-005 | SSR              | Provider requires client mount; no Next/Remix guide                     | Framework SSR users may assume support      | MEDIUM   | Explicit non-claims in docs                                                                     |
-| DX-006 | A11y / keyboard  | Pointer-only validated drag                                             | Keyboard users lack a product path          | MEDIUM   | DND-2.4 classified keyboard drag **DEFERRED**; see accessibility guide                          |
-| DX-007 | Advanced DOM     | Many public primitives below `createLayoutSession`                      | Risk of over-assembling runtime             | LOW      | Marked ADVANCED in Vanilla guide                                                                |
-| DX-008 | Style apply      | Absolute positioning + merge-order sensitivity                          | Easy to override layout styles accidentally | LOW      | Documented merge rule in React/Quick Start                                                      |
+| ID     | Area             | Observed behavior                                                       | Developer impact                            | Severity | Resolution / Deferred                                                               |
+| ------ | ---------------- | ----------------------------------------------------------------------- | ------------------------------------------- | -------- | ----------------------------------------------------------------------------------- |
+| DX-001 | Intent authoring | Developers must supply explicit `desiredPlacements` rectangles          | Slower first layout; easy to miss keys      | MEDIUM   | Documented; Auto-Layout opt-in on published `@alpha` (`0.1.0-alpha.1`); default off |
+| DX-002 | Constraints      | Three constraint families with ordering rules                           | Learning curve before useful boards         | MEDIUM   | Constraints guide + examples                                                        |
+| DX-003 | Errors           | Validity is state, not thrown errors; few structured app-level messages | Debugging requires reading evaluation/state | LOW      | Troubleshooting guide; richer DX errors later                                       |
+| DX-004 | Publication      | Bare `npm i @dndgem/*` resolves `latest` (historical `0.1.0-alpha.0`)   | Docs must always show `@alpha`              | MEDIUM   | Documented; future stable owns `latest`                                             |
+| DX-005 | SSR              | Provider requires client mount; no Next/Remix product claim             | Framework SSR users may assume support      | MEDIUM   | ADR-0017 five-layer contract; DND-FX.5 validates Next/Nuxt/SvelteKit environments   |
+| DX-006 | A11y / keyboard  | Pointer-only validated drag                                             | Keyboard users lack a product path          | MEDIUM   | DND-2.4 classified keyboard drag **DEFERRED**; see accessibility guide              |
+| DX-007 | Advanced DOM     | Many public primitives below `createLayoutSession`                      | Risk of over-assembling runtime             | LOW      | Marked ADVANCED in Vanilla guide                                                    |
+| DX-008 | Style apply      | Absolute positioning + merge-order sensitivity                          | Easy to override layout styles accidentally | LOW      | Documented merge rule in React/Quick Start                                          |
 
 ## Authoring burden matrix
 
-| Area                   | Burden     | Notes                                              |
-| ---------------------- | ---------- | -------------------------------------------------- |
-| Constraint authoring   | MEDIUM     | Clear once families are understood                 |
-| LayoutIntent authoring | HIGH       | Explicit default; opt-in Auto-Layout in next Alpha |
-| React integration      | LOW–MEDIUM | Thin hooks; provider registration discipline       |
-| Vanilla integration    | LOW–MEDIUM | Session API is clear; cleanup must be remembered   |
-| Debugging              | MEDIUM     | State/reasons exist; no debugger UI                |
+| Area                   | Burden     | Notes                                                              |
+| ---------------------- | ---------- | ------------------------------------------------------------------ |
+| Constraint authoring   | MEDIUM     | Clear once families are understood                                 |
+| LayoutIntent authoring | MEDIUM     | Explicit default; opt-in Auto-Layout on `@alpha` (`0.1.0-alpha.1`) |
+| React integration      | LOW–MEDIUM | Thin hooks; provider registration discipline                       |
+| Vanilla integration    | LOW–MEDIUM | Session API is clear; cleanup must be remembered                   |
+| Debugging              | MEDIUM     | State/reasons exist; no debugger UI                                |
 
 ## DX verdicts
 
