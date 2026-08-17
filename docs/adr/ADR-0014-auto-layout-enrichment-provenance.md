@@ -1,6 +1,6 @@
 # ADR-0014: Deterministic Auto-Layout Enrichment & Placement Provenance
 
-- **Status:** Accepted (contract DND-3.1; Core engine DND-3.2/DND-3.3; minimal public Alpha export + DOM/React wiring approved in DND-3.4)
+- **Status:** Accepted (contract DND-3.1; Core engine DND-3.2/DND-3.3; minimal public Alpha export + DOM/React wiring DND-3.4; published `0.1.0-alpha.1` in DND-3.5)
 - **Date:** 2026-08-16
 - **Sprint:** DND-3.1 / DND-3.2 / DND-3.3 / DND-3.4
 

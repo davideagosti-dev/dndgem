@@ -2,11 +2,11 @@
 
 ## Versioning
 
-- In-repo package versions stay at **0.0.0** until a Changesets version pass generates a publishable prerelease.
 - Changesets owns version numbers and changelogs. Do not hand-edit `packages/*/package.json` versions.
 - DnDGem is in **0.x Alpha**. This is not SemVer 1.0.
-- Expected first published version: **`0.1.0-alpha.0`**.
-- The three publishable packages are a Changesets **fixed** group (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`) so they remain version-aligned.
+- Current published version: **`0.1.0-alpha.1`**.
+- The current publishable packages are a Changesets **fixed** group (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`) so they remain version-aligned.
+- Future public JS/DOM adapters (`@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`) join the fixed group at **DND-FX.6**. Do **not** add nonexistent packages to `.changeset/config.json`. DND-FX.2–FX.4 may create unpublished packages.
 - The repository is in Changesets **pre** mode with tag `alpha` (`.changeset/pre.json`).
 
 `getCorePackageInfo` / `getDomPackageInfo` / `getReactPackageInfo` expose the same version string as `package.json`. After `changeset version`, run `pnpm sync-package-info` so source constants match.
@@ -26,14 +26,14 @@ npm install @dndgem/react@alpha
 
 Always document and use **`@alpha`**. Do not describe this Alpha as stable.
 
-### First Alpha registry note (`0.1.0-alpha.0`)
+### Registry note (`latest` vs `alpha`)
 
-After the first publish, verified registry state is:
+Verified after `0.1.0-alpha.1`:
 
-- `alpha` → `0.1.0-alpha.0` (correct / official)
-- `latest` → `0.1.0-alpha.0` (aliases the only published version)
+- `alpha` → `0.1.0-alpha.1` (correct / official)
+- `latest` → `0.1.0-alpha.0` (historical first Alpha; **not** the Alpha channel)
 
-Removal of `latest` was attempted through verified release/admin paths and refused by the registry. Document this as a **non-blocking** Alpha limitation. A future stable release must take ownership of `latest`. See [0.1.0-alpha.0 release notes](../releases/0.1.0-alpha.0.md).
+Removal of `latest` was attempted after the first publish and refused by the registry. Document this as a **non-blocking** Alpha limitation. A future stable release must take ownership of `latest`. See [0.1.0-alpha.0](../releases/0.1.0-alpha.0.md) and [0.1.0-alpha.1](../releases/0.1.0-alpha.1.md).
 
 ## Changeset policy
 
@@ -163,7 +163,23 @@ Do **not** pass `--provenance` while the repository remains private. Lack of pro
 
 Target scope: `@dndgem`.
 
-`@dndgem` scope ownership and first Alpha publication are complete for DND-2.5. Package names remain `@dndgem/{core,dom,react}`.
+`@dndgem` scope ownership and first Alpha publication are complete for DND-2.5. Current published names are `@dndgem/{core,dom,react}`. New adapters follow [ADR-0016](../adr/ADR-0016-framework-package-topology.md).
+
+### Framework Expansion publish expansion (DND-FX.6)
+
+When `@dndgem/vue` / `@dndgem/angular` / `@dndgem/svelte` exist:
+
+```text
+new package created (DND-FX.2/3/4)
+  → pack validation (existing-folder discovery)
+  → npm package created on the @dndgem org
+  → Trusted Publisher: GitHub Actions / davideagosti-dev/dndgem / publish.yml
+  → publish.yml --filter for that package
+  → check-publish-workflow already requires filters for existing packages
+  → first real OIDC publish at DND-FX.6 (master, dry_run false, dist-tag alpha)
+```
+
+Do **not** add `--filter` lines for packages that do not exist. Do not publish from DND-FX.1. `scripts/package-topology.mjs` is the allowlist.
 
 ## Historical Stage B external gates (resolved)
 

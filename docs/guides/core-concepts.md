@@ -30,7 +30,7 @@ deterministic solver (solveLayout)
 ResolvedLayout
 ```
 
-Today **you** supply semantic layout intent (items, constraints, desired placements). DnDGem validates, scores, and solves. It does **not** invent a full layout for you yet — that is Phase 3 Adaptive Auto-Layout.
+Today **you** supply items, constraints, and optional desired placements. With Auto-Layout **off** (default), desired rectangles are the explicit path. With Auto-Layout **on**, remaining items can be proposed automatically (`createAutoLayoutProposal` / session `autoLayout`). DnDGem still validates, scores, and solves through the same `solveLayout` authority.
 
 ## Vocabulary
 
@@ -88,9 +88,8 @@ There is no separate visual debugger product in Alpha.
 
 ## What DnDGem is not (yet)
 
-- Not Auto-Layout (Phase 3)
 - Not AI layout (Phase 4)
-- Not Flutter / Vue / Angular / Svelte
+- Not Flutter / Vue / Angular / Svelte (Vue/Angular/Svelte: Framework Expansion Gate)
 - Not a claim of full WCAG conformance or keyboard-drag productization (see [Accessibility](./accessibility.md))
 
 See [Limitations](./limitations.md).

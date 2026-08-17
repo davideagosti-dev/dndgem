@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /**
- * Pack @dndgem/core, @dndgem/dom, and @dndgem/react, then install the tarballs
- * into an isolated consumer fixture (not the workspace). Validates contents,
- * ESM/type entrypoints, Core solve, Vanilla session, and React mount.
+ * Pack existing publishable `@dndgem/*` packages (topology: scripts/package-topology.mjs),
+ * then install the current Alpha tarballs into an isolated consumer fixture.
+ * Validates contents, ESM/type entrypoints, Core solve, Vanilla session, and React mount.
  *
- * Does not publish.
+ * Does not publish. New adapters are packed when their package folder exists;
+ * the consumer fixture remains core/dom/react until DND-FX.2+.
  */
 import { execFileSync, execSync } from 'node:child_process';
 import {
@@ -18,13 +19,13 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { basename, dirname, isAbsolute, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { basename, isAbsolute, join } from 'node:path';
+import { existingPublishableFolders, REPO_ROOT } from './package-topology.mjs';
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const root = REPO_ROOT;
 const packDir = join(root, '.tmp', 'pack');
 
-const PUBLIC_PACKAGES = ['core', 'dom', 'react'];
+const PUBLIC_PACKAGES = existingPublishableFolders();
 
 const FORBIDDEN_PATH_SNIPPETS = [
   'tests/',

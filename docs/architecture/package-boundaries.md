@@ -2,11 +2,23 @@
 
 ## Allowed dependencies
 
-| Package         | May depend on                                               | Must not depend on                                          |
-| --------------- | ----------------------------------------------------------- | ----------------------------------------------------------- |
-| `@dndgem/core`  | nothing DnDGem-specific / no DOM                            | `dom`, `react`, browser APIs, React, dnd-kit, AI SDKs       |
-| `@dndgem/dom`   | `@dndgem/core`; browser/DOM APIs; `@dnd-kit/dom` (internal) | `@dndgem/react`, React                                      |
-| `@dndgem/react` | `@dndgem/core`, `@dndgem/dom`; React as peerDependency      | reverse imports; dnd-kit; must keep React as peerDependency |
+JS/DOM topology (DND-FX.1 / [ADR-0016](../adr/ADR-0016-framework-package-topology.md)):
+
+```text
+@dndgem/core ← @dndgem/dom ← sibling adapters (react, vue, angular, svelte)
+```
+
+| Package        | May depend on                                                                                  | Must not depend on                                        |
+| -------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `@dndgem/core` | nothing DnDGem-specific / no DOM                                                               | `dom`, adapters, browser APIs, UI frameworks, dnd-kit, AI |
+| `@dndgem/dom`  | `@dndgem/core`; browser/DOM APIs; `@dnd-kit/dom` (internal)                                    | adapters, React/Vue/Angular/Svelte                        |
+| JS/DOM adapter | `@dndgem/dom`; `@dndgem/core` when public types require it; UI framework as **peerDependency** | other adapters; `@dnd-kit/*`                              |
+
+Current adapter: `@dndgem/react`. Planned (do not stub): `@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`.
+
+Forbidden package names: `@dndgem/framework-core`, `@dndgem/vanilla`, `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/flutter`, `@dndgem/ai`.
+
+Allowlist: `scripts/package-topology.mjs`.
 
 ## Public API rule
 
@@ -26,7 +38,7 @@ import { ... } from '@dndgem/core/src/internal/...';
 ## Enforcement
 
 1. `package.json` dependency declarations
-2. ESLint `no-restricted-imports` for core/dom/consumers
+2. ESLint `no-restricted-imports` for core/dom/adapters/consumers
 3. `pnpm check:boundaries` script
 
 DOM measurement, `ResizeObserver`, and drag interaction belong in `@dndgem/dom`. They must not leak `HTMLElement` / `DOMRect` / dnd-kit types into Core public contracts.
@@ -35,4 +47,4 @@ DOM measurement, `ResizeObserver`, and drag interaction belong in `@dndgem/dom`.
 
 - Provider: `@dnd-kit/dom` (internal to `@dndgem/dom`, DND-1.6)
 - Public API: `createDragInteraction` and `createLayoutSession` (ADR-0004 / ADR-0012 / ADR-0013)
-- Must remain behind DnDGem’s interaction abstraction; never imported from Core or `@dndgem/react`
+- Must remain behind DnDGem’s interaction abstraction; never imported from Core or framework adapters

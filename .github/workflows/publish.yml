@@ -175,6 +175,8 @@ jobs:
         # No NODE_AUTH_TOKEN / NPM_TOKEN — pnpm publish packs then invokes npm publish,
         # which exchanges the GitHub OIDC token via the configured Trusted Publisher.
         # Do not pass --provenance: repository is PRIVATE; provenance is unavailable.
+        # DND-FX.1: add --filter lines only when the adapter package exists.
+        # DND-FX.6: Trusted Publisher + first real OIDC publish for new adapters.
         run: |
           unset NODE_AUTH_TOKEN NPM_TOKEN || true
           pnpm --filter @dndgem/core publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public

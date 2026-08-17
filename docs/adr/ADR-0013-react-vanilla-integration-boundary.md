@@ -1,6 +1,6 @@
 # ADR-0013: React / Vanilla Integration Boundary
 
-- **Status:** Accepted
+- **Status:** Accepted (DND-1.7). **Framework Expansion (DND-FX.1):** remains the React/Vanilla reference implementation. Universal JS/DOM adapter parity is [ADR-0015](./ADR-0015-universal-framework-adapter-contract.md); SSR layers are [ADR-0017](./ADR-0017-ssr-browser-runtime-boundary.md).
 - **Date:** 2026-08-13
 - **Sprint:** DND-1.7
 

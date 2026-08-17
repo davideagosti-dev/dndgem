@@ -1,5 +1,5 @@
 ---
-description: Roadmap scope lock — Phase 3 sprint map approved
+description: Roadmap scope lock — Framework Expansion Gate (DND-FX)
 alwaysApply: true
 ---
 
@@ -23,9 +23,18 @@ Phase 3 — Adaptive Auto-Layout is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `
 4. DND-3.4 Drag / Partial Intent / DOM-React DX — **COMPLETE** (session/adapters/`proposalUnplacedItemIds` product wiring done)
 5. DND-3.5 Phase 3 Alpha Release Gate — **COMPLETE** (published `0.1.0-alpha.1`; see `docs/releases/0.1.0-alpha.1.md`)
 
-Authoritative records: `docs/architecture/phase-3-planning-audit.md`, `docs/architecture/auto-layout-contract.md`, `docs/architecture/auto-layout-engine.md`, `docs/releases/0.1.0-alpha.1.md`.
+Framework Expansion Gate is **unnumbered** (not Phase 4) and **ACTIVE**:
 
-Do not begin Phase 4. Do not broaden the minimal public Auto-Layout export without explicit review. Do not publish npm, create release tags, or mutate dist-tags unless an explicit release authorization requires it.
+1. DND-FX.1 Shared Framework Adapter Contract & Architecture Gate — **COMPLETE**
+2. DND-FX.2 Vue Adapter — **NEXT** (not started; do not implement until this sprint is active)
+3. DND-FX.3 Angular Adapter — PLANNED
+4. DND-FX.4 Svelte Adapter — PLANNED
+5. DND-FX.5 Meta-Framework Compatibility Validation — PLANNED
+6. DND-FX.6 Cross-Framework Alpha Release Gate — PLANNED
+
+Authoritative records: `docs/architecture/framework-expansion-planning-audit.md`, `docs/architecture/framework-adapter-contract.md`, ADR-0015 / ADR-0016 / ADR-0017, `docs/roadmap.md`.
+
+Do not begin Phase 4 (AI). Do not renumber Phase 4. Do not implement Vue/Angular/Svelte except in the matching DND-FX.n sprint. Do not create placeholder adapter or meta-framework packages. Do not broaden the minimal public Auto-Layout export without explicit review. Do not publish npm, create release tags, or mutate dist-tags unless an explicit release authorization requires it.
 
 ## CI policy (DND-2.3+)
 
@@ -39,10 +48,10 @@ develop → master
 
 Do not pull into active work unless the sprint explicitly requires it:
 
-- Phase 3 Auto-Layout work outside the active DND-3.x sprint
-- AI-assisted layout intelligence (Phase 4, after Auto-Layout)
-- Flutter implementation (post-Alpha / Core-contract dependent; not blocked by AI)
-- Vue / Angular / Svelte adapters (post-alpha, demand-driven)
+- Phase 3 Auto-Layout work outside a dedicated follow-up sprint
+- AI-assisted layout intelligence (Phase 4)
+- Flutter implementation (separate track; Core-contract dependent)
+- Vue (only DND-FX.2), Angular (only DND-FX.3), Svelte (only DND-FX.4)
 
 Do not turn roadmap ideas into committed calendar dates in docs or code comments unless explicitly asked.
 

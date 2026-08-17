@@ -20,8 +20,9 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 ## Current status
 
 - Technical MVP (Phase 1, DND-1.1 → DND-1.8) is **CLOSED**.
-- Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE** (`0.1.0-alpha.0` / `@alpha`).
-- Active phase status: **Phase 3 — Adaptive Auto-Layout** is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `@alpha`). Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**; sprint map **APPROVED**. DND-3.1 Auto-Layout **contract** COMPLETE ([auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md)). DND-3.2/DND-3.3 Core engine COMPLETE; DND-3.4 DOM/React opt-in wiring COMPLETE — minimal public `createAutoLayoutProposal` + session/provider `autoLayout` ([auto-layout-engine.md](./auto-layout-engine.md)). **DND-3.5** COMPLETE — published [0.1.0-alpha.1](../releases/0.1.0-alpha.1.md).
+- Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE**. Official channel: **`0.1.0-alpha.1` / `@alpha`** (first Alpha was `0.1.0-alpha.0`).
+- **Phase 3 — Adaptive Auto-Layout** is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `@alpha`). Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**. DND-3.1–DND-3.5 COMPLETE. Minimal public `createAutoLayoutProposal` + session/provider `autoLayout` ([auto-layout-engine.md](./auto-layout-engine.md)). Release notes: [0.1.0-alpha.1](../releases/0.1.0-alpha.1.md).
+- **Framework Expansion Gate** is **ACTIVE** (unnumbered; **not** Phase 4). **DND-FX.1 COMPLETE.** DND-FX.2 Vue is **NEXT** (not started). See [framework-expansion-planning-audit.md](./framework-expansion-planning-audit.md), [framework-adapter-contract.md](./framework-adapter-contract.md).
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
 - `@dndgem/core` evaluates placements as `VALID` / `DEGRADED` / `INVALID` with deterministic scoring (DND-1.3).
@@ -32,12 +33,13 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 - DND-1.8 adds reproducible Core benchmarks, an acceptance matrix, and a Technical MVP closure report.
 - DND-2.1–DND-2.5 complete (engineering baseline through Public Alpha release gate, plus post-release DA62 / `dndgem.dev` follow-ups).
 
-**Technical MVP:** CLOSED · **Public Alpha:** LIVE · **Phase 3:** ACTIVE (DND-3.1–DND-3.4 COMPLETE; DND-3.5 NEXT)
+**Technical MVP:** CLOSED · **Public Alpha:** LIVE (`0.1.0-alpha.1` / `@alpha`) · **Phase 3:** COMPLETE / RELEASED · **Framework Expansion:** ACTIVE (DND-FX.1 COMPLETE; DND-FX.2 NEXT)
 
 Developer journey: [../guides/README.md](../guides/README.md).
 See [auto-layout-contract.md](./auto-layout-contract.md) for the Phase 3 Auto-Layout contract (DND-3.1).
 See [auto-layout-engine.md](./auto-layout-engine.md) for the Core placement + stability/reflow engine and DND-3.4 consumer wiring.
 See [phase-3-planning-audit.md](./phase-3-planning-audit.md) for the approved Phase 3 sprint map and binding refinements.
+See [framework-expansion-planning-audit.md](./framework-expansion-planning-audit.md) and [framework-adapter-contract.md](./framework-adapter-contract.md) for the JS/DOM adapter gate (DND-FX).
 See [alpha-api-contract.md](./alpha-api-contract.md) for the Alpha public surface and stability policy.
 See [core-domain.md](./core-domain.md) for domain, scoring, and solver semantics.
 See [dom-adapter.md](./dom-adapter.md) for DOM measurement, resize observation (ADR-0011), drag interaction (ADR-0012), and layout application (ADR-0013).
@@ -53,7 +55,7 @@ See [../technical-mvp/closure-report.md](../technical-mvp/closure-report.md) for
 @dndgem/dom
      ▲
      │
-@dndgem/react
+@dndgem/react   (+ planned sibling adapters: vue, angular, svelte)
 ```
 
 Consumers (playground/examples) use public package exports only.
@@ -63,7 +65,8 @@ Consumers (playground/examples) use public package exports only.
 - Deterministic Auto-Layout product (Phase 3 — **RELEASED** in `0.1.0-alpha.1`)
 - AI inference (Phase 4)
 - Billing / cloud SaaS
-- Vue / Angular / Svelte / Flutter implementations
+- Vue / Angular / Svelte implementations (Framework Expansion Gate — DND-FX.2+)
+- Flutter implementation (separate track)
 - Custom native DnD engine
 
 See ADRs under `docs/adr/` for approved decisions.

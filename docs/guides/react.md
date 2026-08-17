@@ -108,7 +108,7 @@ Put visual styles first; spread `item.style` last so DnDGem owns `position`, `le
 
 - `import '@dndgem/react'` is safe without `window` (covered by package tests).
 - Rendering `DnDGemProvider` requires a browser DOM (client mount).
-- Next.js / Remix are **not** claimed.
+- Next.js / Nuxt / SvelteKit are compatibility environments (DND-FX.5); **not** claimed as supported yet ([ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md)).
 
 ## Validated example
 

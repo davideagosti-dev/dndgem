@@ -48,8 +48,10 @@ Alpha API Contract
 Architecture / contract references (not the day-one path):
 
 - [Alpha API Contract](../architecture/alpha-api-contract.md)
-- [Auto-Layout Contract (Phase 3 / DND-3.1)](../architecture/auto-layout-contract.md)
-- [Auto-Layout Engine (Phase 3 / DND-3.2–3.4)](../architecture/auto-layout-engine.md)
+- [Auto-Layout Contract (Phase 3)](../architecture/auto-layout-contract.md)
+- [Auto-Layout Engine (Phase 3)](../architecture/auto-layout-engine.md)
+- [Framework Adapter Contract (DND-FX)](../architecture/framework-adapter-contract.md)
+- [Framework Expansion Gate](../architecture/framework-expansion-planning-audit.md)
 - [Release Strategy](../architecture/release-strategy.md)
 - [Testing Strategy](../architecture/testing-strategy.md)
 - [Core Domain](../architecture/core-domain.md)
