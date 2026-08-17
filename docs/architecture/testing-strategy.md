@@ -2,14 +2,14 @@
 
 ## Layers
 
-| Layer          | Tool                                      | Scope                                                                                                                  | Timing                                                    |
-| -------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| Unit           | Vitest                                    | Core domain/solver; DOM measurement with mocked geometry / fake `ResizeObserver`; drag interaction with fake mechanics | DND-1.1+                                                  |
-| Package smoke  | Vitest                                    | Public export / workspace link checks                                                                                  | DND-1.1                                                   |
-| Browser / E2E  | Playwright                                | Playground boot; drag fixture; Vanilla + React + Vue integration; a11y baseline                                        | Chromium + Firefox + WebKit (DND-2.4; Vue smoke DND-FX.2) |
-| Property-based | Table-driven Vitest (fast-check deferred) | Validity / solver invariants                                                                                           | DND-1.3 table-driven; library TBD                         |
-| Benchmarks     | Vitest bench + stats collector            | Core `solveLayout` perf (hardware-dependent); semantics gated in CI                                                    | DND-1.8+                                                  |
-| Docs links     | `pnpm check:docs-links`                   | Relative markdown link integrity for guides / entry docs                                                               | DND-2.3+                                                  |
+| Layer          | Tool                                      | Scope                                                                                                                  | Timing                                                                            |
+| -------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Unit           | Vitest                                    | Core domain/solver; DOM measurement with mocked geometry / fake `ResizeObserver`; drag interaction with fake mechanics | DND-1.1+                                                                          |
+| Package smoke  | Vitest                                    | Public export / workspace link checks                                                                                  | DND-1.1                                                                           |
+| Browser / E2E  | Playwright                                | Playground boot; drag fixture; Vanilla + React + Vue + Angular integration; a11y baseline                              | Chromium + Firefox + WebKit (DND-2.4; Vue smoke DND-FX.2; Angular smoke DND-FX.3) |
+| Property-based | Table-driven Vitest (fast-check deferred) | Validity / solver invariants                                                                                           | DND-1.3 table-driven; library TBD                                                 |
+| Benchmarks     | Vitest bench + stats collector            | Core `solveLayout` perf (hardware-dependent); semantics gated in CI                                                    | DND-1.8+                                                                          |
+| Docs links     | `pnpm check:docs-links`                   | Relative markdown link integrity for guides / entry docs                                                               | DND-2.3+                                                                          |
 
 ## Quality gates (Phase 2 / DND-2.3+)
 
@@ -48,6 +48,7 @@ pnpm --filter @dndgem/playground build
 pnpm --filter @dndgem/example-react build
 pnpm --filter @dndgem/example-vanilla build
 pnpm --filter @dndgem/example-vue build
+pnpm --filter @dndgem/example-angular build
 pnpm test:e2e
 pnpm bench:core:semantics
 pnpm check:publish-workflow

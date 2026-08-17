@@ -89,7 +89,7 @@ There is no separate visual debugger product in Alpha.
 ## What DnDGem is not (yet)
 
 - Not AI layout (Phase 4)
-- Not Flutter / Vue / Angular / Svelte (Vue/Angular/Svelte: Framework Expansion Gate)
+- Not Flutter / Svelte (Vue and Angular: in-repo unpublished Framework Expansion adapters)
 - Not a claim of full WCAG conformance or keyboard-drag productization (see [Accessibility](./accessibility.md))
 
 See [Limitations](./limitations.md).

@@ -8,7 +8,7 @@
 | Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                     |
 | Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                   |
 | Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)          |
-| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1–FX.2 COMPLETE; DND-FX.3 NEXT) |
+| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1–FX.3 COMPLETE; DND-FX.4 NEXT) |
 | Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                                |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
@@ -371,9 +371,9 @@ DND-FX.1 Shared Framework Adapter Contract & Architecture Gate   COMPLETE
         ↓
 DND-FX.2 Vue Adapter                                             COMPLETE
         ↓
-DND-FX.3 Angular Adapter                                         NEXT
+DND-FX.3 Angular Adapter                                         COMPLETE
         ↓
-DND-FX.4 Svelte Adapter                                          PLANNED
+DND-FX.4 Svelte Adapter                                          NEXT
         ↓
 DND-FX.5 Meta-Framework Compatibility Validation                 PLANNED
         ↓
@@ -402,14 +402,16 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 ### DND-FX.3 — Angular Adapter
 
 - **Objective:** Thin idiomatic `@dndgem/angular` (DI/directives/signals, zoneless-safe).
+- **Out of scope:** Angular Universal certification; Svelte; default-on Auto-Layout; publish.
 - **Dependencies:** DND-FX.1.
-- **Status:** NEXT (not started)
+- **Closure:** `@dndgem/angular` implemented in-repo (`0.0.0`, unpublished); board-local DI; standalone host directives; signals; zoneless-validated; wait-for-all session over `createLayoutSession`; Auto-Layout opt-in; Angular Universal not validated.
+- **Status:** **COMPLETE**
 
 ### DND-FX.4 — Svelte Adapter
 
 - **Objective:** Thin idiomatic `@dndgem/svelte` (Svelte 5 context + actions).
 - **Dependencies:** DND-FX.1.
-- **Status:** PLANNED
+- **Status:** NEXT
 
 ### DND-FX.5 — Meta-Framework Compatibility Validation
 

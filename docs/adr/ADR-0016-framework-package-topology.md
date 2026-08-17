@@ -36,7 +36,7 @@ Published Alpha packages are `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` 
 
 4. **Public surface:** ESM-only; supported import is the package root (`exports["."]`). Deep imports are not part of the Alpha contract. Additional export conditions (e.g. Svelte, Angular packager) may be added in the implementing sprint if the compiler requires them; they must not replace the root ESM/types contract.
 
-5. **Boundaries:** `scripts/package-topology.mjs` is the allowlist. `pnpm check:boundaries` applies adapter rules only to folders that exist. Planned folders (`vue`, `angular`, `svelte`) must not be stubbed.
+5. **Boundaries:** `scripts/package-topology.mjs` is the allowlist. `pnpm check:boundaries` applies adapter rules only to folders that exist. Planned folders that are still absent (`svelte`) must not be stubbed.
 
 6. **Changesets:** Keep `@dndgem/core`, `@dndgem/dom`, `@dndgem/react` as the current **fixed** group. **Do not** add nonexistent packages to `.changeset/config.json`. DND-FX.2–FX.4 may create packages unpublished. **DND-FX.6** joins existing public adapters into the fixed group so versions stay aligned, then publishes on `@alpha`. Adding a package to the fixed group locksteps a bump of existing packages even if Core algorithms did not change — document that as alignment.
 

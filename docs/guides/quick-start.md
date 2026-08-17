@@ -173,6 +173,7 @@ Proposal completeness (distinct from solver validity) is available on session st
 | Constraints / VALID states  | [Constraints](./constraints.md)                  |
 | Full React API              | [React Guide](./react.md)                        |
 | Vue path (workspace)        | [Vue Guide](./vue.md)                            |
+| Angular path (workspace)    | [Angular Guide](./angular.md)                    |
 | Vanilla path                | [Vanilla Guide](./vanilla.md)                    |
 | Drag vs resize / `previous` | [Drag, Resize & Reflow](./drag-resize-reflow.md) |
 | Browser support             | [Browser Support](./browser-support.md)          |
