@@ -11,6 +11,8 @@
     "@dndgem/playground",
     "@dndgem/www",
     "@dndgem/example-vanilla",
-    "@dndgem/example-react"
+    "@dndgem/example-react",
+    "@dndgem/example-vue",
+    "@dndgem/vue"
   ]
 }

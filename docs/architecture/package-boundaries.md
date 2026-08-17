@@ -14,7 +14,7 @@ JS/DOM topology (DND-FX.1 / [ADR-0016](../adr/ADR-0016-framework-package-topolog
 | `@dndgem/dom`  | `@dndgem/core`; browser/DOM APIs; `@dnd-kit/dom` (internal)                                    | adapters, React/Vue/Angular/Svelte                        |
 | JS/DOM adapter | `@dndgem/dom`; `@dndgem/core` when public types require it; UI framework as **peerDependency** | other adapters; `@dnd-kit/*`                              |
 
-Current adapter: `@dndgem/react`. Planned (do not stub): `@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`.
+Current adapter: `@dndgem/react` (published). `@dndgem/vue` is **implemented in the repository** (DND-FX.2) and **not yet published**. Planned (do not stub): `@dndgem/angular`, `@dndgem/svelte`.
 
 Forbidden package names: `@dndgem/framework-core`, `@dndgem/vanilla`, `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/flutter`, `@dndgem/ai`.
 

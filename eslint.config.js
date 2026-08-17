@@ -127,6 +127,20 @@ export default tseslint.config(
           paths: [
             ...adapterPackagePaths(`@dndgem/${adapter}`),
             ...dndKitPaths(`@dndgem/${adapter}`),
+            ...FRAMEWORK_RUNTIMES.filter((runtime) => {
+              const peer =
+                adapter === 'react'
+                  ? 'react'
+                  : adapter === 'vue'
+                    ? 'vue'
+                    : adapter === 'angular'
+                      ? '@angular/core'
+                      : 'svelte';
+              return runtime.name !== peer;
+            }).map((runtime) => ({
+              name: runtime.name,
+              message: `@dndgem/${adapter} ${runtime.message}`,
+            })),
           ],
           patterns: [
             {

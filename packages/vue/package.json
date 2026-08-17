@@ -1,0 +1,64 @@
+{
+  "name": "@dndgem/vue",
+  "version": "0.0.0",
+  "description": "Vue adapter for DnDGem — thin lifecycle and registration over @dndgem/dom.",
+  "author": "DA62",
+  "license": "MIT",
+  "homepage": "https://dndgem.dev",
+  "bugs": {
+    "url": "https://dndgem.dev/support/",
+    "email": "support@dndgem.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davideagosti-dev/dndgem.git",
+    "directory": "packages/vue"
+  },
+  "keywords": [
+    "dndgem",
+    "da62",
+    "layout",
+    "vue",
+    "drag-and-drop",
+    "composables"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint src --max-warnings=0",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@dndgem/core": "workspace:*",
+    "@dndgem/dom": "workspace:*"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7",
+    "vue": "^3.5.18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

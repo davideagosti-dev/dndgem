@@ -13,6 +13,7 @@ const packages = [
   { dir: 'core', constant: 'CORE_PACKAGE_VERSION' },
   { dir: 'dom', constant: 'DOM_PACKAGE_VERSION' },
   { dir: 'react', constant: 'REACT_PACKAGE_VERSION' },
+  { dir: 'vue', constant: 'VUE_PACKAGE_VERSION' },
 ];
 
 for (const item of packages) {

@@ -22,7 +22,7 @@ SCREEN-READER DRAG UX         — DEFERRED
 | Pointer drag                     | Supported             | Supported                              | Chromium / Firefox / WebKit e2e                                      |
 | Escape cancellation              | Supported             | Supported                              | Cancels active drag; restores committed layout                       |
 | Focus preservation               | Baseline supported    | Supported for ordinary usage           | Resize / cancel must not destroy external focus                      |
-| Consumer ARIA semantics          | Preserved             | Consumer-owned; DnDGem must not strip  | React binding is `ref` + layout `style` only                         |
+| Consumer ARIA semantics          | Preserved             | Consumer-owned; DnDGem must not strip  | React/Vue bindings are `ref` + layout `style` only                   |
 | Keyboard drag                    | Deferred              | **Not claimed**                        | Provider may expose sensors; DnDGem has no productized keyboard path |
 | Screen-reader drag announcements | Deferred              | **Not claimed**                        | No DnDGem live-region product; provider plugins are not Alpha claims |
 | DOM / reading order              | Documented limitation | Visual order may differ from DOM order | Absolute positioning; DnDGem does not reorder DOM nodes              |
@@ -86,7 +86,7 @@ DnDGem has no committed-layout animation framework. Reduced-motion policies prim
 
 ## Automated coverage
 
-- Unit: React adapter preserves consumer `aria-*` / `tabIndex` across resolve + cancel
+- Unit: React and Vue adapters preserve consumer `aria-*` / `tabIndex` across resolve + cancel
 - E2E (all Alpha engines): consumer `aria-label` retention, focus probe across resize, Escape cancel, post-drag content visibility
 
 Automated checks prove non-destructive mechanics. They do **not** prove full accessibility.
