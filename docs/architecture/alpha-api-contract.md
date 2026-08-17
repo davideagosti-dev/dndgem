@@ -26,8 +26,9 @@ Related: [overview.md](./overview.md), [core-domain.md](./core-domain.md), [dom-
 | `@dndgem/react`   | Thin React lifecycle adapter over the DOM session                    | React apps            | Published `0.1.0-alpha.1` / `@alpha`            |
 | `@dndgem/vue`     | Thin Vue 3 lifecycle adapter over the DOM session                    | Vue 3 apps            | **In repository; not yet published** (DND-FX.2) |
 | `@dndgem/angular` | Thin Angular lifecycle adapter over the DOM session                  | Angular apps          | **In repository; not yet published** (DND-FX.3) |
+| `@dndgem/svelte`  | Thin Svelte 5 lifecycle adapter over the DOM session                 | Svelte 5 apps         | **In repository; not yet published** (DND-FX.4) |
 
-No other `@dndgem/*` packages are currently part of published Alpha. Svelte is a later Framework Expansion sprint and must not be stubbed. Flutter is a separate track. `@dndgem/vue` and `@dndgem/angular` are **not** part of published `0.1.0-alpha.1`.
+No other `@dndgem/*` packages are currently part of published Alpha. Flutter is a separate track. `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are **not** part of published `0.1.0-alpha.1`.
 
 ## Public entrypoints
 
@@ -39,9 +40,10 @@ import { createLayoutSession } from '@dndgem/dom';
 import { DnDGemProvider } from '@dndgem/react';
 import { DnDGemProvider as VueDnDGemProvider } from '@dndgem/vue';
 import { DnDGemBoardDirective } from '@dndgem/angular';
+import { DnDGemProvider as SvelteDnDGemProvider } from '@dndgem/svelte';
 ```
 
-Deep imports (`@dndgem/core/solve`, `@dndgem/dom/src/...`, `@dndgem/react/dist/...`, `@dndgem/vue/dist/...`, `@dndgem/angular/dist/...`) are **not** part of the contract even if a file exists in the published tarball.
+Deep imports (`@dndgem/core/solve`, `@dndgem/dom/src/...`, `@dndgem/react/dist/...`, `@dndgem/vue/dist/...`, `@dndgem/angular/dist/...`, `@dndgem/svelte/dist/...`) are **not** part of the contract even if a file exists in the published tarball.
 
 Module shape:
 
@@ -285,6 +287,36 @@ Directive contract:
 - `injectDnDGem()` / `DnDGemBoard` throw or fail DI outside `dndgemBoard`
 - `state` / `ready` are Angular signals
 
+## `@dndgem/svelte` public exports (in-repository, unpublished)
+
+Runtime (workspace only until DND-FX.6):
+
+- `SVELTE_PACKAGE_NAME`, `SVELTE_PACKAGE_VERSION`, `getSveltePackageInfo`
+- `DnDGemProvider` (renderless board owner)
+- `getDnDGem`
+- `dndgemContainer`
+- `dndgemItem`
+
+Types:
+
+- `DnDGemItemConfig`, `DnDGemProviderProps`, `DnDGemSnippetProps`, `DnDGemStore`
+- Re-exported DOM callback types: `DragCancelEvent`, `DragDropResult`, `DragProposal`, `LayoutSessionState`
+
+### Internal to Svelte (not public)
+
+- Board context key / session fields
+- `createDragInteraction` / `createLayoutSession` (consume via `@dndgem/dom` if needed)
+- `@dnd-kit/*`
+
+Same behavioral contract as React/DOM/Vue/Angular: `autoLayout` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `svelte@^5.0.0`. **Not** part of published `0.1.0-alpha.1`. SvelteKit is not validated.
+
+Action / snippet contract:
+
+- Children snippet receives `{ state, ready, dndgemContainer, dndgemItem }` (`state` / `ready` are values)
+- `use:dndgemContainer` / `use:dndgemItem={'id'}` register consumer hosts
+- `getDnDGem()` throws outside `DnDGemProvider`
+- `getDnDGem().state` / `ready` are Svelte readable stores
+
 ## Provider isolation
 
 `@dnd-kit/dom` is installed only on `@dndgem/dom` as an implementation dependency. It must not appear in:
@@ -293,6 +325,7 @@ Directive contract:
 - `@dndgem/react` public types, dependencies, or imports
 - `@dndgem/vue` public types, dependencies, or imports
 - `@dndgem/angular` public types, dependencies, or imports
+- `@dndgem/svelte` public types, dependencies, or imports
 
 Consumers must not import `@dnd-kit/*` to use DnDGem.
 
@@ -306,6 +339,7 @@ Consumers must not import `@dnd-kit/*` to use DnDGem.
 | React `Error`     | react   | Hook used outside `DnDGemProvider`              |
 | Vue `Error`       | vue     | Composable used outside `DnDGemProvider`        |
 | Angular `Error`   | angular | Directive/inject used outside `dndgemBoard`     |
+| Svelte `Error`    | svelte  | Action/getDnDGem used outside `DnDGemProvider`  |
 
 Alpha documents errors and validity honestly. Developer guides and troubleshooting live in `docs/guides/` (DND-2.3).
 
@@ -315,7 +349,7 @@ Published package versions are **`0.1.0-alpha.1`**. Changesets owns further prer
 
 - Official dist-tag: `alpha` (always install with `@alpha`; `latest` is not the Alpha channel)
 - `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` are a **fixed** Changesets group and stay version-aligned
-- `@dndgem/vue` and `@dndgem/angular` are implemented in-repo at workspace placeholder `0.0.0` and are **ignored** by Changesets until **DND-FX.6** (join the fixed group then). **CHANGESET DEFERRED TO FX.6.**
+- `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are implemented in-repo at workspace placeholder `0.0.0` and are **ignored** by Changesets until **DND-FX.6** (join the fixed group then). **CHANGESET DEFERRED TO FX.6.**
 - `get*PackageInfo().version` must match that package's `package.json` `version`
 
 See [release-strategy.md](./release-strategy.md).

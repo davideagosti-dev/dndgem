@@ -19,7 +19,7 @@ Phase 3 — Adaptive Auto-Layout is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `
 
 Framework Expansion Gate is **ACTIVE** (unnumbered; **not** Phase 4). Sprint map: `docs/architecture/framework-expansion-planning-audit.md`. Contract: `docs/architecture/framework-adapter-contract.md`. ADRs 0015–0017.
 
-**DND-FX.1** COMPLETE (contract gate). **DND-FX.2** Vue **COMPLETE**. **DND-FX.3** Angular **COMPLETE**. **DND-FX.4** Svelte **NEXT**. **DND-FX.5** meta-frameworks PLANNED. **DND-FX.6** release PLANNED.
+**DND-FX.1** COMPLETE (contract gate). **DND-FX.2** Vue **COMPLETE**. **DND-FX.3** Angular **COMPLETE**. **DND-FX.4** Svelte **COMPLETE**. **DND-FX.5** meta-frameworks **NEXT** (not started). **DND-FX.6** release PLANNED.
 
 Phase 4 remains **AI-Assisted Layout Intelligence** (not started). Do not renumber it.
 
@@ -36,7 +36,7 @@ Cursor MUST NOT introduce:
 - Flutter implementation (separate track; not a DND-FX sprint)
 - Vue adapter expansion beyond closed DND-FX.2 unless an explicit follow-up authorizes it
 - Angular adapter expansion beyond closed DND-FX.3 unless an explicit follow-up authorizes it
-- Svelte implementation unless **DND-FX.4** is the active sprint
+- Svelte adapter expansion beyond closed DND-FX.4 unless an explicit follow-up authorizes it
 - `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/framework-core`, `@dndgem/vanilla` packages
 - Placeholder / stub packages to reserve names
 - Pin / Lock / fixed / manual placement APIs (deferred unless a sprint explicitly requires them)
@@ -46,7 +46,7 @@ Cursor MUST NOT introduce:
 - npm publication / repository visibility changes unless the active sprint explicitly requires it
 - Broader-than-minimal Public Auto-Layout API freeze unless an explicit review requires it
 
-DND-FX.2 is **COMPLETE**. `@dndgem/vue` is in-repository and unpublished. DND-FX.3 is **COMPLETE**. `@dndgem/angular` is in-repository and unpublished. Do not implement Svelte / Nuxt packages. DND-FX.1 remains closed.
+DND-FX.2 is **COMPLETE**. `@dndgem/vue` is in-repository and unpublished. DND-FX.3 is **COMPLETE**. `@dndgem/angular` is in-repository and unpublished. DND-FX.4 is **COMPLETE**. `@dndgem/svelte` is in-repository and unpublished. Do not implement SvelteKit / Nuxt / Next packages. DND-FX.5 is **NEXT** and is not started. DND-FX.1 remains closed.
 
 Flutter compatibility may be considered architecturally (types, ADRs), but not implemented until scheduled.
 

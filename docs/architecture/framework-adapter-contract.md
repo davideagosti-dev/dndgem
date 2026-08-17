@@ -2,8 +2,8 @@
 
 Authoritative behavioral contract for every JS/DOM framework adapter over `@dndgem/dom`.
 
-**Status:** APPROVED (DND-FX.1)  
-**Scope:** `@dndgem/react` (reference) and future `@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`  
+**Status:** APPROVED (DND-FX.1)
+**Scope:** `@dndgem/react` (reference), `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte`
 **Not in scope:** Flutter / non-DOM renderers (ADR-0008); AI (Phase 4); Pin/Lock; default-on Auto-Layout
 
 Related: [framework-expansion-planning-audit.md](./framework-expansion-planning-audit.md), [ADR-0015](../adr/ADR-0015-universal-framework-adapter-contract.md), [ADR-0016](../adr/ADR-0016-framework-package-topology.md), [ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md), [ADR-0013](../adr/ADR-0013-react-vanilla-integration-boundary.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [dom-adapter.md](./dom-adapter.md), [alpha-api-contract.md](./alpha-api-contract.md).
