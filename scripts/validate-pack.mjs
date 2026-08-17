@@ -2,10 +2,10 @@
 /**
  * Pack existing publishable `@dndgem/*` packages (topology: scripts/package-topology.mjs),
  * then install the current Alpha tarballs into an isolated consumer fixture.
- * Validates contents, ESM/type entrypoints, Core solve, Vanilla session, and React mount.
+ * Validates contents, ESM/type entrypoints, Core solve, Vanilla session, React mount, and Vue mount when present.
  *
- * Does not publish. New adapters are packed when their package folder exists;
- * the consumer fixture remains core/dom/react until DND-FX.2+.
+ * Does not publish. New adapters are packed when their package folder exists.
+ * The consumer fixture covers every packed publishable package.
  */
 import { execFileSync, execSync } from 'node:child_process';
 import {
@@ -211,7 +211,7 @@ function packOne(dir) {
       `${pkg.name} must not export maxProbeCountForOccupancy`,
     );
   }
-  if (dir === 'react') {
+  if (dir === 'react' || dir === 'vue') {
     const typesDts = execFileSync('tar', ['-xOf', resolved, 'package/dist/types.d.ts'], {
       encoding: 'utf8',
     });
@@ -550,6 +550,115 @@ await act(async () => {
 console.log('react packed consumer smoke ok', info.version);
 `;
 
+const vueSmoke = `import { JSDOM } from 'jsdom';
+
+const jsdom = new JSDOM('<!doctype html><html><body><div id="app"></div></body></html>', {
+  pretendToBeVisual: true,
+  url: 'http://localhost/',
+});
+const { window } = jsdom;
+globalThis.window = window;
+globalThis.document = window.document;
+globalThis.HTMLElement = window.HTMLElement;
+globalThis.SVGElement = window.SVGElement;
+globalThis.Element = window.Element;
+globalThis.Node = window.Node;
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
+const { createApp, h, nextTick } = await import('vue');
+const {
+  DnDGemProvider,
+  getVuePackageInfo,
+  useDnDGem,
+  useDnDGemContainer,
+  useDnDGemItem,
+} = await import('@dndgem/vue');
+
+const info = getVuePackageInfo();
+if (info.name !== '@dndgem/vue' || info.dom.name !== '@dndgem/dom') {
+  throw new Error('vue package info mismatch');
+}
+
+function stub(el, box) {
+  el.getBoundingClientRect = () => ({
+    x: box.left,
+    y: box.top,
+    left: box.left,
+    top: box.top,
+    width: box.width,
+    height: box.height,
+    right: box.left + box.width,
+    bottom: box.top + box.height,
+    toJSON() {
+      return {};
+    },
+  });
+}
+
+const Board = {
+  setup() {
+    const containerRef = useDnDGemContainer();
+    const chart = useDnDGemItem('chart');
+    const { ready } = useDnDGem();
+    return () =>
+      h(
+        'div',
+        {
+          ref: (node) => {
+            if (node) {
+              stub(node, { left: 0, top: 0, width: 400, height: 200 });
+            }
+            containerRef(node);
+          },
+        },
+        h('article', {
+          ref: (node) => {
+            if (node) {
+              stub(node, { left: 8, top: 8, width: 120, height: 60 });
+            }
+            chart.ref(node);
+          },
+          style: chart.style.value,
+          'data-ready': ready.value ? 'yes' : 'no',
+        }),
+      );
+  },
+};
+
+const mechanics = {
+  connect() {
+    return { dispose() {} };
+  },
+};
+
+const app = createApp({
+  setup() {
+    return () =>
+      h(
+        DnDGemProvider,
+        {
+          items: [{ id: 'chart', constraints: { minWidth: 40, preferredWidth: 120 } }],
+          desiredPlacements: { chart: { x: 8, y: 8, width: 120, height: 60 } },
+          mechanics,
+          ResizeObserver: globalThis.ResizeObserver,
+        },
+        { default: () => h(Board) },
+      );
+  },
+});
+app.mount(window.document.getElementById('app'));
+await nextTick();
+if (!window.document.querySelector('article')) {
+  throw new Error('vue packed consumer did not mount an item');
+}
+app.unmount();
+console.log('vue packed consumer smoke ok', info.version);
+`;
+
 const typecheckSource = `import {
   createAutoLayoutProposal,
   createLayoutIntent,
@@ -573,6 +682,13 @@ import {
   useDnDGemItem,
   type DnDGemProviderProps,
 } from '@dndgem/react';
+import {
+  DnDGemProvider as VueDnDGemProvider,
+  useDnDGem as useVueDnDGem,
+  useDnDGemContainer as useVueDnDGemContainer,
+  useDnDGemItem as useVueDnDGemItem,
+  type DnDGemProviderProps as VueDnDGemProviderProps,
+} from '@dndgem/vue';
 
 export const intent: LayoutIntent = createLayoutIntent({
   space: { width: 100, height: 80 },
@@ -589,6 +705,14 @@ export type ProviderProps = DnDGemProviderProps;
 export const autoLayoutProp: ProviderProps['autoLayout'] = true;
 export const proposalUnplaced: AutoState['proposalUnplacedItemIds'] = [];
 export const hooks = { useDnDGem, useDnDGemContainer, useDnDGemItem, DnDGemProvider };
+export type VueProviderProps = VueDnDGemProviderProps;
+export const vueAutoLayoutProp: VueProviderProps['autoLayout'] = true;
+export const vueHooks = {
+  useVueDnDGem,
+  useVueDnDGemContainer,
+  useVueDnDGemItem,
+  VueDnDGemProvider,
+};
 `;
 
 console.log('Building publishable packages…');
@@ -598,6 +722,10 @@ rmSync(packDir, { recursive: true, force: true });
 mkdirSync(packDir, { recursive: true });
 
 const packed = PUBLIC_PACKAGES.map(packOne);
+assert(
+  packed.some((item) => item.name === '@dndgem/vue'),
+  'expected packed @dndgem/vue while packages/vue exists',
+);
 
 console.log('\nPackage artifacts');
 for (const item of packed) {
@@ -625,8 +753,10 @@ writeFileSync(
         '@dndgem/core': localTarballs['@dndgem/core'],
         '@dndgem/dom': localTarballs['@dndgem/dom'],
         '@dndgem/react': localTarballs['@dndgem/react'],
+        '@dndgem/vue': localTarballs['@dndgem/vue'],
         react: '^19.0.0',
         'react-dom': '^19.0.0',
+        vue: '^3.5.0',
         jsdom: '^26.0.0',
         typescript: '^5.0.0',
         '@types/react': '^19.0.0',
@@ -637,6 +767,7 @@ writeFileSync(
           '@dndgem/core': localTarballs['@dndgem/core'],
           '@dndgem/dom': localTarballs['@dndgem/dom'],
           '@dndgem/react': localTarballs['@dndgem/react'],
+          '@dndgem/vue': localTarballs['@dndgem/vue'],
         },
       },
     },
@@ -673,6 +804,7 @@ writeFileSync(
 writeFileSync(join(consumerDir, 'core-smoke.mjs'), coreSmoke);
 writeFileSync(join(consumerDir, 'vanilla-smoke.mjs'), vanillaSmoke);
 writeFileSync(join(consumerDir, 'react-smoke.mjs'), reactSmoke);
+writeFileSync(join(consumerDir, 'vue-smoke.mjs'), vueSmoke);
 writeFileSync(join(consumerDir, 'consumer-types.ts'), typecheckSource);
 
 console.log(`\nInstalling packed tarballs into ${consumerDir}`);
@@ -682,6 +814,7 @@ console.log('\nRuntime smokes');
 runInherit('node core-smoke.mjs', { cwd: consumerDir });
 runInherit('node vanilla-smoke.mjs', { cwd: consumerDir });
 runInherit('node react-smoke.mjs', { cwd: consumerDir });
+runInherit('node vue-smoke.mjs', { cwd: consumerDir });
 
 console.log('\nConsumer typecheck');
 runInherit('pnpm exec tsc --noEmit -p tsconfig.json', { cwd: consumerDir });

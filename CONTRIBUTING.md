@@ -4,7 +4,7 @@ Thanks for your interest in DnDGem.
 
 ## Project status
 
-DnDGem is in **early public Alpha preparation**. Phase 1 Technical MVP is **CLOSED**. Active work is **DND-2.5 — Public Alpha Release Gate** under Phase 2 (`docs/roadmap.md`). Large product surfaces (Auto-Layout, AI, Flutter, cloud, billing, multi-framework adapters beyond React) are out of Phase 2 unless a sprint explicitly requires them.
+DnDGem is in **early public Alpha**. Phase 1 Technical MVP is **CLOSED**. Framework Expansion Gate is **ACTIVE**: **DND-FX.2 Vue is COMPLETE** (in-repo, unpublished). **DND-FX.3 Angular is NEXT** and not started (`docs/roadmap.md`). Do not implement Angular, Svelte, Nuxt packages, AI, Flutter, or npm publish of Vue without an authorized sprint.
 
 ## Development setup
 

@@ -12,7 +12,7 @@ Dependency direction (JS/DOM):
 @dndgem/core <- @dndgem/dom <- framework adapters (siblings)
 ```
 
-Approved adapter folders: `react`, `vue`, `angular`, `svelte`. Only create a folder in the matching DND-FX.n sprint. DND-FX.1 must not create them.
+Approved adapter folders: `react`, `vue`, `angular`, `svelte`. Only create a folder in the matching DND-FX.n sprint. DND-FX.2 is COMPLETE (`packages/vue`). DND-FX.3 may create `packages/angular` only.
 
 - `@dndgem/core` must not depend on DOM, HTMLElement, CSS, window, document, ResizeObserver, React, Vue, Angular, Svelte, dnd-kit, or AI SDKs.
 - No reverse imports. Adapters must not depend on another adapter.

@@ -66,6 +66,11 @@ for (const folder of existingPublishableFolders()) {
   );
 }
 
+assert(
+  /Skipping @dndgem\/vue real publish \(version 0\.0\.0/.test(text),
+  'real publish must skip @dndgem/vue while the workspace placeholder version is 0.0.0',
+);
+
 console.log('publish workflow check PASSED');
 console.log(' - id-token: write present');
 console.log(' - no setup-node registry-url on OIDC path');

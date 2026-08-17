@@ -17,7 +17,7 @@ Honest boundaries for Public Alpha readiness. Deferred items are planned work, n
 | Auto-Layout                | Opt-in on `@alpha` (`0.1.0-alpha.1`); default off                               | [Auto-Layout engine](../architecture/auto-layout-engine.md) |
 | AI layout                  | Not implemented                                                                 | Phase 4                                                     |
 | Flutter                    | Not implemented (Core-contract dependent later)                                 | separate track                                              |
-| Vue / Angular / Svelte     | Not implemented                                                                 | Framework Expansion Gate (DND-FX.2+)                        |
+| Vue / Angular / Svelte     | Vue: in-repo unpublished (`@dndgem/vue`); Angular/Svelte not implemented        | Framework Expansion Gate (DND-FX.2+)                        |
 | Animation framework        | Not implemented                                                                 | later                                                       |
 | Persistence helpers        | Absent (`schemaVersion` principle only)                                         | later                                                       |
 | Nested layouts             | Not a productized feature                                                       | later                                                       |

@@ -1,0 +1,17 @@
+---
+description: Vue adapter peerDependency and API discipline
+globs: packages/vue/**/*
+alwaysApply: false
+---
+
+# Vue Adapter
+
+- DND-FX.2 is COMPLETE. Keep `@dndgem/vue` thin; do not add Nuxt, Angular, or a parallel runtime.
+- Vue is a peerDependency of `@dndgem/vue` (`^3.5.0`). Vue 2 is not supported.
+- Do not bundle Vue into the library.
+- `@dndgem/vue` may depend on `@dndgem/core` and `@dndgem/dom`.
+- Do not place solver, Auto-Layout, provenance, or drag policy in the Vue package.
+- Do not import `@dnd-kit/*` or `@dndgem/react` from Vue. Consume `createLayoutSession` / public DOM types only.
+- Cleanup must call the DOM session `dispose()` path. Do not invent a parallel Vue runtime.
+- Explicit `desiredPlacements` updates must omit Core `previous` so ADR-0010 stability cannot suppress new author intent (Auto-Layout on keeps `previous` as stability only).
+- Nuxt is DND-FX.5. Do not claim Nuxt support from this adapter.

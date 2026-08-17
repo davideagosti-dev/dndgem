@@ -189,11 +189,14 @@ if (errors.length > 0) {
 }
 
 const adapters = existingAdapterFolders();
+const absentAdapters = FRAMEWORK_ADAPTER_FOLDERS.filter((folder) => !packageDirExists(folder));
 console.log('Package boundary check PASSED');
 console.log(' - core: no DOM/framework/dnd-kit dependencies');
 console.log(' - dom: no framework adapters; depends on core; optional @dnd-kit/dom provider only');
 console.log(
   ` - adapters present: ${adapters.length === 0 ? '(none)' : adapters.map(npmNameForFolder).join(', ')}`,
 );
-console.log(' - planned adapters (absent OK): @dndgem/vue, @dndgem/angular, @dndgem/svelte');
+console.log(
+  ` - planned adapters (absent OK): ${absentAdapters.length === 0 ? '(none)' : absentAdapters.map(npmNameForFolder).join(', ')}`,
+);
 console.log(' - public exports present on existing packages');

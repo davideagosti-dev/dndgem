@@ -22,12 +22,12 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 
 ## Project status
 
-| Phase                          | Status                                        |
-| ------------------------------ | --------------------------------------------- |
-| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                |
-| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**              |
-| Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)     |
-| Framework Expansion Gate       | **ACTIVE** (DND-FX.1 COMPLETE; DND-FX.2 NEXT) |
+| Phase                          | Status                                             |
+| ------------------------------ | -------------------------------------------------- |
+| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                     |
+| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**                   |
+| Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)          |
+| Framework Expansion Gate       | **ACTIVE** (DND-FX.1–FX.2 COMPLETE; DND-FX.3 NEXT) |
 
 Current official npm Alpha: **`0.1.0-alpha.1`**. Install with dist-tag **`alpha` only** (`npm install @dndgem/react@alpha`). Release notes: [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md) (`latest` still points here and is **not** the Alpha channel).
 
@@ -41,13 +41,15 @@ Public product home: **https://dndgem.dev** (see [Public site & domain hosting](
 @dndgem/dom           DOM measurement, resize, drag, layout session
      ▲
 @dndgem/react         React adapter (peerDependency: react)
+@dndgem/vue           Vue 3 adapter (peerDependency: vue) — in-repo, not on npm yet
 ```
 
-| Need                        | Package         |
-| --------------------------- | --------------- |
-| Headless solve / evaluate   | `@dndgem/core`  |
-| Vanilla browser integration | `@dndgem/dom`   |
-| React integration           | `@dndgem/react` |
+| Need                        | Package                                  |
+| --------------------------- | ---------------------------------------- |
+| Headless solve / evaluate   | `@dndgem/core`                           |
+| Vanilla browser integration | `@dndgem/dom`                            |
+| React integration           | `@dndgem/react`                          |
+| Vue integration             | `@dndgem/vue` (workspace; not published) |
 
 ## Installation
 
@@ -69,6 +71,7 @@ Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.1`). 
 pnpm install
 pnpm build
 pnpm --filter @dndgem/example-react dev
+pnpm --filter @dndgem/example-vue dev
 ```
 
 ## Quick Start
@@ -112,7 +115,7 @@ export function App() {
 2. [Developer guides](docs/guides/README.md) — full journey (in-repo)
 3. [Quick Start](docs/guides/quick-start.md)
 4. [Core Concepts](docs/guides/core-concepts.md)
-5. Validated examples: `examples/react`, `examples/vanilla`
+5. Validated examples: `examples/react`, `examples/vanilla`, `examples/vue` (Vue is workspace-only)
 6. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/)
 
 ## Browser support
@@ -133,7 +136,7 @@ Details: [Accessibility](docs/guides/accessibility.md)
 - Pointer drag + Escape cancel supported; keyboard drag deferred
 - `DnDGemProvider` is client-mount only (no full SSR claim; see ADR-0017)
 - Auto-Layout is opt-in on `@alpha` (`0.1.0-alpha.1`); default off
-- Vue / Angular / Svelte adapters are the Framework Expansion Gate (DND-FX.2+); not implemented yet
+- Vue adapter is implemented in this repository (`@dndgem/vue`) and **not yet published**; Angular / Svelte adapters are later Framework Expansion sprints
 - No AI, no Flutter adapter yet
 - Absolute-positioning rendering model
 
