@@ -1,0 +1,18 @@
+---
+description: Svelte adapter peerDependency and API discipline
+globs: packages/svelte/**/*
+alwaysApply: false
+---
+
+# Svelte Adapter
+
+- DND-FX.4 is COMPLETE. Keep `@dndgem/svelte` thin; do not add SvelteKit, Vue, Angular, or a parallel runtime. Do not reopen Svelte unless an explicit follow-up authorizes it.
+- Svelte is a peerDependency of `@dndgem/svelte` (`^5.0.0`). Svelte 4 is not supported.
+- Do not bundle Svelte into the library.
+- `@dndgem/svelte` may depend on `@dndgem/core` and `@dndgem/dom`.
+- Do not place solver, Auto-Layout, provenance, or drag policy in the Svelte package.
+- Do not import `@dnd-kit/*`, `@dndgem/react`, `@dndgem/vue`, or `@dndgem/angular` from Svelte. Consume `createLayoutSession` / public DOM types only.
+- Host registration uses Svelte actions. Do not add a parallel attachment API unless a later sprint requires it.
+- Cleanup must call the DOM session `dispose()` path. Do not invent a parallel Svelte runtime.
+- Explicit `desiredPlacements` updates must omit Core `previous` so ADR-0010 stability cannot suppress new author intent (Auto-Layout on keeps `previous` as stability only).
+- SvelteKit is DND-FX.5. Do not claim SvelteKit support from this adapter.

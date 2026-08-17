@@ -8,7 +8,7 @@
 | Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                     |
 | Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                   |
 | Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)          |
-| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1–FX.3 COMPLETE; DND-FX.4 NEXT) |
+| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1–FX.4 COMPLETE; DND-FX.5 NEXT) |
 | Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                                |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
@@ -373,9 +373,9 @@ DND-FX.2 Vue Adapter                                             COMPLETE
         ↓
 DND-FX.3 Angular Adapter                                         COMPLETE
         ↓
-DND-FX.4 Svelte Adapter                                          NEXT
+DND-FX.4 Svelte Adapter                                          COMPLETE
         ↓
-DND-FX.5 Meta-Framework Compatibility Validation                 PLANNED
+DND-FX.5 Meta-Framework Compatibility Validation                 NEXT
         ↓
 DND-FX.6 Cross-Framework Alpha Release Gate                      PLANNED
 ```
@@ -410,15 +410,17 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 ### DND-FX.4 — Svelte Adapter
 
 - **Objective:** Thin idiomatic `@dndgem/svelte` (Svelte 5 context + actions).
+- **Out of scope:** SvelteKit package; default-on Auto-Layout; publish.
 - **Dependencies:** DND-FX.1.
-- **Status:** NEXT
+- **Closure:** `@dndgem/svelte` implemented in-repo (`0.0.0`, unpublished); Svelte 5 provider + actions; wait-for-all session over `createLayoutSession`; Auto-Layout opt-in; SvelteKit not validated.
+- **Status:** **COMPLETE**
 
 ### DND-FX.5 — Meta-Framework Compatibility Validation
 
 - **Objective:** Next.js / Nuxt / SvelteKit as environments (import-safe, client session, dispose on navigation).
 - **Out of scope:** Dedicated meta-framework packages.
 - **Dependencies:** Corresponding base adapters (React already exists for Next.js).
-- **Status:** PLANNED
+- **Status:** NEXT (not started)
 
 ### DND-FX.6 — Cross-Framework Alpha Release Gate
 

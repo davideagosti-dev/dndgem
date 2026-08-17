@@ -5,7 +5,7 @@
       ▲
 @dndgem/dom
       ▲
-@dndgem/react   ·   @dndgem/vue (in-repo, unpublished)   ·   @dndgem/angular (in-repo, unpublished)
+@dndgem/react   ·   @dndgem/vue (in-repo, unpublished)   ·   @dndgem/angular (in-repo, unpublished)   ·   @dndgem/svelte (in-repo, unpublished)
 ```
 
 | Package           | Install when you need…                                                       |
@@ -15,12 +15,14 @@
 | `@dndgem/react`   | React apps (`DnDGemProvider` + hooks)                                        |
 | `@dndgem/vue`     | Vue 3 apps (`DnDGemProvider` + composables) — **workspace only, not on npm** |
 | `@dndgem/angular` | Angular apps (board directive + signals) — **workspace only, not on npm**    |
+| `@dndgem/svelte`  | Svelte 5 apps (provider + actions) — **workspace only, not on npm**          |
 
 ## Selection guide
 
 - **React app** → depend on `@dndgem/react` (it depends on `dom` and `core`).
 - **Vue 3 app** → depend on workspace `@dndgem/vue` until DND-FX.6 publishes it (`vue@^3.5` peer).
 - **Angular app** → depend on workspace `@dndgem/angular` until DND-FX.6 publishes it (`@angular/core@^20 \|\| ^21 \|\| ^22` peer).
+- **Svelte 5 app** → depend on workspace `@dndgem/svelte` until DND-FX.6 publishes it (`svelte@^5` peer).
 - **Vanilla / no framework adapter** → depend on `@dndgem/dom` (and `@dndgem/core` if you import Core types/helpers directly).
 - **Custom headless tooling** → `@dndgem/core` alone (`solveLayout`, `evaluateLayout`, constraint factories).
 
@@ -42,6 +44,7 @@ Authoritative list: [Alpha API Contract](../architecture/alpha-api-contract.md).
 | React   | `DnDGemProvider`, `useDnDGem*`             | Optional `mechanics` / `ResizeObserver` injection for tests              |
 | Vue     | `DnDGemProvider`, `useDnDGem*` (in-repo)   | Same test seams; not published yet                                       |
 | Angular | `dndgemBoard` + item/container (in-repo)   | Same test seams; not published yet                                       |
+| Svelte  | `DnDGemProvider` + actions (in-repo)       | Same test seams; not published yet                                       |
 | DOM     | `createLayoutSession`                      | `measureLayout`, `observeLayout`, `createDragInteraction`, apply helpers |
 | Core    | `solveLayout`, constraint/intent factories | Direct `evaluateLayout` for tooling / fixtures                           |
 

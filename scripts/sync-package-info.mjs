@@ -15,6 +15,7 @@ const packages = [
   { dir: 'react', constant: 'REACT_PACKAGE_VERSION' },
   { dir: 'vue', constant: 'VUE_PACKAGE_VERSION' },
   { dir: 'angular', constant: 'ANGULAR_PACKAGE_VERSION' },
+  { dir: 'svelte', constant: 'SVELTE_PACKAGE_VERSION' },
 ];
 
 for (const item of packages) {
