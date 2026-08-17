@@ -406,9 +406,6 @@ importers:
       '@dndgem/dom':
         specifier: workspace:*
         version: link:../dom
-      esm-env:
-        specifier: ^1.2.2
-        version: 1.2.2
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.1.3
