@@ -13,6 +13,8 @@
     "@dndgem/example-vanilla",
     "@dndgem/example-react",
     "@dndgem/example-vue",
-    "@dndgem/vue"
+    "@dndgem/example-angular",
+    "@dndgem/vue",
+    "@dndgem/angular"
   ]
 }

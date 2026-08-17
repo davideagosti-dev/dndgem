@@ -19,14 +19,15 @@ Related: [overview.md](./overview.md), [core-domain.md](./core-domain.md), [dom-
 
 ## Supported packages
 
-| Package         | Role                                                                 | Typical consumer      | Publication                                     |
-| --------------- | -------------------------------------------------------------------- | --------------------- | ----------------------------------------------- |
-| `@dndgem/core`  | Domain, constraints, validity, scoring, deterministic `solveLayout`  | Headless / all layers | Published `0.1.0-alpha.1` / `@alpha`            |
-| `@dndgem/dom`   | Measurement, resize, drag interaction, Vanilla `createLayoutSession` | Vanilla DOM apps      | Published `0.1.0-alpha.1` / `@alpha`            |
-| `@dndgem/react` | Thin React lifecycle adapter over the DOM session                    | React apps            | Published `0.1.0-alpha.1` / `@alpha`            |
-| `@dndgem/vue`   | Thin Vue 3 lifecycle adapter over the DOM session                    | Vue 3 apps            | **In repository; not yet published** (DND-FX.2) |
+| Package           | Role                                                                 | Typical consumer      | Publication                                     |
+| ----------------- | -------------------------------------------------------------------- | --------------------- | ----------------------------------------------- |
+| `@dndgem/core`    | Domain, constraints, validity, scoring, deterministic `solveLayout`  | Headless / all layers | Published `0.1.0-alpha.1` / `@alpha`            |
+| `@dndgem/dom`     | Measurement, resize, drag interaction, Vanilla `createLayoutSession` | Vanilla DOM apps      | Published `0.1.0-alpha.1` / `@alpha`            |
+| `@dndgem/react`   | Thin React lifecycle adapter over the DOM session                    | React apps            | Published `0.1.0-alpha.1` / `@alpha`            |
+| `@dndgem/vue`     | Thin Vue 3 lifecycle adapter over the DOM session                    | Vue 3 apps            | **In repository; not yet published** (DND-FX.2) |
+| `@dndgem/angular` | Thin Angular lifecycle adapter over the DOM session                  | Angular apps          | **In repository; not yet published** (DND-FX.3) |
 
-No other `@dndgem/*` packages are currently part of published Alpha. Angular and Svelte adapters are later Framework Expansion sprints and must not be stubbed. Flutter is a separate track. `@dndgem/vue` is **not** part of published `0.1.0-alpha.1`.
+No other `@dndgem/*` packages are currently part of published Alpha. Svelte is a later Framework Expansion sprint and must not be stubbed. Flutter is a separate track. `@dndgem/vue` and `@dndgem/angular` are **not** part of published `0.1.0-alpha.1`.
 
 ## Public entrypoints
 
@@ -37,9 +38,10 @@ import { solveLayout } from '@dndgem/core';
 import { createLayoutSession } from '@dndgem/dom';
 import { DnDGemProvider } from '@dndgem/react';
 import { DnDGemProvider as VueDnDGemProvider } from '@dndgem/vue';
+import { DnDGemBoardDirective } from '@dndgem/angular';
 ```
 
-Deep imports (`@dndgem/core/solve`, `@dndgem/dom/src/...`, `@dndgem/react/dist/...`, `@dndgem/vue/dist/...`) are **not** part of the contract even if a file exists in the published tarball.
+Deep imports (`@dndgem/core/solve`, `@dndgem/dom/src/...`, `@dndgem/react/dist/...`, `@dndgem/vue/dist/...`, `@dndgem/angular/dist/...`) are **not** part of the contract even if a file exists in the published tarball.
 
 Module shape:
 
@@ -63,6 +65,7 @@ Module shape:
 | Next.js / Nuxt / SvelteKit | Compatibility **environments** (DND-FX.5). Not validated yet. No dedicated packages. Do not market as supported.                                |
 | React                      | Peer `react@^18 \|\| ^19`. Client mount required for `DnDGemProvider`                                                                           |
 | Vue                        | Peer `vue@^3.5.0` (in-repo unpublished). Client mount required. Nuxt **not** validated.                                                         |
+| Angular                    | Peer `@angular/core@^20 \|\| ^21 \|\| ^22` (in-repo unpublished). Client mount required. Universal **not** validated. Zoneless-compatible.      |
 | Positioning                | Container is a positioned containing block; items are absolutely positioned from resolved geometry                                              |
 
 Repository metadata `repository.url` points at `https://github.com/davideagosti-dev/dndgem`. The GitHub repository is currently **PRIVATE**; those links are source-of-truth for maintainers, not a claim of public accessibility. Package `homepage` / public support point at **https://dndgem.dev** (see [Public site & domain hosting](./public-site.md)).
@@ -250,6 +253,38 @@ Composable contract:
 - `useDnDGem()` → `{ state, ready }` (`shallowRef` / `computed`)
 - All three throw if used outside `DnDGemProvider`
 
+## `@dndgem/angular` public exports (in-repository, unpublished)
+
+Runtime (workspace only until DND-FX.6):
+
+- `ANGULAR_PACKAGE_NAME`, `ANGULAR_PACKAGE_VERSION`, `getAngularPackageInfo`
+- `DnDGemBoardDirective` (`[dndgemBoard]`, board-local provider)
+- `DnDGemContainerDirective` (`[dndgemContainer]`)
+- `DnDGemItemDirective` (`[dndgemItem]`)
+- `DnDGemBoard` (injectable; `state` / `ready` signals)
+- `injectDnDGem`
+- `DNDGEM_BOARD_IMPORTS`
+
+Types:
+
+- `DnDGemItemConfig`, `DnDGemBoardConfig`, `DnDGemBoardCallbacks`
+- Re-exported DOM callback types: `DragCancelEvent`, `DragDropResult`, `DragProposal`, `LayoutSessionState`
+
+### Internal to Angular (not public)
+
+- Board registration maps / session fields
+- `createDragInteraction` / `createLayoutSession` (consume via `@dndgem/dom` if needed)
+- `@dnd-kit/*`
+
+Same behavioral contract as React/DOM/Vue: `autoLayout` default off; output/callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `@angular/core@^20.0.0 || ^21.0.0 || ^22.0.0`. **Not** part of published `0.1.0-alpha.1`. Angular Universal is not validated.
+
+Directive contract:
+
+- `dndgemBoard` + `dndgemContainer` on consumer hosts (may share one element)
+- `dndgemItem="id"` registers that host as the Core item id
+- `injectDnDGem()` / `DnDGemBoard` throw or fail DI outside `dndgemBoard`
+- `state` / `ready` are Angular signals
+
 ## Provider isolation
 
 `@dnd-kit/dom` is installed only on `@dndgem/dom` as an implementation dependency. It must not appear in:
@@ -257,6 +292,7 @@ Composable contract:
 - `@dndgem/core` public types or dependencies
 - `@dndgem/react` public types, dependencies, or imports
 - `@dndgem/vue` public types, dependencies, or imports
+- `@dndgem/angular` public types, dependencies, or imports
 
 Consumers must not import `@dnd-kit/*` to use DnDGem.
 
@@ -269,6 +305,7 @@ Consumers must not import `@dnd-kit/*` to use DnDGem.
 | `DomAdapterError` | dom     | Missing elements, disposed session, environment |
 | React `Error`     | react   | Hook used outside `DnDGemProvider`              |
 | Vue `Error`       | vue     | Composable used outside `DnDGemProvider`        |
+| Angular `Error`   | angular | Directive/inject used outside `dndgemBoard`     |
 
 Alpha documents errors and validity honestly. Developer guides and troubleshooting live in `docs/guides/` (DND-2.3).
 
@@ -278,7 +315,7 @@ Published package versions are **`0.1.0-alpha.1`**. Changesets owns further prer
 
 - Official dist-tag: `alpha` (always install with `@alpha`; `latest` is not the Alpha channel)
 - `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` are a **fixed** Changesets group and stay version-aligned
-- `@dndgem/vue` is implemented in-repo at workspace placeholder `0.0.0` and is **ignored** by Changesets until **DND-FX.6** (joins the fixed group then). **CHANGESET DEFERRED TO FX.6.**
+- `@dndgem/vue` and `@dndgem/angular` are implemented in-repo at workspace placeholder `0.0.0` and are **ignored** by Changesets until **DND-FX.6** (join the fixed group then). **CHANGESET DEFERRED TO FX.6.**
 - `get*PackageInfo().version` must match that package's `package.json` `version`
 
 See [release-strategy.md](./release-strategy.md).
