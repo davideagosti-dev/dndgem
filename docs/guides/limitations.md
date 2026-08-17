@@ -10,8 +10,8 @@ Honest boundaries for Public Alpha readiness. Deferred items are planned work, n
 | Keyboard drag              | **DEFERRED** (not productized)                                                                     | post-Alpha                                                  |
 | Screen-reader drag UX      | **DEFERRED** (no DnDGem announcement product)                                                      | post-Alpha                                                  |
 | DOM vs visual order        | Absolute placement may diverge from DOM/tab order                                                  | consumer guidance                                           |
-| SSR / hydration            | Module import-safe without `window`; provider is client-mount only                                 | [ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md) |
-| Next.js / Nuxt / SvelteKit | Compatibility environments; not validated yet; no dedicated packages                               | DND-FX.5                                                    |
+| SSR / hydration            | Module import-safe without `window`; provider is client-mount only; no server-side layout claim    | [ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md) |
+| Next.js / Nuxt / SvelteKit | Validated **compatibility environments** (client session); no dedicated packages                   | [Meta-frameworks](./meta-frameworks.md)                     |
 | npm packages               | Public Alpha `0.1.0-alpha.1`; install with `@alpha` only                                           | DND-3.5                                                     |
 | npm `latest` dist-tag      | Still historical `0.1.0-alpha.0`; **not** the Alpha channel                                        | future stable release                                       |
 | Auto-Layout                | Opt-in on `@alpha` (`0.1.0-alpha.1`); default off                                                  | [Auto-Layout engine](../architecture/auto-layout-engine.md) |

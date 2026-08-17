@@ -135,7 +135,7 @@ Board destruction calls `session.dispose()`. Observers and drag bindings are rel
 - `import '@dndgem/angular'` is safe without `window` / `document` (package test). Import does not create a session.
 - Do **not** call `createLayoutSession` during server render. The board creates the session only after real HTMLElements exist (`afterRenderEffect`).
 - The component may render before DnDGem is `ready` (empty layout styles are allowed). This is **not** server-side resolved-layout hydration.
-- **Angular Universal is not validated.** That is DND-FX.5. Do not claim full SSR or isomorphic geometry hydration.
+- **Angular Universal is not validated.** DND-FX.5 covers Next.js, Nuxt, and SvelteKit only. Do not claim full SSR or isomorphic geometry hydration.
 
 ## Accessibility
 

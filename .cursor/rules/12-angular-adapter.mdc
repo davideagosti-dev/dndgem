@@ -15,4 +15,4 @@ alwaysApply: false
 - Board session ownership must be directive/component-scoped. Do not use `providedIn: 'root'`.
 - Cleanup must call the DOM session `dispose()` path. Do not invent a parallel Angular runtime.
 - Explicit `desiredPlacements` updates must omit Core `previous` so ADR-0010 stability cannot suppress new author intent (Auto-Layout on keeps `previous` as stability only).
-- Angular Universal is DND-FX.5. Do not claim full SSR support from this adapter.
+- Angular Universal is **not validated**. DND-FX.5 covers Next.js, Nuxt, and SvelteKit only. Do not claim full SSR support from this adapter.

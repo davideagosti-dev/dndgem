@@ -243,6 +243,14 @@ function packOne(dir) {
       `${pkg.name} must declare a svelte export condition`,
     );
     assert(
+      packedPkgJson.exports?.['.']?.browser === './dist/index.js',
+      `${pkg.name} must declare a browser export condition for client consumers`,
+    );
+    assert(
+      packedPkgJson.exports?.['.']?.node === './dist/index.server.js',
+      `${pkg.name} must declare a node/SSR export condition`,
+    );
+    assert(
       !JSON.stringify(packedPkgJson.dependencies ?? {}).includes('@dndgem/react') &&
         !JSON.stringify(packedPkgJson.dependencies ?? {}).includes('@dndgem/vue') &&
         !JSON.stringify(packedPkgJson.dependencies ?? {}).includes('@dndgem/angular') &&
