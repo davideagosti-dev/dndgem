@@ -25,7 +25,7 @@ Related: [overview.md](./overview.md), [core-domain.md](./core-domain.md), [dom-
 | `@dndgem/dom`   | Measurement, resize, drag interaction, Vanilla `createLayoutSession` | Vanilla DOM apps      |
 | `@dndgem/react` | Thin React lifecycle adapter over the DOM session                    | React apps            |
 
-No other `@dndgem/*` packages are part of Alpha. Vue, Angular, Svelte, and Flutter adapters are out of scope.
+No other `@dndgem/*` packages are currently part of published Alpha. Vue, Angular, and Svelte adapters are the Framework Expansion Gate (DND-FX.2+) and must not be stubbed. Flutter is a separate track.
 
 ## Public entrypoints
 
@@ -48,19 +48,19 @@ Module shape:
 
 ## Environment assumptions
 
-| Area            | Alpha statement                                                                                             |
-| --------------- | ----------------------------------------------------------------------------------------------------------- |
-| Node            | `>=20` for tooling and ESM import of published packages                                                     |
-| Bundlers        | Vite / modern bundlers with ESM are the expected app path                                                   |
-| Browser         | Chromium / Firefox / WebKit desktop engines **SUPPORTED FOR ALPHA** (Playwright). Mobile **NOT VALIDATED**. |
-| DOM             | `@dndgem/dom` and React rendering require a browser-like DOM at runtime                                     |
-| Pointer drag    | Validated interaction path                                                                                  |
-| Keyboard drag   | **DEFERRED** — not a product-validated path                                                                 |
-| Accessibility   | Baseline: Escape cancel + focus/ARIA preservation; no full WCAG / SR drag claim — see a11y guide            |
-| SSR / hydration | Module import is safe without `window`. Full SSR/hydration is **not** claimed                               |
-| Next.js / Remix | Not validated. Do not market as supported                                                                   |
-| React           | Peer `react@^18 \|\| ^19`. Client mount required for `DnDGemProvider`                                       |
-| Positioning     | Container is a positioned containing block; items are absolutely positioned from resolved geometry          |
+| Area                       | Alpha statement                                                                                                                                 |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node                       | `>=20` for tooling and ESM import of published packages                                                                                         |
+| Bundlers                   | Vite / modern bundlers with ESM are the expected app path                                                                                       |
+| Browser                    | Chromium / Firefox / WebKit desktop engines **SUPPORTED FOR ALPHA** (Playwright). Mobile **NOT VALIDATED**.                                     |
+| DOM                        | `@dndgem/dom` and React rendering require a browser-like DOM at runtime                                                                         |
+| Pointer drag               | Validated interaction path                                                                                                                      |
+| Keyboard drag              | **DEFERRED** — not a product-validated path                                                                                                     |
+| Accessibility              | Baseline: Escape cancel + focus/ARIA preservation; no full WCAG / SR drag claim — see a11y guide                                                |
+| SSR / hydration            | Module import is safe without `window`. Full SSR/hydration is **not** claimed. See [ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md). |
+| Next.js / Nuxt / SvelteKit | Compatibility **environments** (DND-FX.5). Not validated yet. No dedicated packages. Do not market as supported.                                |
+| React                      | Peer `react@^18 \|\| ^19`. Client mount required for `DnDGemProvider`                                                                           |
+| Positioning                | Container is a positioned containing block; items are absolutely positioned from resolved geometry                                              |
 
 Repository metadata `repository.url` points at `https://github.com/davideagosti-dev/dndgem`. The GitHub repository is currently **PRIVATE**; those links are source-of-truth for maintainers, not a claim of public accessibility. Package `homepage` / public support point at **https://dndgem.dev** (see [Public site & domain hosting](./public-site.md)).
 
@@ -239,11 +239,11 @@ Alpha documents errors and validity honestly. Developer guides and troubleshooti
 
 ## Versioning
 
-In-repo package versions remain `0.0.0` until Changesets generates the first prerelease at the publish gate.
+Published package versions are **`0.1.0-alpha.1`**. Changesets owns further prereleases. Do not hand-edit `packages/*/package.json` versions.
 
-- First intended publish version: `0.1.0-alpha.0`
 - Official dist-tag: `alpha` (always install with `@alpha`; `latest` is not the Alpha channel)
 - `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` are a **fixed** Changesets group and stay version-aligned
+- Future public adapters join that fixed group at **DND-FX.6** (do not add nonexistent packages to `.changeset/config.json`)
 - `get*PackageInfo().version` must match that package's `package.json` `version`
 
 See [release-strategy.md](./release-strategy.md).

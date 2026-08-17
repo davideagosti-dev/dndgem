@@ -2,23 +2,31 @@
 /**
  * Lightweight package-boundary verifier for DnDGem.
  * Enforces dependency direction and forbidden runtime deps without heavy tooling.
+ *
+ * Topology: scripts/package-topology.mjs (DND-FX.1).
+ * Planned adapter folders may be absent; do not create placeholders.
  */
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const packagesDir = join(root, 'packages');
+import { readFileSync } from 'node:fs';
+import {
+  CORE_FOLDER,
+  DOM_FOLDER,
+  FORBIDDEN_PACKAGE_FOLDERS,
+  FRAMEWORK_ADAPTER_FOLDERS,
+  FRAMEWORK_PEER_BY_FOLDER,
+  existingAdapterFolders,
+  existingPackageFolders,
+  npmNameForFolder,
+  packageDirExists,
+  packageJsonPath,
+} from './package-topology.mjs';
 
 const errors = [];
 
-function readPkg(name) {
-  const pkgPath = join(packagesDir, name, 'package.json');
-  if (!existsSync(pkgPath)) {
-    errors.push(`Missing package.json for packages/${name}`);
+function readPkg(folder) {
+  if (!packageDirExists(folder)) {
     return null;
   }
-  return JSON.parse(readFileSync(pkgPath, 'utf8'));
+  return JSON.parse(readFileSync(packageJsonPath(folder), 'utf8'));
 }
 
 function allDeps(pkg) {
@@ -30,77 +38,12 @@ function allDeps(pkg) {
   };
 }
 
-function assertNoDeps(packageName, pkg, forbidden) {
+function assertNoDeps(packageName, pkg, forbidden, reason) {
   const deps = allDeps(pkg);
   for (const dep of Object.keys(deps)) {
     if (forbidden.has(dep)) {
-      errors.push(`packages/${packageName} must not depend on "${dep}"`);
-    }
-  }
-}
-
-const core = readPkg('core');
-const dom = readPkg('dom');
-const react = readPkg('react');
-
-if (core) {
-  assertNoDeps(
-    'core',
-    core,
-    new Set([
-      '@dndgem/dom',
-      '@dndgem/react',
-      'react',
-      'react-dom',
-      '@dnd-kit/dom',
-      '@dnd-kit/core',
-      '@dnd-kit/react',
-    ]),
-  );
-  for (const dep of Object.keys(allDeps(core))) {
-    if (dep.startsWith('@dnd-kit/')) {
-      errors.push(`packages/core must not depend on "${dep}"`);
-    }
-  }
-  if (core.type !== 'module') errors.push('packages/core should be ESM ("type": "module")');
-  if (!core.exports?.['.']) errors.push('packages/core must declare a public "." export');
-  assertPublishableMetadata('core', core);
-}
-
-if (dom) {
-  assertNoDeps('dom', dom, new Set(['@dndgem/react', 'react', 'react-dom']));
-  if (dom.type !== 'module') errors.push('packages/dom should be ESM ("type": "module")');
-  if (!dom.exports?.['.']) errors.push('packages/dom must declare a public "." export');
-  if (!dom.dependencies?.['@dndgem/core']) {
-    errors.push('@dndgem/dom must declare a dependency on @dndgem/core');
-  }
-  assertPublishableMetadata('dom', dom);
-  for (const dep of Object.keys(allDeps(dom))) {
-    if (dep.startsWith('@dnd-kit/') && dep !== '@dnd-kit/dom') {
       errors.push(
-        `packages/dom must not depend on "${dep}" (only @dnd-kit/dom is the approved provider)`,
-      );
-    }
-  }
-}
-
-if (react) {
-  if (react.type !== 'module') errors.push('packages/react should be ESM ("type": "module")');
-  if (!react.exports?.['.']) errors.push('packages/react must declare a public "." export');
-  if (!react.dependencies?.['@dndgem/core']) {
-    errors.push('@dndgem/react must declare a dependency on @dndgem/core');
-  }
-  if (!react.dependencies?.['@dndgem/dom']) {
-    errors.push('@dndgem/react must declare a dependency on @dndgem/dom');
-  }
-  if (react.peerDependencies?.react === undefined) {
-    errors.push('@dndgem/react must declare react as a peerDependency');
-  }
-  assertPublishableMetadata('react', react);
-  for (const dep of Object.keys(allDeps(react))) {
-    if (dep.startsWith('@dnd-kit/')) {
-      errors.push(
-        `packages/react must not depend on "${dep}" (consume @dndgem/dom interaction APIs)`,
+        `packages/${packageName} must not depend on "${dep}"${reason ? ` (${reason})` : ''}`,
       );
     }
   }
@@ -125,12 +68,115 @@ function assertPublishableMetadata(packageName, pkg) {
   if (pkg.exports?.['.']?.types !== './dist/index.d.ts') {
     errors.push(`packages/${packageName} must export dist/index.d.ts`);
   }
+  if (pkg.type !== 'module') {
+    errors.push(`packages/${packageName} should be ESM ("type": "module")`);
+  }
+  if (!pkg.exports?.['.']) {
+    errors.push(`packages/${packageName} must declare a public "." export`);
+  }
 }
 
-// Ensure no unexpected packages under packages/ for Phase 2
-for (const name of readdirSync(packagesDir)) {
-  if (!['core', 'dom', 'react'].includes(name)) {
-    errors.push(`Unexpected package folder packages/${name} (Phase 2 allows core/dom/react only)`);
+const adapterNpmNames = FRAMEWORK_ADAPTER_FOLDERS.map((folder) => npmNameForFolder(folder));
+const adapterPeerNames = Object.values(FRAMEWORK_PEER_BY_FOLDER);
+const frameworkRuntimeNames = new Set(['react', 'react-dom', ...adapterPeerNames]);
+
+const core = readPkg(CORE_FOLDER);
+if (!core) {
+  errors.push(`Missing package.json for packages/${CORE_FOLDER}`);
+} else {
+  assertNoDeps(
+    CORE_FOLDER,
+    core,
+    new Set([
+      npmNameForFolder(DOM_FOLDER),
+      ...adapterNpmNames,
+      ...frameworkRuntimeNames,
+      '@dnd-kit/dom',
+      '@dnd-kit/core',
+      '@dnd-kit/react',
+    ]),
+    'Core must remain renderer-agnostic',
+  );
+  for (const dep of Object.keys(allDeps(core))) {
+    if (dep.startsWith('@dnd-kit/')) {
+      errors.push(`packages/core must not depend on "${dep}"`);
+    }
+  }
+  assertPublishableMetadata(CORE_FOLDER, core);
+}
+
+const dom = readPkg(DOM_FOLDER);
+if (!dom) {
+  errors.push(`Missing package.json for packages/${DOM_FOLDER}`);
+} else {
+  assertNoDeps(
+    DOM_FOLDER,
+    dom,
+    new Set([...adapterNpmNames, ...frameworkRuntimeNames]),
+    'DOM must not depend on framework adapters or UI frameworks',
+  );
+  if (!dom.dependencies?.['@dndgem/core']) {
+    errors.push('@dndgem/dom must declare a dependency on @dndgem/core');
+  }
+  assertPublishableMetadata(DOM_FOLDER, dom);
+  for (const dep of Object.keys(allDeps(dom))) {
+    if (dep.startsWith('@dnd-kit/') && dep !== '@dnd-kit/dom') {
+      errors.push(
+        `packages/dom must not depend on "${dep}" (only @dnd-kit/dom is the approved provider)`,
+      );
+    }
+  }
+}
+
+for (const folder of existingAdapterFolders()) {
+  const pkg = readPkg(folder);
+  if (!pkg) {
+    continue;
+  }
+  const otherAdapters = adapterNpmNames.filter((name) => name !== npmNameForFolder(folder));
+  const peer = FRAMEWORK_PEER_BY_FOLDER[folder];
+  const otherPeers = adapterPeerNames.filter((name) => name !== peer);
+
+  if (!pkg.dependencies?.['@dndgem/dom']) {
+    errors.push(`${npmNameForFolder(folder)} must declare a dependency on @dndgem/dom`);
+  }
+  if (pkg.peerDependencies?.[peer] === undefined) {
+    errors.push(`${npmNameForFolder(folder)} must declare ${peer} as a peerDependency`);
+  }
+  assertNoDeps(
+    folder,
+    pkg,
+    new Set(otherAdapters),
+    'adapters must not depend on another framework adapter',
+  );
+  assertNoDeps(
+    folder,
+    pkg,
+    new Set(otherPeers),
+    'adapters must not depend on another UI framework',
+  );
+  for (const dep of Object.keys(allDeps(pkg))) {
+    if (dep.startsWith('@dnd-kit/')) {
+      errors.push(
+        `packages/${folder} must not depend on "${dep}" (consume @dndgem/dom interaction APIs)`,
+      );
+    }
+  }
+  assertPublishableMetadata(folder, pkg);
+}
+
+const allowedFolders = new Set([CORE_FOLDER, DOM_FOLDER, ...FRAMEWORK_ADAPTER_FOLDERS]);
+for (const folder of existingPackageFolders()) {
+  if (FORBIDDEN_PACKAGE_FOLDERS.includes(folder)) {
+    errors.push(
+      `Forbidden package folder packages/${folder} (not a JS/DOM adapter over @dndgem/dom)`,
+    );
+    continue;
+  }
+  if (!allowedFolders.has(folder)) {
+    errors.push(
+      `Unexpected package folder packages/${folder} (allowed: core, dom, ${FRAMEWORK_ADAPTER_FOLDERS.join(', ')})`,
+    );
   }
 }
 
@@ -142,8 +188,12 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
+const adapters = existingAdapterFolders();
 console.log('Package boundary check PASSED');
-console.log(' - core: no DOM/React/dnd-kit dependencies');
-console.log(' - dom: no React dependencies; depends on core; optional @dnd-kit/dom provider only');
-console.log(' - react: depends on core and dom; react is a peerDependency; no dnd-kit');
-console.log(' - public exports present on packages');
+console.log(' - core: no DOM/framework/dnd-kit dependencies');
+console.log(' - dom: no framework adapters; depends on core; optional @dnd-kit/dom provider only');
+console.log(
+  ` - adapters present: ${adapters.length === 0 ? '(none)' : adapters.map(npmNameForFolder).join(', ')}`,
+);
+console.log(' - planned adapters (absent OK): @dndgem/vue, @dndgem/angular, @dndgem/svelte');
+console.log(' - public exports present on existing packages');

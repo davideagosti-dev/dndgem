@@ -3,6 +3,36 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+const ADAPTERS = ['react', 'vue', 'angular', 'svelte'];
+const ADAPTER_PACKAGES = ADAPTERS.map((name) => `@dndgem/${name}`);
+const FRAMEWORK_RUNTIMES = [
+  { name: 'react', message: 'must not import React.' },
+  { name: 'react-dom', message: 'must not import react-dom.' },
+  { name: 'vue', message: 'must not import Vue.' },
+  { name: '@angular/core', message: 'must not import Angular.' },
+  { name: 'svelte', message: 'must not import Svelte.' },
+];
+
+function adapterPackagePaths(except) {
+  return ADAPTER_PACKAGES.filter((name) => name !== except).map((name) => ({
+    name,
+    message: `must not depend on ${name} (adapters are siblings over @dndgem/dom).`,
+  }));
+}
+
+function dndKitPaths(owner) {
+  return [
+    {
+      name: '@dnd-kit/dom',
+      message: `${owner} must consume DnDGem interaction APIs, not dnd-kit types.`,
+    },
+    {
+      name: '@dnd-kit/core',
+      message: `${owner} must consume DnDGem interaction APIs, not dnd-kit types.`,
+    },
+  ];
+}
+
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config(
   {
@@ -41,31 +71,23 @@ export default tseslint.config(
               message:
                 '@dndgem/core must remain renderer-agnostic and must not import @dndgem/dom.',
             },
-            {
-              name: '@dndgem/react',
-              message:
-                '@dndgem/core must remain renderer-agnostic and must not import @dndgem/react.',
-            },
-            {
-              name: 'react',
-              message: '@dndgem/core must not import React.',
-            },
-            {
-              name: 'react-dom',
-              message: '@dndgem/core must not import react-dom.',
-            },
-            {
-              name: '@dnd-kit/dom',
-              message: '@dndgem/core must never import dnd-kit.',
-            },
-            {
-              name: '@dnd-kit/core',
-              message: '@dndgem/core must never import dnd-kit.',
-            },
+            ...adapterPackagePaths(),
+            ...FRAMEWORK_RUNTIMES.map((runtime) => ({
+              name: runtime.name,
+              message: `@dndgem/core ${runtime.message}`,
+            })),
+            ...dndKitPaths('@dndgem/core'),
           ],
           patterns: [
             {
-              group: ['@dndgem/dom/*', '@dndgem/react/*', '@dnd-kit/*'],
+              group: [
+                '@dndgem/dom/*',
+                '@dndgem/react/*',
+                '@dndgem/vue/*',
+                '@dndgem/angular/*',
+                '@dndgem/svelte/*',
+                '@dnd-kit/*',
+              ],
               message: 'Forbidden import for @dndgem/core.',
             },
           ],
@@ -80,55 +102,42 @@ export default tseslint.config(
         'error',
         {
           paths: [
-            {
-              name: 'react',
-              message: '@dndgem/dom must not import React.',
-            },
-            {
-              name: 'react-dom',
-              message: '@dndgem/dom must not import react-dom.',
-            },
-            {
-              name: '@dndgem/react',
-              message: '@dndgem/dom must not depend on @dndgem/react.',
-            },
+            ...adapterPackagePaths(),
+            ...FRAMEWORK_RUNTIMES.map((runtime) => ({
+              name: runtime.name,
+              message: `@dndgem/dom ${runtime.message}`,
+            })),
           ],
           patterns: [
             {
-              group: ['@dndgem/react/*'],
-              message: 'Forbidden reverse dependency into @dndgem/react.',
+              group: ['@dndgem/react/*', '@dndgem/vue/*', '@dndgem/angular/*', '@dndgem/svelte/*'],
+              message: 'Forbidden reverse dependency into a framework adapter.',
             },
           ],
         },
       ],
     },
   },
-  {
-    files: ['packages/react/**/*.{ts,tsx}'],
+  ...ADAPTERS.map((adapter) => ({
+    files: [`packages/${adapter}/**/*.{ts,tsx}`],
     rules: {
       'no-restricted-imports': [
         'error',
         {
           paths: [
-            {
-              name: '@dnd-kit/dom',
-              message: '@dndgem/react must consume DnDGem interaction APIs, not dnd-kit types.',
-            },
-            {
-              name: '@dnd-kit/core',
-              message: '@dndgem/react must consume DnDGem interaction APIs, not dnd-kit types.',
-            },
+            ...adapterPackagePaths(`@dndgem/${adapter}`),
+            ...dndKitPaths(`@dndgem/${adapter}`),
           ],
           patterns: [
             {
               group: ['@dnd-kit/*'],
-              message: 'Forbidden dnd-kit import for @dndgem/react.',
+              message: `Forbidden dnd-kit import for @dndgem/${adapter}.`,
             },
           ],
         },
       ],
     },
-  },
+  })),
   {
     files: ['apps/**/*.{ts,tsx}', 'examples/**/*.{ts,tsx}'],
     languageOptions: {

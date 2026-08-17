@@ -6,13 +6,15 @@ alwaysApply: false
 
 # Core Architecture
 
-Dependency direction:
+Dependency direction (JS/DOM):
 
 ```text
-@dndgem/core <- @dndgem/dom <- @dndgem/react
+@dndgem/core <- @dndgem/dom <- framework adapters (siblings)
 ```
 
-- `@dndgem/core` must not depend on DOM, HTMLElement, CSS, window, document, ResizeObserver, React, dnd-kit, or AI SDKs.
-- No reverse imports.
+Approved adapter folders: `react`, `vue`, `angular`, `svelte`. Only create a folder in the matching DND-FX.n sprint. DND-FX.1 must not create them.
+
+- `@dndgem/core` must not depend on DOM, HTMLElement, CSS, window, document, ResizeObserver, React, Vue, Angular, Svelte, dnd-kit, or AI SDKs.
+- No reverse imports. Adapters must not depend on another adapter.
 - No private cross-package source imports; use public package exports only.
-- Do not create placeholder packages for vue/angular/svelte/flutter/ai/enterprise/cloud.
+- Do not create placeholder packages for vue/angular/svelte/flutter/ai/enterprise/cloud/next/nuxt/sveltekit/framework-core.

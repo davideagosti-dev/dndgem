@@ -22,12 +22,14 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 
 ## Project status
 
-| Phase                          | Status                                             |
-| ------------------------------ | -------------------------------------------------- |
-| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                     |
-| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE** (`0.1.0-alpha.0`) |
+| Phase                          | Status                                        |
+| ------------------------------ | --------------------------------------------- |
+| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                |
+| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**              |
+| Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)     |
+| Framework Expansion Gate       | **ACTIVE** (DND-FX.1 — contract; not Phase 4) |
 
-First npm Alpha: **`0.1.0-alpha.0`**. Install with dist-tag **`alpha` only** (`npm install @dndgem/react@alpha`). Release notes: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md).
+Current official npm Alpha: **`0.1.0-alpha.1`**. Install with dist-tag **`alpha` only** (`npm install @dndgem/react@alpha`). Release notes: [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md) (`latest` still points here and is **not** the Alpha channel).
 
 Public product home: **https://dndgem.dev** (see [Public site & domain hosting](docs/architecture/public-site.md)).
 
@@ -59,7 +61,7 @@ npm install @dndgem/react@alpha
 npm install @dndgem/dom@alpha
 ```
 
-Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.0`). This is not a stable release; do not treat `latest` as a stable channel.
+Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.1`). This is not a stable release; do not treat `latest` as a stable channel (`latest` still points at historical `0.1.0-alpha.0`).
 
 ### Local workspace
 
@@ -129,11 +131,13 @@ Details: [Accessibility](docs/guides/accessibility.md)
 
 - Desktop Chromium / Firefox / WebKit validated; mobile not validated
 - Pointer drag + Escape cancel supported; keyboard drag deferred
-- `DnDGemProvider` is client-mount only (no full SSR claim)
-- No Auto-Layout runtime yet (DND-3.1 contract complete; implementation in DND-3.2+); no AI, Flutter, or other framework adapters yet
+- `DnDGemProvider` is client-mount only (no full SSR claim; see ADR-0017)
+- Auto-Layout is opt-in on `@alpha` (`0.1.0-alpha.1`); default off
+- Vue / Angular / Svelte adapters are the Framework Expansion Gate (DND-FX.2+); not implemented yet
+- No AI, no Flutter adapter yet
 - Absolute-positioning rendering model
 
-Details: [Limitations](docs/guides/limitations.md) · [Alpha API Contract](docs/architecture/alpha-api-contract.md) · [Release notes](docs/releases/0.1.0-alpha.0.md)
+Details: [Limitations](docs/guides/limitations.md) · [Alpha API Contract](docs/architecture/alpha-api-contract.md) · [Release notes](docs/releases/0.1.0-alpha.1.md)
 
 ## Playground / demo
 

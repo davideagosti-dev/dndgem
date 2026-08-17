@@ -203,7 +203,8 @@ React (`@dndgem/react`) wraps this session. It does not add a second ResizeObser
 
 ## Explicit non-goals
 
-- Vue / Angular / Svelte / Flutter adapters
+- Vue / Angular / Svelte adapters (Framework Expansion Gate — DND-FX.2+)
+- Flutter adapters (separate renderer track)
 - Animation / spring / FLIP engines
 - Custom native DnD engine; leaking dnd-kit types
 - `MutationObserver`, auto child discovery, `querySelector` scanning

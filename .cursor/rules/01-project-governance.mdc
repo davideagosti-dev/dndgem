@@ -11,11 +11,17 @@ Phase 0 is CLOSED. Do not reopen gates without a hard contradiction (stop, docum
 
 Phase 1 Technical MVP is **CLOSED** (DND-1.1 → DND-1.8). Do not reopen Phase 1 product/architecture decisions without a hard contradiction.
 
-Phase 2 Public Alpha Readiness is **PASS** — Public Alpha **LIVE** (`0.1.0-alpha.0` / `@alpha`).
+Phase 2 Public Alpha Readiness is **PASS** — Public Alpha **LIVE**. Current official channel: **`0.1.0-alpha.1` / `@alpha`**. Historical first Alpha: `0.1.0-alpha.0` (still on `latest`, which is not the Alpha channel).
 
 Phase 3 — Adaptive Auto-Layout is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `@alpha`). See `docs/architecture/phase-3-planning-audit.md` and `docs/roadmap.md`.
 
 **DND-3.1** COMPLETE. **DND-3.2** COMPLETE. **DND-3.3** COMPLETE. **DND-3.4** COMPLETE. **DND-3.5** COMPLETE. Engine docs: `docs/architecture/auto-layout-engine.md`. Contract: `docs/architecture/auto-layout-contract.md` + ADR-0014. Release notes: `docs/releases/0.1.0-alpha.1.md`.
+
+Framework Expansion Gate is **ACTIVE** (unnumbered; **not** Phase 4). Sprint map: `docs/architecture/framework-expansion-planning-audit.md`. Contract: `docs/architecture/framework-adapter-contract.md`. ADRs 0015–0017.
+
+**DND-FX.1** ACTIVE (contract gate). **DND-FX.2** Vue PLANNED. **DND-FX.3** Angular PLANNED. **DND-FX.4** Svelte PLANNED. **DND-FX.5** meta-frameworks PLANNED. **DND-FX.6** release PLANNED.
+
+Phase 4 remains **AI-Assisted Layout Intelligence** (not started). Do not renumber it.
 
 ## CI policy (DND-2.3+)
 
@@ -26,9 +32,13 @@ Phase 3 — Adaptive Auto-Layout is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `
 
 Cursor MUST NOT introduce:
 
-- AI / Gemini / OpenAI / Anthropic / local model runtimes
-- Flutter implementation
-- Vue / Angular / Svelte implementations
+- AI / Gemini / OpenAI / Anthropic / local model runtimes (Phase 4 — not active)
+- Flutter implementation (separate track; not a DND-FX sprint)
+- Vue implementation unless **DND-FX.2** is the active sprint
+- Angular implementation unless **DND-FX.3** is the active sprint
+- Svelte implementation unless **DND-FX.4** is the active sprint
+- `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/framework-core`, `@dndgem/vanilla` packages
+- Placeholder / stub packages to reserve names
 - Pin / Lock / fixed / manual placement APIs (deferred unless a sprint explicitly requires them)
 - cloud services / billing / Stripe
 - Layout CI SaaS / team accounts / enterprise functionality
@@ -36,7 +46,7 @@ Cursor MUST NOT introduce:
 - npm publication / repository visibility changes unless the active sprint explicitly requires it
 - Broader-than-minimal Public Auto-Layout API freeze unless an explicit review requires it
 
-unless the active sprint explicitly requires it.
+DND-FX.1 must **not** create Vue / Angular / Svelte packages.
 
 Flutter compatibility may be considered architecturally (types, ADRs), but not implemented until scheduled.
 
@@ -54,3 +64,10 @@ Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.1` is the current Auto
 - Auto-Layout remains opt-in for Phase 3 Alpha (default off).
 - Minimal public enricher API approved (DND-3.4): `createAutoLayoutProposal` + types; DOM/React `autoLayout`. Broader freeze remains an explicit review / later decision; DND-3.5 published the minimal surface as `0.1.0-alpha.1`.
 - Previous layout is stability-only input to Auto-Layout proposals; it is never an origin and never Source Intent.
+
+## Framework Expansion binding refinements
+
+- JS/DOM adapters are thin over `createLayoutSession` (ADR-0015).
+- React / Vue / Angular / Svelte are siblings over `@dndgem/dom` (ADR-0016).
+- Next.js / Nuxt / SvelteKit are compatibility environments, not packages (ADR-0017).
+- Framework adapters must not become AI extension points.

@@ -4,11 +4,10 @@
  * Does not call GitHub or npm. Does not print secrets.
  */
 import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
+import { existingPublishableFolders, npmNameForFolder, REPO_ROOT } from './package-topology.mjs';
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const workflowPath = join(root, '.github', 'workflows', 'publish.yml');
+const workflowPath = join(REPO_ROOT, '.github', 'workflows', 'publish.yml');
 const text = readFileSync(workflowPath, 'utf8');
 
 function fail(message) {
@@ -58,8 +57,20 @@ assert(
   'OIDC publish step must remain named for Trusted Publishing',
 );
 
+for (const folder of existingPublishableFolders()) {
+  const name = npmNameForFolder(folder);
+  const escaped = name.replace('/', '\\/');
+  assert(
+    new RegExp(`--filter\\s+${escaped}\\s+publish`).test(text),
+    `publish.yml must include --filter ${name} publish for existing package packages/${folder}`,
+  );
+}
+
 console.log('publish workflow check PASSED');
 console.log(' - id-token: write present');
 console.log(' - no setup-node registry-url on OIDC path');
 console.log(' - no secrets.NPM_TOKEN / NODE_AUTH_TOKEN mapping on primary path');
 console.log(' - dist_tag alpha default + latest guard + master guard');
+console.log(
+  ` - existing package publish filters: ${existingPublishableFolders().map(npmNameForFolder).join(', ')}`,
+);

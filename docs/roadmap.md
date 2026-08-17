@@ -8,6 +8,8 @@
 | Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)            |
 | Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**          |
 | Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`) |
+| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1)                     |
+| Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                       |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -336,10 +338,91 @@ PHASE 3 COMPLETE / RELEASED → 0.1.0-alpha.1 @alpha (OIDC verified)
 - Pin / Lock / fixed / manual APIs
 - Grouping / region intent product vocabulary
 - CSS grid / flex clone or responsive sizing DSL
-- Flutter / Vue / Angular / Svelte
+- Flutter (separate ecosystem track)
+- Vue / Angular / Svelte (**moved** to the Framework Expansion Gate below; not Phase 3 work)
 - Large-N optimization
 - Full keyboard drag / screen-reader drag product
 - Mobile / touch certification
+
+---
+
+## Framework Expansion Gate (unnumbered)
+
+Planning audit: **PASSED WITH REFINEMENTS** — see [framework-expansion-planning-audit.md](./architecture/framework-expansion-planning-audit.md).
+
+**Numbering (binding):** this gate is **not** Phase 4. Phase 4 remains AI. Sprint IDs are `DND-FX.1` … `DND-FX.6`. Flutter remains a separate track.
+
+Primary objective: prove one Core + one DOM session can support multiple thin idiomatic JS/DOM adapters without framework-specific layout semantics.
+
+```text
+Phase 3 COMPLETE / RELEASED
+        ↓
+Framework Expansion Gate
+        ↓
+Phase 4 — AI-Assisted Layout Intelligence
+```
+
+Contract: [framework-adapter-contract.md](./architecture/framework-adapter-contract.md). ADRs: [0015](./adr/ADR-0015-universal-framework-adapter-contract.md), [0016](./adr/ADR-0016-framework-package-topology.md), [0017](./adr/ADR-0017-ssr-browser-runtime-boundary.md).
+
+### Critical path
+
+```text
+DND-FX.1 Shared Framework Adapter Contract & Architecture Gate   ACTIVE
+        ↓
+DND-FX.2 Vue Adapter                                             PLANNED
+        ↓
+DND-FX.3 Angular Adapter                                         PLANNED
+        ↓
+DND-FX.4 Svelte Adapter                                          PLANNED
+        ↓
+DND-FX.5 Meta-Framework Compatibility Validation                 PLANNED
+        ↓
+DND-FX.6 Cross-Framework Alpha Release Gate                      PLANNED
+```
+
+Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, not packages. Default: no `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`.
+
+### DND-FX.1 — Shared Framework Adapter Contract & Architecture Gate
+
+- **Objective:** Freeze behavioral parity, package topology, SSR/client-session rules, and repo/release gates before any new adapter package exists.
+- **Scope:** Decision record; adapter contract; ADR-0015/0016/0017; boundary/ESLint/publish topology; current-state doc reconciliation; DOM Node import-safety test.
+- **Out of scope:** `@dndgem/vue|angular|svelte`; Core algorithm changes; AI; Flutter; npm publish.
+- **Dependencies:** Phase 3 COMPLETE (`0.1.0-alpha.1`).
+- **Closure:** Contract + ADRs accepted; DND-FX.2 can start without re-deciding cross-framework semantics.
+- **Status:** **ACTIVE**
+
+### DND-FX.2 — Vue Adapter
+
+- **Objective:** Thin idiomatic `@dndgem/vue` with DOM/React behavioral parity.
+- **Out of scope:** Nuxt package; Angular/Svelte; default-on Auto-Layout; publish.
+- **Dependencies:** DND-FX.1.
+- **Status:** PLANNED
+
+### DND-FX.3 — Angular Adapter
+
+- **Objective:** Thin idiomatic `@dndgem/angular` (DI/directives/signals, zoneless-safe).
+- **Dependencies:** DND-FX.1.
+- **Status:** PLANNED
+
+### DND-FX.4 — Svelte Adapter
+
+- **Objective:** Thin idiomatic `@dndgem/svelte` (Svelte 5 context + actions).
+- **Dependencies:** DND-FX.1.
+- **Status:** PLANNED
+
+### DND-FX.5 — Meta-Framework Compatibility Validation
+
+- **Objective:** Next.js / Nuxt / SvelteKit as environments (import-safe, client session, dispose on navigation).
+- **Out of scope:** Dedicated meta-framework packages.
+- **Dependencies:** Corresponding base adapters (React already exists for Next.js).
+- **Status:** PLANNED
+
+### DND-FX.6 — Cross-Framework Alpha Release Gate
+
+- **Objective:** Join existing public adapters to the Changesets fixed group; Trusted Publishing; `@alpha` publish.
+- **Out of scope:** `latest` dist-tag; public repository; AI.
+- **Dependencies:** DND-FX.2–FX.5 as approved.
+- **Status:** PLANNED
 
 ---
 
@@ -365,19 +448,18 @@ ResolvedLayout
 
 ### Flutter ecosystem track
 
-Flutter does **not** block the first JS Public Alpha and does **not** need to wait for AI.
+Flutter does **not** block JS Public Alpha, Framework Expansion, or AI.
 
 After Public Alpha:
 
 ```text
-           ┌→ Adaptive Auto-Layout (Phase 3)
+           ┌→ Adaptive Auto-Layout (Phase 3) COMPLETE
 Public Alpha
+           ├→ Framework Expansion Gate (JS/DOM adapters)  ACTIVE
            └→ Flutter architecture / renderer work (Core-contract dependent)
 ```
 
-### Additional framework adapters
-
-Vue / Angular / Svelte remain **post-alpha** and **demand-driven**.
+Flutter consumes Core through a **non-DOM** runtime. It is not a `@dndgem/dom` sibling adapter.
 
 ### Commercial / cloud
 
