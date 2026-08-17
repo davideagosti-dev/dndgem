@@ -108,7 +108,7 @@ Put visual styles first; spread `item.style` last so DnDGem owns `position`, `le
 
 - `import '@dndgem/react'` is safe without `window` (covered by package tests).
 - Rendering `DnDGemProvider` requires a browser DOM (client mount).
-- Next.js / Nuxt / SvelteKit are compatibility environments (DND-FX.5); **not** claimed as supported yet ([ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md)).
+- Next.js App Router is a **validated compatibility environment** for `@dndgem/react`: put `'use client'` on the integration root. Server Components may render the page tree; the DnDGem session stays inside that client boundary. This is **not** server-side layout solving. See [Meta-frameworks](./meta-frameworks.md) and [ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md).
 
 ## Validated example
 

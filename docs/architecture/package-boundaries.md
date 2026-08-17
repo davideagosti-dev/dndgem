@@ -16,6 +16,8 @@ JS/DOM topology (DND-FX.1 / [ADR-0016](../adr/ADR-0016-framework-package-topolog
 
 Current adapter: `@dndgem/react` (published). `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are **implemented in the repository** (DND-FX.2 / DND-FX.3 / DND-FX.4) and **not yet published**.
 
+Meta-framework fixtures (`apps/compat-next`, `apps/compat-nuxt`, `apps/compat-sveltekit`) are private unpublished apps, not `packages/` adapters.
+
 Forbidden package names: `@dndgem/framework-core`, `@dndgem/vanilla`, `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/flutter`, `@dndgem/ai`.
 
 Allowlist: `scripts/package-topology.mjs`.

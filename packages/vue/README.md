@@ -49,7 +49,7 @@ const Board = defineComponent({
 
 Template equivalent: bind `:ref="containerRef"` / `:ref="revenue.ref"` and `:style="revenue.style"` (computed unwraps in templates). Merge `item.style` after consumer visual styles so DnDGem owns layout properties.
 
-The container must be a positioned containing block (`relative` is enough). Unmounting the provider disposes the shared DOM session. Layout inline styles are not restored. Importing this package does not require `window`; rendering `DnDGemProvider` is a client-side mount (not full SSR/hydration). **Nuxt is not validated** (DND-FX.5).
+The container must be a positioned containing block (`relative` is enough). Unmounting the provider disposes the shared DOM session. Layout inline styles are not restored. Importing this package does not require `window`; rendering `DnDGemProvider` is a client-side mount (not server-side layout solving). **Nuxt is a validated compatibility environment** (no `@dndgem/nuxt`; see [meta-frameworks](../../docs/guides/meta-frameworks.md)).
 
 Keyboard drag is **DEFERRED**. Pointer drag and Escape cancel are supported.
 

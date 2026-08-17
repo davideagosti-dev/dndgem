@@ -27,7 +27,6 @@
   let layoutState = $state<LayoutSessionState | undefined>(undefined);
   let isReady = $state(false);
   let registryTick = $state(0);
-  let clientMounted = $state(false);
 
   board.setRegistryListener(() => {
     registryTick += 1;
@@ -38,38 +37,37 @@
     isReady = next !== undefined;
   });
 
+  // Client-compiled `$effect` throws `effect_orphan` if it runs during SvelteKit SSR.
+  // Gate all effects behind onMount so the provider can SSR markup without a session.
   onMount(() => {
-    clientMounted = true;
-  });
-
-  $effect(() => {
-    const change = onChange;
-    const drop = onDrop;
-    const cancel = onCancel;
-    untrack(() => {
-      board.setCallbacks({ onChange: change, onDrop: drop, onCancel: cancel });
-    });
-  });
-
-  $effect(() => {
-    if (!clientMounted) {
-      return;
-    }
-    const currentItems = items;
-    const currentDesired = desiredPlacements;
-    const currentAuto = autoLayout;
-    const currentMechanics = mechanics;
-    const currentObserver = ResizeObserver;
-    void registryTick;
-    untrack(() => {
-      board.configure({
-        items: currentItems,
-        desiredPlacements: currentDesired,
-        autoLayout: currentAuto,
-        mechanics: currentMechanics,
-        ResizeObserver: currentObserver,
+    return $effect.root(() => {
+      $effect(() => {
+        const change = onChange;
+        const drop = onDrop;
+        const cancel = onCancel;
+        untrack(() => {
+          board.setCallbacks({ onChange: change, onDrop: drop, onCancel: cancel });
+        });
       });
-      board.syncSession();
+
+      $effect(() => {
+        const currentItems = items;
+        const currentDesired = desiredPlacements;
+        const currentAuto = autoLayout;
+        const currentMechanics = mechanics;
+        const currentObserver = ResizeObserver;
+        void registryTick;
+        untrack(() => {
+          board.configure({
+            items: currentItems,
+            desiredPlacements: currentDesired,
+            autoLayout: currentAuto,
+            mechanics: currentMechanics,
+            ResizeObserver: currentObserver,
+          });
+          board.syncSession();
+        });
+      });
     });
   });
 

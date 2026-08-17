@@ -15,7 +15,8 @@ Core Concepts
   ↓
 Packages
   ↓
-  React Guide  ·  Vue Guide (in-repo)  ·  Angular Guide (in-repo)  ·  Svelte Guide (in-repo)  ·  Vanilla / DOM Guide
+  React Guide  ·  Vue Guide (in-repo)  ·  Angular Guide (in-repo)  ·  Svelte Guide (in-repo)
+  ·  Vanilla / DOM Guide  ·  Meta-frameworks (Next.js / Nuxt / SvelteKit)
   ↓
 Constraints & Validity
   ↓
@@ -37,6 +38,7 @@ Alpha API Contract
 | [Vue Guide](./vue.md)                                 | Provider, composables, lifecycle (in-repo)       |
 | [Angular Guide](./angular.md)                         | Directives, board DI, signals (in-repo)          |
 | [Svelte Guide](./svelte.md)                           | Provider, actions, stores (in-repo, unpublished) |
+| [Meta-frameworks](./meta-frameworks.md)               | Next.js / Nuxt / SvelteKit compatibility         |
 | [Vanilla / DOM Guide](./vanilla.md)                   | `createLayoutSession` path                       |
 | [Constraints & Validity](./constraints.md)            | Hard vs useful; VALID / DEGRADED / INVALID       |
 | [Drag, Resize & Reflow](./drag-resize-reflow.md)      | Explicit intent vs previous-layout stability     |

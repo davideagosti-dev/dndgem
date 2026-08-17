@@ -13,3 +13,4 @@ alwaysApply: false
 - Do not import `@dnd-kit/*` from React. Consume `createLayoutSession` / public DOM types only.
 - Cleanup must call the DOM session `dispose()` path. Do not invent a parallel React runtime.
 - Explicit `desiredPlacements` updates must omit Core `previous` so ADR-0010 stability cannot suppress new author intent. Constraint-only continuation and idle resize may pass `previous`.
+- Next.js is a compatibility environment for this adapter (`'use client'` on the integration root). Do not create `@dndgem/next`.

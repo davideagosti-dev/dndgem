@@ -48,6 +48,24 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,
     },
+    {
+      command: 'npx pnpm@10.34.5 --filter @dndgem/compat-next run start:e2e',
+      url: 'http://127.0.0.1:5181',
+      reuseExistingServer: !process.env.CI,
+      timeout: 240_000,
+    },
+    {
+      command: 'npx pnpm@10.34.5 --filter @dndgem/compat-nuxt run start:e2e',
+      url: 'http://127.0.0.1:5182',
+      reuseExistingServer: !process.env.CI,
+      timeout: 240_000,
+    },
+    {
+      command: 'npx pnpm@10.34.5 --filter @dndgem/compat-sveltekit run start:e2e',
+      url: 'http://127.0.0.1:5183',
+      reuseExistingServer: !process.env.CI,
+      timeout: 240_000,
+    },
   ],
   projects: [
     {

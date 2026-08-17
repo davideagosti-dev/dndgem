@@ -90,7 +90,7 @@ There is no separate visual debugger product in Alpha.
 
 - Not AI layout (Phase 4)
 - Not Flutter (separate track)
-- Vue, Angular, and Svelte adapters exist in-repository and are **not yet published**; SvelteKit is not validated (DND-FX.5)
+- Vue, Angular, and Svelte adapters exist in-repository and are **not yet published**; Next.js / Nuxt / SvelteKit are validated compatibility environments (no dedicated packages)
 - Not a claim of full WCAG conformance or keyboard-drag productization (see [Accessibility](./accessibility.md))
 
 See [Limitations](./limitations.md).

@@ -9,3 +9,8 @@ node_modules
 CHANGELOG.md
 .tmp
 *.tgz
+.next
+.nuxt
+.output
+.svelte-kit
+apps/compat-nuxt/**/*.vue

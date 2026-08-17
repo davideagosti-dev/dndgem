@@ -2,6 +2,9 @@
 /**
  * Compile DnDGemProvider.svelte to dist JS after tsc.
  * svelte-package would keep .svelte source; packed Node consumers need compiled JS.
+ *
+ * Client and server builds are separate.
+ * `exports.browser` → client; `exports.node` → server (SvelteKit SSR).
  */
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -13,20 +16,28 @@ const sourcePath = join(pkgRoot, 'src', 'DnDGemProvider.svelte');
 const distDir = join(pkgRoot, 'dist');
 const source = readFileSync(sourcePath, 'utf8');
 
-const result = compile(source, {
-  filename: 'DnDGemProvider.svelte',
-  css: 'injected',
-});
-
-writeFileSync(join(distDir, 'DnDGemProvider.js'), result.js.code);
-if (typeof result.js.map === 'string' && result.js.map.length > 0) {
-  writeFileSync(join(distDir, 'DnDGemProvider.js.map'), result.js.map);
+function compileGenerate(generate) {
+  const result = compile(source, {
+    filename: 'DnDGemProvider.svelte',
+    css: 'injected',
+    generate,
+  });
+  const suffix = generate === 'server' ? 'server' : 'client';
+  writeFileSync(join(distDir, `DnDGemProvider.${suffix}.js`), result.js.code);
+  if (typeof result.js.map === 'string' && result.js.map.length > 0) {
+    writeFileSync(join(distDir, `DnDGemProvider.${suffix}.js.map`), result.js.map);
+  }
 }
 
-const dts = readFileSync(join(pkgRoot, 'src', 'DnDGemProvider.svelte.d.ts'), 'utf8').replaceAll(
-  './types.js',
-  './types.js',
+compileGenerate('client');
+compileGenerate('server');
+
+writeFileSync(
+  join(distDir, 'DnDGemProvider.js'),
+  `export { default } from './DnDGemProvider.client.js';\n`,
 );
+
+const dts = readFileSync(join(pkgRoot, 'src', 'DnDGemProvider.svelte.d.ts'), 'utf8');
 writeFileSync(join(distDir, 'DnDGemProvider.d.ts'), dts);
 
 for (const name of readdirSync(distDir)) {
@@ -45,3 +56,13 @@ for (const name of readdirSync(distDir)) {
     writeFileSync(path, next);
   }
 }
+
+const indexJs = readFileSync(join(distDir, 'index.js'), 'utf8');
+writeFileSync(
+  join(distDir, 'index.server.js'),
+  indexJs.replaceAll('./DnDGemProvider.js', './DnDGemProvider.server.js'),
+);
+writeFileSync(
+  join(distDir, 'index.server.d.ts'),
+  readFileSync(join(distDir, 'index.d.ts'), 'utf8'),
+);

@@ -54,21 +54,21 @@ Module shape:
 
 ## Environment assumptions
 
-| Area                       | Alpha statement                                                                                                                                 |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Node                       | `>=20` for tooling and ESM import of published packages                                                                                         |
-| Bundlers                   | Vite / modern bundlers with ESM are the expected app path                                                                                       |
-| Browser                    | Chromium / Firefox / WebKit desktop engines **SUPPORTED FOR ALPHA** (Playwright). Mobile **NOT VALIDATED**.                                     |
-| DOM                        | `@dndgem/dom` and React rendering require a browser-like DOM at runtime                                                                         |
-| Pointer drag               | Validated interaction path                                                                                                                      |
-| Keyboard drag              | **DEFERRED** — not a product-validated path                                                                                                     |
-| Accessibility              | Baseline: Escape cancel + focus/ARIA preservation; no full WCAG / SR drag claim — see a11y guide                                                |
-| SSR / hydration            | Module import is safe without `window`. Full SSR/hydration is **not** claimed. See [ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md). |
-| Next.js / Nuxt / SvelteKit | Compatibility **environments** (DND-FX.5). Not validated yet. No dedicated packages. Do not market as supported.                                |
-| React                      | Peer `react@^18 \|\| ^19`. Client mount required for `DnDGemProvider`                                                                           |
-| Vue                        | Peer `vue@^3.5.0` (in-repo unpublished). Client mount required. Nuxt **not** validated.                                                         |
-| Angular                    | Peer `@angular/core@^20 \|\| ^21 \|\| ^22` (in-repo unpublished). Client mount required. Universal **not** validated. Zoneless-compatible.      |
-| Positioning                | Container is a positioned containing block; items are absolutely positioned from resolved geometry                                              |
+| Area                       | Alpha statement                                                                                                                                                   |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node                       | `>=20` for tooling and ESM import of published packages                                                                                                           |
+| Bundlers                   | Vite / modern bundlers with ESM are the expected app path                                                                                                         |
+| Browser                    | Chromium / Firefox / WebKit desktop engines **SUPPORTED FOR ALPHA** (Playwright). Mobile **NOT VALIDATED**.                                                       |
+| DOM                        | `@dndgem/dom` and React rendering require a browser-like DOM at runtime                                                                                           |
+| Pointer drag               | Validated interaction path                                                                                                                                        |
+| Keyboard drag              | **DEFERRED** — not a product-validated path                                                                                                                       |
+| Accessibility              | Baseline: Escape cancel + focus/ARIA preservation; no full WCAG / SR drag claim — see a11y guide                                                                  |
+| SSR / hydration            | Module import is safe without `window`. Client session after mount. No server-side layout claim. See [ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md). |
+| Next.js / Nuxt / SvelteKit | Validated **compatibility environments** (DND-FX.5). Not packages. Client-session integration only. See [meta-frameworks.md](../guides/meta-frameworks.md).       |
+| React                      | Peer `react@^18 \|\| ^19`. Client mount required for `DnDGemProvider`. Next.js App Router: `'use client'` on the integration root.                                |
+| Vue                        | Peer `vue@^3.5.0` (in-repo unpublished). Client mount required. Nuxt is a validated compatibility environment (no `@dndgem/nuxt`).                                |
+| Angular                    | Peer `@angular/core@^20 \|\| ^21 \|\| ^22` (in-repo unpublished). Client mount required. Universal **not** validated. Zoneless-compatible.                        |
+| Positioning                | Container is a positioned containing block; items are absolutely positioned from resolved geometry                                                                |
 
 Repository metadata `repository.url` points at `https://github.com/davideagosti-dev/dndgem`. The GitHub repository is currently **PRIVATE**; those links are source-of-truth for maintainers, not a claim of public accessibility. Package `homepage` / public support point at **https://dndgem.dev** (see [Public site & domain hosting](./public-site.md)).
 
@@ -246,7 +246,7 @@ Types:
 - `createDragInteraction` / `createLayoutSession` (consume via `@dndgem/dom` if needed)
 - `@dnd-kit/*`
 
-Same behavioral contract as React/DOM: `autoLayout?: boolean` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `vue@^3.5.0`. **Not** part of published `0.1.0-alpha.1`. Nuxt is not validated.
+Same behavioral contract as React/DOM: `autoLayout?: boolean` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `vue@^3.5.0`. **Not** part of published `0.1.0-alpha.1`. Nuxt is a validated compatibility environment (no `@dndgem/nuxt`).
 
 Composable contract:
 
@@ -308,7 +308,7 @@ Types:
 - `createDragInteraction` / `createLayoutSession` (consume via `@dndgem/dom` if needed)
 - `@dnd-kit/*`
 
-Same behavioral contract as React/DOM/Vue/Angular: `autoLayout` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `svelte@^5.0.0`. **Not** part of published `0.1.0-alpha.1`. SvelteKit is not validated.
+Same behavioral contract as React/DOM/Vue/Angular: `autoLayout` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `svelte@^5.0.0`. **Not** part of published `0.1.0-alpha.1`. SvelteKit is a validated compatibility environment (no `@dndgem/sveltekit`).
 
 Action / snippet contract:
 
