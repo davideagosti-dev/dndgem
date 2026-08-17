@@ -19,7 +19,7 @@ Phase 3 — Adaptive Auto-Layout is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `
 
 Framework Expansion Gate is **ACTIVE** (unnumbered; **not** Phase 4). Sprint map: `docs/architecture/framework-expansion-planning-audit.md`. Contract: `docs/architecture/framework-adapter-contract.md`. ADRs 0015–0017.
 
-**DND-FX.1** COMPLETE (contract gate). **DND-FX.2** Vue **NEXT** (not started). **DND-FX.3** Angular PLANNED. **DND-FX.4** Svelte PLANNED. **DND-FX.5** meta-frameworks PLANNED. **DND-FX.6** release PLANNED.
+**DND-FX.1** COMPLETE (contract gate). **DND-FX.2** Vue **COMPLETE**. **DND-FX.3** Angular **NEXT** (not started). **DND-FX.4** Svelte PLANNED. **DND-FX.5** meta-frameworks PLANNED. **DND-FX.6** release PLANNED.
 
 Phase 4 remains **AI-Assisted Layout Intelligence** (not started). Do not renumber it.
 
@@ -34,7 +34,7 @@ Cursor MUST NOT introduce:
 
 - AI / Gemini / OpenAI / Anthropic / local model runtimes (Phase 4 — not active)
 - Flutter implementation (separate track; not a DND-FX sprint)
-- Vue implementation unless **DND-FX.2** is the active sprint
+- Vue adapter expansion beyond closed DND-FX.2 unless an explicit follow-up authorizes it
 - Angular implementation unless **DND-FX.3** is the active sprint
 - Svelte implementation unless **DND-FX.4** is the active sprint
 - `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/framework-core`, `@dndgem/vanilla` packages
@@ -46,7 +46,7 @@ Cursor MUST NOT introduce:
 - npm publication / repository visibility changes unless the active sprint explicitly requires it
 - Broader-than-minimal Public Auto-Layout API freeze unless an explicit review requires it
 
-DND-FX.1 must **not** create Vue / Angular / Svelte packages. DND-FX.2 is **NEXT** but is not active until explicitly authorized — do not implement Vue yet.
+DND-FX.2 is **COMPLETE**. `@dndgem/vue` is in-repository and unpublished. Do not implement Angular / Svelte / Nuxt packages. DND-FX.3 is NEXT and not started. DND-FX.1 remains closed.
 
 Flutter compatibility may be considered architecturally (types, ADRs), but not implemented until scheduled.
 

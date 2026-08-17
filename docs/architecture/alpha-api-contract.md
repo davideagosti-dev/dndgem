@@ -19,13 +19,14 @@ Related: [overview.md](./overview.md), [core-domain.md](./core-domain.md), [dom-
 
 ## Supported packages
 
-| Package         | Role                                                                 | Typical consumer      |
-| --------------- | -------------------------------------------------------------------- | --------------------- |
-| `@dndgem/core`  | Domain, constraints, validity, scoring, deterministic `solveLayout`  | Headless / all layers |
-| `@dndgem/dom`   | Measurement, resize, drag interaction, Vanilla `createLayoutSession` | Vanilla DOM apps      |
-| `@dndgem/react` | Thin React lifecycle adapter over the DOM session                    | React apps            |
+| Package         | Role                                                                 | Typical consumer      | Publication                                     |
+| --------------- | -------------------------------------------------------------------- | --------------------- | ----------------------------------------------- |
+| `@dndgem/core`  | Domain, constraints, validity, scoring, deterministic `solveLayout`  | Headless / all layers | Published `0.1.0-alpha.1` / `@alpha`            |
+| `@dndgem/dom`   | Measurement, resize, drag interaction, Vanilla `createLayoutSession` | Vanilla DOM apps      | Published `0.1.0-alpha.1` / `@alpha`            |
+| `@dndgem/react` | Thin React lifecycle adapter over the DOM session                    | React apps            | Published `0.1.0-alpha.1` / `@alpha`            |
+| `@dndgem/vue`   | Thin Vue 3 lifecycle adapter over the DOM session                    | Vue 3 apps            | **In repository; not yet published** (DND-FX.2) |
 
-No other `@dndgem/*` packages are currently part of published Alpha. Vue, Angular, and Svelte adapters are the Framework Expansion Gate (DND-FX.2+) and must not be stubbed. Flutter is a separate track.
+No other `@dndgem/*` packages are currently part of published Alpha. Angular and Svelte adapters are later Framework Expansion sprints and must not be stubbed. Flutter is a separate track. `@dndgem/vue` is **not** part of published `0.1.0-alpha.1`.
 
 ## Public entrypoints
 
@@ -35,9 +36,10 @@ Each package is **ESM-only**. The only supported import path is the package root
 import { solveLayout } from '@dndgem/core';
 import { createLayoutSession } from '@dndgem/dom';
 import { DnDGemProvider } from '@dndgem/react';
+import { DnDGemProvider as VueDnDGemProvider } from '@dndgem/vue';
 ```
 
-Deep imports (`@dndgem/core/solve`, `@dndgem/dom/src/...`, `@dndgem/react/dist/...`) are **not** part of the contract even if a file exists in the published tarball.
+Deep imports (`@dndgem/core/solve`, `@dndgem/dom/src/...`, `@dndgem/react/dist/...`, `@dndgem/vue/dist/...`) are **not** part of the contract even if a file exists in the published tarball.
 
 Module shape:
 
@@ -60,6 +62,7 @@ Module shape:
 | SSR / hydration            | Module import is safe without `window`. Full SSR/hydration is **not** claimed. See [ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md). |
 | Next.js / Nuxt / SvelteKit | Compatibility **environments** (DND-FX.5). Not validated yet. No dedicated packages. Do not market as supported.                                |
 | React                      | Peer `react@^18 \|\| ^19`. Client mount required for `DnDGemProvider`                                                                           |
+| Vue                        | Peer `vue@^3.5.0` (in-repo unpublished). Client mount required. Nuxt **not** validated.                                                         |
 | Positioning                | Container is a positioned containing block; items are absolutely positioned from resolved geometry                                              |
 
 Repository metadata `repository.url` points at `https://github.com/davideagosti-dev/dndgem`. The GitHub repository is currently **PRIVATE**; those links are source-of-truth for maintainers, not a claim of public accessibility. Package `homepage` / public support point at **https://dndgem.dev** (see [Public site & domain hosting](./public-site.md)).
@@ -217,12 +220,43 @@ Hook contract:
 - `useDnDGem()` → `{ state, ready }`
 - All three throw if used outside `DnDGemProvider`
 
+## `@dndgem/vue` public exports (in-repository, unpublished)
+
+Runtime (workspace only until DND-FX.6):
+
+- `VUE_PACKAGE_NAME`, `VUE_PACKAGE_VERSION`, `getVuePackageInfo`
+- `DnDGemProvider` (renderless board owner)
+- `useDnDGem`
+- `useDnDGemContainer`
+- `useDnDGemItem`
+
+Types:
+
+- `DnDGemItemBinding`, `DnDGemItemConfig`, `DnDGemProviderProps`, `DnDGemStore`
+- Re-exported DOM callback types: `DragCancelEvent`, `DragDropResult`, `DragProposal`, `LayoutSessionState`
+
+### Internal to Vue (not public)
+
+- `DnDGemRegistryKey`, `DnDGemStateKey`, `DnDGemRegistry`
+- `createDragInteraction` / `createLayoutSession` (consume via `@dndgem/dom` if needed)
+- `@dnd-kit/*`
+
+Same behavioral contract as React/DOM: `autoLayout?: boolean` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `vue@^3.5.0`. **Not** part of published `0.1.0-alpha.1`. Nuxt is not validated.
+
+Composable contract:
+
+- `useDnDGemContainer()` → function ref for the positioned container
+- `useDnDGemItem(id)` → `{ ref, style }` for one item (`style` is a computed)
+- `useDnDGem()` → `{ state, ready }` (`shallowRef` / `computed`)
+- All three throw if used outside `DnDGemProvider`
+
 ## Provider isolation
 
 `@dnd-kit/dom` is installed only on `@dndgem/dom` as an implementation dependency. It must not appear in:
 
 - `@dndgem/core` public types or dependencies
 - `@dndgem/react` public types, dependencies, or imports
+- `@dndgem/vue` public types, dependencies, or imports
 
 Consumers must not import `@dnd-kit/*` to use DnDGem.
 
@@ -234,6 +268,7 @@ Consumers must not import `@dnd-kit/*` to use DnDGem.
 | `ValidityState`   | core    | Evaluated layout quality, not an exception      |
 | `DomAdapterError` | dom     | Missing elements, disposed session, environment |
 | React `Error`     | react   | Hook used outside `DnDGemProvider`              |
+| Vue `Error`       | vue     | Composable used outside `DnDGemProvider`        |
 
 Alpha documents errors and validity honestly. Developer guides and troubleshooting live in `docs/guides/` (DND-2.3).
 
@@ -243,7 +278,7 @@ Published package versions are **`0.1.0-alpha.1`**. Changesets owns further prer
 
 - Official dist-tag: `alpha` (always install with `@alpha`; `latest` is not the Alpha channel)
 - `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` are a **fixed** Changesets group and stay version-aligned
-- Future public adapters join that fixed group at **DND-FX.6** (do not add nonexistent packages to `.changeset/config.json`)
+- `@dndgem/vue` is implemented in-repo at workspace placeholder `0.0.0` and is **ignored** by Changesets until **DND-FX.6** (joins the fixed group then). **CHANGESET DEFERRED TO FX.6.**
 - `get*PackageInfo().version` must match that package's `package.json` `version`
 
 See [release-strategy.md](./release-strategy.md).

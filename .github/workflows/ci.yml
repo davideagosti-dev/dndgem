@@ -105,6 +105,7 @@ jobs:
           pnpm --filter @dndgem/www build
           pnpm --filter @dndgem/example-react build
           pnpm --filter @dndgem/example-vanilla build
+          pnpm --filter @dndgem/example-vue build
 
       - name: Documentation links
         run: pnpm check:docs-links

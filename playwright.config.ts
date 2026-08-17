@@ -23,12 +23,20 @@ export default defineConfig({
     baseURL: 'http://127.0.0.1:5180',
     trace: 'on-first-retry',
   },
-  webServer: {
-    command: 'npx pnpm@10.34.5 --filter @dndgem/playground run dev:e2e',
-    url: 'http://127.0.0.1:5180',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  webServer: [
+    {
+      command: 'npx pnpm@10.34.5 --filter @dndgem/playground run dev:e2e',
+      url: 'http://127.0.0.1:5180',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+    {
+      command: 'npx pnpm@10.34.5 --filter @dndgem/example-vue run dev',
+      url: 'http://127.0.0.1:5176',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+  ],
   projects: [
     {
       name: 'chromium',
