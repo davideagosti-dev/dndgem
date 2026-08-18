@@ -4,7 +4,7 @@ Thin Vue 3 adapter for **DnDGem** by **DA62**. Layout solving stays in `@dndgem/
 
 ## Install (Public Alpha)
 
-Public Alpha version: **`0.1.0-alpha.2`** (official npm dist-tag **`alpha`**).
+Public Alpha version: **`0.1.0-alpha.3`** (official npm dist-tag **`alpha`**).
 
 ```bash
 npm install @dndgem/vue@alpha

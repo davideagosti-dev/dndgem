@@ -68,6 +68,6 @@ Architecture / contract references (not the day-one path):
 | **Public Alpha (npm)** | `npm install @dndgem/react@alpha` |
 | **This repository**    | Workspace / local packages        |
 
-Published version: `0.1.0-alpha.2`. Always use **`@alpha`**. Release notes: [0.1.0-alpha.2](../releases/0.1.0-alpha.2.md).
+Published version: `0.1.0-alpha.3`. Always use **`@alpha`**. Release notes: [0.1.0-alpha.3](../releases/0.1.0-alpha.3.md).
 
 Canonical public home: [https://dndgem.dev](https://dndgem.dev). Public Quick Start: [https://dndgem.dev/docs/quick-start/](https://dndgem.dev/docs/quick-start/). Support: [https://dndgem.dev/support/](https://dndgem.dev/support/).

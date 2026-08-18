@@ -21,12 +21,12 @@ Related: [overview.md](./overview.md), [core-domain.md](./core-domain.md), [dom-
 
 | Package           | Role                                                                 | Typical consumer      | Publication                          |
 | ----------------- | -------------------------------------------------------------------- | --------------------- | ------------------------------------ |
-| `@dndgem/core`    | Domain, constraints, validity, scoring, deterministic `solveLayout`  | Headless / all layers | Published `0.1.0-alpha.2` / `@alpha` |
-| `@dndgem/dom`     | Measurement, resize, drag interaction, Vanilla `createLayoutSession` | Vanilla DOM apps      | Published `0.1.0-alpha.2` / `@alpha` |
-| `@dndgem/react`   | Thin React lifecycle adapter over the DOM session                    | React apps            | Published `0.1.0-alpha.2` / `@alpha` |
-| `@dndgem/vue`     | Thin Vue 3 lifecycle adapter over the DOM session                    | Vue 3 apps            | Published `0.1.0-alpha.2` / `@alpha` |
-| `@dndgem/angular` | Thin Angular lifecycle adapter over the DOM session                  | Angular apps          | Published `0.1.0-alpha.2` / `@alpha` |
-| `@dndgem/svelte`  | Thin Svelte 5 lifecycle adapter over the DOM session                 | Svelte 5 apps         | Published `0.1.0-alpha.2` / `@alpha` |
+| `@dndgem/core`    | Domain, constraints, validity, scoring, deterministic `solveLayout`  | Headless / all layers | Published `0.1.0-alpha.3` / `@alpha` |
+| `@dndgem/dom`     | Measurement, resize, drag interaction, Vanilla `createLayoutSession` | Vanilla DOM apps      | Published `0.1.0-alpha.3` / `@alpha` |
+| `@dndgem/react`   | Thin React lifecycle adapter over the DOM session                    | React apps            | Published `0.1.0-alpha.3` / `@alpha` |
+| `@dndgem/vue`     | Thin Vue 3 lifecycle adapter over the DOM session                    | Vue 3 apps            | Published `0.1.0-alpha.3` / `@alpha` |
+| `@dndgem/angular` | Thin Angular lifecycle adapter over the DOM session                  | Angular apps          | Published `0.1.0-alpha.3` / `@alpha` |
+| `@dndgem/svelte`  | Thin Svelte 5 lifecycle adapter over the DOM session                 | Svelte 5 apps         | Published `0.1.0-alpha.3` / `@alpha` |
 
 No other `@dndgem/*` packages are currently part of published Alpha. Flutter is a separate track. Meta-framework environments (Next.js, Nuxt, SvelteKit) use the adapters above — there is no `@dndgem/next`, `@dndgem/nuxt`, or `@dndgem/sveltekit`.
 
