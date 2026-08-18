@@ -82,8 +82,7 @@ function assert(condition, message) {
 }
 
 const WORKSPACE_PROTOCOL = /^workspace:/;
-const RELEASED_SEMVER =
-  /^[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
+const RELEASED_SEMVER = /^[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
 
 function collectPackedDependencyEntries(packedPkgJson) {
   const entries = [];
