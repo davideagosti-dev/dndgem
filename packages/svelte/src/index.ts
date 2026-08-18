@@ -11,7 +11,7 @@ import { getDomPackageInfo } from '@dndgem/dom';
 
 export const SVELTE_PACKAGE_NAME = '@dndgem/svelte' as const;
 
-export const SVELTE_PACKAGE_VERSION = '0.0.0' as const;
+export const SVELTE_PACKAGE_VERSION = '0.1.0-alpha.2' as const;
 
 /**
  * Marker used by workspace smoke tests to prove public exports and workspace links.

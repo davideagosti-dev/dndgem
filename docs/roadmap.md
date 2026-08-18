@@ -2,14 +2,14 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                                             |
-| ------- | ------------------------------- | -------------------------------------------------- |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                                         |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                     |
-| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                   |
-| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)          |
-| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1–FX.5 COMPLETE; DND-FX.6 NEXT) |
-| Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                                |
+| Phase   | Name                            | Status                                                   |
+| ------- | ------------------------------- | -------------------------------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                                               |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                           |
+| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                         |
+| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                |
+| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1–FX.5 COMPLETE; **DND-FX.6 ACTIVE**) |
+| Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                                      |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -377,7 +377,7 @@ DND-FX.4 Svelte Adapter                                          COMPLETE
         ↓
 DND-FX.5 Meta-Framework Compatibility Validation                 COMPLETE
         ↓
-DND-FX.6 Cross-Framework Alpha Release Gate                      NEXT
+DND-FX.6 Cross-Framework Alpha Release Gate                      ACTIVE
 ```
 
 Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, not packages. Default: no `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`.

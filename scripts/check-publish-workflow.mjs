@@ -67,16 +67,8 @@ for (const folder of existingPublishableFolders()) {
 }
 
 assert(
-  /Skipping @dndgem\/vue real publish \(version 0\.0\.0/.test(text),
-  'real publish must skip @dndgem/vue while the workspace placeholder version is 0.0.0',
-);
-assert(
-  /Skipping @dndgem\/angular real publish \(version 0\.0\.0/.test(text),
-  'real publish must skip @dndgem/angular while the workspace placeholder version is 0.0.0',
-);
-assert(
-  /Skipping @dndgem\/svelte real publish \(version 0\.0\.0/.test(text),
-  'real publish must skip @dndgem/svelte while the workspace placeholder version is 0.0.0',
+  /for \(const name of \['core', 'dom', 'react', 'vue', 'angular', 'svelte'\]\)/.test(text),
+  'real publish must refuse 0.0.0 for all six public packages',
 );
 
 console.log('publish workflow check PASSED');

@@ -6,14 +6,14 @@
     <title>Documentation — DnDGem</title>
     <meta
       name="description"
-      content="DnDGem Public Alpha documentation entry — Quick Start, packages, browsers, accessibility, and limitations."
+      content="DnDGem Public Alpha documentation — React, Vue, Angular, Svelte, Vanilla/DOM, and meta-framework compatibility."
     />
     <link rel="canonical" href="https://dndgem.dev/docs/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Documentation — DnDGem" />
     <meta
       property="og:description"
-      content="Developer documentation entry for DnDGem Public Alpha."
+      content="Developer documentation for DnDGem cross-framework Public Alpha."
     />
     <meta property="og:url" content="https://dndgem.dev/docs/" />
     <meta name="twitter:card" content="summary" />
@@ -38,88 +38,115 @@
     <main id="main" class="page prose">
       <h1>Documentation</h1>
       <p class="lede">
-        Public Alpha developer entry for DnDGem. Source repository remains private; this site is the
-        canonical public home.
+        Cross-framework Public Alpha for DnDGem. Official channel:
+        <strong>@alpha</strong> → <code>0.1.0-alpha.2</code>.
       </p>
 
-      <h2>Start here</h2>
+      <h2>Getting started</h2>
       <ul>
         <li>
           <a href="/docs/quick-start/">Quick Start</a> — first React layout with <code>@alpha</code>
         </li>
-        <li>
-          <a href="https://playground.dndgem.dev/">Playground</a> — interactive VALID / DEGRADED
-          demo
-        </li>
-        <li><a href="/support/">Support</a> — product feedback and security contacts</li>
+        <li><a href="https://playground.dndgem.dev/">Playground</a> — interactive demo</li>
+        <li><a href="/support/">Support</a> — feedback and security contacts</li>
       </ul>
+
+      <h2>Framework guides</h2>
+      <ul>
+        <li>Vanilla / DOM — <code>@dndgem/dom</code> + <code>@dndgem/core</code></li>
+        <li>React — <code>npm install @dndgem/react@alpha</code></li>
+        <li>Vue — <code>npm install @dndgem/vue@alpha</code></li>
+        <li>Angular — <code>npm install @dndgem/angular@alpha</code></li>
+        <li>Svelte — <code>npm install @dndgem/svelte@alpha</code></li>
+      </ul>
+      <p>
+        In-repo developer guides (private repository):
+        <code>docs/guides/react.md</code>, <code>vue.md</code>, <code>angular.md</code>,
+        <code>svelte.md</code>, <code>vanilla.md</code>.
+      </p>
+
+      <h2>Meta-framework compatibility</h2>
+      <p>Validated environments — use the adapter package, not a dedicated DnDGem meta package:</p>
+      <ul>
+        <li>
+          Next.js → <code>@dndgem/react@alpha</code> (<code>'use client'</code> on integration root)
+        </li>
+        <li>Nuxt → <code>@dndgem/vue@alpha</code></li>
+        <li>
+          SvelteKit → <code>@dndgem/svelte@alpha</code> (SSR shell safe; client session after mount)
+        </li>
+      </ul>
+      <p class="note">
+        No <code>@dndgem/next</code>, <code>@dndgem/nuxt</code>, or <code>@dndgem/sveltekit</code>.
+        Module import safe ≠ server-side DnDGem layout solving.
+      </p>
 
       <h2>Install</h2>
       <pre class="install"><code>npm install @dndgem/react@alpha
+npm install @dndgem/vue@alpha
+npm install @dndgem/angular@alpha
+npm install @dndgem/svelte@alpha
 npm install @dndgem/dom@alpha</code></pre>
-      <p class="note">
-        Official channel is <strong>@alpha</strong> → <code>0.1.0-alpha.0</code>. Do not treat
-        <code>latest</code> as a stable release channel.
-      </p>
 
-      <h2>Package overview</h2>
+      <h2>Package matrix</h2>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th>Package</th>
               <th>Role</th>
+              <th>Alpha version</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><code>@dndgem/core</code></td>
-              <td>Renderer-agnostic constraints, validity, scoring, solver</td>
+              <td>Constraints, validity, solver</td>
+              <td>0.1.0-alpha.2</td>
             </tr>
             <tr>
               <td><code>@dndgem/dom</code></td>
-              <td>DOM measurement, resize, drag, Vanilla layout session</td>
+              <td>DOM measurement, drag, session</td>
+              <td>0.1.0-alpha.2</td>
             </tr>
             <tr>
               <td><code>@dndgem/react</code></td>
-              <td>React provider + hooks (peer: <code>react@^18 || ^19</code>)</td>
+              <td>React provider + hooks</td>
+              <td>0.1.0-alpha.2</td>
+            </tr>
+            <tr>
+              <td><code>@dndgem/vue</code></td>
+              <td>Vue 3 provider + composables</td>
+              <td>0.1.0-alpha.2</td>
+            </tr>
+            <tr>
+              <td><code>@dndgem/angular</code></td>
+              <td>Angular board directive + signals</td>
+              <td>0.1.0-alpha.2</td>
+            </tr>
+            <tr>
+              <td><code>@dndgem/svelte</code></td>
+              <td>Svelte 5 provider + actions</td>
+              <td>0.1.0-alpha.2</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <h2>Core distinction</h2>
-      <pre class="distinction">GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL</pre>
-      <p>
-        Layouts are selected deterministically. Engine status is
-        <strong>VALID</strong>, <strong>DEGRADED</strong>, or <strong>INVALID</strong>.
-      </p>
-
-      <h2>Browser support (Alpha)</h2>
+      <h2>Architecture concepts</h2>
       <ul>
-        <li>Chromium — supported for Alpha</li>
-        <li>Firefox — supported for Alpha</li>
-        <li>WebKit — supported for Alpha</li>
-        <li>Mobile — not validated</li>
-      </ul>
-
-      <h2>Accessibility baseline</h2>
-      <ul>
-        <li>
-          Supported: pointer drag, Escape cancellation, baseline focus, consumer ARIA preservation
-        </li>
-        <li>Deferred: keyboard drag, screen-reader drag announcements</li>
-        <li>Known: visual order may differ from DOM / tab order under absolute positioning</li>
-        <li>Not claimed: full WCAG conformance</li>
+        <li>Auto-Layout — opt-in; default off on <code>@alpha</code></li>
+        <li>Constraints — content-aware min/preferred dimensions</li>
+        <li>Validity — VALID / DEGRADED / INVALID</li>
+        <li>SSR / client runtime — import/build shell safe; session after client mount</li>
       </ul>
 
       <h2>Known limitations</h2>
       <ul>
         <li>0.x Alpha API may break between prereleases</li>
-        <li>Full SSR / hydration not validated</li>
-        <li>Auto-Layout, AI, Flutter, and other framework adapters not implemented</li>
-        <li>Large-N behavior not established</li>
-        <li>Absolute-positioning rendering model</li>
+        <li>Keyboard drag and screen-reader drag announcements deferred</li>
+        <li>Mobile not validated; Angular Universal not validated</li>
+        <li>AI (Phase 4) not started</li>
       </ul>
     </main>
 
