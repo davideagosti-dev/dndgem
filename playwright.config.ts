@@ -6,8 +6,9 @@ import { defineConfig, devices } from '@playwright/test';
  * `pnpm test:e2e` runs the Public Alpha desktop engine matrix:
  * Chromium, Firefox, and WebKit.
  *
- * Promotion CI (`develop` → `master`) installs and executes the same matrix.
- * Feature branches do not run GitHub CI; the local Sprint Final Quality Gate is mandatory.
+ * FX.6: the local Sprint Final Quality Gate runs this matrix before pushing
+ * `develop`. GitHub promotion CI does not reinstall browsers or rerun it;
+ * dispatch `.github/workflows/ci.yml` manually to execute the matrix on GitHub.
  *
  * This is engine-level automated validation, not certification of every
  * real-world browser version, mobile browser, or embedded webview.

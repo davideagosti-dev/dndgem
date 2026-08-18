@@ -1,11 +1,14 @@
 name: CI
 
-# Promotion / reusable quality gate (DND-2.3 / DND-2.4):
-# - Automatic full CI: develop → master pull requests only
+# Promotion / reusable quality gate (DND-2.3 / DND-2.4 / DND-FX.6):
+# - Automatic GitHub CI: develop → master pull requests only
 # - Feature → develop: no GitHub CI (local Sprint Final Quality Gate is mandatory)
 # - Reusable via workflow_call (publish pipeline)
 # - Optional manual runs via workflow_dispatch
-# - browser-e2e runs the Alpha desktop engine matrix: Chromium, Firefox, WebKit
+# - FX.6: full Chromium / Firefox / WebKit Playwright matrix is the mandatory
+#   local pre-push gate. GitHub `browser-e2e` stays as a named status check
+#   but does not reinstall browsers or rerun that matrix on pull_request or
+#   workflow_call. Dispatch this workflow to run the matrix on GitHub.
 #
 # Absolute hardware-specific benchmark timings are NOT CI thresholds.
 
@@ -120,36 +123,50 @@ jobs:
 
   browser-e2e:
     name: browser-e2e
-    # Pin the runner image so Playwright OS-dep packages stay reviewable.
-    # ubuntu-latest currently tracks 24.04; an unpinned bump can change apt needs.
+    # Job name stays `browser-e2e` so existing required checks can still match.
+    # Pin the runner image so Playwright OS-dep packages stay reviewable if this
+    # job is dispatched. ubuntu-latest currently tracks 24.04.
     runs-on: ubuntu-24.04
     timeout-minutes: 50
     needs: quality
 
     steps:
+      - name: Record FX.6 local-gate browser policy
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          echo "FX.6 promotion policy: the full Chromium / Firefox / WebKit matrix is the mandatory local pre-push gate."
+          echo "This GitHub job does not install Playwright browsers or rerun that matrix on pull_request or workflow_call."
+          echo "Dispatch this workflow manually to execute browser-e2e on GitHub."
+
       - name: Checkout
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v5
 
       - name: Setup pnpm
+        if: github.event_name == 'workflow_dispatch'
         uses: pnpm/action-setup@v4
         with:
           version: 10.34.5
 
       - name: Setup Node.js
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: pnpm
 
       - name: Install
+        if: github.event_name == 'workflow_dispatch'
         run: pnpm install --frozen-lockfile
 
       # Playground Vite resolves workspace packages from dist.
       - name: Build packages
+        if: github.event_name == 'workflow_dispatch'
         run: pnpm --filter "./packages/**" build
 
       # Browser binaries only. Cache does not cover apt/system packages.
       - name: Cache Playwright browsers
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
@@ -161,6 +178,7 @@ jobs:
       # Apt is bounded so a stalled azure.archive.ubuntu.com mirror fails fast
       # instead of consuming the GitHub default hours-long runner budget.
       - name: Install Playwright browsers (Alpha matrix)
+        if: github.event_name == 'workflow_dispatch'
         timeout-minutes: 10
         run: |
           printf '%s\n' \
@@ -171,5 +189,6 @@ jobs:
           pnpm exec playwright install --with-deps chromium firefox webkit
 
       - name: Browser e2e (Chromium, Firefox, WebKit)
+        if: github.event_name == 'workflow_dispatch'
         timeout-minutes: 30
         run: pnpm test:e2e

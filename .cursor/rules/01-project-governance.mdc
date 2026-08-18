@@ -26,7 +26,8 @@ Phase 4 remains **AI-Assisted Layout Intelligence** (not started). Do not renumb
 ## CI policy (DND-2.3+)
 
 - Feature → develop: full **local** quality gate; GitHub CI not required / should not run.
-- Develop → master: full **GitHub** CI must run and pass before merge.
+- Develop → master: GitHub `promote-gate` + `quality` must run and pass before merge.
+- FX.6: the full Playwright Chromium / Firefox / WebKit matrix is mandatory **locally** before pushing `develop`. GitHub `browser-e2e` remains a named status / manual dispatch job and does not reinstall browsers or rerun that matrix on promotion.
 
 ## Hard exclusions (until an explicit sprint requires them)
 

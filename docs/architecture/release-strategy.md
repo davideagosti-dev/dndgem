@@ -56,14 +56,14 @@ Use `pnpm changeset` on library work. Do not publish from a local machine unless
 ```text
 feature/*
     → develop          (local Sprint Final Quality Gate; no GitHub CI required)
-        → master       (full GitHub CI on develop → master PR must PASS)
+        → master       (GitHub promote-gate + quality must PASS; FX.6 browser matrix is local)
             → changeset version (0.1.0-alpha.x)
             → pack validation
             → workflow_dispatch publish (dist-tag alpha)
 ```
 
 - Feature → develop: authoritative **local** validation only (DND-2.3 CI policy).
-- Develop → master: authoritative **GitHub** CI (`quality` + `browser-e2e`) via `.github/workflows/ci.yml`.
+- Develop → master: independent GitHub verification (`promote-gate` + `quality`) via `.github/workflows/ci.yml`. FX.6: the full Playwright Chromium / Firefox / WebKit matrix is mandatory locally before pushing `develop`; GitHub `browser-e2e` does not reinstall browsers or rerun that matrix on promotion (`workflow_dispatch` still can).
 - Publish still re-invokes CI through `workflow_call` (compatible with the promotion-only automatic triggers).
 - `baseBranch` for Changesets is `master`.
 - DND-2.2 prepared the pipeline; it does **not** publish.
