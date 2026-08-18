@@ -120,8 +120,10 @@ jobs:
 
   browser-e2e:
     name: browser-e2e
-    runs-on: ubuntu-latest
-    timeout-minutes: 40
+    # Pin the runner image so Playwright OS-dep packages stay reviewable.
+    # ubuntu-latest currently tracks 24.04; an unpinned bump can change apt needs.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
     needs: quality
 
     steps:
@@ -146,8 +148,28 @@ jobs:
       - name: Build packages
         run: pnpm --filter "./packages/**" build
 
+      # Browser binaries only. Cache does not cover apt/system packages.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      # --with-deps is retained for WebKit system libraries on Linux.
+      # Apt is bounded so a stalled azure.archive.ubuntu.com mirror fails fast
+      # instead of consuming the GitHub default hours-long runner budget.
       - name: Install Playwright browsers (Alpha matrix)
-        run: pnpm exec playwright install --with-deps chromium firefox webkit
+        timeout-minutes: 10
+        run: |
+          printf '%s\n' \
+            'Acquire::http::Timeout "20";' \
+            'Acquire::https::Timeout "20";' \
+            'Acquire::Retries "2";' \
+            | sudo tee /etc/apt/apt.conf.d/99ci-timeout >/dev/null
+          pnpm exec playwright install --with-deps chromium firefox webkit
 
       - name: Browser e2e (Chromium, Firefox, WebKit)
+        timeout-minutes: 30
         run: pnpm test:e2e
