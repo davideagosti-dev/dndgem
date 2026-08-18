@@ -10,7 +10,7 @@ Public Alpha and subsequent release notes for **DnDGem by DA62**.
 | `0.1.0-alpha.2` (Cross-Framework; superseded) | [0.1.0-alpha.2.md](./0.1.0-alpha.2.md)                         |
 | `0.1.0-alpha.3` (Cross-Framework recovery)    | [0.1.0-alpha.3.md](./0.1.0-alpha.3.md)                         |
 
-Current official Alpha channel: **`0.1.0-alpha.3`** under npm dist-tag **`alpha`** (pre-publish ready in repository). See [Release Strategy](../architecture/release-strategy.md) and [0.1.0-alpha.3](./0.1.0-alpha.3.md). Historical: [0.1.0-alpha.2](./0.1.0-alpha.2.md) (superseded — broken framework bootstrap metadata), [0.1.0-alpha.1](./0.1.0-alpha.1.md), [0.1.0-alpha.0](./0.1.0-alpha.0.md).
+Current official Alpha channel: **`0.1.0-alpha.3`** under npm dist-tag **`alpha`** (published). See [Release Strategy](../architecture/release-strategy.md) and [0.1.0-alpha.3](./0.1.0-alpha.3.md). Historical: [0.1.0-alpha.2](./0.1.0-alpha.2.md) (superseded — broken framework bootstrap metadata), [0.1.0-alpha.1](./0.1.0-alpha.1.md), [0.1.0-alpha.0](./0.1.0-alpha.0.md).
 
 Primary publish uses npm Trusted Publishing (GitHub Actions OIDC). First real OIDC publish verified with `0.1.0-alpha.1`.
 

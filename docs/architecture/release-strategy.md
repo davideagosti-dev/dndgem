@@ -155,7 +155,7 @@ OIDC Trusted Publishing and npm provenance are independent.
 
 | Capability                             | Status while repository is **PRIVATE**                                           |
 | -------------------------------------- | -------------------------------------------------------------------------------- |
-| Trusted Publishing (OIDC publish auth) | **SUPPORTED** (configure + verify on next real publish)                          |
+| Trusted Publishing (OIDC publish auth) | **SUPPORTED** (verified: `0.1.0-alpha.1` and `0.1.0-alpha.3`)                    |
 | npm provenance attestations            | **NOT AVAILABLE** for private repositories, even when publishing public packages |
 
 Do **not** pass `--provenance` while the repository remains private. Lack of provenance is **not** a Trusted Publishing blocker. Provenance may be reconsidered only after an explicit public-visibility decision.
@@ -164,23 +164,13 @@ Do **not** pass `--provenance` while the repository remains private. Lack of pro
 
 Target scope: `@dndgem`.
 
-`@dndgem` scope ownership and first Alpha publication are complete for DND-2.5. Current published names are `@dndgem/{core,dom,react}`. New adapters follow [ADR-0016](../adr/ADR-0016-framework-package-topology.md).
+`@dndgem` scope ownership and first Alpha publication are complete for DND-2.5. Current published names are `@dndgem/{core,dom,react,vue,angular,svelte}`. New adapters follow [ADR-0016](../adr/ADR-0016-framework-package-topology.md).
 
-### Framework Expansion publish expansion (DND-FX.6)
+### Framework Expansion publish expansion (DND-FX.6) — COMPLETE
 
-When `@dndgem/vue` / `@dndgem/angular` / `@dndgem/svelte` exist:
+`@dndgem/vue` / `@dndgem/angular` / `@dndgem/svelte` exist and were published lockstep at **`0.1.0-alpha.3`** via GitHub Actions OIDC (`publish.yml`, `pnpm publish`, dist-tag `alpha`). `0.1.0-alpha.2` Vue/Angular/Svelte bootstrap artifacts are **superseded**. Pack validation asserts packed dependency metadata contains no `workspace:` protocol.
 
-```text
-new package created (DND-FX.2/3/4)
-  → pack validation (existing-folder discovery)
-  → npm package created on the @dndgem org
-  → Trusted Publisher: GitHub Actions / davideagosti-dev/dndgem / publish.yml
-  → publish.yml --filter for that package
-  → check-publish-workflow already requires filters for existing packages
-  → first real OIDC publish at DND-FX.6 (master, dry_run false, dist-tag alpha)
-```
-
-Do **not** add `--filter` lines for packages that do not exist. Do not publish from DND-FX.1. `scripts/package-topology.mjs` is the allowlist.
+Do **not** add `--filter` lines for packages that do not exist. `scripts/package-topology.mjs` is the allowlist.
 
 ## Historical Stage B external gates (resolved)
 
@@ -208,5 +198,6 @@ Authoritative Stage A register: `docs/releases/dnd-2.5-stage-a-readiness.md`.
 - **DND-2.3:** Developer guides + CI promotion policy (GitHub CI on develop → master only).
 - **DND-2.5:** Public Alpha LIVE — `@dndgem/{core,dom,react}@0.1.0-alpha.0` under dist-tag `alpha`.
 - **DND-3.5:** Phase 3 Auto-Layout Alpha LIVE — `@dndgem/{core,dom,react}@0.1.0-alpha.1` under dist-tag `alpha` via Trusted Publishing / OIDC.
+- **DND-FX.6:** Cross-Framework Alpha LIVE — `@dndgem/{core,dom,react,vue,angular,svelte}@0.1.0-alpha.3` under dist-tag `alpha` via Trusted Publishing / OIDC. `0.1.0-alpha.2` superseded.
 
 Repository visibility (private → public) remains a **separate** gate from npm Alpha.

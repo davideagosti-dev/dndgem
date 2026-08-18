@@ -20,9 +20,9 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 ## Current status
 
 - Technical MVP (Phase 1, DND-1.1 → DND-1.8) is **CLOSED**.
-- Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE**. Official channel: **`0.1.0-alpha.1` / `@alpha`** (first Alpha was `0.1.0-alpha.0`).
+- Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE**. Official channel: **`0.1.0-alpha.3` / `@alpha`** (Phase 3 Auto-Layout was `0.1.0-alpha.1`; first Alpha was `0.1.0-alpha.0`; `0.1.0-alpha.2` is superseded).
 - **Phase 3 — Adaptive Auto-Layout** is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `@alpha`). Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**. DND-3.1–DND-3.5 COMPLETE. Minimal public `createAutoLayoutProposal` + session/provider `autoLayout` ([auto-layout-engine.md](./auto-layout-engine.md)). Release notes: [0.1.0-alpha.1](../releases/0.1.0-alpha.1.md).
-- **Framework Expansion Gate** is **ACTIVE** (unnumbered; **not** Phase 4). **DND-FX.1–FX.5 COMPLETE.** **DND-FX.6 NEXT** (not started). See [framework-expansion-planning-audit.md](./framework-expansion-planning-audit.md), [framework-adapter-contract.md](./framework-adapter-contract.md).
+- **Framework Expansion Gate** is **COMPLETE** (unnumbered; **not** Phase 4). **DND-FX.1–FX.6 COMPLETE.** Valid public Alpha: **`0.1.0-alpha.3` / `@alpha`**. See [framework-expansion-planning-audit.md](./framework-expansion-planning-audit.md), [framework-adapter-contract.md](./framework-adapter-contract.md).
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
 - `@dndgem/core` evaluates placements as `VALID` / `DEGRADED` / `INVALID` with deterministic scoring (DND-1.3).
@@ -33,7 +33,7 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 - DND-1.8 adds reproducible Core benchmarks, an acceptance matrix, and a Technical MVP closure report.
 - DND-2.1–DND-2.5 complete (engineering baseline through Public Alpha release gate, plus post-release DA62 / `dndgem.dev` follow-ups).
 
-**Technical MVP:** CLOSED · **Public Alpha:** LIVE (`0.1.0-alpha.1` / `@alpha`) · **Phase 3:** COMPLETE / RELEASED · **Framework Expansion:** ACTIVE (DND-FX.1–FX.5 COMPLETE; DND-FX.6 NEXT)
+**Technical MVP:** CLOSED · **Public Alpha:** LIVE (`0.1.0-alpha.3` / `@alpha`) · **Phase 3:** COMPLETE / RELEASED · **Framework Expansion:** COMPLETE (DND-FX.1–FX.6)
 
 Developer journey: [../guides/README.md](../guides/README.md).
 See [auto-layout-contract.md](./auto-layout-contract.md) for the Phase 3 Auto-Layout contract (DND-3.1).
@@ -55,7 +55,7 @@ See [../technical-mvp/closure-report.md](../technical-mvp/closure-report.md) for
 @dndgem/dom
      ▲
      │
-@dndgem/react   (+ in-repo unpublished `@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`)
+@dndgem/react   ·   @dndgem/vue   ·   @dndgem/angular   ·   @dndgem/svelte
 ```
 
 Consumers (playground/examples/compat fixtures) use public package exports only. Next.js / Nuxt / SvelteKit fixtures consume `@dndgem/react` / `@dndgem/vue` / `@dndgem/svelte` respectively — they are not adapter packages.
@@ -65,7 +65,7 @@ Consumers (playground/examples/compat fixtures) use public package exports only.
 - Deterministic Auto-Layout product (Phase 3 — **RELEASED** in `0.1.0-alpha.1`)
 - AI inference (Phase 4)
 - Billing / cloud SaaS
-- Vue / Angular / Svelte implementations (Framework Expansion Gate — Vue is DND-FX.2 COMPLETE, Angular is DND-FX.3 COMPLETE, Svelte is DND-FX.4 COMPLETE; all three in-repo unpublished)
+- Vue / Angular / Svelte implementations (Framework Expansion Gate — **COMPLETE**; published `0.1.0-alpha.3`)
 - Flutter implementation (separate track)
 - Custom native DnD engine
 
