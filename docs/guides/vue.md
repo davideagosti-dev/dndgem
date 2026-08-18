@@ -174,7 +174,7 @@ Put visual styles first; spread `item.style` last so DnDGem owns `position`, `le
 - `import '@dndgem/vue'` is safe without `window` / `document` (package test). Import does not create a session.
 - Do **not** call `createLayoutSession` during server render. The provider creates the session only after real HTMLElements exist on the client.
 - The component may render before DnDGem is `ready` (empty layout styles are allowed). This is **not** server-side resolved-layout hydration.
-- **Nuxt is not validated.** That is DND-FX.5. Do not claim Nuxt or full SSR support.
+- **Nuxt is a validated compatibility environment** for `@dndgem/vue` (no `@dndgem/nuxt`, no Nuxt plugin). Session creation remains client-only. Do not claim server-side layout solving. See [Meta-frameworks](./meta-frameworks.md).
 
 ## Accessibility
 

@@ -19,4 +19,18 @@ describe('@dndgem/svelte server render', () => {
     expect(typeof globalThis.window).toBe('undefined');
     expect(typeof globalThis.document).toBe('undefined');
   });
+
+  it('compiled dist provider wrapper is import-safe in Node without a session', async () => {
+    expect(typeof globalThis.window).toBe('undefined');
+    expect(typeof globalThis.document).toBe('undefined');
+
+    const session = await import('@dndgem/dom');
+    const createSpy = vi.spyOn(session, 'createLayoutSession');
+    const { DnDGemProvider } = await import('../dist/index.server.js');
+
+    expect(typeof DnDGemProvider).toBe('function');
+    expect(createSpy).not.toHaveBeenCalled();
+    expect(typeof globalThis.window).toBe('undefined');
+    expect(typeof globalThis.document).toBe('undefined');
+  });
 });

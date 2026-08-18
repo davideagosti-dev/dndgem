@@ -15,6 +15,9 @@
     "@dndgem/example-vue",
     "@dndgem/example-angular",
     "@dndgem/example-svelte",
+    "@dndgem/compat-next",
+    "@dndgem/compat-nuxt",
+    "@dndgem/compat-sveltekit",
     "@dndgem/vue",
     "@dndgem/angular",
     "@dndgem/svelte"

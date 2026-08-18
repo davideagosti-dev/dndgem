@@ -6,7 +6,7 @@
 - DnDGem is in **0.x Alpha**. This is not SemVer 1.0.
 - Current published version: **`0.1.0-alpha.1`**.
 - The current publishable packages are a Changesets **fixed** group (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`) so they remain version-aligned.
-- Future public JS/DOM adapters (`@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`) join the fixed group at **DND-FX.6**. `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` exist in-repo at placeholder `0.0.0` and are Changesets-**ignored** until that sprint (**CHANGESET DEFERRED TO FX.6**).
+- Future public JS/DOM adapters (`@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`) join the fixed group at **DND-FX.6**. `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` exist in-repo at placeholder `0.0.0` and are Changesets-**ignored** until that sprint (**CHANGESET DEFERRED TO FX.6**). Meta-framework fixtures (`@dndgem/compat-next`, `@dndgem/compat-nuxt`, `@dndgem/compat-sveltekit`) are also ignored and must never be published.
 - The repository is in Changesets **pre** mode with tag `alpha` (`.changeset/pre.json`).
 
 `getCorePackageInfo` / `getDomPackageInfo` / `getReactPackageInfo` / `getVuePackageInfo` / `getAngularPackageInfo` expose the same version string as `package.json`. After `changeset version`, run `pnpm sync-package-info` so source constants match.

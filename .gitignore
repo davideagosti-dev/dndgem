@@ -11,9 +11,13 @@ coverage/
 # Turbo
 .turbo/
 
-# Vite
+# Vite / meta-framework fixtures
 apps/**/dist/
 examples/**/dist/
+.next/
+.nuxt/
+.output/
+.svelte-kit/
 
 # Playwright
 /test-results/

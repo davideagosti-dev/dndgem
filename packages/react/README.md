@@ -48,7 +48,7 @@ export function App() {
 
 The container must be a positioned containing block (`relative` is enough). Items receive `position: absolute` plus `left` / `top` / `width` / `height` from the resolved layout. Merge `item.style` after consumer visual styles so DnDGem owns the layout properties.
 
-Unmounting the provider disposes the shared DOM session. Layout inline styles are not restored. Importing this package does not require `window`; rendering `DnDGemProvider` is a client-side mount (not full SSR/hydration).
+Unmounting the provider disposes the shared DOM session. Layout inline styles are not restored. Importing this package does not require `window`; rendering `DnDGemProvider` is a client-side mount (not server-side layout solving). Next.js App Router is a validated compatibility environment: put `'use client'` on the integration root ([meta-frameworks](../../docs/guides/meta-frameworks.md)).
 
 Keyboard drag is **DEFERRED** for Public Alpha. Pointer drag and Escape cancel are supported.
 

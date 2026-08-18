@@ -8,7 +8,7 @@
 | Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                     |
 | Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                   |
 | Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)          |
-| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1–FX.4 COMPLETE; DND-FX.5 NEXT) |
+| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1–FX.5 COMPLETE; DND-FX.6 NEXT) |
 | Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                                |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
@@ -375,9 +375,9 @@ DND-FX.3 Angular Adapter                                         COMPLETE
         ↓
 DND-FX.4 Svelte Adapter                                          COMPLETE
         ↓
-DND-FX.5 Meta-Framework Compatibility Validation                 NEXT
+DND-FX.5 Meta-Framework Compatibility Validation                 COMPLETE
         ↓
-DND-FX.6 Cross-Framework Alpha Release Gate                      PLANNED
+DND-FX.6 Cross-Framework Alpha Release Gate                      NEXT
 ```
 
 Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, not packages. Default: no `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`.
@@ -418,16 +418,18 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 ### DND-FX.5 — Meta-Framework Compatibility Validation
 
 - **Objective:** Next.js / Nuxt / SvelteKit as environments (import-safe, client session, dispose on navigation).
-- **Out of scope:** Dedicated meta-framework packages.
+- **Out of scope:** Dedicated meta-framework packages (`@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`); server-side layout solving; Angular Universal; npm publish.
 - **Dependencies:** Corresponding base adapters (React already exists for Next.js).
-- **Status:** NEXT (not started)
+- **Closure:** Production fixtures prove client-session integration, SSR import/render safety, hydration, and route dispose/recreate without dedicated packages. Dedicated `@dndgem/next|nuxt|sveltekit` packages are **not required**.
+- **Status:** **COMPLETE**
+- **Reference:** [Meta-frameworks](./guides/meta-frameworks.md), [ADR-0017](./adr/ADR-0017-ssr-browser-runtime-boundary.md).
 
 ### DND-FX.6 — Cross-Framework Alpha Release Gate
 
 - **Objective:** Join existing public adapters to the Changesets fixed group; Trusted Publishing; `@alpha` publish.
 - **Out of scope:** `latest` dist-tag; public repository; AI.
 - **Dependencies:** DND-FX.2–FX.5 as approved.
-- **Status:** PLANNED
+- **Status:** **NEXT** (not started)
 
 ---
 

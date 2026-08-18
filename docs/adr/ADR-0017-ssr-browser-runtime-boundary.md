@@ -60,7 +60,7 @@ Unmount, destruction, and route leave call `session.dispose()`. Route return rec
 | Nuxt        | Client-only usage of `@dndgem/vue`; no `@dndgem/nuxt`                           |
 | SvelteKit   | Client-only board; no `@dndgem/sveltekit`                                       |
 
-DND-FX.5 validates these environments. Docs may describe the patterns; they must not market “full SSR support.”
+DND-FX.5 validates these environments with private fixtures (`apps/compat-next`, `apps/compat-nuxt`, `apps/compat-sveltekit`). Docs may describe the patterns; they must not market “full SSR support” or server-side layout solving.
 
 ## Alternatives
 

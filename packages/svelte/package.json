@@ -31,6 +31,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "node": "./dist/index.server.js",
       "svelte": "./dist/index.js",
       "import": "./dist/index.js"
     }

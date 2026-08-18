@@ -27,7 +27,7 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 | Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                     |
 | Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**                   |
 | Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)          |
-| Framework Expansion Gate       | **ACTIVE** (DND-FX.1–FX.4 COMPLETE; DND-FX.5 NEXT) |
+| Framework Expansion Gate       | **ACTIVE** (DND-FX.1–FX.5 COMPLETE; DND-FX.6 NEXT) |
 
 Current official npm Alpha: **`0.1.0-alpha.1`**. Install with dist-tag **`alpha` only** (`npm install @dndgem/react@alpha`). Release notes: [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md) (`latest` still points here and is **not** the Alpha channel).
 
@@ -121,7 +121,7 @@ export function App() {
 2. [Developer guides](docs/guides/README.md) — full journey (in-repo)
 3. [Quick Start](docs/guides/quick-start.md)
 4. [Core Concepts](docs/guides/core-concepts.md)
-5. Validated examples: `examples/react`, `examples/vanilla`, `examples/vue`, `examples/angular`, `examples/svelte` (Vue, Angular, and Svelte are workspace-only)
+5. Validated examples: `examples/react`, `examples/vanilla`, `examples/vue`, `examples/angular`, `examples/svelte` (Vue, Angular, and Svelte are workspace-only). Meta-framework fixtures: `apps/compat-next`, `apps/compat-nuxt`, `apps/compat-sveltekit` (see [Meta-frameworks](docs/guides/meta-frameworks.md)).
 6. Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/)
 
 ## Browser support
@@ -140,7 +140,7 @@ Details: [Accessibility](docs/guides/accessibility.md)
 
 - Desktop Chromium / Firefox / WebKit validated; mobile not validated
 - Pointer drag + Escape cancel supported; keyboard drag deferred
-- `DnDGemProvider` is client-mount only (no full SSR claim; see ADR-0017)
+- `DnDGemProvider` is client-mount only (no server-side layout claim; Next.js / Nuxt / SvelteKit are validated compatibility environments — [Meta-frameworks](docs/guides/meta-frameworks.md))
 - Auto-Layout is opt-in on `@alpha` (`0.1.0-alpha.1`); default off
 - Vue, Angular, and Svelte adapters are implemented in this repository (`@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`) and **not yet published**
 - No AI, no Flutter adapter yet

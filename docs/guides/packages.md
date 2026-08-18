@@ -24,6 +24,9 @@
 - **Angular app** → depend on workspace `@dndgem/angular` until DND-FX.6 publishes it (`@angular/core@^20 \|\| ^21 \|\| ^22` peer).
 - **Svelte 5 app** → depend on workspace `@dndgem/svelte` until DND-FX.6 publishes it (`svelte@^5` peer).
 - **Vanilla / no framework adapter** → depend on `@dndgem/dom` (and `@dndgem/core` if you import Core types/helpers directly).
+- **Next.js App Router** → `@dndgem/react` with `'use client'` on the board root. No `@dndgem/next`.
+- **Nuxt** → workspace `@dndgem/vue` until DND-FX.6. No `@dndgem/nuxt`.
+- **SvelteKit** → workspace `@dndgem/svelte` until DND-FX.6. No `@dndgem/sveltekit`.
 - **Custom headless tooling** → `@dndgem/core` alone (`solveLayout`, `evaluateLayout`, constraint factories).
 
 Do not import `@dnd-kit/*` to use DnDGem. The drag provider is internal to `@dndgem/dom`.

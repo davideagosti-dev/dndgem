@@ -46,7 +46,7 @@ pnpm --filter @dndgem/example-svelte dev
 
 `DnDGemProvider` is renderless: it provides board scope and renders the children snippet with **no wrapper DOM**. Host registration uses Svelte actions (`use:dndgemContainer`, `use:dndgemItem={'id'}`). Multiple independent boards on one page are supported (one provider per board).
 
-The container must be a positioned containing block (`relative` is enough). Destroying the provider disposes the shared DOM session. Layout inline styles are not restored. Importing this package does not require `window`; `createLayoutSession` runs only after real host elements exist (not full SSR/hydration). **SvelteKit is not validated** (DND-FX.5).
+The container must be a positioned containing block (`relative` is enough). Destroying the provider disposes the shared DOM session. Layout inline styles are not restored. Importing this package does not require `window`; `createLayoutSession` runs only after real host elements exist (not server-side layout solving). **SvelteKit is a validated compatibility environment** (no `@dndgem/sveltekit`; see [meta-frameworks](../../docs/guides/meta-frameworks.md)).
 
 Keyboard drag is **DEFERRED**. Pointer drag and Escape cancel are supported.
 

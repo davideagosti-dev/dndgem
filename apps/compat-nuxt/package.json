@@ -1,0 +1,26 @@
+{
+  "name": "@dndgem/compat-nuxt",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --host 127.0.0.1 --port 5182",
+    "build": "nuxt build",
+    "start": "node ./start-server.mjs",
+    "start:e2e": "nuxt build && node ./start-server.mjs",
+    "lint": "eslint probe.ts compat-board.ts --max-warnings=0",
+    "typecheck": "nuxt prepare && nuxt typecheck",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@dndgem/vue": "workspace:*",
+    "nuxt": "^3.17.7",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7",
+    "vue-tsc": "^2.2.12"
+  }
+}

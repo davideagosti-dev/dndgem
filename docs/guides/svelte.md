@@ -126,8 +126,8 @@ Destroying the provider calls `session.dispose()`. Observers and drag bindings a
 - `import '@dndgem/svelte'` is safe without `window` / `document` (package test). Import does not create a session.
 - Do **not** call `createLayoutSession` during server render. The provider creates the session only after real HTMLElements exist on the client. Svelte actions do not run during SSR.
 - The component may render before DnDGem is `ready` (empty layout styles are allowed). This is **not** server-side resolved-layout hydration.
-- Provider session creation is gated on client `onMount` (Svelte actions also do not run during SSR).
-- **SvelteKit is not validated.** That is DND-FX.5. Do not claim SvelteKit or full SSR support.
+- Provider session creation is gated on client `onMount` (`$effect.root`). Svelte actions also do not run during SSR. SvelteKit production SSR of the compiled provider is validated (DND-FX.5).
+- **SvelteKit is a validated compatibility environment** for `@dndgem/svelte` (no `@dndgem/sveltekit`, no SvelteKit plugin). Provider markup may SSR; the session starts after client mount. Do not claim server-side layout solving. See [Meta-frameworks](./meta-frameworks.md).
 
 ## Accessibility
 
