@@ -178,30 +178,22 @@ jobs:
         # No NODE_AUTH_TOKEN / NPM_TOKEN — pnpm publish packs then invokes npm publish,
         # which exchanges the GitHub OIDC token via the configured Trusted Publisher.
         # Do not pass --provenance: repository is PRIVATE; provenance is unavailable.
-        # DND-FX.1: add --filter lines only when the adapter package exists.
-        # DND-FX.6: Trusted Publisher + first real OIDC publish for new adapters.
+        # Exact-version guard: skip name@version that already exists; fail on unexpected
+        # registry errors. 0.0.0 is refused by the prior step and again by the guard.
         run: |
           unset NODE_AUTH_TOKEN NPM_TOKEN || true
-          pnpm --filter @dndgem/core publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
-          pnpm --filter @dndgem/dom publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
-          pnpm --filter @dndgem/react publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
-          # @dndgem/vue, @dndgem/angular, and @dndgem/svelte skip real publish while still at workspace placeholder 0.0.0.
-          # DND-FX.6: first OIDC publish requires npm Trusted Publisher on each new package.
-          VUE_VERSION="$(node -p "require('./packages/vue/package.json').version")"
-          if [ "$VUE_VERSION" != "0.0.0" ]; then
-            pnpm --filter @dndgem/vue publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
-          else
-            echo "Skipping @dndgem/vue real publish (version 0.0.0; deferred to DND-FX.6)"
-          fi
-          ANGULAR_VERSION="$(node -p "require('./packages/angular/package.json').version")"
-          if [ "$ANGULAR_VERSION" != "0.0.0" ]; then
-            pnpm --filter @dndgem/angular publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
-          else
-            echo "Skipping @dndgem/angular real publish (version 0.0.0; deferred to DND-FX.6)"
-          fi
-          SVELTE_VERSION="$(node -p "require('./packages/svelte/package.json').version")"
-          if [ "$SVELTE_VERSION" != "0.0.0" ]; then
-            pnpm --filter @dndgem/svelte publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
-          else
-            echo "Skipping @dndgem/svelte real publish (version 0.0.0; deferred to DND-FX.6)"
-          fi
+          set -euo pipefail
+          for folder in core dom react vue angular svelte; do
+            action="$(node scripts/npm-publish-guard.mjs --folder "$folder")"
+            case "$action" in
+              skip)
+                ;;
+              publish)
+                pnpm --filter "@dndgem/${folder}" publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
+                ;;
+              *)
+                echo "npm publish guard returned unexpected action: '$action'"
+                exit 1
+                ;;
+            esac
+          done

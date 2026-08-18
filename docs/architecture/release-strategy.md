@@ -82,6 +82,7 @@ Workflow: `.github/workflows/publish.yml`
 - Non-dry-run publish is refused unless the workflow runs on `master`
 - Actual `pnpm publish` is skipped when `dry_run` is true
 - Actual publish is refused while package versions are still `0.0.0`
+- Real publish is **idempotent**: `scripts/npm-publish-guard.mjs` queries `name@version` and **skips** when that exact version already exists. Only registry `E404` means not published. Auth, network, or malformed responses fail the job. Dist-tags are not mutated by the skip path.
 
 ### Authentication (Trusted Publishing / OIDC)
 
