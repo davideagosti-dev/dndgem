@@ -2,19 +2,19 @@
 
 Authoritative **current** public identity for DnDGem. Prefer this over older FinGem-AI parent branding in current-state docs and surfaces.
 
-| Field             | Value                                                      |
-| ----------------- | ---------------------------------------------------------- |
-| Product           | DnDGem                                                     |
-| Brand attribution | DnDGem by DA62                                             |
-| Parent / family   | DA62                                                       |
-| DA62 public site  | https://davideagosti.com                                   |
-| Canonical product | https://dndgem.dev                                         |
-| Playground        | https://playground.dndgem.dev                              |
-| npm scope         | `@dndgem` (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`) |
-| Product support   | `support@dndgem.dev` · https://dndgem.dev/support/         |
-| Security          | `security@dndgem.dev`                                      |
-| Repository        | `davideagosti-dev/dndgem` (**PRIVATE**)                    |
-| Published Alpha   | `0.1.0-alpha.1` / dist-tag `alpha`                         |
+| Field             | Value                                                  |
+| ----------------- | ------------------------------------------------------ |
+| Product           | DnDGem                                                 |
+| Brand attribution | DnDGem by DA62                                         |
+| Parent / family   | DA62                                                   |
+| DA62 public site  | https://davideagosti.com                               |
+| Canonical product | https://dndgem.dev                                     |
+| Playground        | https://playground.dndgem.dev                          |
+| npm scope         | `@dndgem` (core, dom, react, vue, angular, svelte)     |
+| Product support   | `support@dndgem.dev` · https://dndgem.dev/support/     |
+| Security          | `security@dndgem.dev`                                  |
+| Repository        | `davideagosti-dev/dndgem` (**PRIVATE**)                |
+| Published Alpha   | `0.1.0-alpha.2` / dist-tag `alpha` (pre-publish ready) |
 
 DA62 is a public brand identity. Do not invent legal entity suffixes (Ltd, LLC, Inc.) unless separately documented.
 

@@ -31,7 +31,7 @@ See [Packages](./packages.md).
 npm install @dndgem/react@alpha
 ```
 
-This installs Public Alpha **`0.1.0-alpha.1`** via dist-tag **`alpha`**. Always use `@alpha` — do not treat bare installs / `latest` as a stable channel (`latest` still points at historical `0.1.0-alpha.0`). See [release notes](../releases/0.1.0-alpha.1.md).
+This installs Public Alpha **`0.1.0-alpha.2`** via dist-tag **`alpha`**. Always use `@alpha` — do not treat bare installs / `latest` as a stable channel (`latest` still points at historical `0.1.0-alpha.0`). See [release notes](../releases/0.1.0-alpha.2.md).
 
 Public product home: [https://dndgem.dev](https://dndgem.dev). Hosted Quick Start mirror: [https://dndgem.dev/docs/quick-start/](https://dndgem.dev/docs/quick-start/).
 

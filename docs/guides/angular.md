@@ -4,12 +4,11 @@
 
 ## Publication status
 
-```text
-IMPLEMENTED IN REPOSITORY
-NOT YET PUBLISHED ON NPM
-```
+Public Alpha **`0.1.0-alpha.2`** on npm dist-tag **`alpha`**.
 
-Current published Alpha (`0.1.0-alpha.1` / `@alpha`) remains `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` only. Do **not** `npm install @dndgem/angular`. Use this workspace until DND-FX.6.
+```bash
+npm install @dndgem/angular@alpha
+```
 
 ## Public API
 

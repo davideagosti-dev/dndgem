@@ -22,14 +22,14 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 
 ## Project status
 
-| Phase                          | Status                                             |
-| ------------------------------ | -------------------------------------------------- |
-| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                     |
-| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**                   |
-| Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)          |
-| Framework Expansion Gate       | **ACTIVE** (DND-FX.1–FX.5 COMPLETE; DND-FX.6 NEXT) |
+| Phase                          | Status                                                   |
+| ------------------------------ | -------------------------------------------------------- |
+| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                           |
+| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**                         |
+| Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                |
+| Framework Expansion Gate       | **ACTIVE** (DND-FX.1–FX.5 COMPLETE; **DND-FX.6 ACTIVE**) |
 
-Current official npm Alpha: **`0.1.0-alpha.1`**. Install with dist-tag **`alpha` only** (`npm install @dndgem/react@alpha`). Release notes: [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md) (`latest` still points here and is **not** the Alpha channel).
+Current official npm Alpha: **`0.1.0-alpha.2`** (cross-framework; pre-publish ready in repository). Install with dist-tag **`alpha`** (`npm install @dndgem/react@alpha`, `@dndgem/vue@alpha`, etc.). Release notes: [0.1.0-alpha.2](docs/releases/0.1.0-alpha.2.md). Previous: [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md) (`latest` still points here and is **not** the Alpha channel).
 
 Public product home: **https://dndgem.dev** (see [Public site & domain hosting](docs/architecture/public-site.md)).
 
@@ -41,33 +41,35 @@ Public product home: **https://dndgem.dev** (see [Public site & domain hosting](
 @dndgem/dom           DOM measurement, resize, drag, layout session
      ▲
 @dndgem/react         React adapter (peerDependency: react)
-@dndgem/vue           Vue 3 adapter (peerDependency: vue) — in-repo, not on npm yet
-@dndgem/angular       Angular adapter (peerDependency: @angular/core) — in-repo, not on npm yet
-@dndgem/svelte        Svelte 5 adapter (peerDependency: svelte) — in-repo, not on npm yet
+@dndgem/vue           Vue 3 adapter (peerDependency: vue)
+@dndgem/angular       Angular adapter (peerDependency: @angular/core)
+@dndgem/svelte        Svelte 5 adapter (peerDependency: svelte)
 ```
 
-| Need                        | Package                                      |
-| --------------------------- | -------------------------------------------- |
-| Headless solve / evaluate   | `@dndgem/core`                               |
-| Vanilla browser integration | `@dndgem/dom`                                |
-| React integration           | `@dndgem/react`                              |
-| Vue integration             | `@dndgem/vue` (workspace; not published)     |
-| Angular integration         | `@dndgem/angular` (workspace; not published) |
-| Svelte integration          | `@dndgem/svelte` (workspace; not published)  |
+| Need                        | Package           |
+| --------------------------- | ----------------- |
+| Headless solve / evaluate   | `@dndgem/core`    |
+| Vanilla browser integration | `@dndgem/dom`     |
+| React integration           | `@dndgem/react`   |
+| Vue integration             | `@dndgem/vue`     |
+| Angular integration         | `@dndgem/angular` |
+| Svelte integration          | `@dndgem/svelte`  |
+
+Validated meta-framework environments (not npm packages): Next.js → `@dndgem/react`; Nuxt → `@dndgem/vue`; SvelteKit → `@dndgem/svelte`.
 
 ## Installation
 
 ### Public Alpha (npm)
 
 ```bash
-# React (pulls @dndgem/dom + @dndgem/core)
 npm install @dndgem/react@alpha
-
-# Vanilla / DOM
+npm install @dndgem/vue@alpha
+npm install @dndgem/angular@alpha
+npm install @dndgem/svelte@alpha
 npm install @dndgem/dom@alpha
 ```
 
-Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.1`). This is not a stable release; do not treat `latest` as a stable channel (`latest` still points at historical `0.1.0-alpha.0`).
+Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.2`). This is not a stable release; do not treat `latest` as a stable channel (`latest` still points at historical `0.1.0-alpha.0`).
 
 ### Local workspace
 

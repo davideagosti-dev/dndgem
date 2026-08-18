@@ -136,7 +136,7 @@ jobs:
         run: |
           node --input-type=module -e "
           import { readFileSync } from 'node:fs';
-          for (const name of ['core', 'dom', 'react']) {
+          for (const name of ['core', 'dom', 'react', 'vue', 'angular', 'svelte']) {
             const version = JSON.parse(readFileSync('packages/' + name + '/package.json', 'utf8')).version;
             if (version === '0.0.0') {
               console.error(name + ' is still 0.0.0. Run changeset version before a real publish.');
@@ -185,8 +185,8 @@ jobs:
           pnpm --filter @dndgem/core publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/dom publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
           pnpm --filter @dndgem/react publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
-          # @dndgem/vue, @dndgem/angular, and @dndgem/svelte are in-repo but unversioned (0.0.0) until DND-FX.6.
-          # Trusted Publisher for these packages is not configured in DND-FX.2 / DND-FX.3 / DND-FX.4.
+          # @dndgem/vue, @dndgem/angular, and @dndgem/svelte skip real publish while still at workspace placeholder 0.0.0.
+          # DND-FX.6: first OIDC publish requires npm Trusted Publisher on each new package.
           VUE_VERSION="$(node -p "require('./packages/vue/package.json').version")"
           if [ "$VUE_VERSION" != "0.0.0" ]; then
             pnpm --filter @dndgem/vue publish --no-git-checks --tag "${{ inputs.dist_tag }}" --access public
