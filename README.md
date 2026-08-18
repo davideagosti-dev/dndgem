@@ -29,7 +29,7 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 | Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                |
 | Framework Expansion Gate       | **ACTIVE** (DND-FX.1–FX.5 COMPLETE; **DND-FX.6 ACTIVE**) |
 
-Current official npm Alpha: **`0.1.0-alpha.2`** (cross-framework; pre-publish ready in repository). Install with dist-tag **`alpha`** (`npm install @dndgem/react@alpha`, `@dndgem/vue@alpha`, etc.). Release notes: [0.1.0-alpha.2](docs/releases/0.1.0-alpha.2.md). Previous: [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md) (`latest` still points here and is **not** the Alpha channel).
+Current official npm Alpha: **`0.1.0-alpha.3`** (cross-framework; pre-publish ready in repository). Install with dist-tag **`alpha`** (`npm install @dndgem/react@alpha`, `@dndgem/vue@alpha`, etc.). Release notes: [0.1.0-alpha.3](docs/releases/0.1.0-alpha.3.md). Previous: [0.1.0-alpha.2](docs/releases/0.1.0-alpha.2.md) (superseded), [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md) (`latest` still points here and is **not** the Alpha channel).
 
 Public product home: **https://dndgem.dev** (see [Public site & domain hosting](docs/architecture/public-site.md)).
 
@@ -69,7 +69,7 @@ npm install @dndgem/svelte@alpha
 npm install @dndgem/dom@alpha
 ```
 
-Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.2`). This is not a stable release; do not treat `latest` as a stable channel (`latest` still points at historical `0.1.0-alpha.0`).
+Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.3`). This is not a stable release; do not treat `latest` as a stable channel (`latest` still points at historical `0.1.0-alpha.0`).
 
 ### Local workspace
 

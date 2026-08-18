@@ -14,7 +14,7 @@ import { DnDGemItemDirective } from './item.directive.js';
 
 export const ANGULAR_PACKAGE_NAME = '@dndgem/angular' as const;
 
-export const ANGULAR_PACKAGE_VERSION = '0.1.0-alpha.2' as const;
+export const ANGULAR_PACKAGE_VERSION = '0.1.0-alpha.3' as const;
 
 /**
  * Marker used by workspace smoke tests to prove public exports and workspace links.

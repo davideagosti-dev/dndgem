@@ -4,7 +4,7 @@
 
 ## Publication status
 
-Public Alpha **`0.1.0-alpha.2`** on npm dist-tag **`alpha`**.
+Public Alpha **`0.1.0-alpha.3`** on npm dist-tag **`alpha`**.
 
 ```bash
 npm install @dndgem/angular@alpha

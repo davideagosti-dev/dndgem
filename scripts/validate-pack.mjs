@@ -81,6 +81,52 @@ function assert(condition, message) {
   }
 }
 
+const WORKSPACE_PROTOCOL = /^workspace:/;
+const RELEASED_SEMVER = /^[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
+
+function collectPackedDependencyEntries(packedPkgJson) {
+  const entries = [];
+  for (const field of ['dependencies', 'optionalDependencies', 'peerDependencies']) {
+    const deps = packedPkgJson[field];
+    if (deps && typeof deps === 'object') {
+      for (const [name, value] of Object.entries(deps)) {
+        entries.push({ field, name, value });
+      }
+    }
+  }
+  return entries;
+}
+
+function assertNoWorkspaceProtocolInPackedMetadata(packedPkgJson, pkgName) {
+  for (const { field, name, value } of collectPackedDependencyEntries(packedPkgJson)) {
+    assert(
+      typeof value !== 'string' || !WORKSPACE_PROTOCOL.test(value),
+      `${pkgName} packed ${field}.${name} must not contain workspace protocol (got ${value})`,
+    );
+  }
+  assert(
+    !JSON.stringify(packedPkgJson).includes('"workspace:'),
+    `${pkgName} packed package.json must not contain workspace: protocol in release metadata`,
+  );
+}
+
+function assertResolvedDndgemDependency(packedPkgJson, pkgName, depName, expectedVersion) {
+  const version = packedPkgJson.dependencies?.[depName];
+  if (version === undefined) {
+    return;
+  }
+  assert(
+    typeof version === 'string' &&
+      !WORKSPACE_PROTOCOL.test(version) &&
+      RELEASED_SEMVER.test(version),
+    `${pkgName} packed dependency ${depName} must be a released semver, got ${version}`,
+  );
+  assert(
+    version === expectedVersion,
+    `${pkgName} packed ${depName} should align to ${expectedVersion}, got ${version}`,
+  );
+}
+
 function parsePackJson(raw) {
   const start = raw.indexOf('{');
   assert(start !== -1, `pnpm pack did not print JSON: ${raw}`);
@@ -152,6 +198,14 @@ function packOne(dir) {
     !JSON.stringify(packedPkgJson).includes('fingem-ai.com'),
     `${pkg.name} packed package.json must not contain fingem-ai.com`,
   );
+  assertNoWorkspaceProtocolInPackedMetadata(packedPkgJson, pkg.name);
+  if (dir === 'dom') {
+    assertResolvedDndgemDependency(packedPkgJson, pkg.name, '@dndgem/core', pkg.version);
+  }
+  if (dir === 'react' || dir === 'vue' || dir === 'angular' || dir === 'svelte') {
+    assertResolvedDndgemDependency(packedPkgJson, pkg.name, '@dndgem/core', pkg.version);
+    assertResolvedDndgemDependency(packedPkgJson, pkg.name, '@dndgem/dom', pkg.version);
+  }
 
   const packedReadme = execFileSync('tar', ['-xOf', resolved, 'package/README.md'], {
     encoding: 'utf8',
