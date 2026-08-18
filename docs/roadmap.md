@@ -2,14 +2,14 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                                                   |
-| ------- | ------------------------------- | -------------------------------------------------------- |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                                               |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                           |
-| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                         |
-| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                |
-| —       | Framework Expansion Gate        | **ACTIVE** (DND-FX.1–FX.5 COMPLETE; **DND-FX.6 ACTIVE**) |
-| Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                                      |
+| Phase   | Name                            | Status                                                           |
+| ------- | ------------------------------- | ---------------------------------------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                                                       |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                                   |
+| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                                 |
+| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                        |
+| —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; valid public Alpha `0.1.0-alpha.3`) |
+| Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                                              |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -18,6 +18,8 @@ Phase 1 proved stable, deterministic, content-aware, constraint-driven adaptive 
 Phase 2 is **COMPLETE**: first npm Public Alpha `0.1.0-alpha.0` shipped under dist-tag `alpha`.
 
 Phase 3 is **COMPLETE / RELEASED**: Adaptive Auto-Layout is live on npm as **`0.1.0-alpha.1`** (`@alpha`), published via Trusted Publishing / OIDC (see [0.1.0-alpha.1](./releases/0.1.0-alpha.1.md)).
+
+Framework Expansion is **COMPLETE**: Cross-framework Alpha **`0.1.0-alpha.3`** is the valid public release (`@alpha`). `0.1.0-alpha.2` is **superseded**. Phase 4 remains **not started**.
 
 Repository remains **PRIVATE** by explicit decision. npm packages are public; GitHub source/Issues may be inaccessible externally.
 
@@ -377,7 +379,7 @@ DND-FX.4 Svelte Adapter                                          COMPLETE
         ↓
 DND-FX.5 Meta-Framework Compatibility Validation                 COMPLETE
         ↓
-DND-FX.6 Cross-Framework Alpha Release Gate                      ACTIVE
+DND-FX.6 Cross-Framework Alpha Release Gate                      COMPLETE
 ```
 
 Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, not packages. Default: no `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`.
@@ -429,7 +431,9 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 - **Objective:** Join existing public adapters to the Changesets fixed group; Trusted Publishing; `@alpha` publish.
 - **Out of scope:** `latest` dist-tag; public repository; AI.
 - **Dependencies:** DND-FX.2–FX.5 as approved.
-- **Status:** **NEXT** (not started)
+- **Closure:** Six-package lockstep **`0.1.0-alpha.3`** published via GitHub Actions OIDC (`publish.yml` / pnpm publish). `0.1.0-alpha.2` is **SUPERSEDED** (Vue/Angular/Svelte bootstrap artifacts contained unresolved `workspace:*`). External registry install and consumer smokes **PASS**. Pack validation asserts no `workspace:` in packed metadata. `latest` was not mutated.
+- **Status:** **COMPLETE**
+- **Reference:** [0.1.0-alpha.3](./releases/0.1.0-alpha.3.md), [0.1.0-alpha.2](./releases/0.1.0-alpha.2.md) (superseded).
 
 ---
 
@@ -462,7 +466,7 @@ After Public Alpha:
 ```text
            ┌→ Adaptive Auto-Layout (Phase 3) COMPLETE
 Public Alpha
-           ├→ Framework Expansion Gate (JS/DOM adapters)  ACTIVE
+           ├→ Framework Expansion Gate (JS/DOM adapters)  COMPLETE
            └→ Flutter architecture / renderer work (Core-contract dependent)
 ```
 

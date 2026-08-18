@@ -10,7 +10,7 @@ This package owns the domain model, content constraints, validity evaluation, sc
 - Quick Start: https://dndgem.dev/docs/quick-start/
 - Support: https://dndgem.dev/support/
 
-Public Alpha version: **`0.1.0-alpha.1`** (official npm dist-tag **`alpha`**).
+Public Alpha version: **`0.1.0-alpha.3`** (official npm dist-tag **`alpha`**).
 
 ```bash
 npm install @dndgem/core@alpha

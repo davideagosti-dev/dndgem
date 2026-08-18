@@ -14,7 +14,7 @@ JS/DOM topology (DND-FX.1 / [ADR-0016](../adr/ADR-0016-framework-package-topolog
 | `@dndgem/dom`  | `@dndgem/core`; browser/DOM APIs; `@dnd-kit/dom` (internal)                                    | adapters, React/Vue/Angular/Svelte                        |
 | JS/DOM adapter | `@dndgem/dom`; `@dndgem/core` when public types require it; UI framework as **peerDependency** | other adapters; `@dnd-kit/*`                              |
 
-Current adapter: `@dndgem/react` (published). `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are **implemented in the repository** (DND-FX.2 / DND-FX.3 / DND-FX.4) and **not yet published**.
+Current adapters: `@dndgem/react`, `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are **published** on `@alpha` (`0.1.0-alpha.3`).
 
 Meta-framework fixtures (`apps/compat-next`, `apps/compat-nuxt`, `apps/compat-sveltekit`) are private unpublished apps, not `packages/` adapters.
 

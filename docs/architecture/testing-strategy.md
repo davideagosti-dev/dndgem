@@ -83,7 +83,7 @@ Jobs:
 
 1. **promote-gate** — on `pull_request` only; fails if head ≠ `develop`
 2. **quality** — install, `format:check`, lint, typecheck, `check:boundaries`, tests, build, `test:pack`, playground + example + meta-framework fixture builds, `check:docs-links`, `bench:core:semantics`
-3. **browser-e2e** — job name remains `browser-e2e` for stable branch-protection matching. FX.6 promotion (`pull_request` / `workflow_call`) records policy and succeeds **without** installing Playwright browsers or rerunning the Chromium / Firefox / WebKit matrix. The same 108-test matrix is the mandatory **local** pre-push gate. `workflow_dispatch` still runs the full GitHub matrix, including Next.js / Nuxt / SvelteKit production servers.
+3. **browser-e2e** — job name remains `browser-e2e` for stable branch-protection matching. After FX.6, promotion (`pull_request` / `workflow_call`) records policy and succeeds **without** installing Playwright browsers or rerunning the Chromium / Firefox / WebKit matrix. The same 108-test matrix is the mandatory **local** pre-push gate. `workflow_dispatch` still runs the full GitHub matrix, including Next.js / Nuxt / SvelteKit production servers.
 
 `bench:core:semantics` validates fixture determinism and stats helpers. It does **not** enforce historical Ryzen median latencies and does **not** overwrite `benchmarks/results/technical-mvp.json` (that write path is `pnpm bench:core:stats`, local only).
 

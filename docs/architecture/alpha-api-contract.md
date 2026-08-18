@@ -66,8 +66,8 @@ Module shape:
 | SSR / hydration            | Module import is safe without `window`. Client session after mount. No server-side layout claim. See [ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md). |
 | Next.js / Nuxt / SvelteKit | Validated **compatibility environments** (DND-FX.5). Not packages. Client-session integration only. See [meta-frameworks.md](../guides/meta-frameworks.md).       |
 | React                      | Peer `react@^18 \|\| ^19`. Client mount required for `DnDGemProvider`. Next.js App Router: `'use client'` on the integration root.                                |
-| Vue                        | Peer `vue@^3.5.0` (in-repo unpublished). Client mount required. Nuxt is a validated compatibility environment (no `@dndgem/nuxt`).                                |
-| Angular                    | Peer `@angular/core@^20 \|\| ^21 \|\| ^22` (in-repo unpublished). Client mount required. Universal **not** validated. Zoneless-compatible.                        |
+| Vue                        | Peer `vue@^3.5.0`. Client mount required. Nuxt is a validated compatibility environment (no `@dndgem/nuxt`).                                                      |
+| Angular                    | Peer `@angular/core@^20 \|\| ^21 \|\| ^22`. Client mount required. Universal **not** validated. Zoneless-compatible.                                              |
 | Positioning                | Container is a positioned containing block; items are absolutely positioned from resolved geometry                                                                |
 
 Repository metadata `repository.url` points at `https://github.com/davideagosti-dev/dndgem`. The GitHub repository is currently **PRIVATE**; those links are source-of-truth for maintainers, not a claim of public accessibility. Package `homepage` / public support point at **https://dndgem.dev** (see [Public site & domain hosting](./public-site.md)).
@@ -225,9 +225,9 @@ Hook contract:
 - `useDnDGem()` → `{ state, ready }`
 - All three throw if used outside `DnDGemProvider`
 
-## `@dndgem/vue` public exports (in-repository, unpublished)
+## `@dndgem/vue` public exports
 
-Runtime (workspace only until DND-FX.6):
+Runtime (published `0.1.0-alpha.3` / `@alpha`):
 
 - `VUE_PACKAGE_NAME`, `VUE_PACKAGE_VERSION`, `getVuePackageInfo`
 - `DnDGemProvider` (renderless board owner)
@@ -246,7 +246,7 @@ Types:
 - `createDragInteraction` / `createLayoutSession` (consume via `@dndgem/dom` if needed)
 - `@dnd-kit/*`
 
-Same behavioral contract as React/DOM: `autoLayout?: boolean` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `vue@^3.5.0`. **Not** part of published `0.1.0-alpha.1`. Nuxt is a validated compatibility environment (no `@dndgem/nuxt`).
+Same behavioral contract as React/DOM: `autoLayout?: boolean` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `vue@^3.5.0`. Published on `@alpha` as of `0.1.0-alpha.3` (not in `0.1.0-alpha.1`). Nuxt is a validated compatibility environment (no `@dndgem/nuxt`).
 
 Composable contract:
 
@@ -255,9 +255,9 @@ Composable contract:
 - `useDnDGem()` → `{ state, ready }` (`shallowRef` / `computed`)
 - All three throw if used outside `DnDGemProvider`
 
-## `@dndgem/angular` public exports (in-repository, unpublished)
+## `@dndgem/angular` public exports
 
-Runtime (workspace only until DND-FX.6):
+Runtime (published `0.1.0-alpha.3` / `@alpha`):
 
 - `ANGULAR_PACKAGE_NAME`, `ANGULAR_PACKAGE_VERSION`, `getAngularPackageInfo`
 - `DnDGemBoardDirective` (`[dndgemBoard]`, board-local provider)
@@ -278,7 +278,7 @@ Types:
 - `createDragInteraction` / `createLayoutSession` (consume via `@dndgem/dom` if needed)
 - `@dnd-kit/*`
 
-Same behavioral contract as React/DOM/Vue: `autoLayout` default off; output/callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `@angular/core@^20.0.0 || ^21.0.0 || ^22.0.0`. **Not** part of published `0.1.0-alpha.1`. Angular Universal is not validated.
+Same behavioral contract as React/DOM/Vue: `autoLayout` default off; output/callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `@angular/core@^20.0.0 || ^21.0.0 || ^22.0.0`. Published on `@alpha` as of `0.1.0-alpha.3` (not in `0.1.0-alpha.1`). Angular Universal is not validated.
 
 Directive contract:
 
@@ -287,9 +287,9 @@ Directive contract:
 - `injectDnDGem()` / `DnDGemBoard` throw or fail DI outside `dndgemBoard`
 - `state` / `ready` are Angular signals
 
-## `@dndgem/svelte` public exports (in-repository, unpublished)
+## `@dndgem/svelte` public exports
 
-Runtime (workspace only until DND-FX.6):
+Runtime (published `0.1.0-alpha.3` / `@alpha`):
 
 - `SVELTE_PACKAGE_NAME`, `SVELTE_PACKAGE_VERSION`, `getSveltePackageInfo`
 - `DnDGemProvider` (renderless board owner)
@@ -308,7 +308,7 @@ Types:
 - `createDragInteraction` / `createLayoutSession` (consume via `@dndgem/dom` if needed)
 - `@dnd-kit/*`
 
-Same behavioral contract as React/DOM/Vue/Angular: `autoLayout` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `svelte@^5.0.0`. **Not** part of published `0.1.0-alpha.1`. SvelteKit is a validated compatibility environment (no `@dndgem/sveltekit`).
+Same behavioral contract as React/DOM/Vue/Angular: `autoLayout` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `svelte@^5.0.0`. Published on `@alpha` as of `0.1.0-alpha.3` (not in `0.1.0-alpha.1`). SvelteKit is a validated compatibility environment (no `@dndgem/sveltekit`).
 
 Action / snippet contract:
 
@@ -345,11 +345,10 @@ Alpha documents errors and validity honestly. Developer guides and troubleshooti
 
 ## Versioning
 
-Published package versions are **`0.1.0-alpha.1`**. Changesets owns further prereleases. Do not hand-edit `packages/*/package.json` versions.
+Published package versions are **`0.1.0-alpha.3`**. Changesets owns further prereleases. Do not hand-edit `packages/*/package.json` versions.
 
 - Official dist-tag: `alpha` (always install with `@alpha`; `latest` is not the Alpha channel)
-- `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` are a **fixed** Changesets group and stay version-aligned
-- `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are implemented in-repo at workspace placeholder `0.0.0` and are **ignored** by Changesets until **DND-FX.6** (join the fixed group then). **CHANGESET DEFERRED TO FX.6.**
+- `@dndgem/core`, `@dndgem/dom`, `@dndgem/react`, `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are a **fixed** Changesets group and stay version-aligned
 - `get*PackageInfo().version` must match that package's `package.json` `version`
 
 See [release-strategy.md](./release-strategy.md).

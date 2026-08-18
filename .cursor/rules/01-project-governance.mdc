@@ -11,15 +11,15 @@ Phase 0 is CLOSED. Do not reopen gates without a hard contradiction (stop, docum
 
 Phase 1 Technical MVP is **CLOSED** (DND-1.1 → DND-1.8). Do not reopen Phase 1 product/architecture decisions without a hard contradiction.
 
-Phase 2 Public Alpha Readiness is **PASS** — Public Alpha **LIVE**. Current official channel: **`0.1.0-alpha.1` / `@alpha`**. Historical first Alpha: `0.1.0-alpha.0` (still on `latest`, which is not the Alpha channel).
+Phase 2 Public Alpha Readiness is **PASS** — Public Alpha **LIVE**. Current official channel: **`0.1.0-alpha.3` / `@alpha`**. Historical first Alpha: `0.1.0-alpha.0`. `latest` is **not** the Alpha channel (Core/DOM/React still `0.1.0-alpha.0`; Vue/Angular/Svelte still `0.1.0-alpha.2` from first-package npm assignment). Do not mutate `latest` without separate authorization.
 
 Phase 3 — Adaptive Auto-Layout is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `@alpha`). See `docs/architecture/phase-3-planning-audit.md` and `docs/roadmap.md`.
 
 **DND-3.1** COMPLETE. **DND-3.2** COMPLETE. **DND-3.3** COMPLETE. **DND-3.4** COMPLETE. **DND-3.5** COMPLETE. Engine docs: `docs/architecture/auto-layout-engine.md`. Contract: `docs/architecture/auto-layout-contract.md` + ADR-0014. Release notes: `docs/releases/0.1.0-alpha.1.md`.
 
-Framework Expansion Gate is **ACTIVE** (unnumbered; **not** Phase 4). Sprint map: `docs/architecture/framework-expansion-planning-audit.md`. Contract: `docs/architecture/framework-adapter-contract.md`. ADRs 0015–0017.
+Framework Expansion Gate is **COMPLETE** (unnumbered; **not** Phase 4). Sprint map: `docs/architecture/framework-expansion-planning-audit.md`. Contract: `docs/architecture/framework-adapter-contract.md`. ADRs 0015–0017.
 
-**DND-FX.1** COMPLETE (contract gate). **DND-FX.2** Vue **COMPLETE**. **DND-FX.3** Angular **COMPLETE**. **DND-FX.4** Svelte **COMPLETE**. **DND-FX.5** meta-frameworks **COMPLETE**. **DND-FX.6** release **ACTIVE**.
+**DND-FX.1** COMPLETE (contract gate). **DND-FX.2** Vue **COMPLETE**. **DND-FX.3** Angular **COMPLETE**. **DND-FX.4** Svelte **COMPLETE**. **DND-FX.5** meta-frameworks **COMPLETE**. **DND-FX.6** Cross-Framework Alpha Release Gate **COMPLETE** (`0.1.0-alpha.3` / `@alpha`; `0.1.0-alpha.2` superseded).
 
 Phase 4 remains **AI-Assisted Layout Intelligence** (not started). Do not renumber it.
 
@@ -27,7 +27,7 @@ Phase 4 remains **AI-Assisted Layout Intelligence** (not started). Do not renumb
 
 - Feature → develop: full **local** quality gate; GitHub CI not required / should not run.
 - Develop → master: GitHub `promote-gate` + `quality` must run and pass before merge.
-- FX.6: the full Playwright Chromium / Firefox / WebKit matrix is mandatory **locally** before pushing `develop`. GitHub `browser-e2e` remains a named status / manual dispatch job and does not reinstall browsers or rerun that matrix on promotion.
+- After FX.6: the full Playwright Chromium / Firefox / WebKit matrix is mandatory **locally** before pushing `develop`. GitHub `browser-e2e` remains a named status / manual dispatch job and does not reinstall browsers or rerun that matrix on promotion.
 
 ## Hard exclusions (until an explicit sprint requires them)
 
@@ -47,7 +47,7 @@ Cursor MUST NOT introduce:
 - npm publication / repository visibility changes unless the active sprint explicitly requires it
 - Broader-than-minimal Public Auto-Layout API freeze unless an explicit review requires it
 
-DND-FX.2 is **COMPLETE**. `@dndgem/vue` is in-repository and unpublished. DND-FX.3 is **COMPLETE**. `@dndgem/angular` is in-repository and unpublished. DND-FX.4 is **COMPLETE**. `@dndgem/svelte` is in-repository and unpublished. Do not implement SvelteKit / Nuxt / Next packages. DND-FX.5 is **COMPLETE** (private compatibility fixtures; dedicated meta-framework packages not required). DND-FX.6 is **NEXT** and must not start without authorization. DND-FX.1 remains closed.
+DND-FX.2 is **COMPLETE**. `@dndgem/vue` is published on `@alpha` (`0.1.0-alpha.3`). DND-FX.3 is **COMPLETE**. `@dndgem/angular` is published on `@alpha` (`0.1.0-alpha.3`). DND-FX.4 is **COMPLETE**. `@dndgem/svelte` is published on `@alpha` (`0.1.0-alpha.3`). Do not implement SvelteKit / Nuxt / Next packages. DND-FX.5 is **COMPLETE** (private compatibility fixtures; dedicated meta-framework packages not required). DND-FX.6 is **COMPLETE**. DND-FX.1 remains closed. Do not reopen Framework Expansion except for an authorized follow-up.
 
 Flutter compatibility may be considered architecturally (types, ADRs), but not implemented until scheduled.
 
@@ -55,7 +55,7 @@ AI is optional and outside the critical path; it follows deterministic Auto-Layo
 
 Repository remains PRIVATE unless an explicit release decision changes visibility.
 
-Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.1` is the current Auto-Layout Alpha). Do not document bare / `latest` installs as the supported Alpha path.
+Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.3` is the current Cross-Framework Alpha). Do not document bare / `latest` installs as the supported Alpha path.
 
 ## Phase 3 binding refinements
 
