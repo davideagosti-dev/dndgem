@@ -1,6 +1,6 @@
 {
   "name": "@dndgem/vue",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "Vue adapter for DnDGem — thin lifecycle and registration over @dndgem/dom.",
   "author": "DA62",
   "license": "MIT",

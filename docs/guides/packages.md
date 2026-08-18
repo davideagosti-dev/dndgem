@@ -61,4 +61,4 @@ npm install @dndgem/svelte@alpha
 npm install @dndgem/dom@alpha
 ```
 
-Published version: `0.1.0-alpha.2`. Always use dist-tag **`alpha`**. Do not rely on bare `npm install @dndgem/*` (`latest` still points at historical `0.1.0-alpha.0` and is not a stable channel).
+Published version: `0.1.0-alpha.3`. Always use dist-tag **`alpha`**. Do not rely on bare `npm install @dndgem/*` (`latest` still points at historical `0.1.0-alpha.0` and is not a stable channel).

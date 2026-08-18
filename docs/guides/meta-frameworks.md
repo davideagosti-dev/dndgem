@@ -33,7 +33,7 @@ Each environment was checked for:
 - isomorphic / universal DnD runtime
 - every SSR mode or hosting adapter
 - Angular Universal (not part of this validation)
-- published Vue / Angular / Svelte adapters on npm `@alpha` (`0.1.0-alpha.2`)
+- published Vue / Angular / Svelte adapters on npm `@alpha` (`0.1.0-alpha.3`)
 
 ```text
 MODULE IMPORT SAFE  ≠  SERVER-SIDE DNDGEM SESSION
