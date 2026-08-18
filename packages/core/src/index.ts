@@ -13,7 +13,7 @@
 
 export const CORE_PACKAGE_NAME = '@dndgem/core' as const;
 
-export const CORE_PACKAGE_VERSION = '0.1.0-alpha.1' as const;
+export const CORE_PACKAGE_VERSION = '0.1.0-alpha.2' as const;
 
 /**
  * Marker used by workspace smoke tests to prove the public export resolves.

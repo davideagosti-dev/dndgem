@@ -3,17 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DnDGem — Content-Aware Adaptive Layout Engine</title>
+    <title>DnDGem — Adaptive drag-and-drop layouts for modern JavaScript frameworks</title>
     <meta
       name="description"
-      content="DnDGem by DA62 — drag, resize, and adapt dashboard layouts with content-aware constraints. Public Alpha."
+      content="DnDGem by DA62 — content-aware adaptive layouts for Vanilla/DOM, React, Vue, Angular, and Svelte. Public Alpha."
     />
     <link rel="canonical" href="https://dndgem.dev/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="DnDGem — Content-Aware Adaptive Layout Engine" />
+    <meta
+      property="og:title"
+      content="DnDGem — Adaptive drag-and-drop layouts for modern JavaScript frameworks"
+    />
     <meta
       property="og:description"
-      content="Drag. Resize. Adapt. Without breaking your content. Public Alpha by DA62."
+      content="Content-aware adaptive layouts for React, Vue, Angular, Svelte, and Vanilla DOM. Public Alpha by DA62."
     />
     <meta property="og:url" content="https://dndgem.dev/" />
     <meta name="twitter:card" content="summary" />
@@ -39,26 +42,53 @@
       <section class="hero">
         <p class="hero-mark">DnDGem</p>
         <p class="hero-by">by DA62</p>
-        <h1>Drag. Resize. Adapt. Without breaking your content.</h1>
+        <h1>Adaptive drag-and-drop layouts for modern JavaScript frameworks.</h1>
         <p class="hero-lead">
           Content-aware adaptive layout for dashboard-style UIs. Geometric fit is not the same as
           useful content — DnDGem evaluates both.
         </p>
         <div class="cta-row">
-          <a class="button button-primary" href="/docs/quick-start/">Quick Start</a>
+          <a class="button button-primary" href="/docs/">Documentation</a>
           <a class="button button-secondary" href="https://playground.dndgem.dev/"
             >Open Playground</a
           >
         </div>
-        <p class="status-pill">Public Alpha live · 0.1.0-alpha.0 · channel @alpha</p>
+        <p class="status-pill">Public Alpha · 0.1.0-alpha.2 · channel @alpha</p>
+      </section>
+
+      <section class="section" aria-labelledby="frameworks">
+        <h2 id="frameworks">Supported integrations</h2>
+        <div class="grid grid-3">
+          <article class="tile">
+            <h3>Vanilla / DOM</h3>
+            <p><code>@dndgem/dom</code> + <code>@dndgem/core</code></p>
+          </article>
+          <article class="tile">
+            <h3>React</h3>
+            <p><code>@dndgem/react</code></p>
+          </article>
+          <article class="tile">
+            <h3>Vue</h3>
+            <p><code>@dndgem/vue</code></p>
+          </article>
+          <article class="tile">
+            <h3>Angular</h3>
+            <p><code>@dndgem/angular</code></p>
+          </article>
+          <article class="tile">
+            <h3>Svelte</h3>
+            <p><code>@dndgem/svelte</code></p>
+          </article>
+        </div>
+        <p>
+          Validated environments (not npm packages):
+          <strong>Next.js</strong> with <code>@dndgem/react</code>, <strong>Nuxt</strong> with
+          <code>@dndgem/vue</code>, <strong>SvelteKit</strong> with <code>@dndgem/svelte</code>.
+        </p>
       </section>
 
       <section class="section" aria-labelledby="distinction">
         <h2 id="distinction">Fit ≠ useful</h2>
-        <p>
-          DnDGem solves layouts with content constraints, deterministic selection, and adaptive
-          reflow. A placement can be geometrically valid and still miss usefulness thresholds.
-        </p>
         <pre class="distinction">GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL</pre>
       </section>
 
@@ -66,30 +96,66 @@
         <h2 id="install">Install (Public Alpha)</h2>
         <p>
           Always install with the <code>@alpha</code> dist-tag. Bare / <code>latest</code> installs
-          are not the supported Alpha path while only a prerelease is published.
+          are not the supported Alpha path.
         </p>
-        <pre class="install"><code># React (pulls @dndgem/dom + @dndgem/core)
-npm install @dndgem/react@alpha
-
-# Vanilla / DOM
+        <pre class="install"><code>npm install @dndgem/react@alpha
+npm install @dndgem/vue@alpha
+npm install @dndgem/angular@alpha
+npm install @dndgem/svelte@alpha
 npm install @dndgem/dom@alpha</code></pre>
       </section>
 
       <section class="section" aria-labelledby="packages">
-        <h2 id="packages">Packages</h2>
-        <div class="grid grid-3">
-          <article class="tile">
-            <h3><code>@dndgem/core</code></h3>
-            <p>Domain model, constraints, validity, scoring, deterministic solver.</p>
-          </article>
-          <article class="tile">
-            <h3><code>@dndgem/dom</code></h3>
-            <p>Measurement, resize observation, drag interaction, Vanilla layout session.</p>
-          </article>
-          <article class="tile">
-            <h3><code>@dndgem/react</code></h3>
-            <p>Thin React adapter — provider and hooks over the DOM session.</p>
-          </article>
+        <h2 id="packages">Package matrix</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Install</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>@dndgem/core</code></td>
+                <td>Domain, constraints, solver</td>
+                <td>Alpha 0.1.0-alpha.2</td>
+                <td><code>npm install @dndgem/core@alpha</code></td>
+              </tr>
+              <tr>
+                <td><code>@dndgem/dom</code></td>
+                <td>DOM session, drag, measurement</td>
+                <td>Alpha 0.1.0-alpha.2</td>
+                <td><code>npm install @dndgem/dom@alpha</code></td>
+              </tr>
+              <tr>
+                <td><code>@dndgem/react</code></td>
+                <td>React adapter</td>
+                <td>Alpha 0.1.0-alpha.2</td>
+                <td><code>npm install @dndgem/react@alpha</code></td>
+              </tr>
+              <tr>
+                <td><code>@dndgem/vue</code></td>
+                <td>Vue 3 adapter</td>
+                <td>Alpha 0.1.0-alpha.2</td>
+                <td><code>npm install @dndgem/vue@alpha</code></td>
+              </tr>
+              <tr>
+                <td><code>@dndgem/angular</code></td>
+                <td>Angular adapter</td>
+                <td>Alpha 0.1.0-alpha.2</td>
+                <td><code>npm install @dndgem/angular@alpha</code></td>
+              </tr>
+              <tr>
+                <td><code>@dndgem/svelte</code></td>
+                <td>Svelte 5 adapter</td>
+                <td>Alpha 0.1.0-alpha.2</td>
+                <td><code>npm install @dndgem/svelte@alpha</code></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -100,63 +166,21 @@ npm install @dndgem/dom@alpha</code></pre>
             <h3>Shipped</h3>
             <ul>
               <li>Content-aware constraints</li>
-              <li>Deterministic solving</li>
+              <li>Deterministic solving + opt-in Auto-Layout</li>
               <li>VALID / DEGRADED / INVALID</li>
-              <li>Responsive reflow</li>
-              <li>Pointer drag + Escape cancel</li>
-              <li>React and Vanilla / DOM</li>
+              <li>React, Vue, Angular, Svelte, Vanilla / DOM</li>
+              <li>Next.js, Nuxt, SvelteKit validated</li>
             </ul>
           </article>
           <article class="tile">
-            <h3>Browsers &amp; a11y</h3>
+            <h3>Not claimed</h3>
             <ul>
-              <li>Chromium / Firefox / WebKit: supported for Alpha</li>
-              <li>Mobile: not validated</li>
-              <li>Baseline focus + consumer ARIA preservation</li>
-              <li>Keyboard drag deferred</li>
-              <li>Screen-reader drag announcements deferred</li>
+              <li>Stable / v1 API</li>
+              <li>Server-side layout solving</li>
+              <li>Keyboard drag / SR announcements</li>
+              <li>Mobile / touch certified</li>
             </ul>
           </article>
-        </div>
-      </section>
-
-      <section class="section" aria-labelledby="limits">
-        <h2 id="limits">Known Alpha limitations</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Area</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>API stability</td>
-                <td>0.x Alpha — may break between prereleases</td>
-              </tr>
-              <tr>
-                <td>Keyboard / SR drag</td>
-                <td>Deferred</td>
-              </tr>
-              <tr>
-                <td>Mobile / SSR / large-N</td>
-                <td>Not validated / not established</td>
-              </tr>
-              <tr>
-                <td>Auto-Layout / AI / Flutter</td>
-                <td>Not implemented</td>
-              </tr>
-              <tr>
-                <td>Rendering model</td>
-                <td>Absolute positioning inside a positioned container</td>
-              </tr>
-              <tr>
-                <td>npm <code>latest</code></td>
-                <td>Currently aliases the sole Alpha prerelease — use <code>@alpha</code></td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </section>
 
@@ -165,7 +189,7 @@ npm install @dndgem/dom@alpha</code></pre>
         <div class="grid grid-3">
           <article class="tile">
             <h3><a href="/docs/">Documentation</a></h3>
-            <p>Developer entry for concepts, packages, and Alpha boundaries.</p>
+            <p>Framework guides, package matrix, SSR boundaries.</p>
           </article>
           <article class="tile">
             <h3><a href="/docs/quick-start/">Quick Start</a></h3>
@@ -173,7 +197,7 @@ npm install @dndgem/dom@alpha</code></pre>
           </article>
           <article class="tile">
             <h3><a href="https://playground.dndgem.dev/">Playground</a></h3>
-            <p>Interactive demo — no authentication. Provider URL remains available on Pages.</p>
+            <p>Interactive demo — no authentication.</p>
           </article>
         </div>
       </section>
@@ -191,8 +215,6 @@ npm install @dndgem/dom@alpha</code></pre>
         <a href="https://davideagosti.com">DA62</a>
         · MIT License · Support
         <a href="mailto:support@dndgem.dev">support@dndgem.dev</a>
-        · Security
-        <a href="mailto:security@dndgem.dev">security@dndgem.dev</a>
       </p>
     </footer>
   </body>

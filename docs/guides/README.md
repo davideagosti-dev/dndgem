@@ -2,7 +2,7 @@
 
 Authoritative Alpha developer journey for **DnDGem by DA62**.
 
-These guides document the **current public Alpha API** plus in-repository Framework Expansion adapters that are not yet on npm. Published examples use public package entrypoints (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`). `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are workspace-only until DND-FX.6.
+These guides document the **current public Alpha API** for all six published packages (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`, `@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`).
 
 ## Journey
 
@@ -15,7 +15,7 @@ Core Concepts
   ↓
 Packages
   ↓
-  React Guide  ·  Vue Guide (in-repo)  ·  Angular Guide (in-repo)  ·  Svelte Guide (in-repo)
+  React Guide  ·  Vue Guide  ·  Angular Guide  ·  Svelte Guide
   ·  Vanilla / DOM Guide  ·  Meta-frameworks (Next.js / Nuxt / SvelteKit)
   ↓
 Constraints & Validity
@@ -29,26 +29,26 @@ Performance & Limitations
 Alpha API Contract
 ```
 
-| Guide                                                 | Purpose                                          |
-| ----------------------------------------------------- | ------------------------------------------------ |
-| [Quick Start](./quick-start.md)                       | First working layout in ~10–15 minutes           |
-| [Core Concepts](./core-concepts.md)                   | Mental model: intent → evaluate → solve          |
-| [Packages](./packages.md)                             | Which package to install and why                 |
-| [React Guide](./react.md)                             | Provider, hooks, lifecycle                       |
-| [Vue Guide](./vue.md)                                 | Provider, composables, lifecycle (in-repo)       |
-| [Angular Guide](./angular.md)                         | Directives, board DI, signals (in-repo)          |
-| [Svelte Guide](./svelte.md)                           | Provider, actions, stores (in-repo, unpublished) |
-| [Meta-frameworks](./meta-frameworks.md)               | Next.js / Nuxt / SvelteKit compatibility         |
-| [Vanilla / DOM Guide](./vanilla.md)                   | `createLayoutSession` path                       |
-| [Constraints & Validity](./constraints.md)            | Hard vs useful; VALID / DEGRADED / INVALID       |
-| [Drag, Resize & Reflow](./drag-resize-reflow.md)      | Explicit intent vs previous-layout stability     |
-| [Troubleshooting](./troubleshooting.md)               | Common integration failures                      |
-| [Browser Support](./browser-support.md)               | Alpha Chromium / Firefox / WebKit matrix         |
-| [Accessibility](./accessibility.md)                   | Alpha a11y baseline and ownership split          |
-| [Limitations](./limitations.md)                       | Honest Alpha boundaries                          |
-| [Performance](./performance.md)                       | Contextualized Core solve evidence               |
-| [DX Findings](./dx-findings.md)                       | DND-2.3 authoring / DX register                  |
-| [Browser / A11y Findings](./browser-a11y-findings.md) | DND-2.4 evidence register                        |
+| Guide                                                 | Purpose                                      |
+| ----------------------------------------------------- | -------------------------------------------- |
+| [Quick Start](./quick-start.md)                       | First working layout in ~10–15 minutes       |
+| [Core Concepts](./core-concepts.md)                   | Mental model: intent → evaluate → solve      |
+| [Packages](./packages.md)                             | Which package to install and why             |
+| [React Guide](./react.md)                             | Provider, hooks, lifecycle                   |
+| [Vue Guide](./vue.md)                                 | Provider, composables, lifecycle             |
+| [Angular Guide](./angular.md)                         | Directives, board DI, signals                |
+| [Svelte Guide](./svelte.md)                           | Provider, actions, stores                    |
+| [Meta-frameworks](./meta-frameworks.md)               | Next.js / Nuxt / SvelteKit compatibility     |
+| [Vanilla / DOM Guide](./vanilla.md)                   | `createLayoutSession` path                   |
+| [Constraints & Validity](./constraints.md)            | Hard vs useful; VALID / DEGRADED / INVALID   |
+| [Drag, Resize & Reflow](./drag-resize-reflow.md)      | Explicit intent vs previous-layout stability |
+| [Troubleshooting](./troubleshooting.md)               | Common integration failures                  |
+| [Browser Support](./browser-support.md)               | Alpha Chromium / Firefox / WebKit matrix     |
+| [Accessibility](./accessibility.md)                   | Alpha a11y baseline and ownership split      |
+| [Limitations](./limitations.md)                       | Honest Alpha boundaries                      |
+| [Performance](./performance.md)                       | Contextualized Core solve evidence           |
+| [DX Findings](./dx-findings.md)                       | DND-2.3 authoring / DX register              |
+| [Browser / A11y Findings](./browser-a11y-findings.md) | DND-2.4 evidence register                    |
 
 Architecture / contract references (not the day-one path):
 
@@ -68,6 +68,6 @@ Architecture / contract references (not the day-one path):
 | **Public Alpha (npm)** | `npm install @dndgem/react@alpha` |
 | **This repository**    | Workspace / local packages        |
 
-Published version: `0.1.0-alpha.1`. Always use **`@alpha`**. Release notes: [0.1.0-alpha.1](../releases/0.1.0-alpha.1.md).
+Published version: `0.1.0-alpha.2`. Always use **`@alpha`**. Release notes: [0.1.0-alpha.2](../releases/0.1.0-alpha.2.md).
 
 Canonical public home: [https://dndgem.dev](https://dndgem.dev). Public Quick Start: [https://dndgem.dev/docs/quick-start/](https://dndgem.dev/docs/quick-start/). Support: [https://dndgem.dev/support/](https://dndgem.dev/support/).

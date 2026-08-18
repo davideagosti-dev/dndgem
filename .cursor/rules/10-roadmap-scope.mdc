@@ -30,7 +30,7 @@ Framework Expansion Gate is **unnumbered** (not Phase 4) and **ACTIVE**:
 3. DND-FX.3 Angular Adapter — **COMPLETE**
 4. DND-FX.4 Svelte Adapter — COMPLETE
 5. DND-FX.5 Meta-Framework Compatibility Validation — COMPLETE
-6. DND-FX.6 Cross-Framework Alpha Release Gate — NEXT
+6. DND-FX.6 Cross-Framework Alpha Release Gate — **ACTIVE**
 
 Authoritative records: `docs/architecture/framework-expansion-planning-audit.md`, `docs/architecture/framework-adapter-contract.md`, ADR-0015 / ADR-0016 / ADR-0017, `docs/roadmap.md`.
 
@@ -43,7 +43,11 @@ feature → develop
 = local Sprint Final Quality Gate only (no GitHub CI required)
 
 develop → master
-= full GitHub CI promotion gate (required)
+= GitHub promote-gate + quality verification (required)
++ mandatory local full Playwright matrix (Chromium/Firefox/WebKit) before develop push
+
+FX.6: GitHub does not reinstall browsers or rerun the 108-test matrix on promotion.
+      Dispatch CI manually to run browser-e2e on GitHub.
 ```
 
 Do not pull into active work unless the sprint explicitly requires it:

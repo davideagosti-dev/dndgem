@@ -2,29 +2,22 @@
 
 Thin Vue 3 adapter for **DnDGem** by **DA62**. Layout solving stays in `@dndgem/core`; measurement, drag, and style application stay in `@dndgem/dom`.
 
-## Status
+## Install (Public Alpha)
 
-```text
-IMPLEMENTED IN REPOSITORY
-NOT YET PUBLISHED ON NPM
+Public Alpha version: **`0.1.0-alpha.2`** (official npm dist-tag **`alpha`**).
+
+```bash
+npm install @dndgem/vue@alpha
 ```
 
-This package is the DND-FX.2 Framework Expansion adapter. It is **not** part of the currently published `0.1.0-alpha.1` set (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`). Do not `npm install @dndgem/vue` from the registry yet. Consume it from this workspace until DND-FX.6.
+Always use `@alpha`. Feedback: `support@dndgem.dev`.
 
 ## Start here
 
 - Website: https://dndgem.dev
 - Support: https://dndgem.dev/support/
 - Playground: https://playground.dndgem.dev/ (provider: https://dndgem-playground.pages.dev/)
-- Feedback: `support@dndgem.dev`
-
-## Workspace install
-
-```bash
-pnpm install
-pnpm build
-pnpm --filter @dndgem/example-vue dev
-```
+- Guide: [docs/guides/vue.md](../../docs/guides/vue.md)
 
 ```ts
 import { DnDGemProvider, useDnDGem, useDnDGemContainer, useDnDGemItem } from '@dndgem/vue';

@@ -4,9 +4,9 @@
 
 - Changesets owns version numbers and changelogs. Do not hand-edit `packages/*/package.json` versions.
 - DnDGem is in **0.x Alpha**. This is not SemVer 1.0.
-- Current published version: **`0.1.0-alpha.1`**.
-- The current publishable packages are a Changesets **fixed** group (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`) so they remain version-aligned.
-- Future public JS/DOM adapters (`@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`) join the fixed group at **DND-FX.6**. `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` exist in-repo at placeholder `0.0.0` and are Changesets-**ignored** until that sprint (**CHANGESET DEFERRED TO FX.6**). Meta-framework fixtures (`@dndgem/compat-next`, `@dndgem/compat-nuxt`, `@dndgem/compat-sveltekit`) are also ignored and must never be published.
+- Current published version: **`0.1.0-alpha.2`** (six-package fixed group).
+- The publishable packages are a Changesets **fixed** group (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`, `@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`) so they remain version-aligned.
+- Meta-framework fixtures (`@dndgem/compat-next`, `@dndgem/compat-nuxt`, `@dndgem/compat-sveltekit`) are ignored and must never be published.
 - The repository is in Changesets **pre** mode with tag `alpha` (`.changeset/pre.json`).
 
 `getCorePackageInfo` / `getDomPackageInfo` / `getReactPackageInfo` / `getVuePackageInfo` / `getAngularPackageInfo` expose the same version string as `package.json`. After `changeset version`, run `pnpm sync-package-info` so source constants match.
@@ -56,14 +56,14 @@ Use `pnpm changeset` on library work. Do not publish from a local machine unless
 ```text
 feature/*
     → develop          (local Sprint Final Quality Gate; no GitHub CI required)
-        → master       (full GitHub CI on develop → master PR must PASS)
+        → master       (GitHub promote-gate + quality must PASS; FX.6 browser matrix is local)
             → changeset version (0.1.0-alpha.x)
             → pack validation
             → workflow_dispatch publish (dist-tag alpha)
 ```
 
 - Feature → develop: authoritative **local** validation only (DND-2.3 CI policy).
-- Develop → master: authoritative **GitHub** CI (`quality` + `browser-e2e`) via `.github/workflows/ci.yml`.
+- Develop → master: independent GitHub verification (`promote-gate` + `quality`) via `.github/workflows/ci.yml`. FX.6: the full Playwright Chromium / Firefox / WebKit matrix is mandatory locally before pushing `develop`; GitHub `browser-e2e` does not reinstall browsers or rerun that matrix on promotion (`workflow_dispatch` still can).
 - Publish still re-invokes CI through `workflow_call` (compatible with the promotion-only automatic triggers).
 - `baseBranch` for Changesets is `master`.
 - DND-2.2 prepared the pipeline; it does **not** publish.

@@ -14,9 +14,9 @@ alwaysApply: false
 ## Phase 2 quality gates (DND-2.3+)
 
 - **Feature Sprint Gate (local, mandatory):** full local quality gate before feature completion/push
-  (`format:check`, lint, typecheck, boundaries, test, build, `test:pack`, docs links, playground/example builds, `test:e2e`, `bench:core:semantics`).
+  (`format:check`, lint, typecheck, boundaries, test, build, `test:pack`, docs links, playground/example builds, full `test:e2e` Chromium/Firefox/WebKit matrix, `bench:core:semantics`).
 - **Develop integration:** feature → develop does **not** require GitHub CI.
-- **Master Promotion Gate (GitHub, mandatory):** full CI on **develop → master** PRs only
-  (`.github/workflows/ci.yml`: `quality` + `browser-e2e`; `workflow_call` preserved for publish).
+- **Master Promotion Gate (GitHub, mandatory):** independent clean-environment verification on **develop → master** PRs only
+  (`.github/workflows/ci.yml`: `promote-gate` + `quality`). FX.6: GitHub `browser-e2e` remains a named status (manual `workflow_dispatch` still runs the matrix) but does **not** reinstall browsers or rerun the 108-test matrix on promotion; that matrix is the mandatory local pre-push gate.
 - Absolute hardware-specific latency medians are **not** CI hard failures.
 - See `docs/architecture/testing-strategy.md`.
