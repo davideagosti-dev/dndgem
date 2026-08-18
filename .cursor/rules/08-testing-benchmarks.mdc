@@ -17,6 +17,6 @@ alwaysApply: false
   (`format:check`, lint, typecheck, boundaries, test, build, `test:pack`, docs links, playground/example builds, full `test:e2e` Chromium/Firefox/WebKit matrix, `bench:core:semantics`).
 - **Develop integration:** feature → develop does **not** require GitHub CI.
 - **Master Promotion Gate (GitHub, mandatory):** independent clean-environment verification on **develop → master** PRs only
-  (`.github/workflows/ci.yml`: `promote-gate` + `quality`). FX.6: GitHub `browser-e2e` remains a named status (manual `workflow_dispatch` still runs the matrix) but does **not** reinstall browsers or rerun the 108-test matrix on promotion; that matrix is the mandatory local pre-push gate.
+  (`.github/workflows/ci.yml`: `promote-gate` + `quality`). After FX.6: GitHub `browser-e2e` remains a named status (manual `workflow_dispatch` still runs the matrix) but does **not** reinstall browsers or rerun the 108-test matrix on promotion; that matrix is the mandatory local pre-push gate.
 - Absolute hardware-specific latency medians are **not** CI hard failures.
 - See `docs/architecture/testing-strategy.md`.

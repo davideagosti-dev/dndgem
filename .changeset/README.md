@@ -6,9 +6,9 @@ This repository uses [Changesets](https://github.com/changesets/changesets) for 
 
 - Changesets owns versions and changelogs. Do not hand-edit `packages/*/package.json` versions.
 - The repo is in **pre** mode with tag `alpha` (`.changeset/pre.json`).
-- Current published version: **`0.1.0-alpha.1`**.
-- `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` are a **fixed** group.
-- Future public adapters join the fixed group at **DND-FX.6**. Do not add nonexistent packages to `.changeset/config.json`.
+- Current published version: **`0.1.0-alpha.3`**.
+- `@dndgem/core`, `@dndgem/dom`, `@dndgem/react`, `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are a **fixed** group.
+- Do not add nonexistent packages to `.changeset/config.json`.
 - Do not treat any package as stable `1.0` during Alpha.
 
 ## When to add a changeset

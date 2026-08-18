@@ -1,13 +1,13 @@
 # Framework Expansion Planning Audit — Decision Record
 
-**Status:** **PASSED WITH REFINEMENTS** — DND-FX.1–FX.5 **COMPLETE**; DND-FX.6 **NEXT** (not started)
+**Status:** **PASSED WITH REFINEMENTS** — DND-FX.1–FX.6 **COMPLETE**; valid public Alpha **`0.1.0-alpha.3`**
 
 **Product:** DnDGem by DA62  
 **Scope:** Framework Expansion Gate (JS/DOM adapters) — architecture / sprint mapping  
 **Entry gate:** **READY WITH REFINEMENTS** (closed by DND-FX.1)  
 **Sprint map:** **APPROVED** (6 sprints)
 
-This document is the authoritative record of the Framework Expansion Gate after the planning audit. Implementation of Vue / Angular / Svelte begins only when the matching `DND-FX.n` sprint is active.
+This document is the authoritative record of the Framework Expansion Gate after the planning audit. Vue / Angular / Svelte implementation sprints are **COMPLETE**; do not reopen them except for an authorized follow-up.
 
 Related: [roadmap.md](../roadmap.md), [framework-adapter-contract.md](./framework-adapter-contract.md), [ADR-0015](../adr/ADR-0015-universal-framework-adapter-contract.md), [ADR-0016](../adr/ADR-0016-framework-package-topology.md), [ADR-0017](../adr/ADR-0017-ssr-browser-runtime-boundary.md), [ADR-0007](../adr/ADR-0007-react-first-framework-agnostic.md), [ADR-0008](../adr/ADR-0008-flutter-compatibility-principle.md), [ADR-0013](../adr/ADR-0013-react-vanilla-integration-boundary.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md).
 
@@ -39,7 +39,7 @@ SPRINT COUNT:
 | **DND-FX.3** | Angular Adapter                                       | **APPROVED** | **COMPLETE**          |
 | **DND-FX.4** | Svelte Adapter                                        | **APPROVED** | **COMPLETE**          |
 | **DND-FX.5** | Meta-Framework Compatibility Validation               | **APPROVED** | **COMPLETE**          |
-| **DND-FX.6** | Cross-Framework Alpha Release Gate                    | **APPROVED** | **NEXT**              |
+| **DND-FX.6** | Cross-Framework Alpha Release Gate                    | **APPROVED** | **COMPLETE**          |
 
 ---
 
@@ -152,4 +152,4 @@ Phase 4 AI · Flutter implementation · Pin/Lock API · grouping / region DSL ·
 
 ## Next action
 
-**DND-FX.1**–**DND-FX.5** are **COMPLETE**. **DND-FX.6 — Cross-Framework Alpha Release Gate** is **NEXT** and must not start without authorization.
+**DND-FX.1**–**DND-FX.6** are **COMPLETE**. Framework Expansion Gate is **COMPLETE**. Valid public Alpha is **`0.1.0-alpha.3`** (`@alpha`). `0.1.0-alpha.2` is **superseded**. Phase 4 — AI-Assisted Layout Intelligence remains **not started**.

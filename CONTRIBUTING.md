@@ -4,7 +4,7 @@ Thanks for your interest in DnDGem.
 
 ## Project status
 
-DnDGem is in **early public Alpha**. Phase 1 Technical MVP is **CLOSED**. Framework Expansion Gate is **ACTIVE**: **DND-FX.1–FX.5 COMPLETE**. **DND-FX.6 is NEXT** (not started). Do not implement `@dndgem/next|nuxt|sveltekit` packages, AI, Flutter, or npm publish of unpublished adapters without an authorized sprint.
+DnDGem is in **early public Alpha**. Phase 1 Technical MVP is **CLOSED**. Framework Expansion Gate is **COMPLETE** (DND-FX.1–FX.6). Valid public Alpha is **`0.1.0-alpha.3`** (`@alpha`). Phase 4 is **not started**. Do not implement `@dndgem/next|nuxt|sveltekit` packages, AI, or Flutter without an authorized sprint.
 
 ## Development setup
 
