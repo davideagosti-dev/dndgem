@@ -102,7 +102,7 @@ short-lived publish token → npm registry
 ```
 
 - **No long-lived write token** is used on the primary publish path.
-- Each of `@dndgem/core`, `@dndgem/dom`, and `@dndgem/react` must have its own Trusted Publisher on npmjs.com pointing at:
+- Each of `@dndgem/core`, `@dndgem/dom`, `@dndgem/react`, `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` must have its own Trusted Publisher on npmjs.com pointing at:
   - Provider: GitHub Actions
   - Owner: `davideagosti-dev`
   - Repository: `dndgem`
@@ -128,9 +128,12 @@ Do **not** revoke `NPM_TOKEN` solely because the workflow YAML was migrated.
 Optional CLI equivalent (do not run without maintainer approval / 2FA):
 
 ```bash
-npm trust github @dndgem/core  --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
-npm trust github @dndgem/dom   --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
-npm trust github @dndgem/react --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
+npm trust github @dndgem/core     --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
+npm trust github @dndgem/dom      --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
+npm trust github @dndgem/react    --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
+npm trust github @dndgem/vue      --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
+npm trust github @dndgem/angular  --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
+npm trust github @dndgem/svelte   --repo davideagosti-dev/dndgem --file publish.yml --allow-publish
 ```
 
 (`npm trust` requires npm ≥ 11.15.0, package write access, and account 2FA.)
@@ -153,12 +156,12 @@ Release authority: repository maintainers via the dispatch UI. Rollback: npm dis
 
 OIDC Trusted Publishing and npm provenance are independent.
 
-| Capability                             | Status while repository is **PRIVATE**                                           |
-| -------------------------------------- | -------------------------------------------------------------------------------- |
-| Trusted Publishing (OIDC publish auth) | **SUPPORTED** (verified: `0.1.0-alpha.1` and `0.1.0-alpha.3`)                    |
-| npm provenance attestations            | **NOT AVAILABLE** for private repositories, even when publishing public packages |
+| Capability                             | Status                                                                                              |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Trusted Publishing (OIDC publish auth) | **SUPPORTED** (verified: `0.1.0-alpha.1` and `0.1.0-alpha.3`)                                       |
+| npm provenance attestations            | Unavailable while the repository was **PRIVATE**. May be reconsidered after public visibility only. |
 
-Do **not** pass `--provenance` while the repository remains private. Lack of provenance is **not** a Trusted Publishing blocker. Provenance may be reconsidered only after an explicit public-visibility decision.
+Do **not** pass `--provenance` until an explicit Product Owner decision enables it after the repository is public. Lack of provenance is **not** a Trusted Publishing blocker.
 
 ## npm scope
 
