@@ -22,6 +22,8 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 
 ## Project status
 
+DnDGem is **open source** (MIT). Development happens in this public GitHub repository. The project is **early Alpha**: APIs may change; this is not a stable 1.0 release.
+
 | Phase                          | Status                                                           |
 | ------------------------------ | ---------------------------------------------------------------- |
 | Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                                   |
@@ -31,7 +33,7 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 
 Current official npm Alpha: **`0.1.0-alpha.3`** (cross-framework; published). Install with dist-tag **`alpha`** (`npm install @dndgem/react@alpha`, `@dndgem/vue@alpha`, etc.). Release notes: [0.1.0-alpha.3](docs/releases/0.1.0-alpha.3.md). Previous: [0.1.0-alpha.2](docs/releases/0.1.0-alpha.2.md) (superseded), [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md). `latest` is **not** the Alpha channel (Core/DOM/React remain `0.1.0-alpha.0`; Vue/Angular/Svelte remain `0.1.0-alpha.2` from first-package npm assignment).
 
-Public product home: **https://dndgem.dev** (see [Public site & domain hosting](docs/architecture/public-site.md)).
+Public product home: **https://dndgem.dev** (see [Public site & domain hosting](docs/architecture/public-site.md)). Source: [github.com/davideagosti-dev/dndgem](https://github.com/davideagosti-dev/dndgem). Playground: **https://playground.dndgem.dev/**.
 
 ## Packages
 
@@ -170,10 +172,10 @@ pnpm --filter @dndgem/www build
 
 ## Feedback
 
+- Bugs and contribution discussion: [GitHub Issues](https://github.com/davideagosti-dev/dndgem/issues)
 - Product / Alpha developer feedback: **`support@dndgem.dev`**
 - Public support page: https://dndgem.dev/support/
-- Security: `security@dndgem.dev` (`SECURITY.md`)
-- GitHub Issues are not reachable to external Alpha users while this repository remains **PRIVATE**.
+- Security: `security@dndgem.dev` (`SECURITY.md`) — do not open public Issues for undisclosed vulnerabilities
 
 ## Development
 
