@@ -53,7 +53,7 @@ Flutter compatibility may be considered architecturally (types, ADRs), but not i
 
 AI is optional and outside the critical path; it follows deterministic Auto-Layout (Phase 4).
 
-Repository remains PRIVATE unless an explicit release decision changes visibility.
+Repository identity is **public open source** (`davideagosti-dev/dndgem`). GitHub visibility flip (PRIVATE → PUBLIC) requires an explicit Product Owner Visibility Gate — do not change visibility without that authorization.
 
 Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.3` is the current Cross-Framework Alpha). Do not document bare / `latest` installs as the supported Alpha path.
 

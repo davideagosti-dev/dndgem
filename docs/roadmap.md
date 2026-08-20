@@ -21,7 +21,7 @@ Phase 3 is **COMPLETE / RELEASED**: Adaptive Auto-Layout is live on npm as **`0.
 
 Framework Expansion is **COMPLETE**: Cross-framework Alpha **`0.1.0-alpha.3`** is the valid public release (`@alpha`). `0.1.0-alpha.2` is **superseded**. Phase 4 remains **not started**.
 
-Repository remains **PRIVATE** by explicit decision. npm packages are public; GitHub source/Issues may be inaccessible externally.
+During Phase 2 and through Framework Expansion, the GitHub repository remained **PRIVATE** by explicit decision while npm packages were public. After Alpha validation (`0.1.0-alpha.3`), the repository transitions to **public open-source** development so source, Issues, and history are transparent. Phase 4 remains planning-only until an authorized sprint starts.
 
 No committed calendar dates are attached to roadmap items.
 
