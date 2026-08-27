@@ -75,6 +75,11 @@ export default tseslint.config(
               message:
                 '@dndgem/core must remain renderer-agnostic and must not import @dndgem/dom.',
             },
+            {
+              name: '@dndgem/intelligence',
+              message:
+                '@dndgem/core must not depend on @dndgem/intelligence (dependency direction is intelligence → core).',
+            },
             ...adapterPackagePaths(),
             ...FRAMEWORK_RUNTIMES.map((runtime) => ({
               name: runtime.name,
@@ -86,6 +91,8 @@ export default tseslint.config(
             {
               group: [
                 '@dndgem/dom/*',
+                '@dndgem/intelligence',
+                '@dndgem/intelligence/*',
                 '@dndgem/react/*',
                 '@dndgem/vue/*',
                 '@dndgem/angular/*',
@@ -156,6 +163,41 @@ export default tseslint.config(
       ],
     },
   })),
+  {
+    files: ['packages/intelligence/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@dndgem/dom',
+              message: '@dndgem/intelligence must depend on Core only.',
+            },
+            ...adapterPackagePaths(),
+            ...FRAMEWORK_RUNTIMES.map((runtime) => ({
+              name: runtime.name,
+              message: `@dndgem/intelligence ${runtime.message}`,
+            })),
+            ...dndKitPaths('@dndgem/intelligence'),
+          ],
+          patterns: [
+            {
+              group: [
+                '@dndgem/dom/*',
+                '@dndgem/react/*',
+                '@dndgem/vue/*',
+                '@dndgem/angular/*',
+                '@dndgem/svelte/*',
+                '@dnd-kit/*',
+              ],
+              message: 'Forbidden import for @dndgem/intelligence.',
+            },
+          ],
+        },
+      ],
+    },
+  },
   {
     files: ['apps/**/*.{ts,tsx}', 'examples/**/*.{ts,tsx}'],
     languageOptions: {

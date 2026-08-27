@@ -139,9 +139,11 @@ Core remains framework-agnostic, renderer-agnostic, and deterministic.
 #### Auto-Layout compose (opt-in)
 
 ```ts
-const proposal = createAutoLayoutProposal({ intent, previous? });
+const proposal = createAutoLayoutProposal({ intent, previous?, automaticItemOrder? });
 const result = solveLayout({ intent: proposal.effectiveIntent, previous? });
 ```
+
+`automaticItemOrder` (optional, DND-4.2) — advisory processing order for automatic items only. When omitted, Stage B/C use declaration order (Phase 3 default). Core normalizes defensively; unknown, duplicate, and source ids are ignored.
 
 Auto-Layout is **opt-in**. Calling `solveLayout` alone is unchanged. Available on published npm `@alpha` (`0.1.0-alpha.1`). Alpha breaking-change policy above is unchanged.
 
