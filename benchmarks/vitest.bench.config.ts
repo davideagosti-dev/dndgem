@@ -15,6 +15,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@dndgem/core': path.resolve(root, '../packages/core/dist/index.js'),
+      '@dndgem/intelligence': path.resolve(root, '../packages/intelligence/dist/index.js'),
     },
   },
 });

@@ -13,6 +13,8 @@ import {
   FORBIDDEN_PACKAGE_FOLDERS,
   FRAMEWORK_ADAPTER_FOLDERS,
   FRAMEWORK_PEER_BY_FOLDER,
+  INTELLIGENCE_FOLDER,
+  OPTIONAL_PRIVATE_FOLDERS,
   existingAdapterFolders,
   existingPackageFolders,
   npmNameForFolder,
@@ -79,6 +81,7 @@ function assertPublishableMetadata(packageName, pkg) {
 const adapterNpmNames = FRAMEWORK_ADAPTER_FOLDERS.map((folder) => npmNameForFolder(folder));
 const adapterPeerNames = Object.values(FRAMEWORK_PEER_BY_FOLDER);
 const frameworkRuntimeNames = new Set(['react', 'react-dom', ...adapterPeerNames]);
+const intelligenceNpmName = npmNameForFolder(INTELLIGENCE_FOLDER);
 
 const core = readPkg(CORE_FOLDER);
 if (!core) {
@@ -89,6 +92,7 @@ if (!core) {
     core,
     new Set([
       npmNameForFolder(DOM_FOLDER),
+      intelligenceNpmName,
       ...adapterNpmNames,
       ...frameworkRuntimeNames,
       '@dnd-kit/dom',
@@ -112,8 +116,8 @@ if (!dom) {
   assertNoDeps(
     DOM_FOLDER,
     dom,
-    new Set([...adapterNpmNames, ...frameworkRuntimeNames]),
-    'DOM must not depend on framework adapters or UI frameworks',
+    new Set([...adapterNpmNames, ...frameworkRuntimeNames, intelligenceNpmName]),
+    'DOM must not depend on framework adapters, UI frameworks, or intelligence',
   );
   if (!dom.dependencies?.['@dndgem/core']) {
     errors.push('@dndgem/dom must declare a dependency on @dndgem/core');
@@ -152,6 +156,12 @@ for (const folder of existingAdapterFolders()) {
   assertNoDeps(
     folder,
     pkg,
+    new Set([intelligenceNpmName]),
+    'adapters must not depend on intelligence in DND-4.2',
+  );
+  assertNoDeps(
+    folder,
+    pkg,
     new Set(otherPeers),
     'adapters must not depend on another UI framework',
   );
@@ -165,7 +175,44 @@ for (const folder of existingAdapterFolders()) {
   assertPublishableMetadata(folder, pkg);
 }
 
-const allowedFolders = new Set([CORE_FOLDER, DOM_FOLDER, ...FRAMEWORK_ADAPTER_FOLDERS]);
+const intelligence = readPkg(INTELLIGENCE_FOLDER);
+if (packageDirExists(INTELLIGENCE_FOLDER)) {
+  if (!intelligence) {
+    errors.push(`Missing package.json for packages/${INTELLIGENCE_FOLDER}`);
+  } else {
+    if (intelligence.private !== true) {
+      errors.push(`packages/${INTELLIGENCE_FOLDER} must remain private during DND-4.2`);
+    }
+    if (!intelligence.dependencies?.['@dndgem/core']) {
+      errors.push(`${intelligenceNpmName} must declare a dependency on @dndgem/core`);
+    }
+    assertNoDeps(
+      INTELLIGENCE_FOLDER,
+      intelligence,
+      new Set([
+        npmNameForFolder(DOM_FOLDER),
+        ...adapterNpmNames,
+        ...frameworkRuntimeNames,
+        '@dnd-kit/dom',
+        '@dnd-kit/core',
+        '@dnd-kit/react',
+      ]),
+      'intelligence must depend on Core only',
+    );
+    for (const dep of Object.keys(allDeps(intelligence))) {
+      if (dep.startsWith('@dnd-kit/')) {
+        errors.push(`packages/${INTELLIGENCE_FOLDER} must not depend on "${dep}"`);
+      }
+    }
+  }
+}
+
+const allowedFolders = new Set([
+  CORE_FOLDER,
+  DOM_FOLDER,
+  ...FRAMEWORK_ADAPTER_FOLDERS,
+  ...OPTIONAL_PRIVATE_FOLDERS,
+]);
 for (const folder of existingPackageFolders()) {
   if (FORBIDDEN_PACKAGE_FOLDERS.includes(folder)) {
     errors.push(
@@ -175,7 +222,7 @@ for (const folder of existingPackageFolders()) {
   }
   if (!allowedFolders.has(folder)) {
     errors.push(
-      `Unexpected package folder packages/${folder} (allowed: core, dom, ${FRAMEWORK_ADAPTER_FOLDERS.join(', ')})`,
+      `Unexpected package folder packages/${folder} (allowed: core, dom, ${FRAMEWORK_ADAPTER_FOLDERS.join(', ')}, ${OPTIONAL_PRIVATE_FOLDERS.join(', ')})`,
     );
   }
 }
@@ -191,8 +238,13 @@ if (errors.length > 0) {
 const adapters = existingAdapterFolders();
 const absentAdapters = FRAMEWORK_ADAPTER_FOLDERS.filter((folder) => !packageDirExists(folder));
 console.log('Package boundary check PASSED');
-console.log(' - core: no DOM/framework/dnd-kit dependencies');
-console.log(' - dom: no framework adapters; depends on core; optional @dnd-kit/dom provider only');
+console.log(' - core: no DOM/framework/intelligence/dnd-kit dependencies');
+console.log(
+  ' - dom: no framework adapters or intelligence; depends on core; optional @dnd-kit/dom provider only',
+);
+if (packageDirExists(INTELLIGENCE_FOLDER)) {
+  console.log(` - intelligence: private optional layer; depends on core only`);
+}
 console.log(
   ` - adapters present: ${adapters.length === 0 ? '(none)' : adapters.map(npmNameForFolder).join(', ')}`,
 );

@@ -2,14 +2,14 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                                                           |
-| ------- | ------------------------------- | ---------------------------------------------------------------- |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                                                       |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                                   |
-| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                                 |
-| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                        |
-| —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; valid public Alpha `0.1.0-alpha.3`) |
-| Phase 4 | AI-Assisted Layout Intelligence | **ACTIVE** — DND-4.1 contract COMPLETE; DND-4.2+ not started     |
+| Phase   | Name                            | Status                                                                  |
+| ------- | ------------------------------- | ----------------------------------------------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                                                              |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                                          |
+| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                                        |
+| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                               |
+| —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; valid public Alpha `0.1.0-alpha.3`)        |
+| Phase 4 | AI-Assisted Layout Intelligence | **ACTIVE** — DND-4.1 contract COMPLETE; **DND-4.2 Stage B in progress** |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -443,7 +443,7 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 
 Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-4-planning-audit.md](./architecture/phase-4-planning-audit.md).
 
-**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); DND-4.2–DND-4.5 not started.
+**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); **DND-4.2 Stage B in progress**; DND-4.3–DND-4.5 not started.
 
 Primary objective: optional higher-level structural/semantic/application planning **without** replacing deterministic solving.
 
@@ -483,7 +483,7 @@ Phase 4 Planning Audit          PASSED WITH REFINEMENTS
         ↓
 DND-4.1 Layout Intelligence Contract & Architecture   COMPLETE (contract)
         ↓
-DND-4.2 Deterministic Intelligence Planner            not started
+DND-4.2 Deterministic Intelligence Planner            **ACTIVE (Stage B)**
         ↓
 DND-4.3 Planner Contract & Optional Integration       not started
         ↓
@@ -515,7 +515,8 @@ DND-4.5 Phase 4 Validation & Alpha Gate               not started
 - **Objective:** Bounded deterministic/heuristic planner that emits Planning Proposals only.
 - **Out of scope:** Remote model providers; solver semantic change; default-on intelligence.
 - **Dependencies:** DND-4.1.
-- **Status:** Not started
+- **Status:** **ACTIVE (Stage B implementation)** — private `@dndgem/intelligence` workspace package; prominence heuristic; optional Core `automaticItemOrder`; not complete until final audit gate.
+- **Reference:** [deterministic-planner.md](./architecture/deterministic-planner.md)
 
 ### DND-4.3 — Planner Contract & Optional Integration
 
