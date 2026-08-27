@@ -9,7 +9,7 @@
 | Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                                        |
 | Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                               |
 | —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; valid public Alpha `0.1.0-alpha.3`)        |
-| Phase 4 | AI-Assisted Layout Intelligence | **ACTIVE** — DND-4.1 contract COMPLETE; **DND-4.2 Stage B in progress** |
+| Phase 4 | AI-Assisted Layout Intelligence | **ACTIVE** — DND-4.1 contract COMPLETE; **DND-4.2 COMPLETE** |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -21,7 +21,7 @@ Phase 3 is **COMPLETE / RELEASED**: Adaptive Auto-Layout is live on npm as **`0.
 
 Framework Expansion is **COMPLETE**: Cross-framework Alpha **`0.1.0-alpha.3`** is the valid public release (`@alpha`). `0.1.0-alpha.2` is **superseded**.
 
-Phase 4 is **ACTIVE**: **DND-4.1** (Layout Intelligence Contract & Architecture) is **COMPLETE**. Planner implementation begins only with an authorized **DND-4.2** sprint. Phase 4 does **not** require an LLM.
+Phase 4 is **ACTIVE**: **DND-4.1** (Layout Intelligence Contract & Architecture) is **COMPLETE**. **DND-4.2** (Deterministic Intelligence Planner) is **COMPLETE**. Phase 4 does **not** require an LLM.
 
 During Phase 2 and through Framework Expansion, the GitHub repository remained **PRIVATE** by explicit decision while npm packages were public. After Alpha validation (`0.1.0-alpha.3`), the repository transitions to **public open-source** development so source, Issues, and history are transparent.
 
@@ -443,7 +443,7 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 
 Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-4-planning-audit.md](./architecture/phase-4-planning-audit.md).
 
-**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); **DND-4.2 Stage B in progress**; DND-4.3–DND-4.5 not started.
+**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); DND-4.2 **COMPLETE**; DND-4.3–DND-4.5 not started.
 
 Primary objective: optional higher-level structural/semantic/application planning **without** replacing deterministic solving.
 
@@ -483,7 +483,7 @@ Phase 4 Planning Audit          PASSED WITH REFINEMENTS
         ↓
 DND-4.1 Layout Intelligence Contract & Architecture   COMPLETE (contract)
         ↓
-DND-4.2 Deterministic Intelligence Planner            **ACTIVE (Stage B)**
+DND-4.2 Deterministic Intelligence Planner            COMPLETE
         ↓
 DND-4.3 Planner Contract & Optional Integration       not started
         ↓
@@ -515,7 +515,7 @@ DND-4.5 Phase 4 Validation & Alpha Gate               not started
 - **Objective:** Bounded deterministic/heuristic planner that emits Planning Proposals only.
 - **Out of scope:** Remote model providers; solver semantic change; default-on intelligence.
 - **Dependencies:** DND-4.1.
-- **Status:** **ACTIVE (Stage B implementation)** — private `@dndgem/intelligence` workspace package; prominence heuristic; optional Core `automaticItemOrder`; not complete until final audit gate.
+- **Status:** **COMPLETE** — private `@dndgem/intelligence` workspace package; prominence heuristic; optional Core `automaticItemOrder`; closure gate passed.
 - **Reference:** [deterministic-planner.md](./architecture/deterministic-planner.md)
 
 ### DND-4.3 — Planner Contract & Optional Integration

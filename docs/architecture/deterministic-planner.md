@@ -1,6 +1,6 @@
 # Deterministic Intelligence Planner (DND-4.2)
 
-**Status:** Private / experimental implementation (Stage B)  
+**Status:** COMPLETE (DND-4.2 closure gate) — private / experimental workspace package  
 **Package:** `@dndgem/intelligence` (`private: true`, workspace only)  
 **Related:** [layout-intelligence-contract.md](./layout-intelligence-contract.md), [ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md), [auto-layout-contract.md](./auto-layout-contract.md)
 
