@@ -1,3 +1,4 @@
+import { automaticItemsInOrder, normalizeAutomaticItemOrder } from './automatic-item-order.js';
 import { DomainError } from './errors.js';
 import { createRect, type Rect, type Size } from './geometry.js';
 import { itemIdToString } from './identity.js';
@@ -35,6 +36,12 @@ export interface AutoLayoutProposalInput {
    * Callers must not treat this as provenance promotion.
    */
   readonly previous?: ResolvedLayout;
+  /**
+   * Optional advisory processing order for automatic items (DND-4.2).
+   * When omitted, declaration order is used (Phase 3 default).
+   * Core normalizes defensively; unknown, duplicate, and source ids are ignored.
+   */
+  readonly automaticItemOrder?: readonly string[];
 }
 
 /**
@@ -211,7 +218,9 @@ function commitGenerated(
  * Does not mutate the caller's intent or previous layout.
  * Does not declare VALID/DEGRADED/INVALID. Does not replace `solveLayout`.
  *
- * Ordering: `LayoutIntent.items` declaration order (stable; no public priority).
+ * Ordering: `LayoutIntent.items` declaration order by default. Optional
+ * {@link AutoLayoutProposalInput.automaticItemOrder} may override automatic-item
+ * processing order only (Stage B/C); source items remain first in occupancy.
  * Sizing: reuses {@link resolveItemSize} (preferred / useful / minimal).
  * Retention: previous x/y is a stability preference; current width/height are
  * authoritative. Size change alone does not force position change.
@@ -229,6 +238,8 @@ export function createAutoLayoutProposal(input: AutoLayoutProposalInput): AutoLa
   const space = intent.space;
   const sourcePlacements = intent.desiredPlacements;
   const previousPlacements = input.previous?.placements;
+  const automaticOrder = normalizeAutomaticItemOrder(intent, input.automaticItemOrder);
+  const automaticItems = automaticItemsInOrder(intent, automaticOrder);
 
   const effectivePlacements: Record<string, Rect> = {};
   const origins: Record<string, PlacementOrigin> = {};
@@ -252,12 +263,12 @@ export function createAutoLayoutProposal(input: AutoLayoutProposalInput): AutoLa
     }
   }
 
-  // Stage B — retain previous x/y with current size for automatic items (declaration order).
+  // Stage B — retain previous x/y with current size for automatic items (normalized order).
   // Retention is a preference, not a pin. Origin remains `generated` — never promoted to source.
   // Current sizing is authoritative; previous width/height are not copied.
   // No automatic compaction: free space does not force first-fit relocation.
   if (previousPlacements !== undefined) {
-    for (const item of intent.items) {
+    for (const item of automaticItems) {
       const key = itemIdToString(item.id);
       if (origins[key] === 'source') {
         continue;
@@ -288,8 +299,8 @@ export function createAutoLayoutProposal(input: AutoLayoutProposalInput): AutoLa
   }
 
   // Stage C — deterministic reflow / first placement for remaining automatic items.
-  // Previously unplaced items are retried here in declaration order (no starvation priority).
-  for (const item of intent.items) {
+  // Previously unplaced items are retried here in normalized automatic order.
+  for (const item of automaticItems) {
     const key = itemIdToString(item.id);
     if (origins[key] !== undefined) {
       continue;

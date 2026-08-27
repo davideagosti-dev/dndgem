@@ -15,8 +15,13 @@ export const PACKAGES_DIR = join(REPO_ROOT, 'packages');
 export const CORE_FOLDER = 'core';
 export const DOM_FOLDER = 'dom';
 
+export const INTELLIGENCE_FOLDER = 'intelligence';
+
 /** Approved JS/DOM framework adapter folders — siblings over `@dndgem/dom`. */
 export const FRAMEWORK_ADAPTER_FOLDERS = Object.freeze(['react', 'vue', 'angular', 'svelte']);
+
+/** Optional private workspace layers (not publishable). */
+export const OPTIONAL_PRIVATE_FOLDERS = Object.freeze([INTELLIGENCE_FOLDER]);
 
 /**
  * Folders that must never appear under `packages/`.
