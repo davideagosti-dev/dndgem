@@ -88,7 +88,7 @@ There is no separate visual debugger product in Alpha.
 
 ## What DnDGem is not (yet)
 
-- Not AI layout (Phase 4)
+- Not AI layout (Phase 4 — contract ACTIVE at DND-4.1; no production intelligence yet)
 - Not Flutter (separate track)
 - Vue, Angular, and Svelte adapters are published on `@alpha`; Next.js / Nuxt / SvelteKit are validated compatibility environments (no dedicated packages)
 - Not a claim of full WCAG conformance or keyboard-drag productization (see [Accessibility](./accessibility.md))

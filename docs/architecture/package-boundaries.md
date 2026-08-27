@@ -20,6 +20,8 @@ Meta-framework fixtures (`apps/compat-next`, `apps/compat-nuxt`, `apps/compat-sv
 
 Forbidden package names: `@dndgem/framework-core`, `@dndgem/vanilla`, `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/flutter`, `@dndgem/ai`.
 
+Provisional future name `@dndgem/intelligence` is **not** an approved public API and **must not** be created until an authorized Phase 4 implementation sprint (expected DND-4.2 / DND-4.3) explicitly requires it. Preferred direction: optional intelligence layer depending on Core ([ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md)); not inside `@dndgem/core` by default. Framework adapters must not become intelligence extension points.
+
 Allowlist: `scripts/package-topology.mjs`.
 
 ## Public API rule
