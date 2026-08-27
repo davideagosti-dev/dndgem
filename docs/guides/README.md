@@ -55,6 +55,8 @@ Architecture / contract references (not the day-one path):
 - [Alpha API Contract](../architecture/alpha-api-contract.md)
 - [Auto-Layout Contract (Phase 3)](../architecture/auto-layout-contract.md)
 - [Auto-Layout Engine (Phase 3)](../architecture/auto-layout-engine.md)
+- [Layout Intelligence Contract (Phase 4)](../architecture/layout-intelligence-contract.md)
+- [Phase 4 Planning Audit](../architecture/phase-4-planning-audit.md)
 - [Framework Adapter Contract (DND-FX)](../architecture/framework-adapter-contract.md)
 - [Framework Expansion Gate](../architecture/framework-expansion-planning-audit.md)
 - [Release Strategy](../architecture/release-strategy.md)

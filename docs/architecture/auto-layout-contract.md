@@ -386,34 +386,34 @@ DOM/React accept opt-in `autoLayout` and own durable Source Intent + origins in 
 
 ## 14. Classification table
 
-| Concept                                                               | Classification                                                       |
-| --------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `solveLayout` / `evaluateLayout` / `LayoutIntent` / constraints       | **PUBLIC EXISTING**                                                  |
-| Source Intent / Generated Placement / Effective Solver Input (layers) | **INTERNAL** conceptual (effective is composed input, not an origin) |
-| Placement origin map (`source` \| `generated` only)                   | **PUBLIC ALPHA (minimal)** via `PlacementOrigin` / proposal result   |
-| `createAutoLayoutProposal` + proposal types                           | **PUBLIC ALPHA (minimal)** — approved DND-3.4                        |
-| Session/Provider `autoLayout` option                                  | **PUBLIC ALPHA (minimal)** — approved DND-3.4; default off           |
-| `maxProbeCountForOccupancy` / sizing helpers                          | **INTERNAL**                                                         |
-| Pin / Lock / priority / region / grouping / spans                     | **DEFERRED**                                                         |
-| AI layout                                                             | **DEFERRED**                                                         |
+| Concept                                                               | Classification                                                         |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `solveLayout` / `evaluateLayout` / `LayoutIntent` / constraints       | **PUBLIC EXISTING**                                                    |
+| Source Intent / Generated Placement / Effective Solver Input (layers) | **INTERNAL** conceptual (effective is composed input, not an origin)   |
+| Placement origin map (`source` \| `generated` only)                   | **PUBLIC ALPHA (minimal)** via `PlacementOrigin` / proposal result     |
+| `createAutoLayoutProposal` + proposal types                           | **PUBLIC ALPHA (minimal)** — approved DND-3.4                          |
+| Session/Provider `autoLayout` option                                  | **PUBLIC ALPHA (minimal)** — approved DND-3.4; default off             |
+| `maxProbeCountForOccupancy` / sizing helpers                          | **INTERNAL**                                                           |
+| Pin / Lock / priority / region / grouping / spans                     | **DEFERRED**                                                           |
+| AI layout                                                             | **DEFERRED to Phase 4** (DND-4.1 contract; no production intelligence) |
 
 ---
 
 ## 15. Concept audit
 
-| Concept                                                             | Decision              | Reason                              |
-| ------------------------------------------------------------------- | --------------------- | ----------------------------------- |
-| Auto placement                                                      | **MVP**               | Core product gap                    |
-| Partial intent                                                      | **MVP**               | Authoring reduction                 |
-| Hybrid intent                                                       | **MVP**               | Real dashboards                     |
-| Source/generated provenance                                         | **MVP**               | Prevents pin collapse               |
-| Drag → source promotion                                             | **MVP**               | Matches interaction model           |
-| Stable ordering                                                     | **MVP**               | Determinism; item array order first |
-| Pin / Lock                                                          | **Not justified**     | Source intent + constraints suffice |
-| Priority field                                                      | **Not justified yet** | Use stable item order               |
-| Preferred region / grouping / spans / density / gap / alignment DSL | **Deferred**          | Scope explosion                     |
-| Arbitrary auto-sizing DSL                                           | **Deferred**          | Reuse existing modes                |
-| AI                                                                  | **Deferred**          | Phase 4                             |
+| Concept                                                             | Decision                | Reason                                                                   |
+| ------------------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------ |
+| Auto placement                                                      | **MVP**                 | Core product gap                                                         |
+| Partial intent                                                      | **MVP**                 | Authoring reduction                                                      |
+| Hybrid intent                                                       | **MVP**                 | Real dashboards                                                          |
+| Source/generated provenance                                         | **MVP**                 | Prevents pin collapse                                                    |
+| Drag → source promotion                                             | **MVP**                 | Matches interaction model                                                |
+| Stable ordering                                                     | **MVP**                 | Determinism; item array order first                                      |
+| Pin / Lock                                                          | **Not justified**       | Source intent + constraints suffice                                      |
+| Priority field                                                      | **Not justified yet**   | Use stable item order                                                    |
+| Preferred region / grouping / spans / density / gap / alignment DSL | **Deferred**            | Scope explosion                                                          |
+| Arbitrary auto-sizing DSL                                           | **Deferred**            | Reuse existing modes                                                     |
+| AI                                                                  | **Deferred to Phase 4** | See [layout-intelligence-contract.md](./layout-intelligence-contract.md) |
 
 ---
 

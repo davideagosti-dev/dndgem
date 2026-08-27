@@ -9,7 +9,7 @@
 | Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                                 |
 | Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                        |
 | —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; valid public Alpha `0.1.0-alpha.3`) |
-| Phase 4 | AI-Assisted Layout Intelligence | Later (not started)                                              |
+| Phase 4 | AI-Assisted Layout Intelligence | **ACTIVE** — DND-4.1 contract COMPLETE; DND-4.2+ not started     |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -19,9 +19,11 @@ Phase 2 is **COMPLETE**: first npm Public Alpha `0.1.0-alpha.0` shipped under di
 
 Phase 3 is **COMPLETE / RELEASED**: Adaptive Auto-Layout is live on npm as **`0.1.0-alpha.1`** (`@alpha`), published via Trusted Publishing / OIDC (see [0.1.0-alpha.1](./releases/0.1.0-alpha.1.md)).
 
-Framework Expansion is **COMPLETE**: Cross-framework Alpha **`0.1.0-alpha.3`** is the valid public release (`@alpha`). `0.1.0-alpha.2` is **superseded**. Phase 4 remains **not started**.
+Framework Expansion is **COMPLETE**: Cross-framework Alpha **`0.1.0-alpha.3`** is the valid public release (`@alpha`). `0.1.0-alpha.2` is **superseded**.
 
-During Phase 2 and through Framework Expansion, the GitHub repository remained **PRIVATE** by explicit decision while npm packages were public. After Alpha validation (`0.1.0-alpha.3`), the repository transitions to **public open-source** development so source, Issues, and history are transparent. Phase 4 remains planning-only until an authorized sprint starts.
+Phase 4 is **ACTIVE**: **DND-4.1** (Layout Intelligence Contract & Architecture) is **COMPLETE**. Planner implementation begins only with an authorized **DND-4.2** sprint. Phase 4 does **not** require an LLM.
+
+During Phase 2 and through Framework Expansion, the GitHub repository remained **PRIVATE** by explicit decision while npm packages were public. After Alpha validation (`0.1.0-alpha.3`), the repository transitions to **public open-source** development so source, Issues, and history are transparent.
 
 No committed calendar dates are attached to roadmap items.
 
@@ -437,25 +439,119 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 
 ---
 
-## Later phases (high-level)
+## Phase 4 — AI-Assisted Layout Intelligence (ACTIVE)
 
-### Phase 4 — AI-Assisted Layout Intelligence
+Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-4-planning-audit.md](./architecture/phase-4-planning-audit.md).
 
-AI belongs **after** deterministic Auto-Layout.
+**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); DND-4.2–DND-4.5 not started.
 
-AI may help with semantic relationships, constraint suggestions, priority inference, and high-level intent proposals. AI must **not** become mandatory for drag, resize, validation, scoring, reflow, or deterministic solving.
+Primary objective: optional higher-level structural/semantic/application planning **without** replacing deterministic solving.
 
-Preferred architecture:
+Architectural principle (binding):
 
 ```text
-AI / heuristic
-        ↓
-proposed semantic / layout intent
-        ↓
-deterministic Core validation → scoring → solver
-        ↓
-ResolvedLayout
+Intelligence proposes.
+Deterministic DnDGem validates and resolves.
 ```
+
+```text
+Application / semantic hints
+            ↓
+Optional Intelligence Planner
+            ↓
+Planning Proposal (UNTRUSTED / ADVISORY)
+            ↓
+validation + normalization
+            ↓
+Phase 3 Auto-Layout enrichment (when applicable)
+            ↓
+solveLayout → evaluateLayout
+            ↓
+VALID / DEGRADED / INVALID → ResolvedLayout
+```
+
+Phase 4 does **not** mean DnDGem requires an LLM. Heuristic/deterministic planning is the preferred first implementation (DND-4.2). Model-based intelligence is optional. Intelligence must not become mandatory for drag, resize, validation, scoring, reflow, or deterministic solving.
+
+Contract: [layout-intelligence-contract.md](./architecture/layout-intelligence-contract.md). ADR: [ADR-0018](./adr/ADR-0018-layout-intelligence-boundary.md).
+
+### Critical path
+
+```text
+Framework Expansion COMPLETE (0.1.0-alpha.3)
+        ↓
+Phase 4 Planning Audit          PASSED WITH REFINEMENTS
+        ↓
+DND-4.1 Layout Intelligence Contract & Architecture   COMPLETE (contract)
+        ↓
+DND-4.2 Deterministic Intelligence Planner            not started
+        ↓
+DND-4.3 Planner Contract & Optional Integration       not started
+        ↓
+DND-4.4 Model-Assisted Planning Experiment            not started (optional path)
+        ↓
+DND-4.5 Phase 4 Validation & Alpha Gate               not started
+```
+
+### Binding refinements (from planning audit)
+
+1. **DND-4.1 is contract-only** — no production AI code, provider SDK, network integration, or intelligence package skeleton.
+2. **Preferred package direction** — future optional intelligence layer depending on Core (Option B); consumer-owned planners as escape hatch (Option C); not inside Core by default.
+3. **Provider-neutral** — no production AI provider selected in DND-4.1.
+4. **Phase 3 provenance preserved** — intelligence does not silently invent a new placement origin.
+5. **Maturity split** — deterministic DnDGem may progress toward Beta independently of model-based intelligence.
+
+### DND-4.1 — Layout Intelligence Contract & Architecture
+
+- **Objective:** Close the Phase 4 contract before any planner implementation.
+- **Scope:** Taxonomy; options audit; invariants I1–I12; planning input/output; trust boundary; lifecycle; privacy; accessibility; provider strategy; Beta maturity policy; sprint map; ADR; roadmap reconciliation.
+- **Out of scope:** Production intelligence package; AI SDK; network; LLM prompts; solver/validity changes; framework-specific intelligence; Flutter; publish/tag/PR.
+- **Dependencies:** Phase 3 COMPLETE; Framework Expansion COMPLETE.
+- **Closure:** Contract + ADR-0018 + planning audit accepted; DND-4.2 can start without re-deciding authority/trust/privacy/package placement.
+- **Status:** COMPLETE (contract)
+- **Reference:** [layout-intelligence-contract.md](./architecture/layout-intelligence-contract.md), [phase-4-planning-audit.md](./architecture/phase-4-planning-audit.md), [ADR-0018](./adr/ADR-0018-layout-intelligence-boundary.md).
+
+### DND-4.2 — Deterministic Intelligence Planner
+
+- **Objective:** Bounded deterministic/heuristic planner that emits Planning Proposals only.
+- **Out of scope:** Remote model providers; solver semantic change; default-on intelligence.
+- **Dependencies:** DND-4.1.
+- **Status:** Not started
+
+### DND-4.3 — Planner Contract & Optional Integration
+
+- **Objective:** Stabilize optional integration for first-party and consumer-supplied planners.
+- **Out of scope:** Provider lock-in; hot-path planning; DOM/content scraping defaults.
+- **Dependencies:** DND-4.2.
+- **Status:** Not started
+
+### DND-4.4 — Model-Assisted Planning Experiment
+
+- **Objective:** Optional evidence-driven model-backed planner experiment behind the neutral boundary.
+- **Out of scope:** Permanent provider lock-in; requiring network for core DnDGem.
+- **Dependencies:** DND-4.3.
+- **Status:** Not started
+
+### DND-4.5 — Phase 4 Validation & Alpha Gate
+
+- **Objective:** Validate Phase 4 contract adherence and decide optional Alpha packaging for intelligence.
+- **Out of scope:** Making LLM integration a Beta prerequisite; rewriting Phase 3 history.
+- **Dependencies:** DND-4.2 required; DND-4.3 required for integration claims; DND-4.4 optional.
+- **Status:** Not started
+
+### Phase 4 safe deferrals
+
+- Mandatory LLM / remote model dependency
+- Second solver / parallel validity vocabulary
+- Framework-specific intelligence packages
+- Flutter implementation
+- Pin / Lock APIs
+- Default-on intelligence
+- Hot-path model inference
+- Automatic DOM/read/tab order rewriting
+
+---
+
+## Later tracks (high-level)
 
 ### Flutter ecosystem track
 

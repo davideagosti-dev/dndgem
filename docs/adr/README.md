@@ -19,3 +19,4 @@
 | 0015 | Universal JS/DOM Framework Adapter Behavioral Contract      | Accepted (DND-FX.1)                      |
 | 0016 | JS/DOM Framework Package Topology                           | Accepted (DND-FX.1)                      |
 | 0017 | SSR / Browser Runtime Boundary                              | Accepted (DND-FX.1)                      |
+| 0018 | Layout Intelligence Boundary & Provider-Neutral Planning    | Accepted (contract DND-4.1)              |
