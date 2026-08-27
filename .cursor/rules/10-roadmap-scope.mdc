@@ -1,5 +1,5 @@
 ---
-description: Roadmap scope lock — Framework Expansion Gate (DND-FX)
+description: Roadmap scope lock — Phase 4 DND-4.1 contract active
 alwaysApply: true
 ---
 
@@ -32,9 +32,17 @@ Framework Expansion Gate is **unnumbered** (not Phase 4) and **COMPLETE**:
 5. DND-FX.5 Meta-Framework Compatibility Validation — COMPLETE
 6. DND-FX.6 Cross-Framework Alpha Release Gate — **COMPLETE** (`0.1.0-alpha.3` / `@alpha`; `0.1.0-alpha.2` superseded)
 
-Authoritative records: `docs/architecture/framework-expansion-planning-audit.md`, `docs/architecture/framework-adapter-contract.md`, ADR-0015 / ADR-0016 / ADR-0017, `docs/roadmap.md`.
+Phase 4 — AI-Assisted Layout Intelligence is **ACTIVE** (does **not** require an LLM):
 
-Do not begin Phase 4 (AI). Do not renumber Phase 4. Do not reopen Vue/Angular/Svelte except for an authorized follow-up. Do not create placeholder adapter or meta-framework packages. Do not broaden the minimal public Auto-Layout export without explicit review. Do not publish npm, create release tags, or mutate dist-tags unless an explicit release authorization requires it.
+1. DND-4.1 Layout Intelligence Contract & Architecture — **COMPLETE** (contract; see `docs/architecture/layout-intelligence-contract.md`, `docs/architecture/phase-4-planning-audit.md`, ADR-0018)
+2. DND-4.2 Deterministic Intelligence Planner — not started
+3. DND-4.3 Planner Contract & Optional Integration — not started
+4. DND-4.4 Model-Assisted Planning Experiment — not started
+5. DND-4.5 Phase 4 Validation & Alpha Gate — not started
+
+Authoritative records: `docs/architecture/framework-expansion-planning-audit.md`, `docs/architecture/framework-adapter-contract.md`, ADR-0015 / ADR-0016 / ADR-0017, `docs/architecture/phase-4-planning-audit.md`, `docs/architecture/layout-intelligence-contract.md`, ADR-0018, `docs/roadmap.md`.
+
+Do not renumber Phase 4. Do not implement DND-4.2+ unless an explicit sprint authorizes it. Do not install AI SDKs, select production AI providers, create `@dndgem/intelligence` (provisional / not approved), or add network-required intelligence in DND-4.1 follow-ups without authorization. Do not reopen Vue/Angular/Svelte except for an authorized follow-up. Do not create placeholder adapter or meta-framework packages. Do not broaden the minimal public Auto-Layout export without explicit review. Do not publish npm, create release tags, or mutate dist-tags unless an explicit release authorization requires it.
 
 ## CI policy (DND-2.3+)
 
@@ -53,7 +61,7 @@ FX.6 established: GitHub does not reinstall browsers or rerun the 108-test matri
 Do not pull into active work unless the sprint explicitly requires it:
 
 - Phase 3 Auto-Layout work outside a dedicated follow-up sprint
-- AI-assisted layout intelligence (Phase 4)
+- Phase 4 planner implementation (DND-4.2+) outside an authorized sprint
 - Flutter implementation (separate track; Core-contract dependent)
 - Vue (DND-FX.2 COMPLETE — do not reopen unless authorized), Angular (DND-FX.3 COMPLETE — do not reopen unless authorized), Svelte (DND-FX.4 COMPLETE — do not reopen unless authorized; do not add `@dndgem/sveltekit`)
 

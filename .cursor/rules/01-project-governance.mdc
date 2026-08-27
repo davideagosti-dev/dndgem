@@ -21,7 +21,7 @@ Framework Expansion Gate is **COMPLETE** (unnumbered; **not** Phase 4). Sprint m
 
 **DND-FX.1** COMPLETE (contract gate). **DND-FX.2** Vue **COMPLETE**. **DND-FX.3** Angular **COMPLETE**. **DND-FX.4** Svelte **COMPLETE**. **DND-FX.5** meta-frameworks **COMPLETE**. **DND-FX.6** Cross-Framework Alpha Release Gate **COMPLETE** (`0.1.0-alpha.3` / `@alpha`; `0.1.0-alpha.2` superseded).
 
-Phase 4 remains **AI-Assisted Layout Intelligence** (not started). Do not renumber it.
+Phase 4 — AI-Assisted Layout Intelligence is **ACTIVE**. **DND-4.1** COMPLETE (contract). Does **not** require an LLM. Contract: `docs/architecture/layout-intelligence-contract.md`, audit: `docs/architecture/phase-4-planning-audit.md`, ADR-0018. Do not renumber Phase 4. Do not implement DND-4.2+ without explicit authorization.
 
 ## CI policy (DND-2.3+)
 
@@ -33,12 +33,13 @@ Phase 4 remains **AI-Assisted Layout Intelligence** (not started). Do not renumb
 
 Cursor MUST NOT introduce:
 
-- AI / Gemini / OpenAI / Anthropic / local model runtimes (Phase 4 — not active)
+- AI provider SDKs / Gemini / OpenAI / Anthropic / local model runtimes / network-required intelligence (deferred past DND-4.1; DND-4.2+ only when authorized)
+- `@dndgem/intelligence` package creation (provisional name; not approved public API until an authorized implementation sprint)
 - Flutter implementation (separate track; not a DND-FX sprint)
 - Vue adapter expansion beyond closed DND-FX.2 unless an explicit follow-up authorizes it
 - Angular adapter expansion beyond closed DND-FX.3 unless an explicit follow-up authorizes it
 - Svelte adapter expansion beyond closed DND-FX.4 unless an explicit follow-up authorizes it
-- `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/framework-core`, `@dndgem/vanilla` packages
+- `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/framework-core`, `@dndgem/vanilla`, `@dndgem/ai` packages
 - Placeholder / stub packages to reserve names
 - Pin / Lock / fixed / manual placement APIs (deferred unless a sprint explicitly requires them)
 - cloud services / billing / Stripe
@@ -46,12 +47,13 @@ Cursor MUST NOT introduce:
 - custom native DnD engine
 - npm publication / repository visibility changes unless the active sprint explicitly requires it
 - Broader-than-minimal Public Auto-Layout API freeze unless an explicit review requires it
+- Second solver / parallel validity vocabulary / intelligence inside Core by default
 
 DND-FX.2 is **COMPLETE**. `@dndgem/vue` is published on `@alpha` (`0.1.0-alpha.3`). DND-FX.3 is **COMPLETE**. `@dndgem/angular` is published on `@alpha` (`0.1.0-alpha.3`). DND-FX.4 is **COMPLETE**. `@dndgem/svelte` is published on `@alpha` (`0.1.0-alpha.3`). Do not implement SvelteKit / Nuxt / Next packages. DND-FX.5 is **COMPLETE** (private compatibility fixtures; dedicated meta-framework packages not required). DND-FX.6 is **COMPLETE**. DND-FX.1 remains closed. Do not reopen Framework Expansion except for an authorized follow-up.
 
 Flutter compatibility may be considered architecturally (types, ADRs), but not implemented until scheduled.
 
-AI is optional and outside the critical path; it follows deterministic Auto-Layout (Phase 4).
+Intelligence is optional and outside the critical deterministic path; Phase 4 follows deterministic Auto-Layout. Preferred future home: optional intelligence layer depending on Core (ADR-0018), not framework adapters.
 
 Repository identity is **public open source** (`davideagosti-dev/dndgem`). GitHub visibility flip (PRIVATE → PUBLIC) requires an explicit Product Owner Visibility Gate — do not change visibility without that authorization.
 
@@ -72,3 +74,15 @@ Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.3` is the current Cros
 - React / Vue / Angular / Svelte are siblings over `@dndgem/dom` (ADR-0016).
 - Next.js / Nuxt / SvelteKit are compatibility environments, not packages (ADR-0017).
 - Framework adapters must not become AI extension points.
+
+## Phase 4 binding refinements (DND-4.1)
+
+- Intelligence proposes; deterministic DnDGem validates and resolves.
+- `solveLayout` / `evaluateLayout` remain the only validity/scoring/resolution authority.
+- Phase 4 does not require an LLM; heuristic/deterministic planner is the preferred first implementation (DND-4.2).
+- Provider-neutral planner boundary required; no production provider selected in DND-4.1.
+- Planning Proposals are UNTRUSTED until validated/normalized; fail closed to deterministic fallback.
+- No model inference in hot paths (pointermove / rAF / ResizeObserver / every solve).
+- Privacy by default: structural/serializable payloads only unless explicit consumer opt-in.
+- Accessibility ownership remains with the consumer; intelligence must not auto-rewrite DOM/read/tab/ARIA semantics.
+- Deterministic DnDGem may progress toward Beta independently of model-based intelligence.
