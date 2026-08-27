@@ -2,14 +2,14 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                                                                  |
-| ------- | ------------------------------- | ----------------------------------------------------------------------- |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                                                              |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                                          |
-| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                                        |
-| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                               |
-| —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; valid public Alpha `0.1.0-alpha.3`)        |
-| Phase 4 | AI-Assisted Layout Intelligence | **ACTIVE** — DND-4.1 contract COMPLETE; **DND-4.2 COMPLETE** |
+| Phase   | Name                            | Status                                                           |
+| ------- | ------------------------------- | ---------------------------------------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                                                       |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                                   |
+| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                                 |
+| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                        |
+| —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; valid public Alpha `0.1.0-alpha.3`) |
+| Phase 4 | AI-Assisted Layout Intelligence | **ACTIVE** — DND-4.1 contract COMPLETE; **DND-4.2 COMPLETE**     |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
