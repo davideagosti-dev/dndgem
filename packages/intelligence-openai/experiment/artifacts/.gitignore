@@ -1,0 +1,5 @@
+# Live experiment artifacts may be written here. Do not commit secrets.
+# baselines-frozen.json is committed as pre-live evidence.
+*
+!.gitignore
+!baselines-frozen.json

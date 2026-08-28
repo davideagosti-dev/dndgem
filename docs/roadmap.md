@@ -443,7 +443,7 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 
 Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-4-planning-audit.md](./architecture/phase-4-planning-audit.md).
 
-**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); DND-4.2 **COMPLETE**; DND-4.3 **COMPLETE**; DND-4.4–DND-4.5 not started.
+**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); DND-4.2 **COMPLETE**; DND-4.3 **COMPLETE**; DND-4.4 **IN PROGRESS** (Stage B experiment; not COMPLETE); DND-4.5 not started.
 
 Primary objective: optional higher-level structural/semantic/application planning **without** replacing deterministic solving.
 
@@ -487,7 +487,7 @@ DND-4.2 Deterministic Intelligence Planner            COMPLETE
         ↓
 DND-4.3 Planner Contract & Optional Integration       COMPLETE
         ↓
-DND-4.4 Model-Assisted Planning Experiment            not started (optional path)
+DND-4.4 Model-Assisted Planning Experiment            IN PROGRESS (optional path; Stage B)
         ↓
 DND-4.5 Phase 4 Validation & Alpha Gate               not started
 ```
@@ -529,9 +529,10 @@ DND-4.5 Phase 4 Validation & Alpha Gate               not started
 ### DND-4.4 — Model-Assisted Planning Experiment
 
 - **Objective:** Optional evidence-driven model-backed planner experiment behind the neutral boundary.
-- **Out of scope:** Permanent provider lock-in; requiring network for core DnDGem.
+- **Out of scope:** Permanent provider lock-in; requiring network for core DnDGem; browser API keys; DnDGem-owned inference; CI paid calls.
 - **Dependencies:** DND-4.3.
-- **Status:** Not started
+- **Status:** **IN PROGRESS** — Stage A `READY WITH DECISIONS`; Stage B private `@dndgem/intelligence-openai` reference planner + frozen corpus/rubric/harness. **Not COMPLETE** until Final Audit after live evidence. A valid outcome is `DEFER MODEL ASSISTANCE`.
+- **Reference:** [model-assisted-planning-experiment.md](./architecture/model-assisted-planning-experiment.md)
 
 ### DND-4.5 — Phase 4 Validation & Alpha Gate
 
