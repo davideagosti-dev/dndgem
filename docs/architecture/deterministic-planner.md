@@ -121,6 +121,9 @@ Every planner output — deterministic, custom sync, custom async, or future pro
 
 ## Fallback chain
 
+Headless orchestration (`runLayoutPlanner`) and orchestrated DOM injection
+(`createOrchestratedLayoutPlanner`) use the full chain:
+
 ```text
 CUSTOM / ASYNC PLANNER FAILURE
           ↓
@@ -131,7 +134,21 @@ DECLARATION-ORDER AUTO-LAYOUT
 CORE SOLVER
 ```
 
-DOM session without an injected planner (or after planner throw when not orchestrated): Phase 3 declaration-order Auto-Layout. Full deterministic-middle fallback is provided by `runLayoutPlanner` / `createOrchestratedLayoutPlanner`.
+**Raw** `createLayoutSession({ planner })` (supported public configuration, no
+DOM→intelligence dependency) fails closed differently:
+
+```text
+RAW SESSION PLANNER FAILURE
+          ↓
+PHASE 3 DECLARATION-ORDER AUTO-LAYOUT
+          ↓
+CORE SOLVER
+```
+
+Consumers who want the deterministic middle step on the DOM session path must
+inject `createOrchestratedLayoutPlanner(custom)` (or an equivalent app-owned
+wrapper). Wrapping vs raw injection therefore changes fallback depth by design;
+both paths still preserve the committed layout and keep Core as the only solver.
 
 ---
 
@@ -151,6 +168,9 @@ Semantics:
 - **No planner:** existing Phase 3 behavior; `replan()` recomposes declaration-order Auto-Layout.
 - **Initial layout:** always Phase 3 declaration order (planner never blocks first paint).
 - **Explicit `replan()` only:** planner runs here — not on pointermove, drag preview, rAF, ResizeObserver, passive resize, every solve, or accepted drop.
+- **PlanningSnapshot `previous`:** session builds the planner snapshot from current Source Intent **plus** committed previous layout as stability context for the planner. That does **not** promote previous into Source Intent.
+- **Auto-Layout `previous` on explicit replan:** `createAutoLayoutProposal` is invoked **without** `previous` so generated placement competes fresh under the advisory order (Stage B retention cannot freeze the prior competition). Idle resize / accepted-drop recomposes may still pass committed previous for Phase 3 stability.
+- **Retained advisory order:** the last **successful** replan order is retained in session state and reused for idle resize / accepted-drop Auto-Layout recomposes **without** re-invoking the planner. It is advisory only; Core `normalizeAutomaticItemOrder` discards unknown/source/duplicate ids and appends omitted automatic ids in declaration order. Fallback / no-order replan clears retention. Retained order is never a placement origin.
 - **Stale protection:** monotone `requestId`; only the latest current request may commit.
 - **Cancellation:** optional `AbortSignal`; cancelled/stale results never apply; cancellation ≠ Core validity failure.
 - **Provenance:** `PlacementOrigin` remains `'source' | 'generated'` only.

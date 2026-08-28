@@ -112,6 +112,32 @@ describe('createLayoutSession — planner integration (DND-4.3)', () => {
     session.dispose();
   });
 
+  it('planner snapshot includes committed previous without promoting it to Source Intent', async () => {
+    const planner = vi.fn<LayoutSessionPlanner>((snapshot) => {
+      expect(snapshot.previous).toBeDefined();
+      expect(snapshot.intent.desiredPlacements).toBeUndefined();
+      return { automaticItemOrder: ['target-a', 'target-b', 'blocker'] };
+    });
+    const { session } = orderSensitiveSession(planner);
+    await session.replan();
+    expect(planner).toHaveBeenCalledTimes(1);
+    session.dispose();
+  });
+
+  it('retains last successful advisory order on resize without re-invoking planner', async () => {
+    const planner = vi.fn<LayoutSessionPlanner>(() => ({
+      automaticItemOrder: ['target-a', 'target-b', 'blocker'],
+    }));
+    const { session } = orderSensitiveSession(planner);
+    await session.replan();
+    expect(planner).toHaveBeenCalledTimes(1);
+    expect(session.getState().autoLayout?.proposalUnplacedItemIds).toEqual(['blocker']);
+    lastFakeObserver().deliver();
+    expect(planner).toHaveBeenCalledTimes(1);
+    expect(session.getState().autoLayout?.proposalUnplacedItemIds).toEqual(['blocker']);
+    session.dispose();
+  });
+
   it('async planner replan applies and keeps prior layout while pending', async () => {
     let release: (() => void) | undefined;
     const gate = new Promise<void>((resolve) => {
@@ -399,14 +425,29 @@ describe('DND-4.3 product fixtures D/E/F', () => {
     session.dispose();
   });
 
-  it('Fixture E — custom planner failure falls back to valid deterministic layout', async () => {
-    const { session } = orderSensitiveSession(() => {
+  it('Fixture E — raw custom planner failure falls back to Phase 3 declaration-order Auto-Layout', async () => {
+    const { session, events } = orderSensitiveSession(() => {
       throw new Error('fail');
     });
     await session.replan();
     const state = session.getState();
+    expect(events.some((event) => event.status === 'fallback')).toBe(true);
+    expect(events.some((event) => event.proposalSource === 'declaration')).toBe(true);
     expect(state.solver.evaluation.state).toMatch(/VALID|DEGRADED/);
     expect(state.resolved.placements['target-a']).toBeDefined();
+    // Raw DOM planner path skips the intelligence deterministic-middle step.
+    expect(state.autoLayout?.proposalUnplacedItemIds).toEqual(
+      createAutoLayoutProposal({
+        intent: createLayoutIntent({
+          space: { width: 200, height: 100 },
+          items: [
+            createLayoutItem({ id: 'blocker', constraints: BLOCKER_CONSTRAINTS }),
+            createLayoutItem({ id: 'target-a', constraints: ORDER_CONSTRAINTS }),
+            createLayoutItem({ id: 'target-b', constraints: ORDER_CONSTRAINTS }),
+          ],
+        }),
+      }).unplacedItemIds,
+    );
     session.dispose();
   });
 
