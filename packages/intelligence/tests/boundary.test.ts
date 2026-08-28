@@ -23,7 +23,13 @@ describe('@dndgem/intelligence package boundary', () => {
   });
 
   it('production sources do not import DOM or framework packages', () => {
-    const files = ['src/index.ts', 'src/planner.ts', 'src/normalize.ts', 'src/types.ts'];
+    const files = [
+      'src/index.ts',
+      'src/planner.ts',
+      'src/normalize.ts',
+      'src/types.ts',
+      'src/orchestrator.ts',
+    ];
     const forbidden = [
       '@dndgem/dom',
       '@dndgem/react',

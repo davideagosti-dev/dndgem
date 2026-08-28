@@ -225,11 +225,7 @@ DND-4.1 package creation: NO
 - **Exit criteria:** Optional integration usable without changing deterministic default path.
 - **Dependencies:** DND-4.2.
 - **Release implications:** Possible experimental Alpha export; not a Beta gate by itself.
-- **Status:** Not started
-
-### DND-4.4 — Model-Assisted Planning Experiment
-
-- **Objective:** Evidence-driven optional experiment with a model-backed planner behind the neutral boundary.
+- **Status:** Stage B implementation (awaiting Final Closure)
 - **Scope:** Provider adapter experiment; explicit opt-in privacy policy for any extra semantic payload; timeout/failure fallback; comparison vs deterministic planner.
 - **Non-goals:** Selecting a permanent production provider in architecture; requiring network for core DnDGem; shipping model inference as default.
 - **Packages affected:** Optional provider adapter(s) behind intelligence boundary only.

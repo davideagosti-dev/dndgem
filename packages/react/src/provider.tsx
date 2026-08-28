@@ -1,7 +1,11 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState, type JSX } from 'react';
 import type { ResolvedLayout } from '@dndgem/core';
-import { createLayoutSession, type LayoutSessionState } from '@dndgem/dom';
-import { DnDGemRegistryContext, DnDGemStateContext } from './context.js';
+import { createLayoutSession, type LayoutSession, type LayoutSessionState } from '@dndgem/dom';
+import {
+  DnDGemRegistryContext,
+  DnDGemSessionCommandsContext,
+  DnDGemStateContext,
+} from './context.js';
 import type { DnDGemItemConfig, DnDGemProviderProps } from './types.js';
 
 function itemsSignature(items: readonly DnDGemItemConfig[]): string {
@@ -23,6 +27,10 @@ export function DnDGemProvider(props: DnDGemProviderProps): JSX.Element {
   onDropRef.current = props.onDrop;
   const onCancelRef = useRef(props.onCancel);
   onCancelRef.current = props.onCancel;
+  const onPlannerEventRef = useRef(props.onPlannerEvent);
+  onPlannerEventRef.current = props.onPlannerEvent;
+  const plannerRef = useRef(props.planner);
+  plannerRef.current = props.planner;
   const itemsRef = useRef(props.items);
   itemsRef.current = props.items;
   const desiredRef = useRef(props.desiredPlacements);
@@ -33,6 +41,7 @@ export function DnDGemProvider(props: DnDGemProviderProps): JSX.Element {
   const elementsRef = useRef(new Map<string, HTMLElement>());
   const containerTokenRef = useRef(0);
   const itemTokensRef = useRef(new Map<string, number>());
+  const sessionRef = useRef<LayoutSession | null>(null);
 
   const bumpRegistry = useCallback(() => {
     setRegistryGeneration((value) => value + 1);
@@ -100,8 +109,19 @@ export function DnDGemProvider(props: DnDGemProviderProps): JSX.Element {
     [registerContainer, registerItem],
   );
 
+  const replan = useCallback(async () => {
+    const session = sessionRef.current;
+    if (session === null) {
+      return;
+    }
+    await session.replan();
+  }, []);
+
+  const sessionCommands = useMemo(() => ({ replan }), [replan]);
+
   const itemIds = itemsSignature(props.items);
   const desiredKey = JSON.stringify(props.desiredPlacements ?? null);
+  const plannerConfigured = props.planner !== undefined;
 
   useLayoutEffect(() => {
     const container = containerRef.current;
@@ -141,6 +161,20 @@ export function DnDGemProvider(props: DnDGemProviderProps): JSX.Element {
       previous,
       mechanics: props.mechanics,
       ResizeObserver: props.ResizeObserver,
+      ...(plannerConfigured
+        ? {
+            planner: (snapshot, context) => {
+              const current = plannerRef.current;
+              if (current === undefined) {
+                return { automaticItemOrder: [] };
+              }
+              return current(snapshot, context);
+            },
+            onPlannerEvent: (event) => {
+              onPlannerEventRef.current?.(event);
+            },
+          }
+        : {}),
       onChange: (next) => {
         previousRef.current = next.resolved;
         onChangeRef.current?.(next);
@@ -153,10 +187,12 @@ export function DnDGemProvider(props: DnDGemProviderProps): JSX.Element {
         onCancelRef.current?.(event);
       },
     });
+    sessionRef.current = session;
     const initial = session.getState();
     previousRef.current = initial.resolved;
     setState(initial);
     return () => {
+      sessionRef.current = null;
       session.dispose();
     };
   }, [
@@ -166,11 +202,14 @@ export function DnDGemProvider(props: DnDGemProviderProps): JSX.Element {
     props.autoLayout,
     props.mechanics,
     props.ResizeObserver,
+    plannerConfigured,
   ]);
 
   return (
     <DnDGemRegistryContext.Provider value={registry}>
-      <DnDGemStateContext.Provider value={state}>{props.children}</DnDGemStateContext.Provider>
+      <DnDGemSessionCommandsContext.Provider value={sessionCommands}>
+        <DnDGemStateContext.Provider value={state}>{props.children}</DnDGemStateContext.Provider>
+      </DnDGemSessionCommandsContext.Provider>
     </DnDGemRegistryContext.Provider>
   );
 }

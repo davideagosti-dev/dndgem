@@ -12,7 +12,7 @@ JS/DOM topology (DND-FX.1 / [ADR-0016](../adr/ADR-0016-framework-package-topolog
 | Package                | May depend on                                                                                  | Must not depend on                                                      |
 | ---------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | `@dndgem/core`         | nothing DnDGem-specific / no DOM                                                               | `dom`, adapters, intelligence, browser APIs, UI frameworks, dnd-kit, AI |
-| `@dndgem/intelligence` | `@dndgem/core` only (private workspace package; not published in DND-4.2)                      | `dom`, adapters, UI frameworks, dnd-kit, AI                             |
+| `@dndgem/intelligence` | `@dndgem/core` only (private workspace package; not published)                                 | `dom`, adapters, UI frameworks, dnd-kit, AI                             |
 | `@dndgem/dom`          | `@dndgem/core`; browser/DOM APIs; `@dnd-kit/dom` (internal)                                    | adapters, intelligence, React/Vue/Angular/Svelte                        |
 | JS/DOM adapter         | `@dndgem/dom`; `@dndgem/core` when public types require it; UI framework as **peerDependency** | other adapters; intelligence; `@dnd-kit/*`                              |
 
@@ -22,7 +22,7 @@ Meta-framework fixtures (`apps/compat-next`, `apps/compat-nuxt`, `apps/compat-sv
 
 Forbidden package names: `@dndgem/framework-core`, `@dndgem/vanilla`, `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/flutter`, `@dndgem/ai`.
 
-`@dndgem/intelligence` exists as a **private** optional workspace layer (DND-4.2 Stage B). It is not published, not part of the Alpha public surface, and not depended on by `@dndgem/dom` or framework adapters in this sprint. Public API review belongs to DND-4.3 / DND-4.5. Preferred direction: optional intelligence layer depending on Core ([ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md)); not inside `@dndgem/core` by default. Framework adapters must not become intelligence extension points.
+`@dndgem/intelligence` remains a **private** optional workspace layer (DND-4.2 / DND-4.3). It is not published, not part of the Alpha public surface, and not depended on by `@dndgem/dom` or framework adapters. DND-4.3 adds optional structural planner injection on the DOM session and thin adapter pass-through; first-party orchestration helpers stay in intelligence and are composed at the application boundary. Public publication review remains deferred (DND-4.5). Preferred direction: optional intelligence layer depending on Core ([ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md)); not inside `@dndgem/core` by default. Framework adapters must not become intelligence extension points.
 
 Allowlist: `scripts/package-topology.mjs`.
 

@@ -1,6 +1,10 @@
 import { useCallback, useContext, type CSSProperties } from 'react';
 import { layoutPlacementStyle, type LayoutSessionState } from '@dndgem/dom';
-import { DnDGemRegistryContext, DnDGemStateContext } from './context.js';
+import {
+  DnDGemRegistryContext,
+  DnDGemSessionCommandsContext,
+  DnDGemStateContext,
+} from './context.js';
 import type { DnDGemItemBinding, DnDGemStore } from './types.js';
 
 function placementStyle(id: string, state: LayoutSessionState | undefined): CSSProperties {
@@ -21,10 +25,15 @@ function placementStyle(id: string, state: LayoutSessionState | undefined): CSSP
 export function useDnDGem(): DnDGemStore {
   const registry = useContext(DnDGemRegistryContext);
   const state = useContext(DnDGemStateContext);
-  if (registry === null) {
+  const commands = useContext(DnDGemSessionCommandsContext);
+  if (registry === null || commands === null) {
     throw new Error('useDnDGem must be used within a DnDGemProvider');
   }
-  return { state, ready: state !== undefined };
+  return {
+    state,
+    ready: state !== undefined,
+    replan: commands.replan,
+  };
 }
 
 export function useDnDGemContainer(): (element: HTMLElement | null) => void {

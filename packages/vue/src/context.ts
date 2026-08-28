@@ -6,7 +6,14 @@ export interface DnDGemRegistry {
   readonly registerItem: (id: string, element: HTMLElement | null) => void;
 }
 
+export interface DnDGemSessionCommands {
+  readonly replan: () => Promise<void>;
+}
+
 export const DnDGemRegistryKey: InjectionKey<DnDGemRegistry> = Symbol('dndgem.registry');
 
 export const DnDGemStateKey: InjectionKey<ShallowRef<LayoutSessionState | undefined>> =
   Symbol('dndgem.state');
+
+export const DnDGemSessionCommandsKey: InjectionKey<DnDGemSessionCommands> =
+  Symbol('dndgem.sessionCommands');

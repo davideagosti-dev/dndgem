@@ -1,14 +1,21 @@
-import type { PlanningProposal, PlanningSnapshot } from './types.js';
+import type { LayoutPlanner, PlanningProposal, PlanningSnapshot } from './types.js';
 import { normalizeAutomaticItemOrder, rankAutomaticItemsByProminence } from './normalize.js';
 
 /**
- * Deterministic local planner (DND-4.2).
+ * Deterministic local planner (DND-4.2 / DND-4.3).
  *
  * Emits advisory automatic-item processing order only.
  * Does not call solveLayout/evaluateLayout or compute geometry.
  * Does not mutate caller inputs.
+ *
+ * Satisfies {@link LayoutPlanner} while remaining synchronous and pure.
+ * Optional PlannerContext is accepted for contract compatibility and ignored.
  */
-export function createDeterministicPlanningProposal(snapshot: PlanningSnapshot): PlanningProposal {
+export function createDeterministicPlanningProposal(
+  snapshot: PlanningSnapshot,
+  _context?: Parameters<LayoutPlanner>[1],
+): PlanningProposal {
+  void _context;
   const automaticItemOrder = rankAutomaticItemsByProminence(snapshot.intent, snapshot.prominence);
 
   return Object.freeze({

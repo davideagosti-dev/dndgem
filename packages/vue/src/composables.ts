@@ -1,6 +1,11 @@
 import { computed, inject } from 'vue';
 import { layoutPlacementStyle, type LayoutSessionState } from '@dndgem/dom';
-import { DnDGemRegistryKey, DnDGemStateKey, type DnDGemRegistry } from './context.js';
+import {
+  DnDGemRegistryKey,
+  DnDGemSessionCommandsKey,
+  DnDGemStateKey,
+  type DnDGemRegistry,
+} from './context.js';
 import { unwrapElement } from './elements.js';
 import type { DnDGemItemBinding, DnDGemStore } from './types.js';
 
@@ -33,12 +38,14 @@ function placementStyle(
 export function useDnDGem(): DnDGemStore {
   const registry = inject(DnDGemRegistryKey);
   const state = inject(DnDGemStateKey);
-  if (registry === undefined || state === undefined) {
+  const commands = inject(DnDGemSessionCommandsKey);
+  if (registry === undefined || state === undefined || commands === undefined) {
     throw new Error('useDnDGem must be used within a DnDGemProvider');
   }
   return {
     state,
     ready: computed(() => state.value !== undefined),
+    replan: commands.replan,
   };
 }
 

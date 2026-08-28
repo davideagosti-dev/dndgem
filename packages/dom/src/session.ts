@@ -44,6 +44,53 @@ export interface LayoutSessionAutoLayoutState {
   readonly proposalUnplacedItemIds: readonly string[];
 }
 
+/**
+ * Structural planning snapshot accepted by an optional session planner.
+ * Compatible with `@dndgem/intelligence` PlanningSnapshot without importing it.
+ */
+export interface LayoutSessionPlanningSnapshot {
+  readonly intent: LayoutIntent;
+  readonly previous?: ResolvedLayout;
+  readonly prominence?: Readonly<Record<string, number>>;
+}
+
+/**
+ * Invoke-time planner context. AbortSignal is runtime-only (not serializable).
+ */
+export interface LayoutSessionPlannerContext {
+  readonly requestId: number;
+  readonly signal?: AbortSignal;
+}
+
+/**
+ * Advisory planner output consumed by the session (automatic-item order only).
+ */
+export interface LayoutSessionPlanningProposal {
+  readonly automaticItemOrder: readonly string[];
+}
+
+/**
+ * Optional provider-neutral planner injected into the DOM session (DND-4.3).
+ * Sync or async. DOM does not depend on `@dndgem/intelligence`.
+ */
+export type LayoutSessionPlanner = (
+  snapshot: LayoutSessionPlanningSnapshot,
+  context?: LayoutSessionPlannerContext,
+) => LayoutSessionPlanningProposal | Promise<LayoutSessionPlanningProposal>;
+
+/**
+ * Optional planner lifecycle events. Distinct from Core VALID / DEGRADED / INVALID.
+ */
+export type LayoutSessionPlannerStatus =
+  'planning' | 'applied' | 'fallback' | 'cancelled' | 'stale' | 'error';
+
+export interface LayoutSessionPlannerEvent {
+  readonly requestId: number;
+  readonly status: LayoutSessionPlannerStatus;
+  readonly proposalSource?: 'custom' | 'declaration';
+  readonly fallbackReason?: 'planner-throw' | 'cancelled';
+}
+
 export interface LayoutSessionState {
   readonly intent: LayoutIntent;
   readonly resolved: ResolvedLayout;
@@ -72,6 +119,19 @@ export interface LayoutSessionInput {
    */
   readonly autoLayout?: boolean;
   /**
+   * Optional advisory layout planner (DND-4.3). Invoked only by explicit
+   * {@link LayoutSession.replan} — never from pointermove, drag preview,
+   * ResizeObserver, passive resize, accepted drop, or every solve.
+   *
+   * When omitted, `replan()` recomposes with Phase 3 declaration-order Auto-Layout.
+   * Initial layout always uses Phase 3 declaration order (planner never blocks first paint).
+   */
+  readonly planner?: LayoutSessionPlanner;
+  /**
+   * Optional planner lifecycle callback (separate from Core validity).
+   */
+  readonly onPlannerEvent?: (event: LayoutSessionPlannerEvent) => void;
+  /**
    * Optional last committed layout for *continuation* solves (constraint
    * updates, remount, idle resize after the first commit).
    *
@@ -99,6 +159,14 @@ export interface LayoutSessionInput {
 
 export interface LayoutSession {
   readonly getState: () => LayoutSessionState;
+  /**
+   * Explicit advisory replan (DND-4.3). Always returns a Promise for a stable
+   * consumer contract (sync planners resolve immediately).
+   *
+   * With no planner: Phase 3 declaration-order Auto-Layout recomposition.
+   * With a planner: invoke → normalize via Core → solve → commit only if current.
+   */
+  readonly replan: () => Promise<void>;
   readonly dispose: () => void;
 }
 
@@ -116,6 +184,15 @@ function assertSessionInput(input: LayoutSessionInput): void {
     throw new DomAdapterError(
       'INVALID_SESSION_INPUT',
       'autoLayout must be a boolean when provided',
+    );
+  }
+  if (input.planner !== undefined && typeof input.planner !== 'function') {
+    throw new DomAdapterError('INVALID_SESSION_INPUT', 'planner must be a function when provided');
+  }
+  if (input.onPlannerEvent !== undefined && typeof input.onPlannerEvent !== 'function') {
+    throw new DomAdapterError(
+      'INVALID_SESSION_INPUT',
+      'onPlannerEvent must be a function when provided',
     );
   }
 }
@@ -297,6 +374,8 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
   const descriptors = Object.freeze([...input.items]);
   const elements = toElementMap(descriptors);
   const autoLayoutEnabled = input.autoLayout === true;
+  const planner = input.planner;
+  const onPlannerEvent = input.onPlannerEvent;
   /** Durable Source Intent — never overwritten by generated/effective geometry. */
   const sourceDesired = cloneDesiredMap(input.desiredPlacements);
   const originalDesired = input.desiredPlacements;
@@ -314,6 +393,10 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
   let lastDrop: DragDropResult | undefined;
   let proposalUnplacedItemIds: readonly string[] = Object.freeze([]);
   let lastSourceKey = '';
+  /** Last advisory automatic order from a successful replan (retained for idle recomposes). */
+  let lastAutomaticItemOrder: readonly string[] | undefined;
+  let plannerRequestId = 0;
+  let activePlannerAbort: AbortController | undefined;
 
   const requireState = (): LayoutSessionState => {
     if (
@@ -396,16 +479,22 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
    * `previous` feeds the proposal for generated retention. Solver `previous` is
    * supplied only on passive continuation (unchanged Source Intent) so ADR-0010
    * cannot suppress a newly promoted / updated Source Intent rect.
+   *
+   * Optional `automaticItemOrder` is advisory only (from explicit replan). Idle
+   * resize / drop recomposes reuse the last successful order without re-invoking
+   * the planner.
    */
   const solveAutoLayoutIdle = (
     snapshot: DomMeasurementSnapshot,
     previous: ResolvedLayout | undefined,
     allowSolvePrevious: boolean,
+    automaticItemOrder?: readonly string[],
   ): { intent: LayoutIntent; solver: SolverResult; unplaced: readonly string[] } => {
     const sourceIntent = buildSourceIntent(snapshot);
     const proposal = createAutoLayoutProposal({
       intent: sourceIntent,
       ...(previous !== undefined ? { previous } : {}),
+      ...(automaticItemOrder !== undefined ? { automaticItemOrder } : {}),
     });
     const solver = solveLayout({
       intent: proposal.effectiveIntent,
@@ -457,7 +546,13 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
             if (snapshot !== undefined) {
               // Recompose from durable Source Intent + previous sibling geometry.
               // Omit solver previous so the new Source Intent wins (ADR-0010).
-              const next = solveAutoLayoutIdle(snapshot, event.result.resolved, false);
+              // Do NOT invoke the optional planner on accepted drop (DND-4.3).
+              const next = solveAutoLayoutIdle(
+                snapshot,
+                event.result.resolved,
+                false,
+                lastAutomaticItemOrder,
+              );
               proposalUnplacedItemIds = Object.freeze([...next.unplaced]);
               lastSourceKey = sourceDesiredKey(sourceDesired);
               commitSolver(next.intent, next.solver);
@@ -495,7 +590,12 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
       // First solve (lastSourceKey === '') and post-drag recomposes omit solver previous.
       const allowSolvePrevious =
         committedResolved !== undefined && currentKey === lastSourceKey && lastSourceKey !== '';
-      const solved = solveAutoLayoutIdle(snapshot, committedResolved, allowSolvePrevious);
+      const solved = solveAutoLayoutIdle(
+        snapshot,
+        committedResolved,
+        allowSolvePrevious,
+        lastAutomaticItemOrder,
+      );
       proposalUnplacedItemIds = Object.freeze([...solved.unplaced]);
       lastSourceKey = currentKey;
       if (
@@ -557,9 +657,177 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
     items: elements,
   });
   lastSnapshot = initialSnapshot;
+  // Initial layout is always Phase 3 declaration-order Auto-Layout (or explicit).
+  // Optional planners run only via explicit replan() so async planners never block
+  // first paint and sync/async session semantics stay uniform.
   handleIdleSnapshot(initialSnapshot);
   connectInteraction();
   emit();
+
+  const replan = async (): Promise<void> => {
+    if (disposed) {
+      throw new DomAdapterError('SESSION_DISPOSED', 'Cannot replan a disposed layout session');
+    }
+
+    const snapshot = lastSnapshot;
+    if (snapshot === undefined) {
+      return;
+    }
+
+    activePlannerAbort?.abort();
+    const requestId = plannerRequestId + 1;
+    plannerRequestId = requestId;
+    // AbortController is constructed only at invoke time (SSR-safe module load).
+    const abortController = new AbortController();
+    activePlannerAbort = abortController;
+
+    onPlannerEvent?.({ requestId, status: 'planning' });
+
+    let automaticItemOrder: readonly string[] | undefined;
+    let proposalSource: 'custom' | 'declaration' = 'declaration';
+    let eventStatus: LayoutSessionPlannerStatus = 'applied';
+    let fallbackReason: LayoutSessionPlannerEvent['fallbackReason'];
+
+    if (planner !== undefined) {
+      const planningSnapshot: LayoutSessionPlanningSnapshot = {
+        intent: buildSourceIntent(snapshot),
+        ...(committedResolved !== undefined ? { previous: committedResolved } : {}),
+      };
+      try {
+        const proposal = await Promise.resolve(
+          planner(planningSnapshot, {
+            requestId,
+            signal: abortController.signal,
+          }),
+        );
+        if (disposed) {
+          onPlannerEvent?.({
+            requestId,
+            status: 'cancelled',
+            fallbackReason: 'cancelled',
+          });
+          return;
+        }
+        if (requestId !== plannerRequestId) {
+          onPlannerEvent?.({ requestId, status: 'stale' });
+          return;
+        }
+        if (abortController.signal.aborted) {
+          onPlannerEvent?.({
+            requestId,
+            status: 'cancelled',
+            fallbackReason: 'cancelled',
+          });
+          return;
+        }
+        automaticItemOrder = proposal.automaticItemOrder;
+        proposalSource = 'custom';
+      } catch {
+        if (disposed) {
+          onPlannerEvent?.({
+            requestId,
+            status: 'cancelled',
+            fallbackReason: 'cancelled',
+          });
+          return;
+        }
+        if (requestId !== plannerRequestId) {
+          onPlannerEvent?.({ requestId, status: 'stale' });
+          return;
+        }
+        if (abortController.signal.aborted) {
+          onPlannerEvent?.({
+            requestId,
+            status: 'cancelled',
+            fallbackReason: 'cancelled',
+          });
+          return;
+        }
+        // Custom planner failure → Phase 3 declaration-order Auto-Layout.
+        // Deterministic local planner fallback lives in `@dndgem/intelligence`
+        // (`runLayoutPlanner` / `createOrchestratedLayoutPlanner`) when consumers
+        // compose that package outside DOM.
+        automaticItemOrder = undefined;
+        proposalSource = 'declaration';
+        eventStatus = 'fallback';
+        fallbackReason = 'planner-throw';
+      }
+    }
+
+    if (disposed) {
+      onPlannerEvent?.({
+        requestId,
+        status: 'cancelled',
+        fallbackReason: 'cancelled',
+      });
+      return;
+    }
+    if (requestId !== plannerRequestId) {
+      onPlannerEvent?.({ requestId, status: 'stale' });
+      return;
+    }
+    if (abortController.signal.aborted) {
+      onPlannerEvent?.({ requestId, status: 'cancelled', fallbackReason: 'cancelled' });
+      return;
+    }
+
+    if (!autoLayoutEnabled) {
+      // Explicit-only sessions: replan recomposes from current measurements without
+      // an advisory order (parity no-op relative to idle continuation).
+      const intent = buildExplicitIntent(descriptors, snapshot, originalDesired, committedResolved);
+      const solver = solveLayout({
+        intent,
+        ...(committedResolved !== undefined ? { previous: committedResolved } : {}),
+      });
+      if (requestId !== plannerRequestId || disposed) {
+        onPlannerEvent?.({
+          requestId,
+          status: disposed ? 'cancelled' : 'stale',
+          ...(disposed ? { fallbackReason: 'cancelled' as const } : {}),
+        });
+        return;
+      }
+      commitSolver(intent, solver);
+      applyCommitted();
+      if (!reconnecting) {
+        connectInteraction();
+      }
+      emit();
+      onPlannerEvent?.({ requestId, status: 'applied', proposalSource: 'declaration' });
+      return;
+    }
+
+    // Explicit replan omits Auto-Layout `previous` so Stage B retention cannot
+    // freeze the prior declaration-order competition; planner order must compete fresh.
+    // Source Intent remains in buildSourceIntent / desiredPlacements.
+    const solved = solveAutoLayoutIdle(snapshot, undefined, false, automaticItemOrder);
+
+    if (requestId !== plannerRequestId || disposed) {
+      onPlannerEvent?.({
+        requestId,
+        status: disposed ? 'cancelled' : 'stale',
+        ...(disposed ? { fallbackReason: 'cancelled' as const } : {}),
+      });
+      return;
+    }
+
+    lastAutomaticItemOrder =
+      automaticItemOrder !== undefined ? Object.freeze([...automaticItemOrder]) : undefined;
+    proposalUnplacedItemIds = Object.freeze([...solved.unplaced]);
+    lastSourceKey = sourceDesiredKey(sourceDesired);
+    commitSolver(solved.intent, solved.solver);
+    applyCommitted();
+    if (!reconnecting) {
+      connectInteraction();
+    }
+    emit();
+    onPlannerEvent?.({
+      requestId,
+      status: eventStatus,
+      proposalSource,
+      ...(fallbackReason !== undefined ? { fallbackReason } : {}),
+    });
+  };
 
   return {
     getState(): LayoutSessionState {
@@ -571,15 +839,19 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
       }
       return requireState();
     },
+    replan,
     dispose(): void {
       if (disposed) {
         return;
       }
       disposed = true;
+      activePlannerAbort?.abort();
+      activePlannerAbort = undefined;
       interaction?.dispose();
       interaction = undefined;
       lastSnapshot = undefined;
       lastDrop = undefined;
+      lastAutomaticItemOrder = undefined;
       // Layout-related inline styles are left in place. DnDGem owns
       // position/left/top/width/height/box-sizing/transform on mapped items
       // after mount; the consumer resets them if a pre-session look is needed.
