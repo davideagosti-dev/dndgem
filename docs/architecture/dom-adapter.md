@@ -197,15 +197,39 @@ When `autoLayout: true`:
 
 Available on published npm `@alpha` (`0.1.0-alpha.1`). React mirrors it via `DnDGemProvider` prop `autoLayout?: boolean`.
 
+### Optional planner integration (DND-4.3)
+
+`createLayoutSession` accepts an optional structural `planner` and `onPlannerEvent` without depending on `@dndgem/intelligence`:
+
+```ts
+createLayoutSession({
+  autoLayout: true,
+  planner, // LayoutSessionPlanner — sync or async
+});
+
+await session.replan(); // always Promise<void>
+```
+
+Binding session rules:
+
+- Initial layout uses Phase 3 declaration-order Auto-Layout (planner never blocks first paint)
+- Planner runs only on explicit `replan()` — never on pointermove, drag preview, ResizeObserver, passive resize, every solve, or accepted drop
+- No planner configured → `replan()` recomposes Phase 3 declaration order
+- Stale protection via monotone request ids; cancelled/stale results never apply
+- Placement origins remain `'source' | 'generated'` only
+- React / Vue / Angular / Svelte forward `planner` / `onPlannerEvent` and expose `replan()`
+
+First-party orchestration (`runLayoutPlanner`, deterministic fallback chain) lives in private `@dndgem/intelligence`. Compose it at the application boundary when desired.
+
 `dispose()` disconnects interaction and observers and is idempotent. Layout-related inline styles are left in place; the consumer resets them if a pre-session look is required. Unrelated visual styles (color, font, z-index, …) are never written by the library.
 
 React (`@dndgem/react`) wraps this session. It does not add a second ResizeObserver or a second solver. Importing the React package is SSR-safe; rendering the provider requires a client-side mount.
 
 ## Explicit non-goals
 
-- Vue / Angular / Svelte adapters (Framework Expansion Gate — DND-FX.2+)
 - Flutter adapters (separate renderer track)
 - Animation / spring / FLIP engines
 - Custom native DnD engine; leaking dnd-kit types
 - `MutationObserver`, auto child discovery, `querySelector` scanning
-- AI, cloud, claiming production-ready or fully accessible drag
+- Model/provider SDKs, OpenAI, network inference (DND-4.4+)
+- Claiming production-ready or fully accessible drag

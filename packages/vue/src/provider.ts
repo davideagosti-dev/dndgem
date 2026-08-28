@@ -6,10 +6,12 @@ import {
   type DragDropResult,
   type DragMechanicsAdapter,
   type LayoutSession,
+  type LayoutSessionPlanner,
+  type LayoutSessionPlannerEvent,
   type LayoutSessionState,
   type ResizeObserverConstructor,
 } from '@dndgem/dom';
-import { DnDGemRegistryKey, DnDGemStateKey } from './context.js';
+import { DnDGemRegistryKey, DnDGemSessionCommandsKey, DnDGemStateKey } from './context.js';
 import type { DnDGemItemConfig } from './types.js';
 
 function itemsSignature(items: readonly DnDGemItemConfig[]): string {
@@ -36,6 +38,14 @@ export const DnDGemProvider = defineComponent({
     autoLayout: {
       type: Boolean,
       default: false,
+    },
+    planner: {
+      type: Function as PropType<LayoutSessionPlanner>,
+      default: undefined,
+    },
+    onPlannerEvent: {
+      type: Function as PropType<(event: LayoutSessionPlannerEvent) => void>,
+      default: undefined,
     },
     onChange: {
       type: Function as PropType<(state: LayoutSessionState) => void>,
@@ -65,6 +75,8 @@ export const DnDGemProvider = defineComponent({
     const onChangeRef = shallowRef(props.onChange);
     const onDropRef = shallowRef(props.onDrop);
     const onCancelRef = shallowRef(props.onCancel);
+    const onPlannerEventRef = shallowRef(props.onPlannerEvent);
+    const plannerRef = shallowRef(props.planner);
     const itemsRef = shallowRef(props.items);
     const desiredRef = shallowRef(props.desiredPlacements);
     const previousRef = shallowRef<ResolvedLayout | undefined>(undefined);
@@ -86,6 +98,18 @@ export const DnDGemProvider = defineComponent({
       () => props.onCancel,
       (value) => {
         onCancelRef.value = value;
+      },
+    );
+    watch(
+      () => props.onPlannerEvent,
+      (value) => {
+        onPlannerEventRef.value = value;
+      },
+    );
+    watch(
+      () => props.planner,
+      (value) => {
+        plannerRef.value = value;
       },
     );
     watch(
@@ -113,6 +137,7 @@ export const DnDGemProvider = defineComponent({
       autoLayout: false,
       mechanics: undefined as DragMechanicsAdapter | undefined,
       ResizeObserver: undefined as ResizeObserverConstructor | undefined,
+      plannerConfigured: false,
     };
     let session: LayoutSession | undefined;
 
@@ -181,7 +206,12 @@ export const DnDGemProvider = defineComponent({
       registerItem,
     };
 
+    const replan = async (): Promise<void> => {
+      await session?.replan();
+    };
+
     provide(DnDGemRegistryKey, registry);
+    provide(DnDGemSessionCommandsKey, { replan });
     provide(DnDGemStateKey, state);
 
     const disposeSession = (): void => {
@@ -197,6 +227,7 @@ export const DnDGemProvider = defineComponent({
         () => props.autoLayout === true,
         () => props.mechanics,
         () => props.ResizeObserver,
+        () => props.planner !== undefined,
       ],
       () => {
         const container = containerRef.current;
@@ -228,6 +259,7 @@ export const DnDGemProvider = defineComponent({
         const itemsSig = itemsSignature(props.items);
         const desiredKey = JSON.stringify(props.desiredPlacements ?? null);
         const autoLayout = props.autoLayout === true;
+        const plannerConfigured = props.planner !== undefined;
         const sameElements =
           lastBound.container === container &&
           descriptors.length === lastBound.elements.size &&
@@ -237,7 +269,8 @@ export const DnDGemProvider = defineComponent({
           lastBound.desiredKey === desiredKey &&
           lastBound.autoLayout === autoLayout &&
           lastBound.mechanics === props.mechanics &&
-          lastBound.ResizeObserver === props.ResizeObserver;
+          lastBound.ResizeObserver === props.ResizeObserver &&
+          lastBound.plannerConfigured === plannerConfigured;
         if (session !== undefined && sameConfig && sameElements) {
           return;
         }
@@ -250,6 +283,7 @@ export const DnDGemProvider = defineComponent({
         lastBound.autoLayout = autoLayout;
         lastBound.mechanics = props.mechanics;
         lastBound.ResizeObserver = props.ResizeObserver;
+        lastBound.plannerConfigured = plannerConfigured;
 
         const desiredChanged =
           lastDesiredKeyRef.value !== undefined && lastDesiredKeyRef.value !== desiredKey;
@@ -269,6 +303,20 @@ export const DnDGemProvider = defineComponent({
           previous,
           mechanics: props.mechanics,
           ResizeObserver: props.ResizeObserver,
+          ...(plannerConfigured
+            ? {
+                planner: (snapshot, context) => {
+                  const current = plannerRef.value;
+                  if (current === undefined) {
+                    return { automaticItemOrder: [] };
+                  }
+                  return current(snapshot, context);
+                },
+                onPlannerEvent: (event) => {
+                  onPlannerEventRef.value?.(event);
+                },
+              }
+            : {}),
           onChange: (next) => {
             previousRef.value = next.resolved;
             onChangeRef.value?.(next);

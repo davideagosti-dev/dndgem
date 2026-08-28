@@ -443,7 +443,7 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 
 Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-4-planning-audit.md](./architecture/phase-4-planning-audit.md).
 
-**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); DND-4.2 **COMPLETE**; DND-4.3–DND-4.5 not started.
+**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); DND-4.2 **COMPLETE**; DND-4.3 Stage B implementation (awaiting Final Closure); DND-4.4–DND-4.5 not started.
 
 Primary objective: optional higher-level structural/semantic/application planning **without** replacing deterministic solving.
 
@@ -485,7 +485,7 @@ DND-4.1 Layout Intelligence Contract & Architecture   COMPLETE (contract)
         ↓
 DND-4.2 Deterministic Intelligence Planner            COMPLETE
         ↓
-DND-4.3 Planner Contract & Optional Integration       not started
+DND-4.3 Planner Contract & Optional Integration       Stage B (awaiting Final Closure)
         ↓
 DND-4.4 Model-Assisted Planning Experiment            not started (optional path)
         ↓
@@ -521,9 +521,10 @@ DND-4.5 Phase 4 Validation & Alpha Gate               not started
 ### DND-4.3 — Planner Contract & Optional Integration
 
 - **Objective:** Stabilize optional integration for first-party and consumer-supplied planners.
-- **Out of scope:** Provider lock-in; hot-path planning; DOM/content scraping defaults.
+- **Out of scope:** Provider lock-in; hot-path planning; DOM/content scraping defaults; OpenAI/model SDKs.
 - **Dependencies:** DND-4.2.
-- **Status:** Not started
+- **Status:** Stage B implementation (awaiting Final Closure) — `LayoutPlanner` + `runLayoutPlanner`; DOM `planner` / `replan(): Promise<void>`; framework parity; stale/cancel/fallback; intelligence remains private.
+- **Reference:** [deterministic-planner.md](./architecture/deterministic-planner.md), [dom-adapter.md](./architecture/dom-adapter.md)
 
 ### DND-4.4 — Model-Assisted Planning Experiment
 

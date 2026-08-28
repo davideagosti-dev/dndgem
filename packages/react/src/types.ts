@@ -4,6 +4,8 @@ import type {
   DragCancelEvent,
   DragDropResult,
   DragMechanicsAdapter,
+  LayoutSessionPlanner,
+  LayoutSessionPlannerEvent,
   LayoutSessionState,
   ResizeObserverConstructor,
 } from '@dndgem/dom';
@@ -24,6 +26,15 @@ export interface DnDGemProviderProps {
    * Opt-in Auto-Layout (default off). Mirrors `createLayoutSession({ autoLayout })`.
    */
   readonly autoLayout?: boolean;
+  /**
+   * Optional advisory planner (DND-4.3). Pass-through to DOM session.
+   * Invoked only via {@link DnDGemStore.replan} — never on hot paths.
+   */
+  readonly planner?: LayoutSessionPlanner;
+  /**
+   * Optional planner lifecycle callback (separate from Core validity).
+   */
+  readonly onPlannerEvent?: (event: LayoutSessionPlannerEvent) => void;
   readonly children: ReactNode;
   readonly onChange?: (state: LayoutSessionState) => void;
   readonly onDrop?: (event: { readonly result: DragDropResult }) => void;
@@ -49,4 +60,8 @@ export interface DnDGemItemBinding {
 export interface DnDGemStore {
   readonly state: LayoutSessionState | undefined;
   readonly ready: boolean;
+  /**
+   * Explicit advisory replan. Always returns a Promise (DND-4.3).
+   */
+  readonly replan: () => Promise<void>;
 }

@@ -86,5 +86,11 @@ export {
   type LayoutSessionAutoLayoutState,
   type LayoutSessionInput,
   type LayoutSessionItemInput,
+  type LayoutSessionPlanner,
+  type LayoutSessionPlannerContext,
+  type LayoutSessionPlannerEvent,
+  type LayoutSessionPlannerStatus,
+  type LayoutSessionPlanningProposal,
+  type LayoutSessionPlanningSnapshot,
   type LayoutSessionState,
 } from './session.js';

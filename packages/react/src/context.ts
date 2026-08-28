@@ -6,6 +6,12 @@ export interface DnDGemRegistry {
   readonly registerItem: (id: string, element: HTMLElement | null) => void;
 }
 
+export interface DnDGemSessionCommands {
+  readonly replan: () => Promise<void>;
+}
+
 export const DnDGemRegistryContext = createContext<DnDGemRegistry | null>(null);
 
 export const DnDGemStateContext = createContext<LayoutSessionState | undefined>(undefined);
+
+export const DnDGemSessionCommandsContext = createContext<DnDGemSessionCommands | null>(null);
