@@ -49,5 +49,7 @@ export type {
   DragCancelEvent,
   DragDropResult,
   DragProposal,
+  LayoutSessionPlanner,
+  LayoutSessionPlannerEvent,
   LayoutSessionState,
 } from '@dndgem/dom';

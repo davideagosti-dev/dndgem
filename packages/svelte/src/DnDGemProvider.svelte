@@ -10,6 +10,8 @@
     items,
     desiredPlacements = undefined,
     autoLayout = false,
+    planner = undefined,
+    onPlannerEvent,
     onChange,
     onDrop,
     onCancel,
@@ -45,8 +47,14 @@
         const change = onChange;
         const drop = onDrop;
         const cancel = onCancel;
+        const plannerEvent = onPlannerEvent;
         untrack(() => {
-          board.setCallbacks({ onChange: change, onDrop: drop, onCancel: cancel });
+          board.setCallbacks({
+            onChange: change,
+            onDrop: drop,
+            onCancel: cancel,
+            onPlannerEvent: plannerEvent,
+          });
         });
       });
 
@@ -54,6 +62,7 @@
         const currentItems = items;
         const currentDesired = desiredPlacements;
         const currentAuto = autoLayout;
+        const currentPlanner = planner;
         const currentMechanics = mechanics;
         const currentObserver = ResizeObserver;
         void registryTick;
@@ -62,6 +71,7 @@
             items: currentItems,
             desiredPlacements: currentDesired,
             autoLayout: currentAuto,
+            planner: currentPlanner,
             mechanics: currentMechanics,
             ResizeObserver: currentObserver,
           });
@@ -83,6 +93,7 @@
     get ready() {
       return isReady;
     },
+    replan: () => board.replan(),
     dndgemContainer,
     dndgemItem,
   };

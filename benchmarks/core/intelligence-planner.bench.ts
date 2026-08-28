@@ -11,6 +11,7 @@ import {
 import {
   createDeterministicPlanningProposal,
   normalizePlanningProposal,
+  runLayoutPlanner,
 } from '@dndgem/intelligence';
 
 function buildSmallFixture() {
@@ -151,5 +152,55 @@ describe('DND-4.2 intelligence planner benchmarks — timing', () => {
       solveLayout({ intent: proposal.effectiveIntent });
     },
     { warmupIterations: 5, iterations: 30, time: 0 },
+  );
+});
+
+describe('DND-4.3 orchestrator benchmarks — timing', () => {
+  const smallIntent = buildSmallFixture();
+  const smallSnapshot = {
+    intent: smallIntent,
+    prominence: { 'target-a': 10, 'target-b': 5, blocker: 0 },
+  };
+
+  bench(
+    'orchestrator + sync deterministic planner (small)',
+    async () => {
+      await runLayoutPlanner({
+        snapshot: smallSnapshot,
+        planner: createDeterministicPlanningProposal,
+        context: { requestId: 1 },
+      });
+    },
+    { warmupIterations: 20, iterations: 100, time: 0 },
+  );
+
+  bench(
+    'orchestrator + async-resolved custom planner (small)',
+    async () => {
+      await runLayoutPlanner({
+        snapshot: smallSnapshot,
+        planner: async () => ({
+          automaticItemOrder: ['target-a', 'target-b', 'blocker'],
+        }),
+        context: { requestId: 1 },
+      });
+    },
+    { warmupIterations: 20, iterations: 100, time: 0 },
+  );
+
+  bench(
+    'orchestrator normalize path + auto-layout (small)',
+    async () => {
+      const result = await runLayoutPlanner({
+        snapshot: smallSnapshot,
+        planner: createDeterministicPlanningProposal,
+        context: { requestId: 1 },
+      });
+      createAutoLayoutProposal({
+        intent: smallIntent,
+        automaticItemOrder: result.proposal.automaticItemOrder,
+      });
+    },
+    { warmupIterations: 20, iterations: 100, time: 0 },
   );
 });

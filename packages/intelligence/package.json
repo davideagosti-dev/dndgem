@@ -2,7 +2,7 @@
   "name": "@dndgem/intelligence",
   "version": "0.0.0",
   "private": true,
-  "description": "Private deterministic layout intelligence planner for DnDGem (DND-4.2 experimental).",
+  "description": "Private layout intelligence planner and orchestration for DnDGem (DND-4.2 / DND-4.3 experimental).",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",

@@ -273,15 +273,16 @@ Intelligence itself is **not** a placement origin in DND-4.1. If a later sprint 
 - Animation frame layout loops
 - Every `solveLayout` invocation
 
-### Async / stale-result behavior (conceptual; DND-4.3+)
+### Async / stale-result behavior (DND-4.3)
 
-Future async planners must define:
+Async planners must:
 
-- Cancellation when a newer planning request supersedes an older one
-- Rejection of stale proposals that no longer match the planning snapshot generation/token
-- Fail-closed fallback if results arrive after timeout or after the consumer has moved on
+- Accept optional `AbortSignal` in invoke-time `PlannerContext` (not serialized into `PlanningSnapshot`)
+- Support cancellation when a newer planning request supersedes an older one
+- Reject stale proposals via monotone request ids before apply (abort alone is insufficient)
+- Fail closed to deterministic fallback on throw/reject/malformed output
 
-DND-4.1 does not implement remote inference.
+Implemented by `runLayoutPlanner` (intelligence) + DOM `session.replan()` stale/cancel guards. No remote inference in DND-4.3.
 
 ---
 

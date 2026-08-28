@@ -4,6 +4,7 @@ import {
   createLayoutSession,
   type DragMechanicsAdapter,
   type LayoutSession,
+  type LayoutSessionPlanner,
   type LayoutSessionState,
   type ResizeObserverConstructor,
 } from '@dndgem/dom';
@@ -30,10 +31,13 @@ export class DnDGemBoard {
   private readonly autoLayout = signal(false);
   private readonly mechanics = signal<DragMechanicsAdapter | undefined>(undefined);
   private readonly resizeObserver = signal<ResizeObserverConstructor | undefined>(undefined);
+  private readonly plannerConfigured = signal(false);
 
+  private planner: LayoutSessionPlanner | undefined;
   private onChange: DnDGemBoardCallbacks['onChange'];
   private onDrop: DnDGemBoardCallbacks['onDrop'];
   private onCancel: DnDGemBoardCallbacks['onCancel'];
+  private onPlannerEvent: DnDGemBoardCallbacks['onPlannerEvent'];
 
   private readonly containerRef: { current: HTMLElement | null } = { current: null };
   private readonly elementsRef: { current: Map<string, HTMLElement> } = {
@@ -51,6 +55,7 @@ export class DnDGemBoard {
     autoLayout: false,
     mechanics: undefined as DragMechanicsAdapter | undefined,
     ResizeObserver: undefined as ResizeObserverConstructor | undefined,
+    plannerConfigured: false,
   };
   private session: LayoutSession | undefined;
   private disposed = false;
@@ -68,12 +73,22 @@ export class DnDGemBoard {
     this.autoLayout.set(config.autoLayout === true);
     this.mechanics.set(config.mechanics);
     this.resizeObserver.set(config.ResizeObserver);
+    this.planner = config.planner;
+    this.plannerConfigured.set(config.planner !== undefined);
   }
 
   setCallbacks(callbacks: DnDGemBoardCallbacks): void {
     this.onChange = callbacks.onChange;
     this.onDrop = callbacks.onDrop;
     this.onCancel = callbacks.onCancel;
+    this.onPlannerEvent = callbacks.onPlannerEvent;
+  }
+
+  /**
+   * Explicit advisory replan. Always returns a Promise (DND-4.3).
+   */
+  async replan(): Promise<void> {
+    await this.session?.replan();
   }
 
   registerContainer(element: HTMLElement | null): void {
@@ -187,6 +202,7 @@ export class DnDGemBoard {
     const autoLayout = this.autoLayout();
     const mechanics = this.mechanics();
     const ResizeObserver = this.resizeObserver();
+    const plannerConfigured = this.plannerConfigured();
     const sameElements =
       this.lastBound.container === container &&
       descriptors.length === this.lastBound.elements.size &&
@@ -196,7 +212,8 @@ export class DnDGemBoard {
       this.lastBound.desiredKey === desiredKey &&
       this.lastBound.autoLayout === autoLayout &&
       this.lastBound.mechanics === mechanics &&
-      this.lastBound.ResizeObserver === ResizeObserver;
+      this.lastBound.ResizeObserver === ResizeObserver &&
+      this.lastBound.plannerConfigured === plannerConfigured;
     if (this.session !== undefined && sameConfig && sameElements) {
       return;
     }
@@ -209,6 +226,7 @@ export class DnDGemBoard {
     this.lastBound.autoLayout = autoLayout;
     this.lastBound.mechanics = mechanics;
     this.lastBound.ResizeObserver = ResizeObserver;
+    this.lastBound.plannerConfigured = plannerConfigured;
 
     const desiredChanged =
       this.lastDesiredKeyRef.current !== undefined && this.lastDesiredKeyRef.current !== desiredKey;
@@ -227,6 +245,20 @@ export class DnDGemBoard {
       previous,
       mechanics,
       ResizeObserver,
+      ...(plannerConfigured
+        ? {
+            planner: (snapshot, context) => {
+              const current = this.planner;
+              if (current === undefined) {
+                return { automaticItemOrder: [] };
+              }
+              return current(snapshot, context);
+            },
+            onPlannerEvent: (event) => {
+              this.onPlannerEvent?.(event);
+            },
+          }
+        : {}),
       onChange: (next) => {
         this.previousRef.current = next.resolved;
         this.onChange?.(next);

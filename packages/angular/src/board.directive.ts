@@ -4,6 +4,8 @@ import type {
   DragCancelEvent,
   DragDropResult,
   DragMechanicsAdapter,
+  LayoutSessionPlanner,
+  LayoutSessionPlannerEvent,
   LayoutSessionState,
   ResizeObserverConstructor,
 } from '@dndgem/dom';
@@ -27,16 +29,25 @@ export class DnDGemBoardDirective {
     undefined,
   );
   readonly dndgemAutoLayout = input(false);
+  readonly dndgemPlanner = input<LayoutSessionPlanner | undefined>(undefined);
   readonly dndgemMechanics = input<DragMechanicsAdapter | undefined>(undefined);
   readonly dndgemResizeObserver = input<ResizeObserverConstructor | undefined>(undefined);
 
   readonly dndgemChange = output<LayoutSessionState>();
   readonly dndgemDrop = output<{ readonly result: DragDropResult }>();
   readonly dndgemCancel = output<DragCancelEvent>();
+  readonly dndgemPlannerEvent = output<LayoutSessionPlannerEvent>();
 
   readonly board = inject(DnDGemBoard);
   readonly state = this.board.state;
   readonly ready = this.board.ready;
+
+  /**
+   * Explicit advisory replan. Always returns a Promise (DND-4.3).
+   */
+  replan(): Promise<void> {
+    return this.board.replan();
+  }
 
   constructor() {
     this.board.setCallbacks({
@@ -49,12 +60,16 @@ export class DnDGemBoardDirective {
       onCancel: (event) => {
         this.dndgemCancel.emit(event);
       },
+      onPlannerEvent: (event) => {
+        this.dndgemPlannerEvent.emit(event);
+      },
     });
 
     afterRenderEffect(() => {
       const items = this.dndgemItems();
       const desiredPlacements = this.dndgemDesiredPlacements();
       const autoLayout = this.dndgemAutoLayout();
+      const planner = this.dndgemPlanner();
       const mechanics = this.dndgemMechanics();
       const ResizeObserver = this.dndgemResizeObserver();
       this.board.registryGeneration();
@@ -63,6 +78,7 @@ export class DnDGemBoardDirective {
           items,
           desiredPlacements,
           autoLayout,
+          planner,
           mechanics,
           ResizeObserver,
         });
