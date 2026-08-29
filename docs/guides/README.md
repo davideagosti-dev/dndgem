@@ -40,6 +40,7 @@ Alpha API Contract
 | [Svelte Guide](./svelte.md)                           | Provider, actions, stores                    |
 | [Meta-frameworks](./meta-frameworks.md)               | Next.js / Nuxt / SvelteKit compatibility     |
 | [Vanilla / DOM Guide](./vanilla.md)                   | `createLayoutSession` path                   |
+| [Advisory Planner](./advisory-planner.md)             | Optional planner / `replan` (Phase 4)        |
 | [Constraints & Validity](./constraints.md)            | Hard vs useful; VALID / DEGRADED / INVALID   |
 | [Drag, Resize & Reflow](./drag-resize-reflow.md)      | Explicit intent vs previous-layout stability |
 | [Troubleshooting](./troubleshooting.md)               | Common integration failures                  |
@@ -56,6 +57,7 @@ Architecture / contract references (not the day-one path):
 - [Auto-Layout Contract (Phase 3)](../architecture/auto-layout-contract.md)
 - [Auto-Layout Engine (Phase 3)](../architecture/auto-layout-engine.md)
 - [Layout Intelligence Contract (Phase 4)](../architecture/layout-intelligence-contract.md)
+- [Deterministic Planner (Phase 4)](../architecture/deterministic-planner.md)
 - [Phase 4 Planning Audit](../architecture/phase-4-planning-audit.md)
 - [Framework Adapter Contract (DND-FX)](../architecture/framework-adapter-contract.md)
 - [Framework Expansion Gate](../architecture/framework-expansion-planning-audit.md)

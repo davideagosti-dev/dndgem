@@ -26,6 +26,10 @@ Each environment was checked for:
 - consumer `aria-label` / `tabindex` / interactive child preservation
 - route leave disposes the session; route return creates exactly one new session
 
+## Advisory planner
+
+Optional `planner` / `replan` capability is **inherited through the underlying framework adapter** (`@dndgem/react` / `@dndgem/vue` / `@dndgem/svelte`). Meta-frameworks do not add a dedicated planner runtime. See [Advisory Planner](./advisory-planner.md).
+
 ## What is not claimed
 
 - server-side DnDGem layout solving
@@ -34,6 +38,7 @@ Each environment was checked for:
 - every SSR mode or hosting adapter
 - Angular Universal (not part of this validation)
 - published Vue / Angular / Svelte adapters on npm `@alpha` (`0.1.0-alpha.3`)
+- a meta-framework-specific planner implementation beyond adapter pass-through
 
 ```text
 MODULE IMPORT SAFE  ≠  SERVER-SIDE DNDGEM SESSION

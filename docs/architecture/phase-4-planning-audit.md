@@ -1,16 +1,16 @@
 # Phase 4 Planning Audit — Decision Record
 
-**Status:** **PASSED WITH ARCHITECTURAL REFINEMENTS**
+**Status:** **PASSED WITH ARCHITECTURAL REFINEMENTS** — Phase 4 **COMPLETE WITH RELEASE PENDING** (DND-4.5 CLOSED)
 
 **Product:** DnDGem by DA62  
-**Scope:** Phase 4 — AI-Assisted Layout Intelligence (planning / contract / sprint mapping)  
+**Scope:** Phase 4 — AI-Assisted Layout Intelligence (planning / contract / sprint mapping / decision gate)  
 **Entry gate:** **READY** (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`)  
-**Sprint map:** **APPROVED** (5 sprints)  
-**Active sprint:** **DND-4.1** (contract-only)
+**Sprint map:** **APPROVED** (5 sprints) — **all COMPLETE**  
+**Phase disposition (DND-4.5):** **PHASE 4 COMPLETE WITH RELEASE PENDING**
 
-This document records the repository-backed audit for Phase 4 architecture placement, taxonomy, provider strategy, and sprint mapping. Implementation of planners begins only when an explicit later sprint (starting with **DND-4.2**) is authorized.
+This document records the repository-backed audit for Phase 4 architecture placement, taxonomy, provider strategy, sprint mapping, and the DND-4.5 product decision gate.
 
-Related: [layout-intelligence-contract.md](./layout-intelligence-contract.md), [ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md), [auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [package-boundaries.md](./package-boundaries.md), [roadmap.md](../roadmap.md).
+Related: [layout-intelligence-contract.md](./layout-intelligence-contract.md), [ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md), [auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [package-boundaries.md](./package-boundaries.md), [roadmap.md](../roadmap.md), [deterministic-planner.md](./deterministic-planner.md), [model-assisted-planning-experiment.md](./model-assisted-planning-experiment.md).
 
 ---
 
@@ -29,17 +29,23 @@ APPROVED
 SPRINT COUNT:
 5
 
-DND-4.1:
-CONTRACT / ARCHITECTURE ONLY — NO PRODUCTION INTELLIGENCE PACKAGE
+PHASE 4 DISPOSITION (DND-4.5):
+COMPLETE WITH RELEASE PENDING
+
+DND-4.1 COMPLETE
+DND-4.2 COMPLETE — ACCEPTED FOR RELEASE
+DND-4.3 COMPLETE — ACCEPTED FOR RELEASE
+DND-4.4 COMPLETE — DEFER MODEL ASSISTANCE
+DND-4.5 COMPLETE — PHASE 4 DECISION GATE
 ```
 
-| Sprint      | Title                                       | Decision                     | Implementation status                             |
-| ----------- | ------------------------------------------- | ---------------------------- | ------------------------------------------------- |
-| **DND-4.1** | Layout Intelligence Contract & Architecture | **APPROVED**                 | COMPLETE (contract)                               |
-| **DND-4.2** | Deterministic Intelligence Planner          | **APPROVED**                 | COMPLETE                                          |
-| **DND-4.3** | Planner Contract & Optional Integration     | **APPROVED**                 | COMPLETE                                          |
-| **DND-4.4** | Model-Assisted Planning Experiment          | **APPROVED** (optional path) | **COMPLETE** — decision: `DEFER MODEL ASSISTANCE` |
-| **DND-4.5** | Phase 4 Validation & Alpha Gate             | **APPROVED**                 | Not started                                       |
+| Sprint      | Title                                          | Decision                     | Implementation status                                   |
+| ----------- | ---------------------------------------------- | ---------------------------- | ------------------------------------------------------- |
+| **DND-4.1** | Layout Intelligence Contract & Architecture    | **APPROVED**                 | COMPLETE (contract)                                     |
+| **DND-4.2** | Deterministic Intelligence Planner             | **APPROVED**                 | COMPLETE — **ACCEPTED FOR RELEASE**                     |
+| **DND-4.3** | Planner Contract & Optional Integration        | **APPROVED**                 | COMPLETE — **ACCEPTED FOR RELEASE**                     |
+| **DND-4.4** | Model-Assisted Planning Experiment             | **APPROVED** (optional path) | **COMPLETE** — decision: `DEFER MODEL ASSISTANCE`       |
+| **DND-4.5** | Phase 4 Decision Gate / Roadmap Reconciliation | **APPROVED**                 | **COMPLETE** — docs/governance closure; release pending |
 
 ---
 
@@ -239,21 +245,21 @@ DND-4.1 package creation: NO
 - **Exit criteria:** Enough evidence to keep, narrow, or defer model-assisted planning without blocking deterministic intelligence.
 - **Dependencies:** DND-4.3.
 - **Release implications:** Must not make LLM integration a Beta prerequisite unless later evidence justifies it.
-- **Status:** **COMPLETE** — experimental classification **`DEFER MODEL ASSISTANCE`**; OpenAI reference remains private unpublished; DND-4.5 formal decision gate pending.
+- **Status:** **COMPLETE** — experimental classification **`DEFER MODEL ASSISTANCE`**; OpenAI reference remains private unpublished.
 
-### DND-4.5 — Phase 4 Validation & Alpha Gate
+### DND-4.5 — Phase 4 Decision Gate / Roadmap Reconciliation
 
-- **Objective:** Validate Phase 4 contract adherence and decide Alpha packaging for optional intelligence.
-- **Scope:** Quality gates; honesty about optional vs required intelligence; docs/limitations; release decision for any approved optional surface; no forced Beta.
-- **Non-goals:** Rewriting Phase 3 history; mutating `latest`; making model inference mandatory.
-- **Packages affected:** Only packages explicitly approved for optional intelligence publication.
-- **API impact:** Publish only approved optional surfaces; deterministic packages may remain unchanged.
-- **Tests:** Full local quality gate appropriate to changed packages; no invented CI browser matrix expansion.
-- **Docs:** Release notes if publishing; limitations updated.
-- **Exit criteria:** Phase 4 exit checklist PASS or explicit deferrals recorded.
-- **Dependencies:** DND-4.2 required; DND-4.3 required for integration claims; DND-4.4 optional.
-- **Release implications:** Optional Alpha for intelligence only if justified; deterministic Beta remains independent.
-- **Status:** Not started
+- **Objective:** Close Phase 4 product/architecture disposition; reconcile roadmap, Alpha API docs, and governance; decide packaging for accepted public surfaces vs private intelligence.
+- **Scope:** Documentation / governance only; record KEEP/RELEASE for DND-4.2–4.3; KEEP PRIVATE for intelligence packages; DEFER MODEL ASSISTANCE; recommend next Alpha consolidation.
+- **Non-goals:** Production code changes; Changeset apply; version bump; npm publish; model re-runs; Phase 5 implementation.
+- **Packages affected:** None for production source. Public surface acceptance recorded for future `0.1.0-alpha.4`.
+- **API impact:** DND-4.2 / DND-4.3 public APIs **ACCEPTED FOR RELEASE**; `@dndgem/intelligence*` remain private; no public provider API.
+- **Tests:** Docs link + standard non-network quality gate for docs/governance branch.
+- **Docs:** Roadmap, Alpha API contract, advisory planner guide, limitations, cursor rules.
+- **Exit criteria:** Phase 4 disposition recorded; **PHASE 4 COMPLETE WITH RELEASE PENDING**.
+- **Dependencies:** DND-4.1–DND-4.4.
+- **Release implications:** Next gate is Post-Phase-4 Alpha Release Consolidation (`0.1.0-alpha.4` recommended); do not publish intelligence packages.
+- **Status:** **COMPLETE**
 
 ---
 
@@ -262,6 +268,7 @@ DND-4.1 package creation: NO
 - Making LLM/model inference mandatory
 - Second solver / parallel validity vocabulary
 - Framework-specific intelligence packages
+- Public publication of `@dndgem/intelligence` or `@dndgem/intelligence-openai` without a later evidence/authorization gate
 - Flutter implementation
 - Pin/Lock APIs
 - Default-on intelligence that silently changes existing consumers
@@ -273,15 +280,15 @@ DND-4.1 package creation: NO
 
 ## Repository baseline at audit time
 
-| Item                       | Evidence                                                |
-| -------------------------- | ------------------------------------------------------- |
-| Phase 3                    | COMPLETE / RELEASED (`0.1.0-alpha.1`)                   |
-| Framework Expansion        | COMPLETE (`0.1.0-alpha.3`)                              |
-| Public packages            | core, dom, react, vue, angular, svelte                  |
-| Current valid Public Alpha | `0.1.0-alpha.3` / `@alpha`                              |
-| Meta-framework packages    | None (compat environments only)                         |
-| Intelligence package       | Absent (correct for DND-4.1)                            |
-| Phase 4 prior status       | Roadmap said “Later (not started)” — updated by DND-4.1 |
+| Item                       | Evidence                                                           |
+| -------------------------- | ------------------------------------------------------------------ |
+| Phase 3                    | COMPLETE / RELEASED (`0.1.0-alpha.1`)                              |
+| Framework Expansion        | COMPLETE (`0.1.0-alpha.3`)                                         |
+| Public packages            | core, dom, react, vue, angular, svelte                             |
+| Current valid Public Alpha | `0.1.0-alpha.3` / `@alpha`                                         |
+| Meta-framework packages    | None (compat environments only)                                    |
+| Intelligence package       | Absent at DND-4.1; private workspace packages exist after DND-4.2+ |
+| Phase 4 prior status       | Roadmap said “Later (not started)” — updated by DND-4.1            |
 
 ---
 
@@ -292,5 +299,14 @@ DND-4.1 closes when:
 1. This audit is recorded as PASSED WITH ARCHITECTURAL REFINEMENTS
 2. [layout-intelligence-contract.md](./layout-intelligence-contract.md) defines invariants, contracts, and lifecycle
 3. ADR-0018 accepts Option B (+ Option C escape hatch), provider neutrality, and solver authority
-4. Roadmap/overview/governance current-state statements reflect Phase 4 ACTIVE at DND-4.1 without rewriting historical release records
+4. Roadmap/overview/governance current-state statements reflect Phase 4 progress without rewriting historical release records
 5. No production AI/provider/solver changes land in the sprint
+
+## Closure of DND-4.5 / Phase 4 disposition
+
+DND-4.5 closes when:
+
+1. Product decisions are recorded: DND-4.2 / DND-4.3 **ACCEPTED FOR RELEASE**; model assistance **DEFER UNTIL NEW EVIDENCE**; intelligence packages **KEEP PRIVATE**
+2. Roadmap / Alpha API / consumer guides / governance rules agree on **PHASE 4 COMPLETE WITH RELEASE PENDING**
+3. No additional Phase 4 production implementation is required
+4. Next recommended gate is Post-Phase-4 Alpha Release Consolidation (`0.1.0-alpha.4`) — not started by DND-4.5

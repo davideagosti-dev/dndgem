@@ -43,4 +43,14 @@ Without a contract, Phase 4 risks becoming a second solver, a provider lock-in, 
 - Solver, validity, scoring, and Phase 3 provenance semantics are not opened by this ADR.
 - Provider selection, prompt engineering, and network integration remain out of DND-4.1 and are not prerequisites for deterministic intelligence.
 
+### Later disposition (DND-4.4 / DND-4.5 — informational)
+
+Historical ADR decisions above remain binding. Subsequent evidence gates recorded:
+
+- Private `@dndgem/intelligence` (deterministic reference) and `@dndgem/intelligence-openai` (experiment) exist in-tree and stay **unpublished**.
+- DND-4.4 classification: **`DEFER MODEL ASSISTANCE`** — no default model-assisted product capability.
+- DND-4.5: Phase 4 **COMPLETE WITH RELEASE PENDING**; DND-4.2 / DND-4.3 public seams accepted for next Alpha; public provider package deferred.
+
+See [phase-4-planning-audit.md](../architecture/phase-4-planning-audit.md), [model-assisted-planning-experiment.md](../architecture/model-assisted-planning-experiment.md), [roadmap.md](../roadmap.md).
+
 See [layout-intelligence-contract.md](../architecture/layout-intelligence-contract.md) and [phase-4-planning-audit.md](../architecture/phase-4-planning-audit.md).

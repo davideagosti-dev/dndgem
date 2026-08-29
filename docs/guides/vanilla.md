@@ -70,10 +70,11 @@ dispose → disconnect observers / drag
 
 ## Session API
 
-| Member       | Role                                      |
-| ------------ | ----------------------------------------- |
-| `getState()` | Current `LayoutSessionState`              |
-| `dispose()`  | Cleanup ResizeObserver, drag, internal UI |
+| Member       | Role                                                                                                |
+| ------------ | --------------------------------------------------------------------------------------------------- |
+| `getState()` | Current `LayoutSessionState`                                                                        |
+| `replan()`   | Explicit advisory replan (`Promise<void>`; DND-4.3 — see [Advisory Planner](./advisory-planner.md)) |
+| `dispose()`  | Cleanup ResizeObserver, drag, internal UI                                                           |
 
 ### Useful state fields
 
@@ -85,16 +86,18 @@ dispose → disconnect observers / drag
 
 ## Input notes
 
-| Field               | Notes                                                                |
-| ------------------- | -------------------------------------------------------------------- |
-| `container`         | Required `HTMLElement`                                               |
-| `items`             | Non-empty; unique string ids; each has an `element`                  |
-| `desiredPlacements` | Explicit author intent — do not also pass `previous` for that change |
-| `previous`          | Optional continuation stability; **omit** for new desired intent     |
-| `autoLayout`        | Opt-in (`true`); default / omitted = explicit-only path (unchanged)  |
-| `onChange`          | Fired on solve / interaction updates                                 |
-| `mechanics`         | Advanced test seam                                                   |
-| `ResizeObserver`    | Advanced test / environment injection                                |
+| Field               | Notes                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------- |
+| `container`         | Required `HTMLElement`                                                                |
+| `items`             | Non-empty; unique string ids; each has an `element`                                   |
+| `desiredPlacements` | Explicit author intent — do not also pass `previous` for that change                  |
+| `previous`          | Optional continuation stability; **omit** for new desired intent                      |
+| `autoLayout`        | Opt-in (`true`); default / omitted = explicit-only path (unchanged)                   |
+| `planner`           | Optional advisory planner — explicit `replan()` only ([guide](./advisory-planner.md)) |
+| `onPlannerEvent`    | Optional planner lifecycle diagnostics (not a second solver)                          |
+| `onChange`          | Fired on solve / interaction updates                                                  |
+| `mechanics`         | Advanced test seam                                                                    |
+| `ResizeObserver`    | Advanced test / environment injection                                                 |
 
 ## Opt-in Auto-Layout
 
@@ -124,6 +127,10 @@ When Auto-Layout is on:
 - `state.autoLayout` is `{ enabled: true; proposalUnplacedItemIds }` when enabled (proposal completeness only — the solver may still place those ids)
 
 Keep the explicit path (omit `autoLayout` / leave it false) as the default for complete rectangles.
+
+## Optional advisory planner
+
+Accepted for a future Alpha release (`0.1.0-alpha.4` recommended); unreleased on npm today. Pass `planner` + call `await session.replan()` — see [Advisory Planner](./advisory-planner.md).
 
 ## Advanced DOM APIs (escape hatches)
 

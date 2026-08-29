@@ -1,6 +1,6 @@
 {
   "experiment": "dnd-4.4-model-assisted-planning",
-  "status": "DND-4.4 EVIDENCE COMPLETE — FINAL AUDIT PENDING",
+  "status": "DND-4.4 COMPLETE",
   "featureCommit": "9a5002ec167cd529603fbe4e7ca31fc979a64221",
   "experimentDateTimeUtc": "2026-08-29T14:30:02.578Z",
   "provider": "openai",

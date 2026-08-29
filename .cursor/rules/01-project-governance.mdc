@@ -21,7 +21,7 @@ Framework Expansion Gate is **COMPLETE** (unnumbered; **not** Phase 4). Sprint m
 
 **DND-FX.1** COMPLETE (contract gate). **DND-FX.2** Vue **COMPLETE**. **DND-FX.3** Angular **COMPLETE**. **DND-FX.4** Svelte **COMPLETE**. **DND-FX.5** meta-frameworks **COMPLETE**. **DND-FX.6** Cross-Framework Alpha Release Gate **COMPLETE** (`0.1.0-alpha.3` / `@alpha`; `0.1.0-alpha.2` superseded).
 
-Phase 4 — AI-Assisted Layout Intelligence is **ACTIVE**. **DND-4.1** COMPLETE (contract). Does **not** require an LLM. Contract: `docs/architecture/layout-intelligence-contract.md`, audit: `docs/architecture/phase-4-planning-audit.md`, ADR-0018. Do not renumber Phase 4. Do not implement DND-4.2+ without explicit authorization.
+Phase 4 — AI-Assisted Layout Intelligence is **COMPLETE WITH RELEASE PENDING** (DND-4.1–DND-4.5). Does **not** require an LLM. Contract: `docs/architecture/layout-intelligence-contract.md`, audit: `docs/architecture/phase-4-planning-audit.md`, ADR-0018. DND-4.2 / DND-4.3 public surfaces accepted for next Alpha (`0.1.0-alpha.4` recommended). Model assistance **DEFER UNTIL NEW EVIDENCE**. Do not renumber Phase 4. Do not start Post-Phase-4 release consolidation or Phase 5 without explicit authorization.
 
 ## CI policy (DND-2.3+)
 
@@ -33,8 +33,8 @@ Phase 4 — AI-Assisted Layout Intelligence is **ACTIVE**. **DND-4.1** COMPLETE 
 
 Cursor MUST NOT introduce:
 
-- AI provider SDKs / Gemini / OpenAI / Anthropic / local model runtimes / network-required intelligence (deferred past DND-4.1; DND-4.2+ only when authorized)
-- `@dndgem/intelligence` package creation (provisional name; not approved public API until an authorized implementation sprint)
+- New AI provider SDKs / Gemini / Anthropic / local model runtimes / network-required intelligence as **public** product paths (model assistance deferred; DND-4.4 OpenAI reference already exists privately — do not expand or publish without authorization)
+- **Public** `@dndgem/intelligence` or `@dndgem/intelligence-openai` packages / npm publication (private workspace packages already exist as authorized reference architecture; do not promote them)
 - Flutter implementation (separate track; not a DND-FX sprint)
 - Vue adapter expansion beyond closed DND-FX.2 unless an explicit follow-up authorizes it
 - Angular adapter expansion beyond closed DND-FX.3 unless an explicit follow-up authorizes it
@@ -48,6 +48,7 @@ Cursor MUST NOT introduce:
 - npm publication / repository visibility changes unless the active sprint explicitly requires it
 - Broader-than-minimal Public Auto-Layout API freeze unless an explicit review requires it
 - Second solver / parallel validity vocabulary / intelligence inside Core by default
+- Applying DND-4.2 / DND-4.3 Changesets or publishing `0.1.0-alpha.4` unless an explicit Post-Phase-4 release sprint authorizes it
 
 DND-FX.2 is **COMPLETE**. `@dndgem/vue` is published on `@alpha` (`0.1.0-alpha.3`). DND-FX.3 is **COMPLETE**. `@dndgem/angular` is published on `@alpha` (`0.1.0-alpha.3`). DND-FX.4 is **COMPLETE**. `@dndgem/svelte` is published on `@alpha` (`0.1.0-alpha.3`). Do not implement SvelteKit / Nuxt / Next packages. DND-FX.5 is **COMPLETE** (private compatibility fixtures; dedicated meta-framework packages not required). DND-FX.6 is **COMPLETE**. DND-FX.1 remains closed. Do not reopen Framework Expansion except for an authorized follow-up.
 
@@ -75,14 +76,16 @@ Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.3` is the current Cros
 - Next.js / Nuxt / SvelteKit are compatibility environments, not packages (ADR-0017).
 - Framework adapters must not become AI extension points.
 
-## Phase 4 binding refinements (DND-4.1)
+## Phase 4 binding refinements (DND-4.1 → DND-4.5)
 
 - Intelligence proposes; deterministic DnDGem validates and resolves.
 - `solveLayout` / `evaluateLayout` remain the only validity/scoring/resolution authority.
-- Phase 4 does not require an LLM; heuristic/deterministic planner is the preferred first implementation (DND-4.2).
-- Provider-neutral planner boundary required; no production provider selected in DND-4.1.
+- Phase 4 does not require an LLM; heuristic/deterministic planner is the preferred first implementation (DND-4.2 — COMPLETE / ACCEPTED FOR RELEASE).
+- Provider-neutral planner boundary required; no production provider selected; DND-4.4 deferred model assistance until new evidence.
 - Planning Proposals are UNTRUSTED until validated/normalized; fail closed to deterministic fallback.
 - No model inference in hot paths (pointermove / rAF / ResizeObserver / every solve).
 - Privacy by default: structural/serializable payloads only unless explicit consumer opt-in.
 - Accessibility ownership remains with the consumer; intelligence must not auto-rewrite DOM/read/tab/ARIA semantics.
 - Deterministic DnDGem may progress toward Beta independently of model-based intelligence.
+- Existing private `@dndgem/intelligence` / `@dndgem/intelligence-openai` are authorized reference packages; public publication is not authorized.
+- Phase 4 is **COMPLETE WITH RELEASE PENDING**; next packaging gate is Post-Phase-4 Alpha Release Consolidation (`0.1.0-alpha.4` recommended).

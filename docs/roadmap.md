@@ -9,7 +9,7 @@
 | Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                                 |
 | Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                        |
 | —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; valid public Alpha `0.1.0-alpha.3`) |
-| Phase 4 | AI-Assisted Layout Intelligence | **ACTIVE** — DND-4.1 contract COMPLETE; **DND-4.2 COMPLETE**     |
+| Phase 4 | AI-Assisted Layout Intelligence | **COMPLETE WITH RELEASE PENDING** (DND-4.1–4.5)                  |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -21,7 +21,7 @@ Phase 3 is **COMPLETE / RELEASED**: Adaptive Auto-Layout is live on npm as **`0.
 
 Framework Expansion is **COMPLETE**: Cross-framework Alpha **`0.1.0-alpha.3`** is the valid public release (`@alpha`). `0.1.0-alpha.2` is **superseded**.
 
-Phase 4 is **ACTIVE**: **DND-4.1** (Layout Intelligence Contract & Architecture) is **COMPLETE**. **DND-4.2** (Deterministic Intelligence Planner) is **COMPLETE**. Phase 4 does **not** require an LLM.
+Phase 4 is **COMPLETE WITH RELEASE PENDING**: DND-4.1–DND-4.5 **COMPLETE**. Architecture, deterministic intelligence, generic planner seam, DOM/framework integration, and the model experiment decision are closed. Public npm packaging of accepted DND-4.2 / DND-4.3 surfaces remains pending (recommended next Alpha: **`0.1.0-alpha.4`**). Phase 4 does **not** require an LLM. Model assistance is **deferred until new evidence**.
 
 During Phase 2 and through Framework Expansion, the GitHub repository remained **PRIVATE** by explicit decision while npm packages were public. After Alpha validation (`0.1.0-alpha.3`), the repository transitions to **public open-source** development so source, Issues, and history are transparent.
 
@@ -439,11 +439,11 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 
 ---
 
-## Phase 4 — AI-Assisted Layout Intelligence (ACTIVE)
+## Phase 4 — AI-Assisted Layout Intelligence (COMPLETE WITH RELEASE PENDING)
 
 Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-4-planning-audit.md](./architecture/phase-4-planning-audit.md).
 
-**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); DND-4.2 **COMPLETE**; DND-4.3 **COMPLETE**; DND-4.4 **COMPLETE** (experimental classification `DEFER MODEL ASSISTANCE`; no default model-assisted product capability); DND-4.5 not started.
+**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** **COMPLETE WITH RELEASE PENDING** — DND-4.1–DND-4.5 **COMPLETE**. DND-4.2 / DND-4.3 accepted for public Alpha release; DND-4.4 decision `DEFER MODEL ASSISTANCE`; intelligence packages remain private; next recommended gate is Post-Phase-4 Alpha Release Consolidation (`0.1.0-alpha.4`).
 
 Primary objective: optional higher-level structural/semantic/application planning **without** replacing deterministic solving.
 
@@ -483,13 +483,17 @@ Phase 4 Planning Audit          PASSED WITH REFINEMENTS
         ↓
 DND-4.1 Layout Intelligence Contract & Architecture   COMPLETE (contract)
         ↓
-DND-4.2 Deterministic Intelligence Planner            COMPLETE
+DND-4.2 Deterministic Intelligence Planner            COMPLETE — ACCEPTED FOR RELEASE
         ↓
-DND-4.3 Planner Contract & Optional Integration       COMPLETE
+DND-4.3 Planner Contract & Optional Integration       COMPLETE — ACCEPTED FOR RELEASE
         ↓
 DND-4.4 Model-Assisted Planning Experiment            COMPLETE (DEFER MODEL ASSISTANCE)
         ↓
-DND-4.5 Phase 4 Validation & Alpha Gate               not started
+DND-4.5 Phase 4 Decision Gate / Roadmap Reconciliation COMPLETE
+        ↓
+PHASE 4 COMPLETE WITH RELEASE PENDING
+        ↓
+Post-Phase-4 — Alpha Release Consolidation            recommended next (0.1.0-alpha.4)
 ```
 
 ### Binding refinements (from planning audit)
@@ -515,42 +519,80 @@ DND-4.5 Phase 4 Validation & Alpha Gate               not started
 - **Objective:** Bounded deterministic/heuristic planner that emits Planning Proposals only.
 - **Out of scope:** Remote model providers; solver semantic change; default-on intelligence.
 - **Dependencies:** DND-4.1.
-- **Status:** **COMPLETE** — private `@dndgem/intelligence` workspace package; prominence heuristic; optional Core `automaticItemOrder`; closure gate passed.
-- **Reference:** [deterministic-planner.md](./architecture/deterministic-planner.md)
+- **Status:** **COMPLETE — ACCEPTED FOR RELEASE** — optional Core `automaticItemOrder`; private `@dndgem/intelligence` prominence reference (not a public install target); closure gate passed.
+- **Reference:** [deterministic-planner.md](./architecture/deterministic-planner.md), [Advisory Planner guide](./guides/advisory-planner.md)
 
 ### DND-4.3 — Planner Contract & Optional Integration
 
 - **Objective:** Stabilize optional integration for first-party and consumer-supplied planners.
 - **Out of scope:** Provider lock-in; hot-path planning; DOM/content scraping defaults; OpenAI/model SDKs.
 - **Dependencies:** DND-4.2.
-- **Status:** **COMPLETE** — `LayoutPlanner` + `runLayoutPlanner`; DOM `planner` / `replan(): Promise<void>`; framework parity; stale/cancel/fallback; intelligence remains private unpublished; Final Closure passed.
-- **Reference:** [deterministic-planner.md](./architecture/deterministic-planner.md), [dom-adapter.md](./architecture/dom-adapter.md)
+- **Status:** **COMPLETE — ACCEPTED FOR RELEASE** — DOM `planner` / `onPlannerEvent` / `replan(): Promise<void>` + `LayoutSessionPlanner*` types; framework parity; stale/cancel/fallback; `@dndgem/intelligence` remains private unpublished; Final Closure passed.
+- **Reference:** [deterministic-planner.md](./architecture/deterministic-planner.md), [dom-adapter.md](./architecture/dom-adapter.md), [Advisory Planner guide](./guides/advisory-planner.md)
 
 ### DND-4.4 — Model-Assisted Planning Experiment
 
 - **Objective:** Optional evidence-driven model-backed planner experiment behind the neutral boundary.
 - **Out of scope:** Permanent provider lock-in; requiring network for core DnDGem; browser API keys; DnDGem-owned inference; CI paid calls.
 - **Dependencies:** DND-4.3.
-- **Status:** **COMPLETE** — Stage B harness frozen; Stage C Luna live evidence recorded (25 requests); Final Audit passed. **Decision:** `DEFER MODEL ASSISTANCE` (no measurable Core benefit vs DND-4.2 on frozen corpus; provider/reference package remains private). DND-4.5 formal packaging/validation gate remains pending. Evidence: [model-assisted-planning-experiment.md](./architecture/model-assisted-planning-experiment.md), `packages/intelligence-openai/experiment/artifacts/luna-live-evidence.json`.
+- **Status:** **COMPLETE**. **Decision:** `DEFER MODEL ASSISTANCE` — Luna proved the provider path technically viable and safe, but produced **zero** strict Core-layout improvements over the DND-4.2 deterministic planner on the frozen corpus; remote model inference is **not** justified as a default DnDGem capability. `@dndgem/intelligence-openai` remains private experimental reference. Evidence: [model-assisted-planning-experiment.md](./architecture/model-assisted-planning-experiment.md), `packages/intelligence-openai/experiment/artifacts/luna-live-evidence.json`.
 - **Reference:** [model-assisted-planning-experiment.md](./architecture/model-assisted-planning-experiment.md)
 
-### DND-4.5 — Phase 4 Validation & Alpha Gate
+### DND-4.5 — Phase 4 Decision Gate / Roadmap Reconciliation
 
-- **Objective:** Validate Phase 4 contract adherence and decide optional Alpha packaging for intelligence.
-- **Out of scope:** Making LLM integration a Beta prerequisite; rewriting Phase 3 history.
-- **Dependencies:** DND-4.2 required; DND-4.3 required for integration claims; DND-4.4 optional.
-- **Status:** Not started
+- **Objective:** Close Phase 4 product/architecture disposition; reconcile roadmap and docs; decide packaging for accepted public surfaces vs private intelligence.
+- **Out of scope:** Production implementation; Changeset apply; version bump; npm publish; model re-runs; Phase 5 implementation.
+- **Dependencies:** DND-4.1–DND-4.4.
+- **Status:** **COMPLETE** — no additional Phase 4 production implementation required; DND-4.2 / DND-4.3 accepted for public Alpha; model assistance deferred until new evidence; intelligence packages remain private; **PHASE 4 COMPLETE WITH RELEASE PENDING**.
+- **Outcome:** Documentation / governance closure only. Unreleased Changesets `dnd-4-2-automatic-item-order.md` and `dnd-4-3-planner-optional-integration.md` remain the release mechanism for the next Alpha.
+
+### Phase 4 product disposition (DND-4.5)
+
+| Area                          | Disposition                             |
+| ----------------------------- | --------------------------------------- |
+| Core `automaticItemOrder`     | **KEEP / RELEASE** (via Changeset)      |
+| DOM/framework planner seam    | **KEEP / RELEASE** (via Changeset)      |
+| `@dndgem/intelligence`        | **KEEP PRIVATE** (reference / internal) |
+| `@dndgem/intelligence-openai` | **KEEP PRIVATE AS REFERENCE**           |
+| Model assistance              | **DEFER UNTIL NEW EVIDENCE**            |
+| Recommended next public Alpha | **`0.1.0-alpha.4`** (not shipped yet)   |
+
+### Model assistance reopen criteria
+
+Reopen only under an authorized evidence gate when **all** apply:
+
+1. A new predefined fixture / problem class where current deterministic planning demonstrably plateaus.
+2. A measurable success target frozen **before** provider inference.
+3. Evidence that additional information or capability unavailable to current deterministic rules could matter.
+4. A deliberate-path latency budget (no hot-path inference).
+5. An acceptable BYOK cost budget.
+6. Privacy-safe structural payloads (or explicit consumer opt-in for richer content).
+7. A provider/model capability change with a specific technical rationale.
+
+**Trying a larger model solely because Luna tied Baseline B is not sufficient evidence to reopen the experiment.**
 
 ### Phase 4 safe deferrals
 
 - Mandatory LLM / remote model dependency
 - Second solver / parallel validity vocabulary
 - Framework-specific intelligence packages
+- Public publication of `@dndgem/intelligence` or `@dndgem/intelligence-openai`
 - Flutter implementation
 - Pin / Lock APIs
 - Default-on intelligence
 - Hot-path model inference
 - Automatic DOM/read/tab order rewriting
+
+---
+
+## Post-Phase-4 — Alpha Release Consolidation (recommended next)
+
+- **Objective:** Release accepted DND-4.2 + DND-4.3 public surfaces as the next Alpha.
+- **Recommended target:** **`0.1.0-alpha.4`** / `@alpha` (planning recommendation only — not shipped).
+- **Mechanism:** Apply existing unreleased Changesets (`dnd-4-2-automatic-item-order.md`, `dnd-4-3-planner-optional-integration.md`); fixed six-package group; Trusted Publishing / OIDC.
+- **IN:** Core `automaticItemOrder`; DOM `planner` / `onPlannerEvent` / `replan()`; framework parity; consumer docs.
+- **OUT:** Publishing intelligence packages; default model inference; OpenAI as a product feature.
+- **Status:** Not started (awaits explicit release authorization after DND-4.5 Final Audit / Product Owner review).
 
 ---
 

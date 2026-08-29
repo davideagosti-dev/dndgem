@@ -28,7 +28,7 @@ Related: [overview.md](./overview.md), [core-domain.md](./core-domain.md), [dom-
 | `@dndgem/angular` | Thin Angular lifecycle adapter over the DOM session                  | Angular apps          | Published `0.1.0-alpha.3` / `@alpha` |
 | `@dndgem/svelte`  | Thin Svelte 5 lifecycle adapter over the DOM session                 | Svelte 5 apps         | Published `0.1.0-alpha.3` / `@alpha` |
 
-No other `@dndgem/*` packages are currently part of published Alpha. Flutter is a separate track. Meta-framework environments (Next.js, Nuxt, SvelteKit) use the adapters above — there is no `@dndgem/next`, `@dndgem/nuxt`, or `@dndgem/sveltekit`.
+No other `@dndgem/*` packages are currently part of published Alpha. Flutter is a separate track. Meta-framework environments (Next.js, Nuxt, SvelteKit) use the adapters above — there is no `@dndgem/next`, `@dndgem/nuxt`, or `@dndgem/sveltekit`. Workspace-only private packages `@dndgem/intelligence` and `@dndgem/intelligence-openai` exist for Phase 4 reference/experiment work — they are **not** npm install targets and are **not** part of this Alpha contract.
 
 ## Public entrypoints
 
@@ -143,7 +143,7 @@ const proposal = createAutoLayoutProposal({ intent, previous?, automaticItemOrde
 const result = solveLayout({ intent: proposal.effectiveIntent, previous? });
 ```
 
-`automaticItemOrder` (optional, DND-4.2) — advisory processing order for automatic items only. When omitted, Stage B/C use declaration order (Phase 3 default). Core normalizes defensively; unknown, duplicate, and source ids are ignored.
+`automaticItemOrder` (optional, DND-4.2 — **ACCEPTED FOR RELEASE**, unreleased Changeset) — advisory processing order for automatic items only. When omitted, Stage B/C use declaration order (Phase 3 default). Core normalizes defensively; unknown, duplicate, and source ids are ignored. Ordering guidance only — Core remains authoritative for geometry, validity, scoring, and final resolution. Consumers do **not** need `@dndgem/intelligence`.
 
 Auto-Layout is **opt-in**. Calling `solveLayout` alone is unchanged. Available on published npm `@alpha` (`0.1.0-alpha.1`). Alpha breaking-change policy above is unchanged.
 
@@ -181,6 +181,55 @@ Types include measurement snapshots, session/interaction state, drag events, and
 - Accepted drag promotes **only** the active item to Source Intent (strong persistent intent — not a pin/lock)
 
 Default / omitted `autoLayout` keeps the existing explicit-only seeding path. Available on published npm `@alpha` (`0.1.0-alpha.1`).
+
+#### Optional advisory planner (DND-4.3 — ACCEPTED FOR RELEASE)
+
+Unreleased Changeset; recommended next public Alpha `0.1.0-alpha.4`. Default path unchanged when `planner` is omitted.
+
+```ts
+import {
+  createLayoutSession,
+  type LayoutSessionPlanner,
+  type LayoutSessionPlannerEvent,
+} from '@dndgem/dom';
+
+const planner: LayoutSessionPlanner = (snapshot, context) => {
+  // advisory automaticItemOrder only
+  return { automaticItemOrder: [/* … */] };
+};
+
+const session = createLayoutSession({
+  container,
+  items,
+  autoLayout: true,
+  planner,
+  onPlannerEvent: (event: LayoutSessionPlannerEvent) => {
+    // diagnostic only — not a second solver
+  },
+});
+
+await session.replan(); // Promise<void>; explicit only
+```
+
+Public types (from `@dndgem/dom`):
+
+| Name                            | Role                                                                                              |
+| ------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `LayoutSessionPlanner`          | `(snapshot, context?) => proposal \| Promise<proposal>`                                           |
+| `LayoutSessionPlanningSnapshot` | `intent`, optional `previous`, optional `prominence`                                              |
+| `LayoutSessionPlannerContext`   | `requestId`, optional `signal?: AbortSignal`                                                      |
+| `LayoutSessionPlanningProposal` | `{ automaticItemOrder: readonly string[] }`                                                       |
+| `LayoutSessionPlannerEvent`     | diagnostic lifecycle (`planning` \| `applied` \| `fallback` \| `cancelled` \| `stale` \| `error`) |
+| `LayoutSession.replan`          | `() => Promise<void>`                                                                             |
+
+Contract notes:
+
+- Intelligence proposes; deterministic DnDGem validates and resolves
+- Planner never blocks first paint; initial layout uses declaration-order Auto-Layout
+- Invoked only via explicit `replan()` — not interaction hot paths
+- Planner throw/reject → Phase 3 declaration-order Auto-Layout
+- Does not depend on `@dndgem/intelligence` (private reference package)
+- Consumer guide: [Advisory Planner](../guides/advisory-planner.md)
 
 ### Advanced / escape-hatch (supported, not the default app API)
 
@@ -220,6 +269,8 @@ Types:
 
 `DnDGemProvider` accepts optional `autoLayout?: boolean` (default off; mirrors DOM session), plus optional `mechanics` and `ResizeObserver` for tests. Application consumers do not need the test seams. Available on published npm `@alpha` (`0.1.0-alpha.1`).
 
+Optional planner parity (DND-4.3 — ACCEPTED FOR RELEASE; unreleased Changeset): `planner?`, `onPlannerEvent?` on provider props; `useDnDGem().replan(): Promise<void>`. See [Advisory Planner](../guides/advisory-planner.md).
+
 Hook contract:
 
 - `useDnDGemContainer()` → callback ref for the positioned container
@@ -249,6 +300,8 @@ Types:
 - `@dnd-kit/*`
 
 Same behavioral contract as React/DOM: `autoLayout?: boolean` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `vue@^3.5.0`. Published on `@alpha` as of `0.1.0-alpha.3` (not in `0.1.0-alpha.1`). Nuxt is a validated compatibility environment (no `@dndgem/nuxt`).
+
+Optional planner parity (DND-4.3): `planner?`, `onPlannerEvent?`; `useDnDGem().replan(): Promise<void>`. See [Advisory Planner](../guides/advisory-planner.md).
 
 Composable contract:
 
@@ -282,6 +335,8 @@ Types:
 
 Same behavioral contract as React/DOM/Vue: `autoLayout` default off; output/callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `@angular/core@^20.0.0 || ^21.0.0 || ^22.0.0`. Published on `@alpha` as of `0.1.0-alpha.3` (not in `0.1.0-alpha.1`). Angular Universal is not validated.
 
+Optional planner parity (DND-4.3): board `planner` / `onPlannerEvent`, or directive inputs `dndgemPlanner` / output `dndgemPlannerEvent`; `replan(): Promise<void>` on board / directive. See [Advisory Planner](../guides/advisory-planner.md).
+
 Directive contract:
 
 - `dndgemBoard` + `dndgemContainer` on consumer hosts (may share one element)
@@ -311,6 +366,8 @@ Types:
 - `@dnd-kit/*`
 
 Same behavioral contract as React/DOM/Vue/Angular: `autoLayout` default off; callback identity does not recreate the session; wait-for-all registration; client mount only. Peer: `svelte@^5.0.0`. Published on `@alpha` as of `0.1.0-alpha.3` (not in `0.1.0-alpha.1`). SvelteKit is a validated compatibility environment (no `@dndgem/sveltekit`).
+
+Optional planner parity (DND-4.3): provider `planner` / `onPlannerEvent`; `replan(): Promise<void>` via store / context. See [Advisory Planner](../guides/advisory-planner.md).
 
 Action / snippet contract:
 
