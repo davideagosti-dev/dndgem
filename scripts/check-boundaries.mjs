@@ -14,6 +14,7 @@ import {
   FRAMEWORK_ADAPTER_FOLDERS,
   FRAMEWORK_PEER_BY_FOLDER,
   INTELLIGENCE_FOLDER,
+  INTELLIGENCE_OPENAI_FOLDER,
   OPTIONAL_PRIVATE_FOLDERS,
   existingAdapterFolders,
   existingPackageFolders,
@@ -82,6 +83,8 @@ const adapterNpmNames = FRAMEWORK_ADAPTER_FOLDERS.map((folder) => npmNameForFold
 const adapterPeerNames = Object.values(FRAMEWORK_PEER_BY_FOLDER);
 const frameworkRuntimeNames = new Set(['react', 'react-dom', ...adapterPeerNames]);
 const intelligenceNpmName = npmNameForFolder(INTELLIGENCE_FOLDER);
+const intelligenceOpenAiNpmName = npmNameForFolder(INTELLIGENCE_OPENAI_FOLDER);
+const providerSdkNames = new Set(['openai', '@anthropic-ai/sdk', '@google/generative-ai']);
 
 const core = readPkg(CORE_FOLDER);
 if (!core) {
@@ -93,11 +96,13 @@ if (!core) {
     new Set([
       npmNameForFolder(DOM_FOLDER),
       intelligenceNpmName,
+      intelligenceOpenAiNpmName,
       ...adapterNpmNames,
       ...frameworkRuntimeNames,
       '@dnd-kit/dom',
       '@dnd-kit/core',
       '@dnd-kit/react',
+      ...providerSdkNames,
     ]),
     'Core must remain renderer-agnostic',
   );
@@ -116,8 +121,14 @@ if (!dom) {
   assertNoDeps(
     DOM_FOLDER,
     dom,
-    new Set([...adapterNpmNames, ...frameworkRuntimeNames, intelligenceNpmName]),
-    'DOM must not depend on framework adapters, UI frameworks, or intelligence',
+    new Set([
+      ...adapterNpmNames,
+      ...frameworkRuntimeNames,
+      intelligenceNpmName,
+      intelligenceOpenAiNpmName,
+      ...providerSdkNames,
+    ]),
+    'DOM must not depend on framework adapters, UI frameworks, intelligence, or provider SDKs',
   );
   if (!dom.dependencies?.['@dndgem/core']) {
     errors.push('@dndgem/dom must declare a dependency on @dndgem/core');
@@ -156,8 +167,8 @@ for (const folder of existingAdapterFolders()) {
   assertNoDeps(
     folder,
     pkg,
-    new Set([intelligenceNpmName]),
-    'adapters must not depend on intelligence in DND-4.2',
+    new Set([intelligenceNpmName, intelligenceOpenAiNpmName, ...providerSdkNames]),
+    'adapters must not depend on intelligence or provider SDKs',
   );
   assertNoDeps(
     folder,
@@ -181,7 +192,7 @@ if (packageDirExists(INTELLIGENCE_FOLDER)) {
     errors.push(`Missing package.json for packages/${INTELLIGENCE_FOLDER}`);
   } else {
     if (intelligence.private !== true) {
-      errors.push(`packages/${INTELLIGENCE_FOLDER} must remain private during DND-4.2`);
+      errors.push(`packages/${INTELLIGENCE_FOLDER} must remain private`);
     }
     if (!intelligence.dependencies?.['@dndgem/core']) {
       errors.push(`${intelligenceNpmName} must declare a dependency on @dndgem/core`);
@@ -191,17 +202,61 @@ if (packageDirExists(INTELLIGENCE_FOLDER)) {
       intelligence,
       new Set([
         npmNameForFolder(DOM_FOLDER),
+        intelligenceOpenAiNpmName,
+        ...adapterNpmNames,
+        ...frameworkRuntimeNames,
+        '@dnd-kit/dom',
+        '@dnd-kit/core',
+        '@dnd-kit/react',
+        ...providerSdkNames,
+      ]),
+      'intelligence must depend on Core only (no provider SDKs)',
+    );
+    for (const dep of Object.keys(allDeps(intelligence))) {
+      if (dep.startsWith('@dnd-kit/')) {
+        errors.push(`packages/${INTELLIGENCE_FOLDER} must not depend on "${dep}"`);
+      }
+    }
+  }
+}
+
+const intelligenceOpenAi = readPkg(INTELLIGENCE_OPENAI_FOLDER);
+if (packageDirExists(INTELLIGENCE_OPENAI_FOLDER)) {
+  if (!intelligenceOpenAi) {
+    errors.push(`Missing package.json for packages/${INTELLIGENCE_OPENAI_FOLDER}`);
+  } else {
+    if (intelligenceOpenAi.private !== true) {
+      errors.push(`packages/${INTELLIGENCE_OPENAI_FOLDER} must remain private`);
+    }
+    if (intelligenceOpenAi.version !== '0.0.0') {
+      errors.push(
+        `packages/${INTELLIGENCE_OPENAI_FOLDER} must remain version 0.0.0 while unpublished`,
+      );
+    }
+    if (!intelligenceOpenAi.dependencies?.['@dndgem/intelligence']) {
+      errors.push(`${intelligenceOpenAiNpmName} must declare a dependency on @dndgem/intelligence`);
+    }
+    if (intelligenceOpenAi.dependencies?.['@dndgem/core']) {
+      errors.push(
+        `${intelligenceOpenAiNpmName} must not depend on @dndgem/core directly (depend on intelligence)`,
+      );
+    }
+    assertNoDeps(
+      INTELLIGENCE_OPENAI_FOLDER,
+      intelligenceOpenAi,
+      new Set([
+        npmNameForFolder(DOM_FOLDER),
         ...adapterNpmNames,
         ...frameworkRuntimeNames,
         '@dnd-kit/dom',
         '@dnd-kit/core',
         '@dnd-kit/react',
       ]),
-      'intelligence must depend on Core only',
+      'intelligence-openai must not depend on DOM or framework adapters',
     );
-    for (const dep of Object.keys(allDeps(intelligence))) {
+    for (const dep of Object.keys(allDeps(intelligenceOpenAi))) {
       if (dep.startsWith('@dnd-kit/')) {
-        errors.push(`packages/${INTELLIGENCE_FOLDER} must not depend on "${dep}"`);
+        errors.push(`packages/${INTELLIGENCE_OPENAI_FOLDER} must not depend on "${dep}"`);
       }
     }
   }
@@ -238,12 +293,17 @@ if (errors.length > 0) {
 const adapters = existingAdapterFolders();
 const absentAdapters = FRAMEWORK_ADAPTER_FOLDERS.filter((folder) => !packageDirExists(folder));
 console.log('Package boundary check PASSED');
-console.log(' - core: no DOM/framework/intelligence/dnd-kit dependencies');
+console.log(' - core: no DOM/framework/intelligence/provider/dnd-kit dependencies');
 console.log(
-  ' - dom: no framework adapters or intelligence; depends on core; optional @dnd-kit/dom provider only',
+  ' - dom: no framework adapters, intelligence, or provider SDKs; depends on core; optional @dnd-kit/dom provider only',
 );
 if (packageDirExists(INTELLIGENCE_FOLDER)) {
-  console.log(` - intelligence: private optional layer; depends on core only`);
+  console.log(' - intelligence: private optional layer; depends on core only');
+}
+if (packageDirExists(INTELLIGENCE_OPENAI_FOLDER)) {
+  console.log(
+    ' - intelligence-openai: private optional provider; depends on intelligence (+ openai SDK)',
+  );
 }
 console.log(
   ` - adapters present: ${adapters.length === 0 ? '(none)' : adapters.map(npmNameForFolder).join(', ')}`,

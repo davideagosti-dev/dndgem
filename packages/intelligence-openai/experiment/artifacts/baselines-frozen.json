@@ -1,0 +1,310 @@
+{
+  "corpusVersion": "1.0.0",
+  "rubricVersion": "1.0.0",
+  "frozenAt": "pre-live-inference",
+  "successRubric": "\nKEEP only if:\nA. Order-sensitive (F2, F5): model strictly better than Baseline B on ≥1 of F2/F5,\n   AND not strictly worse in aggregate across F2+F5\n   (precedence: fewer unplaced → better validity → higher Core score).\nB. Safety (F1, F3, F4): no material regression vs Baseline B; source placements absolute.\nC. Schema reliability: ≥90% valid structured responses before normalization/fallback.\nD. Fallback: F6–F8 always retain usable deterministic layout.\nE. Architecture: no second solver / provenance / hot-path / browser key / boundary violations.\nF. Replay: captured proposal downstream replay is deterministic.\n",
+  "fixtures": [
+    {
+      "id": "F1",
+      "purpose": "Prominence competition: deterministic prominence planner places high-priority automatic items first.",
+      "baselineA": {
+        "unplacedCount": 2,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "unplacedItemIds": ["sidebar-widget", "footer-strip"],
+        "order": ["hero-primary-card", "sidebar-widget", "footer-strip"],
+        "resolvedPlacements": {
+          "hero-primary-card": {
+            "x": 0,
+            "y": 0,
+            "width": 120,
+            "height": 100
+          },
+          "sidebar-widget": {
+            "x": 0,
+            "y": 100,
+            "width": 90,
+            "height": 100
+          },
+          "footer-strip": {
+            "x": 90,
+            "y": 100,
+            "width": 90,
+            "height": 100
+          }
+        }
+      },
+      "baselineB": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "unplacedItemIds": ["hero-primary-card"],
+        "order": ["sidebar-widget", "footer-strip", "hero-primary-card"],
+        "resolvedPlacements": {
+          "hero-primary-card": {
+            "x": 0,
+            "y": 0,
+            "width": 120,
+            "height": 100
+          },
+          "sidebar-widget": {
+            "x": 0,
+            "y": 100,
+            "width": 90,
+            "height": 100
+          },
+          "footer-strip": {
+            "x": 90,
+            "y": 100,
+            "width": 90,
+            "height": 100
+          }
+        }
+      }
+    },
+    {
+      "id": "F2",
+      "purpose": "Multi-item interaction: four automatic items; declaration vs prominence not obviously globally optimal.",
+      "baselineA": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "unplacedItemIds": ["tall-panel"],
+        "order": ["wide-blocker", "mid-panel", "tall-panel", "compact-chip"],
+        "resolvedPlacements": {
+          "wide-blocker": {
+            "x": 0,
+            "y": 0,
+            "width": 140,
+            "height": 120
+          },
+          "mid-panel": {
+            "x": 140,
+            "y": 0,
+            "width": 100,
+            "height": 80
+          },
+          "tall-panel": {
+            "x": 0,
+            "y": 120,
+            "width": 80,
+            "height": 120
+          },
+          "compact-chip": {
+            "x": 80,
+            "y": 120,
+            "width": 60,
+            "height": 40
+          }
+        }
+      },
+      "baselineB": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "unplacedItemIds": ["wide-blocker"],
+        "order": ["mid-panel", "tall-panel", "compact-chip", "wide-blocker"],
+        "resolvedPlacements": {
+          "wide-blocker": {
+            "x": 0,
+            "y": 0,
+            "width": 140,
+            "height": 120
+          },
+          "mid-panel": {
+            "x": 140,
+            "y": 0,
+            "width": 100,
+            "height": 80
+          },
+          "tall-panel": {
+            "x": 0,
+            "y": 120,
+            "width": 80,
+            "height": 120
+          },
+          "compact-chip": {
+            "x": 80,
+            "y": 120,
+            "width": 60,
+            "height": 40
+          }
+        }
+      }
+    },
+    {
+      "id": "F3",
+      "purpose": "Mixed source + automatic: source-locked placement must be preserved.",
+      "baselineA": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "unplacedItemIds": ["high-priority"],
+        "order": ["low-priority", "high-priority"],
+        "resolvedPlacements": {
+          "pinned-nav": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100
+          },
+          "low-priority": {
+            "x": 100,
+            "y": 0,
+            "width": 90,
+            "height": 90
+          },
+          "high-priority": {
+            "x": 0,
+            "y": 100,
+            "width": 90,
+            "height": 90
+          }
+        }
+      },
+      "baselineB": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "unplacedItemIds": ["low-priority"],
+        "order": ["high-priority", "low-priority"],
+        "resolvedPlacements": {
+          "pinned-nav": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100
+          },
+          "low-priority": {
+            "x": 100,
+            "y": 0,
+            "width": 90,
+            "height": 90
+          },
+          "high-priority": {
+            "x": 0,
+            "y": 100,
+            "width": 90,
+            "height": 90
+          }
+        }
+      }
+    },
+    {
+      "id": "F4",
+      "purpose": "Previous-layout stability context exists but is never Source Intent.",
+      "baselineA": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "unplacedItemIds": ["gamma-block"],
+        "order": ["alpha-block", "beta-block", "gamma-block"],
+        "resolvedPlacements": {
+          "alpha-block": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 80
+          },
+          "beta-block": {
+            "x": 100,
+            "y": 0,
+            "width": 100,
+            "height": 80
+          },
+          "gamma-block": {
+            "x": 0,
+            "y": 80,
+            "width": 80,
+            "height": 60
+          }
+        }
+      },
+      "baselineB": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "unplacedItemIds": ["gamma-block"],
+        "order": ["gamma-block", "alpha-block", "beta-block"],
+        "resolvedPlacements": {
+          "alpha-block": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 80
+          },
+          "beta-block": {
+            "x": 100,
+            "y": 0,
+            "width": 100,
+            "height": 80
+          },
+          "gamma-block": {
+            "x": 0,
+            "y": 80,
+            "width": 80,
+            "height": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "F5",
+      "purpose": "Tight constrained container: multiple plausible orders; placement opportunity order-sensitive.",
+      "baselineA": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "unplacedItemIds": ["large-b"],
+        "order": ["large-a", "large-b", "small-fit"],
+        "resolvedPlacements": {
+          "large-a": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100
+          },
+          "large-b": {
+            "x": 0,
+            "y": 100,
+            "width": 100,
+            "height": 100
+          },
+          "small-fit": {
+            "x": 100,
+            "y": 100,
+            "width": 80,
+            "height": 50
+          }
+        }
+      },
+      "baselineB": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "unplacedItemIds": ["large-b"],
+        "order": ["large-a", "large-b", "small-fit"],
+        "resolvedPlacements": {
+          "large-a": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100
+          },
+          "large-b": {
+            "x": 0,
+            "y": 100,
+            "width": 100,
+            "height": 100
+          },
+          "small-fit": {
+            "x": 100,
+            "y": 100,
+            "width": 80,
+            "height": 50
+          }
+        }
+      }
+    }
+  ]
+}

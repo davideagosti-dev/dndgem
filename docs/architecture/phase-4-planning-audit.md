@@ -33,13 +33,13 @@ DND-4.1:
 CONTRACT / ARCHITECTURE ONLY — NO PRODUCTION INTELLIGENCE PACKAGE
 ```
 
-| Sprint      | Title                                       | Decision                     | Implementation status |
-| ----------- | ------------------------------------------- | ---------------------------- | --------------------- |
-| **DND-4.1** | Layout Intelligence Contract & Architecture | **APPROVED**                 | COMPLETE (contract)   |
-| **DND-4.2** | Deterministic Intelligence Planner          | **APPROVED**                 | Not started           |
-| **DND-4.3** | Planner Contract & Optional Integration     | **APPROVED**                 | Not started           |
-| **DND-4.4** | Model-Assisted Planning Experiment          | **APPROVED** (optional path) | Not started           |
-| **DND-4.5** | Phase 4 Validation & Alpha Gate             | **APPROVED**                 | Not started           |
+| Sprint      | Title                                       | Decision                     | Implementation status                             |
+| ----------- | ------------------------------------------- | ---------------------------- | ------------------------------------------------- |
+| **DND-4.1** | Layout Intelligence Contract & Architecture | **APPROVED**                 | COMPLETE (contract)                               |
+| **DND-4.2** | Deterministic Intelligence Planner          | **APPROVED**                 | COMPLETE                                          |
+| **DND-4.3** | Planner Contract & Optional Integration     | **APPROVED**                 | COMPLETE                                          |
+| **DND-4.4** | Model-Assisted Planning Experiment          | **APPROVED** (optional path) | **COMPLETE** — decision: `DEFER MODEL ASSISTANCE` |
+| **DND-4.5** | Phase 4 Validation & Alpha Gate             | **APPROVED**                 | Not started                                       |
 
 ---
 
@@ -211,7 +211,7 @@ DND-4.1 package creation: NO
 - **Exit criteria:** Heuristic planner proposes; DnDGem resolves; fallback proven.
 - **Dependencies:** DND-4.1.
 - **Release implications:** Optional; no forced version bump in this map approval.
-- **Status:** Not started
+- **Status:** **COMPLETE**
 
 ### DND-4.3 — Planner Contract & Optional Integration
 
@@ -225,17 +225,21 @@ DND-4.1 package creation: NO
 - **Exit criteria:** Optional integration usable without changing deterministic default path.
 - **Dependencies:** DND-4.2.
 - **Release implications:** Possible experimental Alpha export; not a Beta gate by itself.
-- **Status:** Stage B implementation (awaiting Final Closure)
+- **Status:** **COMPLETE**
+
+### DND-4.4 — Model-Assisted Planning Experiment
+
+- **Objective:** Optional evidence-driven model-backed planner experiment behind the neutral boundary.
 - **Scope:** Provider adapter experiment; explicit opt-in privacy policy for any extra semantic payload; timeout/failure fallback; comparison vs deterministic planner.
 - **Non-goals:** Selecting a permanent production provider in architecture; requiring network for core DnDGem; shipping model inference as default.
-- **Packages affected:** Optional provider adapter(s) behind intelligence boundary only.
-- **API impact:** Experimental only.
-- **Tests:** Fail-closed on provider failure; no hot-path calls; privacy policy gates.
+- **Packages affected:** Optional provider adapter(s) behind intelligence boundary only (`@dndgem/intelligence-openai`, private).
+- **API impact:** Experimental only; no public package Changeset for DND-4.4.
+- **Tests:** Fail-closed on provider failure; no hot-path calls; privacy policy gates; offline fake-transport + optional local live harness.
 - **Docs:** Experiment report; provider remains replaceable.
 - **Exit criteria:** Enough evidence to keep, narrow, or defer model-assisted planning without blocking deterministic intelligence.
 - **Dependencies:** DND-4.3.
 - **Release implications:** Must not make LLM integration a Beta prerequisite unless later evidence justifies it.
-- **Status:** Not started
+- **Status:** **COMPLETE** — experimental classification **`DEFER MODEL ASSISTANCE`**; OpenAI reference remains private unpublished; DND-4.5 formal decision gate pending.
 
 ### DND-4.5 — Phase 4 Validation & Alpha Gate
 

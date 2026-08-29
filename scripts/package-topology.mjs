@@ -16,16 +16,24 @@ export const CORE_FOLDER = 'core';
 export const DOM_FOLDER = 'dom';
 
 export const INTELLIGENCE_FOLDER = 'intelligence';
+export const INTELLIGENCE_OPENAI_FOLDER = 'intelligence-openai';
 
 /** Approved JS/DOM framework adapter folders — siblings over `@dndgem/dom`. */
 export const FRAMEWORK_ADAPTER_FOLDERS = Object.freeze(['react', 'vue', 'angular', 'svelte']);
 
-/** Optional private workspace layers (not publishable). */
-export const OPTIONAL_PRIVATE_FOLDERS = Object.freeze([INTELLIGENCE_FOLDER]);
+/**
+ * Optional private workspace layers (not publishable).
+ * Provider packages may depend on intelligence; never on core public adapters.
+ */
+export const OPTIONAL_PRIVATE_FOLDERS = Object.freeze([
+  INTELLIGENCE_FOLDER,
+  INTELLIGENCE_OPENAI_FOLDER,
+]);
 
 /**
  * Folders that must never appear under `packages/`.
  * Meta-frameworks are compatibility environments, not packages.
+ * Legacy `@dndgem/ai` name remains forbidden; use provider-specific private packages.
  */
 export const FORBIDDEN_PACKAGE_FOLDERS = Object.freeze([
   'framework-core',
