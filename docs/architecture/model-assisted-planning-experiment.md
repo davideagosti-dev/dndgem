@@ -2,12 +2,13 @@
 
 **Status:** `DND-4.4 COMPLETE`  
 **Decision:** `DEFER MODEL ASSISTANCE`  
-**Package:** `@dndgem/intelligence-openai` — **private**, `0.0.0`, **unpublished** (retained as experimental/reference artifact)  
-**Reference provider:** OpenAI (not an architecture dependency)  
+**Phase 4 disposition (DND-4.5):** Phase 4 **COMPLETE WITH RELEASE PENDING** — model assistance remains deferred; provider package stays private  
+**Package:** `@dndgem/intelligence-openai` — **private experimental reference**, `0.0.0`, **unpublished**  
+**Reference provider:** OpenAI (not an architecture dependency; not a supported public install)  
 **Primary experiment model:** `gpt-5.6-luna` (configurable; not hardwired into generic planner contracts)  
 **Live classification (Luna, frozen corpus):** `DEFER MODEL ASSISTANCE`
 
-A valid outcome of this experiment is **DEFER MODEL ASSISTANCE** if the deterministic DND-4.2 planner performs as well or better. That outcome was observed on the frozen Luna run. DND-4.5 remains the formal Phase 4 validation / packaging decision gate and is **not** closed by this experiment.
+A valid outcome of this experiment is **DEFER MODEL ASSISTANCE** if the deterministic DND-4.2 planner performs as well or better. That outcome was observed on the frozen Luna run. DND-4.5 closed the Phase 4 decision gate without promoting model assistance or publishing the provider package.
 
 ---
 
@@ -203,7 +204,7 @@ Safe committed summary: `packages/intelligence-openai/experiment/artifacts/luna-
 | vs Baseline B (primary)           | F1–F5: all runs **EQUAL** (no BETTER on F2/F5)                                              |
 | Classification                    | **`DEFER MODEL ASSISTANCE`**                                                                |
 
-Interpretation: Luna produced reliable structured proposals and never regressed safety fixtures, but did not beat the DND-4.2 deterministic planner on Core metrics for the frozen order-sensitive fixtures. Deterministic-planner win is a valid experiment result.
+Interpretation: Luna produced reliable structured proposals and never regressed safety fixtures, but did not beat the DND-4.2 deterministic planner on Core metrics for the frozen order-sensitive fixtures. Deterministic-planner win is a valid experiment result. Luna proved the provider path technically viable and safe, but produced **zero** strict Core-layout improvements over Baseline B — therefore remote model inference is **not** justified as a default DnDGem capability.
 
 ---
 
@@ -227,7 +228,9 @@ It does **not** mean:
 - the deterministic planner is theoretically globally optimal
 - future model/provider experiments are forbidden
 
-Conclusions stay bounded to collected evidence. Reopening model assistance requires a new evidence/decision gate (typically under DND-4.5 or an authorized follow-up).
+Conclusions stay bounded to collected evidence. Reopening model assistance requires a new evidence/decision gate. **Trying a larger model solely because Luna tied Baseline B is not sufficient evidence to reopen the experiment.** See [roadmap.md](../roadmap.md) reopen criteria (DND-4.5).
+
+DND-4.5 closed Phase 4 as **COMPLETE WITH RELEASE PENDING**: accepted public surfaces are DND-4.2 / DND-4.3 only; `@dndgem/intelligence-openai` remains **PRIVATE EXPERIMENTAL REFERENCE**.
 
 ---
 
@@ -244,4 +247,4 @@ Conclusions stay bounded to collected evidence. Reopening model assistance requi
 
 DND-4.4 introduced **zero** public Core/DOM/adapter API changes and **no new public Changeset**. Existing unreleased DND-4.2 / DND-4.3 Changesets remain unapplied.
 
-Do not publish `@dndgem/intelligence` or `@dndgem/intelligence-openai`. Keep `@dndgem/intelligence-openai` private in-tree for reproducibility and provider-reference evidence. DND-4.4 experiment is **COMPLETE** with classification **`DEFER MODEL ASSISTANCE`**. DND-4.5 formal decision gate remains pending.
+Do not publish `@dndgem/intelligence` or `@dndgem/intelligence-openai`. Keep `@dndgem/intelligence-openai` private in-tree for reproducibility and provider-reference evidence. DND-4.4 experiment is **COMPLETE** with classification **`DEFER MODEL ASSISTANCE`**. DND-4.5 decision gate is **COMPLETE** — Phase 4 **COMPLETE WITH RELEASE PENDING**.

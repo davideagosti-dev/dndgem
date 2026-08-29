@@ -2,8 +2,8 @@
 
 Authoritative Phase 4 contract for optional layout intelligence planning.
 
-**Status:** Contract COMPLETE (architecture only; no production intelligence implementation)  
-**Sprint:** DND-4.1 (contract) → DND-4.2 (deterministic planner) → DND-4.3 (optional integration) → DND-4.4 (optional model experiment) → DND-4.5 (validation gate)  
+**Status:** Contract COMPLETE — Phase 4 **COMPLETE WITH RELEASE PENDING** (DND-4.5)  
+**Sprint:** DND-4.1 (contract) → DND-4.2 (deterministic planner) → DND-4.3 (optional integration) → DND-4.4 (optional model experiment) → DND-4.5 (decision gate) — all COMPLETE  
 **Product:** DnDGem by DA62
 
 Related: [phase-4-planning-audit.md](./phase-4-planning-audit.md), [ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md), [auto-layout-contract.md](./auto-layout-contract.md), [ADR-0014](../adr/ADR-0014-auto-layout-enrichment-provenance.md), [core-domain.md](./core-domain.md), [package-boundaries.md](./package-boundaries.md), [roadmap.md](../roadmap.md).

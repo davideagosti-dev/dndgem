@@ -109,6 +109,10 @@ proposalUnplacedItemIds  ≠  solver INVALID
 proposal completeness    ≠  “absent from ResolvedLayout”
 ```
 
+## Optional advisory planner
+
+Pass board `planner` / `onPlannerEvent` or `dndgemPlanner` / `dndgemPlannerEvent`; call `replan()`. Shared contract: [Advisory Planner](./advisory-planner.md).
+
 ## Session recreation
 
 There is no `session.update()`. Meaningful config changes dispose and recreate the DOM session (same policy as React/Vue):

@@ -86,6 +86,10 @@ When Auto-Layout is on:
 
 Omit `autoLayout` (or leave it false) to keep the explicit-only path as the default.
 
+## Optional advisory planner
+
+Pass optional `planner` / `onPlannerEvent`; call `useDnDGem().replan()`. Shared contract: [Advisory Planner](./advisory-planner.md).
+
 ## Lifecycle and ownership
 
 1. Provider waits until the container and every configured item element are registered.
