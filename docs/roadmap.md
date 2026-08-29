@@ -443,7 +443,7 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 
 Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-4-planning-audit.md](./architecture/phase-4-planning-audit.md).
 
-**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** **COMPLETE WITH RELEASE PENDING** — DND-4.1–DND-4.5 **COMPLETE**. DND-4.2 / DND-4.3 accepted for public Alpha release; DND-4.4 decision `DEFER MODEL ASSISTANCE`; intelligence packages remain private; next recommended gate is Post-Phase-4 Alpha Release Consolidation (`0.1.0-alpha.4`).
+**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** **COMPLETE WITH RELEASE PENDING** — DND-4.1–DND-4.5 **COMPLETE**. DND-4.2 / DND-4.3 accepted and prepared as source `0.1.0-alpha.4` (**PREPARED — NOT PUBLISHED**); DND-4.4 decision `DEFER MODEL ASSISTANCE`; intelligence packages remain private; next gate is Post-Phase-4 Alpha Release Consolidation — Final Release Audit.
 
 Primary objective: optional higher-level structural/semantic/application planning **without** replacing deterministic solving.
 

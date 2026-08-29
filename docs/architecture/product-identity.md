@@ -15,6 +15,7 @@ Authoritative **current** public identity for DnDGem. Prefer this over older Fin
 | Security          | `security@dndgem.dev`                                |
 | Repository        | `davideagosti-dev/dndgem` (**PUBLIC** / open source) |
 | Published Alpha   | `0.1.0-alpha.3` / dist-tag `alpha` (published)       |
+| Prepared source   | `0.1.0-alpha.4` (PREPARED — NOT PUBLISHED)           |
 
 DA62 is a public brand identity. Do not invent legal entity suffixes (Ltd, LLC, Inc.) unless separately documented.
 

@@ -11,7 +11,7 @@ This package measures DOM geometry, observes resize, converts pointer drag into 
 - Support: https://dndgem.dev/support/
 - Recommended path: `createLayoutSession`
 
-Public Alpha version: **`0.1.0-alpha.3`** (official npm dist-tag **`alpha`**).
+Prepared source version: **`0.1.0-alpha.4`**. Current npm `@alpha`: **`0.1.0-alpha.3`** until publication.
 
 ```bash
 npm install @dndgem/dom@alpha

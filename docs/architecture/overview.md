@@ -20,10 +20,10 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 ## Current status
 
 - Technical MVP (Phase 1, DND-1.1 → DND-1.8) is **CLOSED**.
-- Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE**. Official channel: **`0.1.0-alpha.3` / `@alpha`** (Phase 3 Auto-Layout was `0.1.0-alpha.1`; first Alpha was `0.1.0-alpha.0`; `0.1.0-alpha.2` is superseded).
+- Phase 2 — Public Alpha Readiness is **PASS** / Public Alpha **LIVE**. Official npm `@alpha`: **`0.1.0-alpha.3`**. Prepared source: **`0.1.0-alpha.4`** (not published yet). (Phase 3 Auto-Layout was `0.1.0-alpha.1`; first Alpha was `0.1.0-alpha.0`; `0.1.0-alpha.2` is superseded).
 - **Phase 3 — Adaptive Auto-Layout** is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `@alpha`). Planning audit **PASSED WITH ARCHITECTURAL REFINEMENTS**. DND-3.1–DND-3.5 COMPLETE. Minimal public `createAutoLayoutProposal` + session/provider `autoLayout` ([auto-layout-engine.md](./auto-layout-engine.md)). Release notes: [0.1.0-alpha.1](../releases/0.1.0-alpha.1.md).
-- **Framework Expansion Gate** is **COMPLETE** (unnumbered; **not** Phase 4). **DND-FX.1–FX.6 COMPLETE.** Valid public Alpha: **`0.1.0-alpha.3` / `@alpha`**. See [framework-expansion-planning-audit.md](./framework-expansion-planning-audit.md), [framework-adapter-contract.md](./framework-adapter-contract.md).
-- **Phase 4 — AI-Assisted Layout Intelligence** is **COMPLETE WITH RELEASE PENDING** (DND-4.1–DND-4.5). Does **not** require an LLM. DND-4.2 / DND-4.3 public surfaces accepted for next Alpha; model assistance **deferred until new evidence**; `@dndgem/intelligence*` remain private. See [phase-4-planning-audit.md](./phase-4-planning-audit.md), [layout-intelligence-contract.md](./layout-intelligence-contract.md), [ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md), [advisory-planner.md](../guides/advisory-planner.md).
+- **Framework Expansion Gate** is **COMPLETE** (unnumbered; **not** Phase 4). **DND-FX.1–FX.6 COMPLETE.** Valid published public Alpha: **`0.1.0-alpha.3` / `@alpha`**. See [framework-expansion-planning-audit.md](./framework-expansion-planning-audit.md), [framework-adapter-contract.md](./framework-adapter-contract.md).
+- **Phase 4 — AI-Assisted Layout Intelligence** is **COMPLETE WITH RELEASE PENDING** (DND-4.1–DND-4.5). Does **not** require an LLM. DND-4.2 / DND-4.3 public surfaces prepared as source `0.1.0-alpha.4`; model assistance **deferred until new evidence**; `@dndgem/intelligence*` remain private. See [phase-4-planning-audit.md](./phase-4-planning-audit.md), [layout-intelligence-contract.md](./layout-intelligence-contract.md), [ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md), [advisory-planner.md](../guides/advisory-planner.md), [0.1.0-alpha.4](../releases/0.1.0-alpha.4.md).
 - Monorepo, packages, quality gates, docs, and boundaries exist (DND-1.1).
 - `@dndgem/core` defines renderer-agnostic domain types and content constraints (DND-1.2).
 - `@dndgem/core` evaluates placements as `VALID` / `DEGRADED` / `INVALID` with deterministic scoring (DND-1.3).
@@ -34,7 +34,7 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 - DND-1.8 adds reproducible Core benchmarks, an acceptance matrix, and a Technical MVP closure report.
 - DND-2.1–DND-2.5 complete (engineering baseline through Public Alpha release gate, plus post-release DA62 / `dndgem.dev` follow-ups).
 
-**Technical MVP:** CLOSED · **Public Alpha:** LIVE (`0.1.0-alpha.3` / `@alpha`) · **Phase 3:** COMPLETE / RELEASED · **Framework Expansion:** COMPLETE (DND-FX.1–FX.6) · **Phase 4:** COMPLETE WITH RELEASE PENDING (DND-4.1–4.5)
+**Technical MVP:** CLOSED · **Public Alpha (npm):** LIVE (`0.1.0-alpha.3` / `@alpha`) · **Prepared source:** `0.1.0-alpha.4` · **Phase 3:** COMPLETE / RELEASED · **Framework Expansion:** COMPLETE (DND-FX.1–FX.6) · **Phase 4:** COMPLETE WITH RELEASE PENDING (DND-4.1–4.5)
 
 Developer journey: [../guides/README.md](../guides/README.md).
 See [auto-layout-contract.md](./auto-layout-contract.md) for the Phase 3 Auto-Layout contract (DND-3.1).

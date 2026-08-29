@@ -1,6 +1,6 @@
 {
   "name": "@dndgem/dom",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "DOM adapter for DnDGem — measurement, resize observation, vendor-isolated drag interaction, and Vanilla layout session.",
   "author": "DA62",
   "license": "MIT",
