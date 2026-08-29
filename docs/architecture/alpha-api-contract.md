@@ -404,7 +404,7 @@ Alpha documents errors and validity honestly. Developer guides and troubleshooti
 
 ## Versioning
 
-Published package versions are **`0.1.0-alpha.3`**. Changesets owns further prereleases. Do not hand-edit `packages/*/package.json` versions.
+Prepared source package versions are **`0.1.0-alpha.4`**. npm `@alpha` remains **`0.1.0-alpha.3`** until the authorized publish gate. Changesets owns further prereleases. Do not hand-edit `packages/*/package.json` versions.
 
 - Official dist-tag: `alpha` (always install with `@alpha`; `latest` is not the Alpha channel)
 - `@dndgem/core`, `@dndgem/dom`, `@dndgem/react`, `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are a **fixed** Changesets group and stay version-aligned

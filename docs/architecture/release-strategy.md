@@ -4,7 +4,7 @@
 
 - Changesets owns version numbers and changelogs. Do not hand-edit `packages/*/package.json` versions.
 - DnDGem is in **0.x Alpha**. This is not SemVer 1.0.
-- Current published version: **`0.1.0-alpha.3`** (six-package fixed group; recovery from broken alpha.2 framework bootstrap metadata).
+- Current published npm `@alpha`: **`0.1.0-alpha.3`**. Prepared repository/source version: **`0.1.0-alpha.4`** (six-package fixed group; Phase 4 public surface — not published yet).
 - The publishable packages are a Changesets **fixed** group (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`, `@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`) so they remain version-aligned.
 - Meta-framework fixtures (`@dndgem/compat-next`, `@dndgem/compat-nuxt`, `@dndgem/compat-sveltekit`) are ignored and must never be published.
 - The repository is in Changesets **pre** mode with tag `alpha` (`.changeset/pre.json`).
