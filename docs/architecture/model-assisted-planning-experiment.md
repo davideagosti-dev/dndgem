@@ -1,11 +1,12 @@
 # Model-Assisted Planning Experiment (DND-4.4)
 
-**Status:** EXPERIMENTAL — Stage B implementation in progress. Not COMPLETE until Final Audit.  
+**Status:** `DND-4.4 EVIDENCE COMPLETE — FINAL AUDIT PENDING`  
 **Package:** `@dndgem/intelligence-openai` — **private**, `0.0.0`, **unpublished**  
 **Reference provider:** OpenAI (not an architecture dependency)  
-**Primary experiment model:** `gpt-5.6-luna` (configurable; not hardwired into generic planner contracts)
+**Primary experiment model:** `gpt-5.6-luna` (configurable; not hardwired into generic planner contracts)  
+**Live classification (Luna, frozen corpus):** `DEFER MODEL ASSISTANCE`
 
-A valid outcome of this experiment is **DEFER MODEL ASSISTANCE** if the deterministic DND-4.2 planner performs as well or better.
+A valid outcome of this experiment is **DEFER MODEL ASSISTANCE** if the deterministic DND-4.2 planner performs as well or better. That outcome was observed on the frozen Luna run.
 
 ---
 
@@ -82,7 +83,7 @@ The model proposes **`automaticItemOrder` only**. It must not author x/y, width/
 
 Do **not** implement seller-owned keys, DnDGem inference proxies, token subsidies, browser-bundled secrets, or CI paid inference.
 
-Local convention: `OPENAI_API_KEY` (see `.env.example` placeholders only). Optional model override: `DNDGEM_OPENAI_MODEL`.
+Local convention: `OPENAI_API_KEY` (see `.env.example` placeholders only). Optional model override: `DNDGEM_OPENAI_MODEL`. The manual harness loads repository-root `.env.local` when present (gitignored; never commit secrets).
 
 ---
 
@@ -178,6 +179,35 @@ KEEP candidate only if order-sensitive fixtures F2/F5 show incremental Core valu
 
 ---
 
+## Stage C — Luna live evidence (factual)
+
+Safe committed summary: `packages/intelligence-openai/experiment/artifacts/luna-live-evidence.json`.
+
+| Field                             | Value                                                                                       |
+| --------------------------------- | ------------------------------------------------------------------------------------------- |
+| Feature commit (frozen harness)   | `9a5002ec167cd529603fbe4e7ca31fc979a64221`                                                  |
+| Experiment time (UTC)             | `2026-08-29T14:30:02.578Z`                                                                  |
+| Model                             | `gpt-5.6-luna`                                                                              |
+| Prompt / schema / rubric / corpus | `1.0.0` / `1.0.0` / `1.0.0` / `1.0.0`                                                       |
+| Configuration                     | Responses API; strict JSON Schema; `reasoning.effort=none`; `maxRetries=0`; timeout 3000 ms |
+| Methodology                       | 5 runs × F1–F5 = **25** live requests (no Terra/Sol; no post-hoc retune)                    |
+| Schema reliability                | **25 / 25 (100%)** (threshold ≥ 90%)                                                        |
+| Fallback (live)                   | **0 / 25**                                                                                  |
+| Tokens                            | input **8120**, output **775**                                                              |
+| Cost estimate                     | **~$0.00358** total (~$0.000143 / request) — experiment-time pricing `2026-08-28-estimate`  |
+| providerRequestMs                 | min 884 · mean 1230 · median 1140 · p95 1591 · max 2637                                     |
+| Replay determinism                | **PASS** (identical proposal + snapshot → identical Core result)                            |
+| F3 source / provenance            | **PASS** (origins remain `source` \| `generated`; source placements preserved)              |
+| F6–F8 robustness                  | **PASS** offline via fake transport package tests                                           |
+| vs Baseline B (primary)           | F1–F5: all runs **EQUAL** (no BETTER on F2/F5)                                              |
+| Classification                    | **`DEFER MODEL ASSISTANCE`**                                                                |
+
+Interpretation: Luna produced reliable structured proposals and never regressed safety fixtures, but did not beat the DND-4.2 deterministic planner on Core metrics for the frozen order-sensitive fixtures. Deterministic-planner win is a valid experiment result.
+
+Do **not** mark DND-4.4 COMPLETE until Final Audit / Evidence Review.
+
+---
+
 ## CI separation
 
 - Unit tests use **fake transport** only.
@@ -191,4 +221,4 @@ KEEP candidate only if order-sensitive fixtures F2/F5 show incremental Core valu
 
 Stage B prefers **zero** public Core/DOM/adapter API changes and **no new public Changeset**. Existing unreleased DND-4.2 / DND-4.3 Changesets remain unapplied.
 
-Do not publish `@dndgem/intelligence` or `@dndgem/intelligence-openai`. Do not mark DND-4.4 COMPLETE until Final Audit after live evidence review.
+Do not publish `@dndgem/intelligence` or `@dndgem/intelligence-openai`. Do not mark DND-4.4 COMPLETE until Final Audit after live evidence review. Stage C Luna evidence is captured; status remains **EVIDENCE COMPLETE — FINAL AUDIT PENDING**.

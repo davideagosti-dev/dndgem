@@ -4,8 +4,8 @@
  * Usage:
  *   pnpm experiment:intelligence-openai
  *
- * Requires OPENAI_API_KEY in the local environment (BYOK).
- * Never prints the key. Not part of normal CI.
+ * Requires OPENAI_API_KEY in the local environment (BYOK), or in
+ * repository-root `.env.local` (gitignored). Never prints the key. Not part of normal CI.
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -33,6 +33,7 @@ import {
   toOutcomeLike,
   type PipelineResult,
 } from './evaluate.js';
+import { loadExperimentLocalEnv } from './load-local-env.js';
 import { estimateCostUsd, EXPERIMENT_PRICING_VERSION } from './pricing.js';
 import {
   isStrictlyBetter,
@@ -149,6 +150,7 @@ function classify(input: {
 }
 
 async function main(): Promise<void> {
+  loadExperimentLocalEnv();
   const apiKey = requireApiKey();
   const model = resolveExperimentModel();
   console.log('DND-4.4 OpenAI model-assisted planning experiment');

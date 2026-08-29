@@ -1,0 +1,836 @@
+{
+  "experiment": "dnd-4.4-model-assisted-planning",
+  "status": "DND-4.4 EVIDENCE COMPLETE — FINAL AUDIT PENDING",
+  "featureCommit": "9a5002ec167cd529603fbe4e7ca31fc979a64221",
+  "experimentDateTimeUtc": "2026-08-29T14:30:02.578Z",
+  "provider": "openai",
+  "model": "gpt-5.6-luna",
+  "api": "responses",
+  "structuredOutput": "json_schema_strict",
+  "reasoningEffort": "none",
+  "maxRetries": 0,
+  "promptVersion": "1.0.0",
+  "schemaVersion": "1.0.0",
+  "rubricVersion": "1.0.0",
+  "corpusVersion": "1.0.0",
+  "pricingVersion": "2026-08-28-estimate",
+  "runsPerFixture": 5,
+  "requestCounts": {
+    "intended": 25,
+    "executed": 25,
+    "schemaValidResponses": 25,
+    "providerResponses": 25,
+    "fallbacks": 0,
+    "timeouts": 0
+  },
+  "schemaReliability": {
+    "numerator": 25,
+    "denominator": 25,
+    "rate": 1,
+    "threshold": 0.9,
+    "pass": true
+  },
+  "fallback": {
+    "count": 0,
+    "rate": 0,
+    "byKind": {}
+  },
+  "tokens": {
+    "inputTokens": 8120,
+    "outputTokens": 775
+  },
+  "costEstimate": {
+    "estimatedTotalUsd": 0.00358,
+    "estimatedAverageUsdPerRequest": 0.00014319999999999998,
+    "label": "estimate based on experiment-time pricing metadata",
+    "pricingVersion": "2026-08-28-estimate"
+  },
+  "latency": {
+    "providerRequestMs": {
+      "min": 884.1566999999995,
+      "mean": 1230.0747079999999,
+      "median": 1140.0470999999998,
+      "p95": 1590.6449999999995,
+      "max": 2636.9745000000003
+    },
+    "plannerTotalMs": {
+      "min": 884.5666999999994,
+      "mean": 1230.3110359999994,
+      "median": 1140.2724999999991,
+      "p95": 1590.779,
+      "max": 2637.3649
+    },
+    "timeouts": 0
+  },
+  "replayDeterminism": {
+    "ok": true,
+    "failures": []
+  },
+  "architecture": {
+    "sourcePreservationAllRuns": true,
+    "provenanceVocabularyOk": true,
+    "provenanceFailures": [],
+    "allowedProvenance": ["source", "generated"],
+    "f3SourcePreserved": true
+  },
+  "robustnessOffline": {
+    "F6": "PASS (package tests: malformed → deterministic fallback)",
+    "F7": "PASS (package tests: cancelled/stale → cannot apply)",
+    "F8": "PASS (package tests: provider unavailable → deterministic fallback)"
+  },
+  "fixtures": {
+    "F1": {
+      "purpose": "Prominence competition: deterministic prominence planner places high-priority automatic items first.",
+      "baselineA": {
+        "unplacedCount": 2,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "order": ["hero-primary-card", "sidebar-widget", "footer-strip"]
+      },
+      "baselineB": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "order": ["sidebar-widget", "footer-strip", "hero-primary-card"]
+      },
+      "runs": [
+        {
+          "runIndex": 1,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["hero-primary-card"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["sidebar-widget", "footer-strip", "hero-primary-card"],
+          "placementOrigins": {
+            "sidebar-widget": "generated",
+            "footer-strip": "generated"
+          },
+          "providerRequestMs": 2636.9745000000003,
+          "plannerTotalMs": 2637.3649,
+          "inputTokens": 304,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.000138,
+          "sourcePreserved": true,
+          "vsBaselineA": "BETTER",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 2,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["hero-primary-card"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["sidebar-widget", "footer-strip", "hero-primary-card"],
+          "placementOrigins": {
+            "sidebar-widget": "generated",
+            "footer-strip": "generated"
+          },
+          "providerRequestMs": 1590.6449999999995,
+          "plannerTotalMs": 1590.779,
+          "inputTokens": 304,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.000138,
+          "sourcePreserved": true,
+          "vsBaselineA": "BETTER",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 3,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["hero-primary-card"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["sidebar-widget", "footer-strip", "hero-primary-card"],
+          "placementOrigins": {
+            "sidebar-widget": "generated",
+            "footer-strip": "generated"
+          },
+          "providerRequestMs": 1136.3540000000003,
+          "plannerTotalMs": 1136.4844999999996,
+          "inputTokens": 304,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.000138,
+          "sourcePreserved": true,
+          "vsBaselineA": "BETTER",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 4,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["hero-primary-card"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["sidebar-widget", "footer-strip", "hero-primary-card"],
+          "placementOrigins": {
+            "sidebar-widget": "generated",
+            "footer-strip": "generated"
+          },
+          "providerRequestMs": 884.1566999999995,
+          "plannerTotalMs": 884.5666999999994,
+          "inputTokens": 304,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.000138,
+          "sourcePreserved": true,
+          "vsBaselineA": "BETTER",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 5,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["hero-primary-card"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["sidebar-widget", "footer-strip", "hero-primary-card"],
+          "placementOrigins": {
+            "sidebar-widget": "generated",
+            "footer-strip": "generated"
+          },
+          "providerRequestMs": 1368.0056999999997,
+          "plannerTotalMs": 1368.2029000000002,
+          "inputTokens": 304,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.000138,
+          "sourcePreserved": true,
+          "vsBaselineA": "BETTER",
+          "vsBaselineB": "EQUAL"
+        }
+      ],
+      "variance": {
+        "distinctRawProposals": 1,
+        "distinctNormalizedProposals": 1,
+        "proposalEqualityRate": 1,
+        "distinctResolvedLayouts": 1,
+        "resolvedLayoutEqualityRate": 1
+      },
+      "summaryVsA": {
+        "better": 5,
+        "equal": 0,
+        "worse": 0
+      },
+      "summaryVsB": {
+        "better": 0,
+        "equal": 5,
+        "worse": 0
+      }
+    },
+    "F2": {
+      "purpose": "Multi-item interaction: four automatic items; declaration vs prominence not obviously globally optimal.",
+      "baselineA": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "order": ["wide-blocker", "mid-panel", "tall-panel", "compact-chip"]
+      },
+      "baselineB": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "order": ["mid-panel", "tall-panel", "compact-chip", "wide-blocker"]
+      },
+      "runs": [
+        {
+          "runIndex": 1,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["wide-blocker"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["mid-panel", "tall-panel", "wide-blocker", "compact-chip"],
+          "placementOrigins": {
+            "mid-panel": "generated",
+            "tall-panel": "generated",
+            "compact-chip": "generated"
+          },
+          "providerRequestMs": 1256.178899999999,
+          "plannerTotalMs": 1256.4165999999987,
+          "inputTokens": 332,
+          "outputTokens": 35,
+          "estimatedCostUsd": 0.00015299999999999998,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 2,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["tall-panel"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["wide-blocker", "mid-panel", "tall-panel", "compact-chip"],
+          "placementOrigins": {
+            "wide-blocker": "generated",
+            "mid-panel": "generated",
+            "compact-chip": "generated"
+          },
+          "providerRequestMs": 1140.0470999999998,
+          "plannerTotalMs": 1140.2724999999991,
+          "inputTokens": 332,
+          "outputTokens": 35,
+          "estimatedCostUsd": 0.00015299999999999998,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 3,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["wide-blocker"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["mid-panel", "tall-panel", "wide-blocker", "compact-chip"],
+          "placementOrigins": {
+            "mid-panel": "generated",
+            "tall-panel": "generated",
+            "compact-chip": "generated"
+          },
+          "providerRequestMs": 1475.684000000001,
+          "plannerTotalMs": 1475.8968999999997,
+          "inputTokens": 332,
+          "outputTokens": 35,
+          "estimatedCostUsd": 0.00015299999999999998,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 4,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["wide-blocker"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["mid-panel", "tall-panel", "wide-blocker", "compact-chip"],
+          "placementOrigins": {
+            "mid-panel": "generated",
+            "tall-panel": "generated",
+            "compact-chip": "generated"
+          },
+          "providerRequestMs": 1058.3292999999994,
+          "plannerTotalMs": 1058.6218000000008,
+          "inputTokens": 332,
+          "outputTokens": 35,
+          "estimatedCostUsd": 0.00015299999999999998,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 5,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["wide-blocker"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["mid-panel", "tall-panel", "wide-blocker", "compact-chip"],
+          "placementOrigins": {
+            "mid-panel": "generated",
+            "tall-panel": "generated",
+            "compact-chip": "generated"
+          },
+          "providerRequestMs": 964.6479999999992,
+          "plannerTotalMs": 964.8036999999986,
+          "inputTokens": 332,
+          "outputTokens": 35,
+          "estimatedCostUsd": 0.00015299999999999998,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        }
+      ],
+      "variance": {
+        "distinctRawProposals": 2,
+        "distinctNormalizedProposals": 2,
+        "proposalEqualityRate": 0.8,
+        "distinctResolvedLayouts": 2,
+        "resolvedLayoutEqualityRate": 0.8
+      },
+      "summaryVsA": {
+        "better": 0,
+        "equal": 5,
+        "worse": 0
+      },
+      "summaryVsB": {
+        "better": 0,
+        "equal": 5,
+        "worse": 0
+      }
+    },
+    "F3": {
+      "purpose": "Mixed source + automatic: source-locked placement must be preserved.",
+      "baselineA": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "order": ["low-priority", "high-priority"]
+      },
+      "baselineB": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "order": ["high-priority", "low-priority"]
+      },
+      "runs": [
+        {
+          "runIndex": 1,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["low-priority"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["high-priority", "low-priority"],
+          "placementOrigins": {
+            "pinned-nav": "source",
+            "high-priority": "generated"
+          },
+          "providerRequestMs": 1390.940200000001,
+          "plannerTotalMs": 1391.127699999999,
+          "inputTokens": 301,
+          "outputTokens": 27,
+          "estimatedCostUsd": 0.00012925,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 2,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["low-priority"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["high-priority", "low-priority"],
+          "placementOrigins": {
+            "pinned-nav": "source",
+            "high-priority": "generated"
+          },
+          "providerRequestMs": 884.6095999999998,
+          "plannerTotalMs": 884.8114000000005,
+          "inputTokens": 301,
+          "outputTokens": 27,
+          "estimatedCostUsd": 0.00012925,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 3,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["low-priority"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["high-priority", "low-priority"],
+          "placementOrigins": {
+            "pinned-nav": "source",
+            "high-priority": "generated"
+          },
+          "providerRequestMs": 923.6561999999994,
+          "plannerTotalMs": 923.8323,
+          "inputTokens": 301,
+          "outputTokens": 27,
+          "estimatedCostUsd": 0.00012925,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 4,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["low-priority"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["high-priority", "low-priority"],
+          "placementOrigins": {
+            "pinned-nav": "source",
+            "high-priority": "generated"
+          },
+          "providerRequestMs": 1359.9696000000004,
+          "plannerTotalMs": 1360.1120999999985,
+          "inputTokens": 301,
+          "outputTokens": 27,
+          "estimatedCostUsd": 0.00012925,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 5,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["low-priority"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["high-priority", "low-priority"],
+          "placementOrigins": {
+            "pinned-nav": "source",
+            "high-priority": "generated"
+          },
+          "providerRequestMs": 906.630799999999,
+          "plannerTotalMs": 906.8019999999997,
+          "inputTokens": 301,
+          "outputTokens": 27,
+          "estimatedCostUsd": 0.00012925,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        }
+      ],
+      "variance": {
+        "distinctRawProposals": 1,
+        "distinctNormalizedProposals": 1,
+        "proposalEqualityRate": 1,
+        "distinctResolvedLayouts": 1,
+        "resolvedLayoutEqualityRate": 1
+      },
+      "summaryVsA": {
+        "better": 0,
+        "equal": 5,
+        "worse": 0
+      },
+      "summaryVsB": {
+        "better": 0,
+        "equal": 5,
+        "worse": 0
+      }
+    },
+    "F4": {
+      "purpose": "Previous-layout stability context exists but is never Source Intent.",
+      "baselineA": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "order": ["alpha-block", "beta-block", "gamma-block"]
+      },
+      "baselineB": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "order": ["gamma-block", "alpha-block", "beta-block"]
+      },
+      "runs": [
+        {
+          "runIndex": 1,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["gamma-block"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["gamma-block", "alpha-block", "beta-block"],
+          "placementOrigins": {
+            "alpha-block": "generated",
+            "beta-block": "generated"
+          },
+          "providerRequestMs": 1031.661799999998,
+          "plannerTotalMs": 1032.3040999999976,
+          "inputTokens": 383,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.00015775,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 2,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["gamma-block"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["gamma-block", "alpha-block", "beta-block"],
+          "placementOrigins": {
+            "alpha-block": "generated",
+            "beta-block": "generated"
+          },
+          "providerRequestMs": 1031.1381000000001,
+          "plannerTotalMs": 1031.6299,
+          "inputTokens": 383,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.00015775,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 3,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["gamma-block"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["gamma-block", "alpha-block", "beta-block"],
+          "placementOrigins": {
+            "alpha-block": "generated",
+            "beta-block": "generated"
+          },
+          "providerRequestMs": 1245.6324999999997,
+          "plannerTotalMs": 1245.8443999999981,
+          "inputTokens": 383,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.00015775,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 4,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["gamma-block"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["gamma-block", "alpha-block", "beta-block"],
+          "placementOrigins": {
+            "alpha-block": "generated",
+            "beta-block": "generated"
+          },
+          "providerRequestMs": 1421.6406000000025,
+          "plannerTotalMs": 1421.856399999997,
+          "inputTokens": 383,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.00015775,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 5,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["gamma-block"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["gamma-block", "alpha-block", "beta-block"],
+          "placementOrigins": {
+            "alpha-block": "generated",
+            "beta-block": "generated"
+          },
+          "providerRequestMs": 1180.2078999999976,
+          "plannerTotalMs": 1180.4009000000005,
+          "inputTokens": 383,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.00015775,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        }
+      ],
+      "variance": {
+        "distinctRawProposals": 1,
+        "distinctNormalizedProposals": 1,
+        "proposalEqualityRate": 1,
+        "distinctResolvedLayouts": 1,
+        "resolvedLayoutEqualityRate": 1
+      },
+      "summaryVsA": {
+        "better": 0,
+        "equal": 5,
+        "worse": 0
+      },
+      "summaryVsB": {
+        "better": 0,
+        "equal": 5,
+        "worse": 0
+      }
+    },
+    "F5": {
+      "purpose": "Tight constrained container: multiple plausible orders; placement opportunity order-sensitive.",
+      "baselineA": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "order": ["large-a", "large-b", "small-fit"]
+      },
+      "baselineB": {
+        "unplacedCount": 1,
+        "validity": "VALID",
+        "scoreTotal": 1,
+        "order": ["large-a", "large-b", "small-fit"]
+      },
+      "runs": [
+        {
+          "runIndex": 1,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["large-b"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["large-a", "large-b", "small-fit"],
+          "placementOrigins": {
+            "large-a": "generated",
+            "small-fit": "generated"
+          },
+          "providerRequestMs": 1104.4615000000013,
+          "plannerTotalMs": 1104.6023999999998,
+          "inputTokens": 304,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.000138,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 2,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["large-b"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["large-a", "large-b", "small-fit"],
+          "placementOrigins": {
+            "large-a": "generated",
+            "small-fit": "generated"
+          },
+          "providerRequestMs": 1375.1041000000005,
+          "plannerTotalMs": 1375.331199999997,
+          "inputTokens": 304,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.000138,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 3,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["large-b"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["large-a", "large-b", "small-fit"],
+          "placementOrigins": {
+            "large-a": "generated",
+            "small-fit": "generated"
+          },
+          "providerRequestMs": 917.5864000000001,
+          "plannerTotalMs": 917.7279999999992,
+          "inputTokens": 304,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.000138,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 4,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["large-b"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["large-a", "large-b", "small-fit"],
+          "placementOrigins": {
+            "large-a": "generated",
+            "small-fit": "generated"
+          },
+          "providerRequestMs": 985.446899999999,
+          "plannerTotalMs": 985.6013000000021,
+          "inputTokens": 304,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.000138,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        },
+        {
+          "runIndex": 5,
+          "schemaValid": true,
+          "fallbackUsed": false,
+          "errorKind": null,
+          "unplacedCount": 1,
+          "unplacedItemIds": ["large-b"],
+          "validity": "VALID",
+          "scoreTotal": 1,
+          "order": ["large-a", "large-b", "small-fit"],
+          "placementOrigins": {
+            "large-a": "generated",
+            "small-fit": "generated"
+          },
+          "providerRequestMs": 1482.1582999999991,
+          "plannerTotalMs": 1482.3822999999975,
+          "inputTokens": 304,
+          "outputTokens": 31,
+          "estimatedCostUsd": 0.000138,
+          "sourcePreserved": true,
+          "vsBaselineA": "EQUAL",
+          "vsBaselineB": "EQUAL"
+        }
+      ],
+      "variance": {
+        "distinctRawProposals": 1,
+        "distinctNormalizedProposals": 1,
+        "proposalEqualityRate": 1,
+        "distinctResolvedLayouts": 1,
+        "resolvedLayoutEqualityRate": 1
+      },
+      "summaryVsA": {
+        "better": 0,
+        "equal": 5,
+        "worse": 0
+      },
+      "summaryVsB": {
+        "better": 0,
+        "equal": 5,
+        "worse": 0
+      }
+    }
+  },
+  "classification": "DEFER MODEL ASSISTANCE",
+  "note": "No API keys, auth headers, or .env contents are included.",
+  "sourceLiveArtifact": "live-results-1788013802578.json"
+}

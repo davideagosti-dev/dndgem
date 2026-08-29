@@ -1,5 +1,7 @@
 # Live experiment artifacts may be written here. Do not commit secrets.
 # baselines-frozen.json is committed as pre-live evidence.
+# luna-live-evidence.json is the safe committed Stage C summary (no credentials).
 *
 !.gitignore
 !baselines-frozen.json
+!luna-live-evidence.json

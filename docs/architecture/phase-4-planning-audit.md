@@ -33,13 +33,13 @@ DND-4.1:
 CONTRACT / ARCHITECTURE ONLY — NO PRODUCTION INTELLIGENCE PACKAGE
 ```
 
-| Sprint      | Title                                       | Decision                     | Implementation status                   |
-| ----------- | ------------------------------------------- | ---------------------------- | --------------------------------------- |
-| **DND-4.1** | Layout Intelligence Contract & Architecture | **APPROVED**                 | COMPLETE (contract)                     |
-| **DND-4.2** | Deterministic Intelligence Planner          | **APPROVED**                 | Not started                             |
-| **DND-4.3** | Planner Contract & Optional Integration     | **APPROVED**                 | Not started                             |
-| **DND-4.4** | Model-Assisted Planning Experiment          | **APPROVED** (optional path) | **IN PROGRESS** (Stage B; not COMPLETE) |
-| **DND-4.5** | Phase 4 Validation & Alpha Gate             | **APPROVED**                 | Not started                             |
+| Sprint      | Title                                       | Decision                     | Implementation status                       |
+| ----------- | ------------------------------------------- | ---------------------------- | ------------------------------------------- |
+| **DND-4.1** | Layout Intelligence Contract & Architecture | **APPROVED**                 | COMPLETE (contract)                         |
+| **DND-4.2** | Deterministic Intelligence Planner          | **APPROVED**                 | Not started                                 |
+| **DND-4.3** | Planner Contract & Optional Integration     | **APPROVED**                 | Not started                                 |
+| **DND-4.4** | Model-Assisted Planning Experiment          | **APPROVED** (optional path) | **EVIDENCE COMPLETE — FINAL AUDIT PENDING** |
+| **DND-4.5** | Phase 4 Validation & Alpha Gate             | **APPROVED**                 | Not started                                 |
 
 ---
 
