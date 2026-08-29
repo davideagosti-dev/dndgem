@@ -22,7 +22,7 @@ Meta-framework fixtures (`apps/compat-next`, `apps/compat-nuxt`, `apps/compat-sv
 
 Forbidden package names: `@dndgem/framework-core`, `@dndgem/vanilla`, `@dndgem/next`, `@dndgem/nuxt`, `@dndgem/sveltekit`, `@dndgem/flutter`, `@dndgem/ai`.
 
-`@dndgem/intelligence` remains a **private** optional workspace layer (DND-4.2 / DND-4.3). It is not published, not part of the Alpha public surface, and not depended on by `@dndgem/dom` or framework adapters. DND-4.3 adds optional structural planner injection on the DOM session and thin adapter pass-through; first-party orchestration helpers stay in intelligence and are composed at the application boundary. Public publication review remains deferred (DND-4.5). Preferred direction: optional intelligence layer depending on Core ([ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md)); not inside `@dndgem/core` by default. Framework adapters must not become intelligence extension points.
+`@dndgem/intelligence` remains a **private** optional workspace layer (DND-4.2 / DND-4.3). It is not published, not part of the Alpha public surface, and not depended on by `@dndgem/dom` or framework adapters. DND-4.3 adds optional structural planner injection on the DOM session and thin adapter pass-through; first-party orchestration helpers stay in intelligence and are composed at the application boundary. DND-4.5 disposition: **KEEP PRIVATE** — public publication is not authorized. Preferred direction: optional intelligence layer depending on Core ([ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md)); not inside `@dndgem/core` by default. Framework adapters must not become intelligence extension points.
 
 Allowlist: `scripts/package-topology.mjs`.
 
