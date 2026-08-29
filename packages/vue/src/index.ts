@@ -11,7 +11,7 @@ import { getDomPackageInfo } from '@dndgem/dom';
 
 export const VUE_PACKAGE_NAME = '@dndgem/vue' as const;
 
-export const VUE_PACKAGE_VERSION = '0.1.0-alpha.3' as const;
+export const VUE_PACKAGE_VERSION = '0.1.0-alpha.4' as const;
 
 /**
  * Marker used by workspace smoke tests to prove public exports and workspace links.

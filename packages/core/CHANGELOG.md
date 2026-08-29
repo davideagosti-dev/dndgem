@@ -1,5 +1,11 @@
 # @dndgem/core
 
+## 0.1.0-alpha.4
+
+### Minor Changes
+
+- d06408c: Add optional `automaticItemOrder` to `AutoLayoutProposalInput` for advisory automatic-item processing order (DND-4.2). Default Auto-Layout behavior is unchanged when omitted.
+
 ## 0.1.0-alpha.3
 
 ### Patch Changes

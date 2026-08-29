@@ -1,5 +1,16 @@
 # @dndgem/dom
 
+## 0.1.0-alpha.4
+
+### Minor Changes
+
+- c557c8b: Add optional session `planner` / `onPlannerEvent` and `session.replan(): Promise<void>` with framework adapter parity (DND-4.3). Default behavior is unchanged when no planner is configured. `@dndgem/intelligence` remains private and is not published.
+
+### Patch Changes
+
+- Updated dependencies [d06408c]
+  - @dndgem/core@0.1.0-alpha.4
+
 ## 0.1.0-alpha.3
 
 ### Patch Changes

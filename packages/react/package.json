@@ -1,6 +1,6 @@
 {
   "name": "@dndgem/react",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "React adapter for DnDGem — thin lifecycle and registration over @dndgem/dom.",
   "author": "DA62",
   "license": "MIT",

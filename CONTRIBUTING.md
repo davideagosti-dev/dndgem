@@ -4,7 +4,7 @@ Thanks for your interest in DnDGem.
 
 ## Project status
 
-DnDGem is in **early public Alpha**. Phase 1 Technical MVP is **CLOSED**. Framework Expansion Gate is **COMPLETE** (DND-FX.1–FX.6). Valid public Alpha is **`0.1.0-alpha.3`** (`@alpha`). Phase 4 is **COMPLETE WITH RELEASE PENDING** (DND-4.1–DND-4.5); accepted DND-4.2 / DND-4.3 surfaces await Post-Phase-4 Alpha packaging (`0.1.0-alpha.4` recommended). Do not implement `@dndgem/next|nuxt|sveltekit` packages, public intelligence packages, model assistance, or Flutter without an authorized sprint.
+DnDGem is in **early public Alpha**. Phase 1 Technical MVP is **CLOSED**. Framework Expansion Gate is **COMPLETE** (DND-FX.1–FX.6). Current npm `@alpha` is **`0.1.0-alpha.3`**. Prepared repository/source version is **`0.1.0-alpha.4`** (Phase 4 public surface — not published yet). Phase 4 is **COMPLETE WITH RELEASE PENDING** (DND-4.1–DND-4.5). Do not implement `@dndgem/next|nuxt|sveltekit` packages, public intelligence packages, model assistance, or Flutter without an authorized sprint.
 
 ## Development setup
 

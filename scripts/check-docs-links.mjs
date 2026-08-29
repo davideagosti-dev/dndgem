@@ -24,6 +24,7 @@ const ENTRY_FILES = [
   'docs/releases/0.1.0-alpha.1.md',
   'docs/releases/0.1.0-alpha.2.md',
   'docs/releases/0.1.0-alpha.3.md',
+  'docs/releases/0.1.0-alpha.4.md',
   'docs/releases/dnd-2.5-stage-a-readiness.md',
   'packages/core/README.md',
   'packages/dom/README.md',
