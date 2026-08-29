@@ -35,7 +35,8 @@
     "version-packages": "changeset version",
     "sync-package-info": "node scripts/sync-package-info.mjs",
     "test:pack": "node scripts/validate-pack.mjs",
-    "lint:root": "eslint . --max-warnings=0"
+    "lint:root": "eslint . --max-warnings=0",
+    "experiment:intelligence-openai": "pnpm --filter @dndgem/intelligence-openai experiment"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.0",

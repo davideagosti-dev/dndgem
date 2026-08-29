@@ -211,9 +211,11 @@ Planner ordering affects visual placement opportunity for automatic items only. 
 
 ## Limitations
 
-- No model-based planning / OpenAI / provider SDKs (DND-4.4)
-- Intelligence package remains private / unpublished
+- Model-based planning was an **optional experiment** (DND-4.4) behind `@dndgem/intelligence-openai` — see [model-assisted-planning-experiment.md](./model-assisted-planning-experiment.md)
+- OpenAI is a **reference provider only**, not an architecture dependency
+- Intelligence packages remain private / unpublished
 - Public API review for publishing intelligence remains deferred (DND-4.5)
+- DND-4.4 outcome: **`DEFER MODEL ASSISTANCE`** — experiment complete; no default model-assisted product capability; DND-4.3 `LayoutPlanner` seam remains valid
 
 ---
 
