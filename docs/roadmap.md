@@ -443,7 +443,7 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 
 Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-4-planning-audit.md](./architecture/phase-4-planning-audit.md).
 
-**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); DND-4.2 **COMPLETE**; DND-4.3 **COMPLETE**; DND-4.4 **EVIDENCE COMPLETE — FINAL AUDIT PENDING** (Luna live evidence captured; not COMPLETE); DND-4.5 not started.
+**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** DND-4.1 **COMPLETE** (contract); DND-4.2 **COMPLETE**; DND-4.3 **COMPLETE**; DND-4.4 **COMPLETE** (experimental classification `DEFER MODEL ASSISTANCE`; no default model-assisted product capability); DND-4.5 not started.
 
 Primary objective: optional higher-level structural/semantic/application planning **without** replacing deterministic solving.
 
@@ -487,7 +487,7 @@ DND-4.2 Deterministic Intelligence Planner            COMPLETE
         ↓
 DND-4.3 Planner Contract & Optional Integration       COMPLETE
         ↓
-DND-4.4 Model-Assisted Planning Experiment            EVIDENCE COMPLETE — FINAL AUDIT PENDING
+DND-4.4 Model-Assisted Planning Experiment            COMPLETE (DEFER MODEL ASSISTANCE)
         ↓
 DND-4.5 Phase 4 Validation & Alpha Gate               not started
 ```
@@ -531,7 +531,7 @@ DND-4.5 Phase 4 Validation & Alpha Gate               not started
 - **Objective:** Optional evidence-driven model-backed planner experiment behind the neutral boundary.
 - **Out of scope:** Permanent provider lock-in; requiring network for core DnDGem; browser API keys; DnDGem-owned inference; CI paid calls.
 - **Dependencies:** DND-4.3.
-- **Status:** **EVIDENCE COMPLETE — FINAL AUDIT PENDING** — Stage B harness frozen; Stage C Luna live run completed (25 requests; classification `DEFER MODEL ASSISTANCE`). **Not COMPLETE** until Final Audit / Evidence Review. Evidence: [model-assisted-planning-experiment.md](./architecture/model-assisted-planning-experiment.md), `packages/intelligence-openai/experiment/artifacts/luna-live-evidence.json`.
+- **Status:** **COMPLETE** — Stage B harness frozen; Stage C Luna live evidence recorded (25 requests); Final Audit passed. **Decision:** `DEFER MODEL ASSISTANCE` (no measurable Core benefit vs DND-4.2 on frozen corpus; provider/reference package remains private). DND-4.5 formal packaging/validation gate remains pending. Evidence: [model-assisted-planning-experiment.md](./architecture/model-assisted-planning-experiment.md), `packages/intelligence-openai/experiment/artifacts/luna-live-evidence.json`.
 - **Reference:** [model-assisted-planning-experiment.md](./architecture/model-assisted-planning-experiment.md)
 
 ### DND-4.5 — Phase 4 Validation & Alpha Gate

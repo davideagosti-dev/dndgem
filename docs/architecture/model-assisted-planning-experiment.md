@@ -1,12 +1,13 @@
 # Model-Assisted Planning Experiment (DND-4.4)
 
-**Status:** `DND-4.4 EVIDENCE COMPLETE — FINAL AUDIT PENDING`  
-**Package:** `@dndgem/intelligence-openai` — **private**, `0.0.0`, **unpublished**  
+**Status:** `DND-4.4 COMPLETE`  
+**Decision:** `DEFER MODEL ASSISTANCE`  
+**Package:** `@dndgem/intelligence-openai` — **private**, `0.0.0`, **unpublished** (retained as experimental/reference artifact)  
 **Reference provider:** OpenAI (not an architecture dependency)  
 **Primary experiment model:** `gpt-5.6-luna` (configurable; not hardwired into generic planner contracts)  
 **Live classification (Luna, frozen corpus):** `DEFER MODEL ASSISTANCE`
 
-A valid outcome of this experiment is **DEFER MODEL ASSISTANCE** if the deterministic DND-4.2 planner performs as well or better. That outcome was observed on the frozen Luna run.
+A valid outcome of this experiment is **DEFER MODEL ASSISTANCE** if the deterministic DND-4.2 planner performs as well or better. That outcome was observed on the frozen Luna run. DND-4.5 remains the formal Phase 4 validation / packaging decision gate and is **not** closed by this experiment.
 
 ---
 
@@ -204,7 +205,29 @@ Safe committed summary: `packages/intelligence-openai/experiment/artifacts/luna-
 
 Interpretation: Luna produced reliable structured proposals and never regressed safety fixtures, but did not beat the DND-4.2 deterministic planner on Core metrics for the frozen order-sensitive fixtures. Deterministic-planner win is a valid experiment result.
 
-Do **not** mark DND-4.4 COMPLETE until Final Audit / Evidence Review.
+---
+
+## Meaning of `DEFER MODEL ASSISTANCE`
+
+On the frozen corpus and rubric, this classification means:
+
+- the OpenAI experiment **technically succeeded** (25/25 schema-valid; 0 live fallbacks; BYOK; no DnDGem-owned key)
+- provider architecture was **safe** (advisory order only; Core remains authority; no second solver)
+- Structured Outputs were **reliable**
+- deterministic fallback / F6–F8 robustness **worked** (offline tests)
+- downstream Core replay remained **deterministic**
+- Luna added **no measurable Core-layout benefit** over the DND-4.2 deterministic planner (0 strict improvements vs Baseline B on F2/F5)
+- therefore remote model inference is **not justified as a default DnDGem product capability** at this stage
+
+It does **not** mean:
+
+- AI can never help DnDGem
+- the provider architecture is rejected
+- `LayoutPlanner` / DND-4.3 should be removed or reverted
+- the deterministic planner is theoretically globally optimal
+- future model/provider experiments are forbidden
+
+Conclusions stay bounded to collected evidence. Reopening model assistance requires a new evidence/decision gate (typically under DND-4.5 or an authorized follow-up).
 
 ---
 
@@ -219,6 +242,6 @@ Do **not** mark DND-4.4 COMPLETE until Final Audit / Evidence Review.
 
 ## Public API / Changesets
 
-Stage B prefers **zero** public Core/DOM/adapter API changes and **no new public Changeset**. Existing unreleased DND-4.2 / DND-4.3 Changesets remain unapplied.
+DND-4.4 introduced **zero** public Core/DOM/adapter API changes and **no new public Changeset**. Existing unreleased DND-4.2 / DND-4.3 Changesets remain unapplied.
 
-Do not publish `@dndgem/intelligence` or `@dndgem/intelligence-openai`. Do not mark DND-4.4 COMPLETE until Final Audit after live evidence review. Stage C Luna evidence is captured; status remains **EVIDENCE COMPLETE — FINAL AUDIT PENDING**.
+Do not publish `@dndgem/intelligence` or `@dndgem/intelligence-openai`. Keep `@dndgem/intelligence-openai` private in-tree for reproducibility and provider-reference evidence. DND-4.4 experiment is **COMPLETE** with classification **`DEFER MODEL ASSISTANCE`**. DND-4.5 formal decision gate remains pending.
