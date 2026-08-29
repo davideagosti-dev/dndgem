@@ -52,7 +52,7 @@ Phase 3 — Adaptive Auto-Layout     COMPLETE / RELEASED (0.1.0-alpha.1)
         ↓
 Framework Expansion Gate           DND-FX.1 → DND-FX.6
         ↓
-Phase 4 — AI-Assisted Layout Intelligence   ACTIVE (DND-4.1 contract; see phase-4-planning-audit.md)
+Phase 4 — AI-Assisted Layout Intelligence   COMPLETE WITH RELEASE PENDING (see phase-4-planning-audit.md)
 ```
 
 - Do **not** call this work Phase 4.
@@ -152,4 +152,4 @@ Phase 4 AI · Flutter implementation · Pin/Lock API · grouping / region DSL ·
 
 ## Next action
 
-**DND-FX.1**–**DND-FX.6** are **COMPLETE**. Framework Expansion Gate is **COMPLETE**. Valid public Alpha is **`0.1.0-alpha.3`** (`@alpha`). `0.1.0-alpha.2` is **superseded**. Phase 4 — AI-Assisted Layout Intelligence is **ACTIVE** at **DND-4.1** (contract COMPLETE); see [phase-4-planning-audit.md](./phase-4-planning-audit.md).
+**DND-FX.1**–**DND-FX.6** are **COMPLETE**. Framework Expansion Gate is **COMPLETE**. Valid public Alpha is **`0.1.0-alpha.3`** (`@alpha`). `0.1.0-alpha.2` is **superseded**. Phase 4 — AI-Assisted Layout Intelligence is **COMPLETE WITH RELEASE PENDING** (DND-4.1–DND-4.5); see [phase-4-planning-audit.md](./phase-4-planning-audit.md).

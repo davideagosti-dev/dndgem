@@ -62,3 +62,12 @@ npm install @dndgem/dom@alpha
 ```
 
 Published version: `0.1.0-alpha.3`. Always use dist-tag **`alpha`**. Do not rely on bare `npm install @dndgem/*` (`latest` still points at historical `0.1.0-alpha.0` and is not a stable channel).
+
+## Private workspace packages (not install targets)
+
+| Package                       | Role                                                              |
+| ----------------------------- | ----------------------------------------------------------------- |
+| `@dndgem/intelligence`        | Private reference — deterministic planner + orchestration helpers |
+| `@dndgem/intelligence-openai` | Private experimental reference — model assistance **deferred**    |
+
+Do **not** document these as `npm install` targets. Public planners use the DOM structural contract — see [Advisory Planner](./advisory-planner.md).
