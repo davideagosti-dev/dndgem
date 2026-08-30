@@ -43,6 +43,7 @@ See [phase-3-planning-audit.md](./phase-3-planning-audit.md) for the approved Ph
 See [framework-expansion-planning-audit.md](./framework-expansion-planning-audit.md) and [framework-adapter-contract.md](./framework-adapter-contract.md) for the JS/DOM adapter gate (DND-FX).
 See [phase-4-planning-audit.md](./phase-4-planning-audit.md) and [layout-intelligence-contract.md](./layout-intelligence-contract.md) for Phase 4 intelligence boundary (DND-4.1).
 See [alpha-api-contract.md](./alpha-api-contract.md) for the Alpha public surface and stability policy.
+See [beta-claim-support-policy.md](./beta-claim-support-policy.md) for Beta readiness claim boundaries (Beta release **not** authorized).
 See [core-domain.md](./core-domain.md) for domain, scoring, and solver semantics.
 See [dom-adapter.md](./dom-adapter.md) for DOM measurement, resize observation (ADR-0011), drag interaction (ADR-0012), and layout application (ADR-0013).
 See [release-strategy.md](./release-strategy.md) for Alpha versioning and the controlled publish path.

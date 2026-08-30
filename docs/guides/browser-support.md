@@ -57,4 +57,5 @@ Related:
 
 - [Accessibility](./accessibility.md)
 - [Limitations](./limitations.md)
+- [Beta Claim & Support Policy](../architecture/beta-claim-support-policy.md) (desktop engines remain Beta validation targets; mobile **not** claimed)
 - [Testing Strategy](../architecture/testing-strategy.md)

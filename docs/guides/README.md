@@ -54,6 +54,7 @@ Alpha API Contract
 Architecture / contract references (not the day-one path):
 
 - [Alpha API Contract](../architecture/alpha-api-contract.md)
+- [Beta Claim & Support Policy](../architecture/beta-claim-support-policy.md) — Beta readiness claims (Beta release **not** authorized)
 - [Auto-Layout Contract (Phase 3)](../architecture/auto-layout-contract.md)
 - [Auto-Layout Engine (Phase 3)](../architecture/auto-layout-engine.md)
 - [Layout Intelligence Contract (Phase 4)](../architecture/layout-intelligence-contract.md)

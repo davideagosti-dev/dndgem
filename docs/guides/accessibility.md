@@ -95,5 +95,6 @@ Related:
 
 - [Browser Support](./browser-support.md)
 - [Limitations](./limitations.md)
+- [Beta Claim & Support Policy](../architecture/beta-claim-support-policy.md) (keyboard / SR drag remain **not claimed** for Beta)
 - [Drag, Resize & Reflow](./drag-resize-reflow.md)
 - [Alpha API Contract](../architecture/alpha-api-contract.md)

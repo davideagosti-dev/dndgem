@@ -10,6 +10,7 @@
 | Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                |
 | —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; shipped as `0.1.0-alpha.3`) |
 | Phase 4 | AI-Assisted Layout Intelligence | **COMPLETE AND SHIPPED** (`0.1.0-alpha.4`)               |
+| —       | Beta Readiness Program          | **AUTHORIZED** — Beta release **NOT AUTHORIZED**         |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -22,6 +23,8 @@ Phase 3 is **COMPLETE / RELEASED**: Adaptive Auto-Layout is live on npm as **`0.
 Framework Expansion is **COMPLETE**: Cross-framework Alpha **`0.1.0-alpha.3`** shipped the six-package adapter set (`@alpha`). `0.1.0-alpha.2` is **superseded**. Current official npm `@alpha` is **`0.1.0-alpha.4`**.
 
 Phase 4 is **COMPLETE AND SHIPPED IN `0.1.0-alpha.4`**: DND-4.1–DND-4.5 **COMPLETE**. Architecture, deterministic intelligence, generic planner seam, DOM/framework integration, and the model experiment decision are closed. Accepted DND-4.2 / DND-4.3 public surfaces are published on npm (`@alpha` → `0.1.0-alpha.4`). Phase 4 does **not** require an LLM. Model assistance is **deferred until new evidence**. Intelligence packages remain private.
+
+**Beta Readiness Program** is **AUTHORIZED** (product maturity: **BETA-CANDIDATE**). Current public release remains **`0.1.0-alpha.4` / `@alpha`**. Beta release, `@beta`, and `0.1.0-beta.0` are **NOT AUTHORIZED**. Canonical claims: [Beta Claim & Support Policy](./architecture/beta-claim-support-policy.md).
 
 During Phase 2 and through Framework Expansion, the GitHub repository remained **PRIVATE** by explicit decision while npm packages were public. After Alpha validation (`0.1.0-alpha.3`), the repository transitions to **public open-source** development so source, Issues, and history are transparent.
 
@@ -593,6 +596,36 @@ Reopen only under an authorized evidence gate when **all** apply:
 - **IN:** Core `automaticItemOrder`; DOM `planner` / `onPlannerEvent` / `replan()`; framework parity; consumer docs.
 - **OUT:** Publishing intelligence packages; default model inference; OpenAI as a product feature.
 - **Status:** **COMPLETE** — see [0.1.0-alpha.4](./releases/0.1.0-alpha.4.md). `latest` intentionally unchanged. Private intelligence packages not published.
+
+---
+
+## Beta Readiness Program (AUTHORIZED — Beta release NOT authorized)
+
+Product maturity: **BETA-CANDIDATE**. Current public release remains **`0.1.0-alpha.4` / `@alpha`**.
+
+```text
+BETA READINESS PLAN:  APPROVED
+BETA RELEASE:         NOT AUTHORIZED
+ALPHA.5:              NOT AUTHORIZED
+PHASE 5:              NOT AUTHORIZED
+MODEL ASSISTANCE:     DEFER
+```
+
+Canonical claim/support boundary: [Beta Claim & Support Policy](./architecture/beta-claim-support-policy.md).
+
+| Sprint   | Name                                                     | Status                           |
+| -------- | -------------------------------------------------------- | -------------------------------- |
+| BETA-0.1 | Beta Claim & Support Policy                              | **IN PROGRESS** (implementation) |
+| BETA-0.2 | Public API Freeze Audit                                  | Not started                      |
+| BETA-0.3 | Planner Contract & DX Hardening                          | Not started                      |
+| BETA-0.4 | Runtime Lifecycle / Race Hardening                       | Not started                      |
+| BETA-0.5 | Documentation & Example Synchronization                  | Not started                      |
+| BETA-0.6 | Browser / Accessibility / Performance Evidence Alignment | Not started                      |
+| BETA-0.7 | Beta Release Readiness Audit                             | Not started                      |
+
+Likely Beta version **if** readiness passes: `0.1.0-beta.0` / planned channel `@beta` (neither authorized yet). `latest` must not be mutated for Beta. `0.1.0-alpha.5` is a fallback only if readiness work reveals meaningful public contract changes — version decision is **not yet final**.
+
+This program does **not** renumber Phase 4 and does **not** start Phase 5.
 
 ---
 

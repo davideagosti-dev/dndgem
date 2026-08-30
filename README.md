@@ -22,7 +22,7 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 
 ## Project status
 
-DnDGem is **open source** (MIT). Development happens in this public GitHub repository. The project is **early Alpha**: APIs may change; this is not a stable 1.0 release.
+DnDGem is **open source** (MIT). Development happens in this public GitHub repository. The project is **early Alpha** (product maturity: **BETA-CANDIDATE**): APIs may change; this is not a stable 1.0 release. A **Beta readiness** program is authorized; a Beta release is **not** authorized. Claim boundaries: [Beta Claim & Support Policy](docs/architecture/beta-claim-support-policy.md).
 
 | Phase                          | Status                                                   |
 | ------------------------------ | -------------------------------------------------------- |
@@ -31,6 +31,7 @@ DnDGem is **open source** (MIT). Development happens in this public GitHub repos
 | Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                |
 | Framework Expansion Gate       | **COMPLETE** (DND-FX.1–FX.6; shipped as `0.1.0-alpha.3`) |
 | Phase 4 Layout Intelligence    | **COMPLETE AND SHIPPED** (`0.1.0-alpha.4`)               |
+| Beta Readiness Program         | **AUTHORIZED** — Beta release **NOT AUTHORIZED**         |
 
 Current official npm Alpha: **`0.1.0-alpha.4`** ([release notes](docs/releases/0.1.0-alpha.4.md) — **PUBLISHED**). Install with dist-tag **`alpha`** (`npm install @dndgem/react@alpha`, `@dndgem/vue@alpha`, etc.) — resolves to `0.1.0-alpha.4`. Previous: [0.1.0-alpha.3](docs/releases/0.1.0-alpha.3.md), [0.1.0-alpha.2](docs/releases/0.1.0-alpha.2.md) (superseded), [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md). `latest` is **not** the Alpha channel (Core/DOM/React remain `0.1.0-alpha.0`; Vue/Angular/Svelte remain `0.1.0-alpha.2` from first-package npm assignment).
 

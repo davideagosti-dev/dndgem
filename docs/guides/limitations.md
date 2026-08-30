@@ -2,6 +2,8 @@
 
 Honest boundaries for Public Alpha readiness. Deferred items are planned work, not silent defects.
 
+For **Beta readiness claim boundaries** (what Beta will and will not claim — Beta release **not** authorized), see the canonical [Beta Claim & Support Policy](../architecture/beta-claim-support-policy.md). This Alpha limitations matrix remains the current public Alpha statement until an authorized Beta ships.
+
 | Area                       | Alpha statement                                                                                                                                                                       | Owned by                                                                  |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | Browser validation         | Chromium / Firefox / WebKit desktop engines **SUPPORTED FOR ALPHA**                                                                                                                   | [Browser Support](./browser-support.md)                                   |
