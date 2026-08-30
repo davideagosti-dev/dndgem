@@ -39,7 +39,7 @@
       <h1>Documentation</h1>
       <p class="lede">
         Cross-framework Public Alpha for DnDGem. Official channel:
-        <strong>@alpha</strong> → <code>0.1.0-alpha.3</code>.
+        <strong>@alpha</strong> → <code>0.1.0-alpha.4</code>.
       </p>
 
       <h2>Getting started</h2>
@@ -47,8 +47,15 @@
         <li>
           <a href="/docs/quick-start/">Quick Start</a> — first React layout with <code>@alpha</code>
         </li>
-        <li><a href="https://playground.dndgem.dev/">Playground</a> — interactive demo</li>
+        <li><a href="https://playground.dndgem.dev/">Playground</a> — adaptive layout demo</li>
         <li><a href="/support/">Support</a> — feedback and security contacts</li>
+        <li>
+          <a
+            href="https://github.com/davideagosti-dev/dndgem/blob/master/docs/releases/0.1.0-alpha.4.md"
+            >What’s new in Alpha.4</a
+          >
+          — release notes in the public repository
+        </li>
       </ul>
 
       <h2>Framework guides</h2>
@@ -60,7 +67,8 @@
         <li>Svelte — <code>npm install @dndgem/svelte@alpha</code></li>
       </ul>
       <p>
-        In-repo developer guides (private repository):
+        In-repo developer guides on
+        <a href="https://github.com/davideagosti-dev/dndgem">GitHub</a>:
         <code>docs/guides/react.md</code>, <code>vue.md</code>, <code>angular.md</code>,
         <code>svelte.md</code>, <code>vanilla.md</code>.
       </p>
@@ -82,6 +90,10 @@
       </p>
 
       <h2>Install</h2>
+      <p>
+        Use <code>@alpha</code> for the supported Alpha channel. Do not rely on
+        <code>latest</code> for Alpha releases.
+      </p>
       <pre class="install"><code>npm install @dndgem/react@alpha
 npm install @dndgem/vue@alpha
 npm install @dndgem/angular@alpha
@@ -102,51 +114,90 @@ npm install @dndgem/dom@alpha</code></pre>
             <tr>
               <td><code>@dndgem/core</code></td>
               <td>Constraints, validity, solver</td>
-              <td>0.1.0-alpha.3</td>
+              <td>0.1.0-alpha.4</td>
             </tr>
             <tr>
               <td><code>@dndgem/dom</code></td>
               <td>DOM measurement, drag, session</td>
-              <td>0.1.0-alpha.3</td>
+              <td>0.1.0-alpha.4</td>
             </tr>
             <tr>
               <td><code>@dndgem/react</code></td>
               <td>React provider + hooks</td>
-              <td>0.1.0-alpha.3</td>
+              <td>0.1.0-alpha.4</td>
             </tr>
             <tr>
               <td><code>@dndgem/vue</code></td>
               <td>Vue 3 provider + composables</td>
-              <td>0.1.0-alpha.3</td>
+              <td>0.1.0-alpha.4</td>
             </tr>
             <tr>
               <td><code>@dndgem/angular</code></td>
               <td>Angular board directive + signals</td>
-              <td>0.1.0-alpha.3</td>
+              <td>0.1.0-alpha.4</td>
             </tr>
             <tr>
               <td><code>@dndgem/svelte</code></td>
               <td>Svelte 5 provider + actions</td>
-              <td>0.1.0-alpha.3</td>
+              <td>0.1.0-alpha.4</td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <h2>Architecture concepts</h2>
+      <p>
+        Constraints → deterministic solving → adaptive Auto-Layout → optional advisory planning.
+      </p>
       <ul>
         <li>Auto-Layout — opt-in; default off on <code>@alpha</code></li>
         <li>Constraints — content-aware min/preferred dimensions</li>
         <li>Validity — VALID / DEGRADED / INVALID</li>
         <li>SSR / client runtime — import/build shell safe; session after client mount</li>
+        <li>
+          Advisory planning — optional; proposes intent only.
+          <code>solveLayout</code> / <code>evaluateLayout</code> remain authoritative
+        </li>
       </ul>
+
+      <h2>Alpha.4 — optional advisory planning</h2>
+      <p>
+        Phase 4 is complete and shipped in <code>0.1.0-alpha.4</code>. Planning can propose layout
+        or item-order intent while deterministic DnDGem validates and resolves. No LLM is required;
+        model assistance remains deferred.
+      </p>
+      <ul>
+        <li>
+          Optional automatic item-order proposals via
+          <code>AutoLayoutProposalInput.automaticItemOrder</code> and
+          <code>createAutoLayoutProposal(...)</code> — layout/planning intent, not automatic DOM /
+          focus / tab / ARIA rewriting
+        </li>
+        <li>
+          Optional <code>planner</code> / <code>onPlannerEvent</code> and explicit
+          <code>replan()</code> on DOM and framework adapters — planner integration is optional;
+          replanning is explicit; initial layout does not depend on planner completion
+        </li>
+      </ul>
+      <p>
+        Full notes:
+        <a
+          href="https://github.com/davideagosti-dev/dndgem/blob/master/docs/releases/0.1.0-alpha.4.md"
+          >docs/releases/0.1.0-alpha.4.md</a
+        >
+        on GitHub. The playground demonstrates adaptive Auto-Layout; Alpha.4 planner APIs are
+        documented here and in the release notes.
+      </p>
 
       <h2>Known limitations</h2>
       <ul>
         <li>0.x Alpha API may break between prereleases</li>
         <li>Keyboard drag and screen-reader drag announcements deferred</li>
         <li>Mobile not validated; Angular Universal not validated</li>
-        <li>AI (Phase 4) not started</li>
+        <li>
+          Model / LLM assistance deferred — Alpha.4 planning is optional and deterministic; no
+          hosted AI or API key required
+        </li>
       </ul>
     </main>
 
@@ -155,6 +206,7 @@ npm install @dndgem/dom@alpha</code></pre>
         <a href="/">Home</a>
         <a href="/docs/quick-start/">Quick Start</a>
         <a href="/support/">Support</a>
+        <a href="https://github.com/davideagosti-dev/dndgem">GitHub</a>
       </nav>
       <p>DnDGem by <a href="https://davideagosti.com">DA62</a> · Public Alpha · MIT</p>
     </footer>
