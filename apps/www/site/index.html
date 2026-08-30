@@ -53,7 +53,7 @@
             >Open Playground</a
           >
         </div>
-        <p class="status-pill">Public Alpha · 0.1.0-alpha.3 · channel @alpha</p>
+        <p class="status-pill">Public Alpha · 0.1.0-alpha.4 · channel @alpha</p>
       </section>
 
       <section class="section" aria-labelledby="frameworks">
@@ -92,11 +92,44 @@
         <pre class="distinction">GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL</pre>
       </section>
 
+      <section class="section" aria-labelledby="progression">
+        <h2 id="progression">How layout works</h2>
+        <p>
+          Constraints → deterministic solving → adaptive Auto-Layout → optional advisory planning.
+          Planning can propose layout or item-order intent; DnDGem’s deterministic solver remains
+          responsible for validation and final resolution. No LLM or hosted AI service is required.
+        </p>
+      </section>
+
+      <section class="section" aria-labelledby="alpha4">
+        <h2 id="alpha4">What’s new in Alpha.4</h2>
+        <p>
+          Alpha.4 extends DnDGem’s deterministic adaptive layout system with optional advisory
+          planning — without changing the product thesis that geometric fit is not the same as
+          useful content.
+        </p>
+        <ul>
+          <li>Optional automatic item-order proposals for Auto-Layout</li>
+          <li>
+            Optional planner integration with explicit replan — initial layout does not wait on the
+            planner
+          </li>
+        </ul>
+        <p>
+          <a
+            href="https://github.com/davideagosti-dev/dndgem/blob/master/docs/releases/0.1.0-alpha.4.md"
+            >Alpha.4 release notes</a
+          >
+          ·
+          <a href="/docs/">Documentation</a>
+        </p>
+      </section>
+
       <section class="section" aria-labelledby="install">
         <h2 id="install">Install (Public Alpha)</h2>
         <p>
-          Always install with the <code>@alpha</code> dist-tag. Bare / <code>latest</code> installs
-          are not the supported Alpha path.
+          Use <code>@alpha</code> for the supported DnDGem Alpha channel. Do not rely on
+          <code>latest</code> (or bare installs that resolve through it) for Alpha releases.
         </p>
         <pre class="install"><code>npm install @dndgem/react@alpha
 npm install @dndgem/vue@alpha
@@ -121,37 +154,37 @@ npm install @dndgem/dom@alpha</code></pre>
               <tr>
                 <td><code>@dndgem/core</code></td>
                 <td>Domain, constraints, solver</td>
-                <td>Alpha 0.1.0-alpha.3</td>
+                <td>Alpha 0.1.0-alpha.4</td>
                 <td><code>npm install @dndgem/core@alpha</code></td>
               </tr>
               <tr>
                 <td><code>@dndgem/dom</code></td>
                 <td>DOM session, drag, measurement</td>
-                <td>Alpha 0.1.0-alpha.3</td>
+                <td>Alpha 0.1.0-alpha.4</td>
                 <td><code>npm install @dndgem/dom@alpha</code></td>
               </tr>
               <tr>
                 <td><code>@dndgem/react</code></td>
                 <td>React adapter</td>
-                <td>Alpha 0.1.0-alpha.3</td>
+                <td>Alpha 0.1.0-alpha.4</td>
                 <td><code>npm install @dndgem/react@alpha</code></td>
               </tr>
               <tr>
                 <td><code>@dndgem/vue</code></td>
                 <td>Vue 3 adapter</td>
-                <td>Alpha 0.1.0-alpha.3</td>
+                <td>Alpha 0.1.0-alpha.4</td>
                 <td><code>npm install @dndgem/vue@alpha</code></td>
               </tr>
               <tr>
                 <td><code>@dndgem/angular</code></td>
                 <td>Angular adapter</td>
-                <td>Alpha 0.1.0-alpha.3</td>
+                <td>Alpha 0.1.0-alpha.4</td>
                 <td><code>npm install @dndgem/angular@alpha</code></td>
               </tr>
               <tr>
                 <td><code>@dndgem/svelte</code></td>
                 <td>Svelte 5 adapter</td>
-                <td>Alpha 0.1.0-alpha.3</td>
+                <td>Alpha 0.1.0-alpha.4</td>
                 <td><code>npm install @dndgem/svelte@alpha</code></td>
               </tr>
             </tbody>
@@ -167,6 +200,8 @@ npm install @dndgem/dom@alpha</code></pre>
             <ul>
               <li>Content-aware constraints</li>
               <li>Deterministic solving + opt-in Auto-Layout</li>
+              <li>Optional automatic item-order proposals</li>
+              <li>Optional advisory planner (explicit replan; no LLM required)</li>
               <li>VALID / DEGRADED / INVALID</li>
               <li>React, Vue, Angular, Svelte, Vanilla / DOM</li>
               <li>Next.js, Nuxt, SvelteKit validated</li>
@@ -179,6 +214,7 @@ npm install @dndgem/dom@alpha</code></pre>
               <li>Server-side layout solving</li>
               <li>Keyboard drag / SR announcements</li>
               <li>Mobile / touch certified</li>
+              <li>Hosted AI / LLM layout assistance</li>
             </ul>
           </article>
         </div>
@@ -197,7 +233,10 @@ npm install @dndgem/dom@alpha</code></pre>
           </article>
           <article class="tile">
             <h3><a href="https://playground.dndgem.dev/">Playground</a></h3>
-            <p>Interactive demo — no authentication.</p>
+            <p>
+              Interactive adaptive layout demo — no authentication. Alpha.4 planner APIs are
+              documented separately.
+            </p>
           </article>
         </div>
       </section>
@@ -208,6 +247,7 @@ npm install @dndgem/dom@alpha</code></pre>
         <a href="/docs/">Docs</a>
         <a href="/support/">Support</a>
         <a href="https://playground.dndgem.dev/">Playground</a>
+        <a href="https://github.com/davideagosti-dev/dndgem">GitHub</a>
         <a href="https://www.npmjs.com/package/@dndgem/react">npm</a>
       </nav>
       <p>

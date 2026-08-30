@@ -47,11 +47,11 @@
       <p>
         This pulls <code>@dndgem/dom</code> and <code>@dndgem/core</code>. For Vanilla DOM, install
         <code>@dndgem/dom@alpha</code> instead. Always use <code>@alpha</code>
-        (<code>0.1.0-alpha.3</code>).
+        (<code>0.1.0-alpha.4</code>).
       </p>
       <p class="note">
-        Do not use bare <code>npm install @dndgem/react</code> as the documented Alpha path while
-        <code>latest</code> aliases the sole prerelease.
+        Use <code>@alpha</code> for the supported DnDGem Alpha channel. Do not rely on
+        <code>latest</code> (or bare <code>npm install @dndgem/react</code>) for Alpha releases.
       </p>
 
       <h2>2. Minimal React board</h2>
@@ -131,10 +131,18 @@ export function App() {
       </ul>
 
       <p>
-        Try the interactive demo:
+        Try the interactive adaptive layout demo:
         <a href="https://playground.dndgem.dev/">playground.dndgem.dev</a>
         (provider URL:
-        <a href="https://dndgem-playground.pages.dev/">dndgem-playground.pages.dev</a>).
+        <a href="https://dndgem-playground.pages.dev/">dndgem-playground.pages.dev</a>). Optional
+        Alpha.4 planner APIs (<code>planner</code>, <code>replan()</code>,
+        <code>automaticItemOrder</code>) are covered in
+        <a href="/docs/">Documentation</a>
+        and the
+        <a
+          href="https://github.com/davideagosti-dev/dndgem/blob/master/docs/releases/0.1.0-alpha.4.md"
+          >Alpha.4 release notes</a
+        >.
       </p>
     </main>
 
@@ -143,6 +151,7 @@ export function App() {
         <a href="/">Home</a>
         <a href="/docs/">Docs</a>
         <a href="/support/">Support</a>
+        <a href="https://github.com/davideagosti-dev/dndgem">GitHub</a>
       </nav>
       <p>DnDGem by <a href="https://davideagosti.com">DA62</a> · Public Alpha · MIT</p>
     </footer>
