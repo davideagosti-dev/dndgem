@@ -24,14 +24,15 @@ It is **not** merely a grid library, a drag-and-drop wrapper, a React-only libra
 
 DnDGem is **open source** (MIT). Development happens in this public GitHub repository. The project is **early Alpha**: APIs may change; this is not a stable 1.0 release.
 
-| Phase                          | Status                                                           |
-| ------------------------------ | ---------------------------------------------------------------- |
-| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                                   |
-| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**                                 |
-| Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                        |
-| Framework Expansion Gate       | **COMPLETE** (DND-FX.1–FX.6; valid public Alpha `0.1.0-alpha.3`) |
+| Phase                          | Status                                                   |
+| ------------------------------ | -------------------------------------------------------- |
+| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                           |
+| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**                         |
+| Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                |
+| Framework Expansion Gate       | **COMPLETE** (DND-FX.1–FX.6; shipped as `0.1.0-alpha.3`) |
+| Phase 4 Layout Intelligence    | **COMPLETE AND SHIPPED** (`0.1.0-alpha.4`)               |
 
-Current official npm Alpha: **`0.1.0-alpha.3`** (published). Prepared repository/source version: **`0.1.0-alpha.4`** ([release notes](docs/releases/0.1.0-alpha.4.md) — **PREPARED — NOT PUBLISHED**). Install with dist-tag **`alpha`** (`npm install @dndgem/react@alpha`, `@dndgem/vue@alpha`, etc.) — currently resolves to `0.1.0-alpha.3`. Previous: [0.1.0-alpha.3](docs/releases/0.1.0-alpha.3.md), [0.1.0-alpha.2](docs/releases/0.1.0-alpha.2.md) (superseded), [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md). `latest` is **not** the Alpha channel (Core/DOM/React remain `0.1.0-alpha.0`; Vue/Angular/Svelte remain `0.1.0-alpha.2` from first-package npm assignment).
+Current official npm Alpha: **`0.1.0-alpha.4`** ([release notes](docs/releases/0.1.0-alpha.4.md) — **PUBLISHED**). Install with dist-tag **`alpha`** (`npm install @dndgem/react@alpha`, `@dndgem/vue@alpha`, etc.) — resolves to `0.1.0-alpha.4`. Previous: [0.1.0-alpha.3](docs/releases/0.1.0-alpha.3.md), [0.1.0-alpha.2](docs/releases/0.1.0-alpha.2.md) (superseded), [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md). `latest` is **not** the Alpha channel (Core/DOM/React remain `0.1.0-alpha.0`; Vue/Angular/Svelte remain `0.1.0-alpha.2` from first-package npm assignment).
 
 Public product home: **https://dndgem.dev** (see [Public site & domain hosting](docs/architecture/public-site.md)). Source: [github.com/davideagosti-dev/dndgem](https://github.com/davideagosti-dev/dndgem). Playground: **https://playground.dndgem.dev/**.
 
@@ -71,7 +72,7 @@ npm install @dndgem/svelte@alpha
 npm install @dndgem/dom@alpha
 ```
 
-Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.3`). This is not a stable release; do not treat `latest` as a stable or Alpha channel.
+Install with dist-tag **`alpha`** only (`@dndgem/*@alpha` → `0.1.0-alpha.4`). This is not a stable release; do not treat `latest` as a stable or Alpha channel.
 
 ### Local workspace
 
@@ -145,12 +146,13 @@ Details: [Accessibility](docs/guides/accessibility.md)
 - Desktop Chromium / Firefox / WebKit validated; mobile not validated
 - Pointer drag + Escape cancel supported; keyboard drag deferred
 - `DnDGemProvider` is client-mount only (no server-side layout claim; Next.js / Nuxt / SvelteKit are validated compatibility environments — [Meta-frameworks](docs/guides/meta-frameworks.md))
-- Auto-Layout is opt-in on `@alpha` (`0.1.0-alpha.3`); default off
+- Auto-Layout is opt-in on `@alpha` (`0.1.0-alpha.4`); default off
+- Optional advisory planner / `automaticItemOrder` are opt-in on `@alpha`; model assistance deferred
 - Vue, Angular, and Svelte adapters are published (`@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte` on `@alpha`)
-- No AI, no Flutter adapter yet
+- No public intelligence packages; no Flutter adapter yet
 - Absolute-positioning rendering model
 
-Details: [Limitations](docs/guides/limitations.md) · [Alpha API Contract](docs/architecture/alpha-api-contract.md) · [Release notes](docs/releases/0.1.0-alpha.3.md)
+Details: [Limitations](docs/guides/limitations.md) · [Alpha API Contract](docs/architecture/alpha-api-contract.md) · [Release notes](docs/releases/0.1.0-alpha.4.md)
 
 ## Playground / demo
 

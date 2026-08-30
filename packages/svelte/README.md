@@ -4,7 +4,7 @@ Thin Svelte 5 adapter for **DnDGem** by **DA62**. Layout solving stays in `@dndg
 
 ## Install (Public Alpha)
 
-Prepared source version: **`0.1.0-alpha.4`**. Current npm `@alpha`: **`0.1.0-alpha.3`** until publication.
+Published version: **`0.1.0-alpha.4`** on npm `@alpha`.
 
 ```bash
 npm install @dndgem/svelte@alpha

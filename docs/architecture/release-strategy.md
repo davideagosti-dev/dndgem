@@ -4,7 +4,7 @@
 
 - Changesets owns version numbers and changelogs. Do not hand-edit `packages/*/package.json` versions.
 - DnDGem is in **0.x Alpha**. This is not SemVer 1.0.
-- Current published npm `@alpha`: **`0.1.0-alpha.3`**. Prepared repository/source version: **`0.1.0-alpha.4`** (six-package fixed group; Phase 4 public surface — not published yet).
+- Current published npm `@alpha`: **`0.1.0-alpha.4`** (six-package fixed group; Phase 4 public surface).
 - The publishable packages are a Changesets **fixed** group (`@dndgem/core`, `@dndgem/dom`, `@dndgem/react`, `@dndgem/vue`, `@dndgem/angular`, `@dndgem/svelte`) so they remain version-aligned.
 - Meta-framework fixtures (`@dndgem/compat-next`, `@dndgem/compat-nuxt`, `@dndgem/compat-sveltekit`) are ignored and must never be published.
 - The repository is in Changesets **pre** mode with tag `alpha` (`.changeset/pre.json`).
@@ -158,7 +158,7 @@ OIDC Trusted Publishing and npm provenance are independent.
 
 | Capability                             | Status                                                                                              |
 | -------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Trusted Publishing (OIDC publish auth) | **SUPPORTED** (verified: `0.1.0-alpha.1` and `0.1.0-alpha.3`)                                       |
+| Trusted Publishing (OIDC publish auth) | **SUPPORTED** (verified: `0.1.0-alpha.1`, `0.1.0-alpha.3`, `0.1.0-alpha.4`)                         |
 | npm provenance attestations            | Unavailable while the repository was **PRIVATE**. May be reconsidered after public visibility only. |
 
 Do **not** pass `--provenance` until an explicit Product Owner decision enables it after the repository is public. Lack of provenance is **not** a Trusted Publishing blocker.
@@ -202,5 +202,6 @@ Authoritative Stage A register: `docs/releases/dnd-2.5-stage-a-readiness.md`.
 - **DND-2.5:** Public Alpha LIVE — `@dndgem/{core,dom,react}@0.1.0-alpha.0` under dist-tag `alpha`.
 - **DND-3.5:** Phase 3 Auto-Layout Alpha LIVE — `@dndgem/{core,dom,react}@0.1.0-alpha.1` under dist-tag `alpha` via Trusted Publishing / OIDC.
 - **DND-FX.6:** Cross-Framework Alpha LIVE — `@dndgem/{core,dom,react,vue,angular,svelte}@0.1.0-alpha.3` under dist-tag `alpha` via Trusted Publishing / OIDC. `0.1.0-alpha.2` superseded.
+- **Post-Phase-4:** Phase 4 public surface LIVE — `@dndgem/{core,dom,react,vue,angular,svelte}@0.1.0-alpha.4` under dist-tag `alpha` via Trusted Publishing / OIDC. `latest` unchanged. Intelligence packages not published.
 
 Repository visibility (private → public) remains a **separate** gate from npm Alpha.

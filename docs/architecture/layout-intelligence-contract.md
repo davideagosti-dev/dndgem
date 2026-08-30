@@ -2,7 +2,7 @@
 
 Authoritative Phase 4 contract for optional layout intelligence planning.
 
-**Status:** Contract COMPLETE — Phase 4 **COMPLETE WITH RELEASE PENDING** (DND-4.5)  
+**Status:** Contract COMPLETE — Phase 4 **COMPLETE AND SHIPPED** in `0.1.0-alpha.4` (DND-4.5)  
 **Sprint:** DND-4.1 (contract) → DND-4.2 (deterministic planner) → DND-4.3 (optional integration) → DND-4.4 (optional model experiment) → DND-4.5 (decision gate) — all COMPLETE  
 **Product:** DnDGem by DA62
 
