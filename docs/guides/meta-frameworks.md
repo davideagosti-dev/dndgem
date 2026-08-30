@@ -37,7 +37,7 @@ Optional `planner` / `replan` capability is **inherited through the underlying f
 - isomorphic / universal DnD runtime
 - every SSR mode or hosting adapter
 - Angular Universal (not part of this validation)
-- published Vue / Angular / Svelte adapters on npm `@alpha` (`0.1.0-alpha.3`)
+- published Vue / Angular / Svelte adapters on npm `@alpha` (`0.1.0-alpha.4`)
 - a meta-framework-specific planner implementation beyond adapter pass-through
 
 ```text

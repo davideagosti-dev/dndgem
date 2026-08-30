@@ -2,7 +2,7 @@
 
 **Status:** `DND-4.4 COMPLETE`  
 **Decision:** `DEFER MODEL ASSISTANCE`  
-**Phase 4 disposition (DND-4.5):** Phase 4 **COMPLETE WITH RELEASE PENDING** — model assistance remains deferred; provider package stays private  
+**Phase 4 disposition (DND-4.5):** Phase 4 **COMPLETE AND SHIPPED** in `0.1.0-alpha.4` — model assistance remains deferred; provider package stays private  
 **Package:** `@dndgem/intelligence-openai` — **private experimental reference**, `0.0.0`, **unpublished**  
 **Reference provider:** OpenAI (not an architecture dependency; not a supported public install)  
 **Primary experiment model:** `gpt-5.6-luna` (configurable; not hardwired into generic planner contracts)  
@@ -230,7 +230,7 @@ It does **not** mean:
 
 Conclusions stay bounded to collected evidence. Reopening model assistance requires a new evidence/decision gate. **Trying a larger model solely because Luna tied Baseline B is not sufficient evidence to reopen the experiment.** See [roadmap.md](../roadmap.md) reopen criteria (DND-4.5).
 
-DND-4.5 closed Phase 4 as **COMPLETE WITH RELEASE PENDING**: accepted public surfaces are DND-4.2 / DND-4.3 only; `@dndgem/intelligence-openai` remains **PRIVATE EXPERIMENTAL REFERENCE**.
+DND-4.5 closed Phase 4 as **COMPLETE AND SHIPPED** (`0.1.0-alpha.4`): accepted public surfaces are DND-4.2 / DND-4.3 only; `@dndgem/intelligence-openai` remains **PRIVATE EXPERIMENTAL REFERENCE**.
 
 ---
 
@@ -245,6 +245,6 @@ DND-4.5 closed Phase 4 as **COMPLETE WITH RELEASE PENDING**: accepted public sur
 
 ## Public API / Changesets
 
-DND-4.4 introduced **zero** public Core/DOM/adapter API changes and **no new public Changeset**. Existing unreleased DND-4.2 / DND-4.3 Changesets remain unapplied.
+DND-4.4 introduced **zero** public Core/DOM/adapter API changes and **no new public Changeset**. DND-4.2 / DND-4.3 Changesets were applied and published as `0.1.0-alpha.4`.
 
-Do not publish `@dndgem/intelligence` or `@dndgem/intelligence-openai`. Keep `@dndgem/intelligence-openai` private in-tree for reproducibility and provider-reference evidence. DND-4.4 experiment is **COMPLETE** with classification **`DEFER MODEL ASSISTANCE`**. DND-4.5 decision gate is **COMPLETE** — Phase 4 **COMPLETE WITH RELEASE PENDING**.
+Do not publish `@dndgem/intelligence` or `@dndgem/intelligence-openai`. Keep `@dndgem/intelligence-openai` private in-tree for reproducibility and provider-reference evidence. DND-4.4 experiment is **COMPLETE** with classification **`DEFER MODEL ASSISTANCE`**. DND-4.5 decision gate is **COMPLETE** — Phase 4 **COMPLETE AND SHIPPED** in `0.1.0-alpha.4`.

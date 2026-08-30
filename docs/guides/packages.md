@@ -61,7 +61,7 @@ npm install @dndgem/svelte@alpha
 npm install @dndgem/dom@alpha
 ```
 
-Published npm `@alpha`: `0.1.0-alpha.3`. Prepared source version: `0.1.0-alpha.4` ([0.1.0-alpha.4](../releases/0.1.0-alpha.4.md) — not published yet). Always use dist-tag **`alpha`**. Do not rely on bare `npm install @dndgem/*` (`latest` still points at historical `0.1.0-alpha.0` and is not a stable channel).
+Published npm `@alpha`: `0.1.0-alpha.4` ([0.1.0-alpha.4](../releases/0.1.0-alpha.4.md)). Always use dist-tag **`alpha`**. Do not rely on bare `npm install @dndgem/*` (`latest` still points at historical versions and is not a stable channel).
 
 ## Private workspace packages (not install targets)
 

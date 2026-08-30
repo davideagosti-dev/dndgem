@@ -2,14 +2,14 @@
 
 ## Phase status
 
-| Phase   | Name                            | Status                                                           |
-| ------- | ------------------------------- | ---------------------------------------------------------------- |
-| Phase 0 | Product & Architecture Baseline | **CLOSED**                                                       |
-| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                                   |
-| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                                 |
-| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                        |
-| —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; valid public Alpha `0.1.0-alpha.3`) |
-| Phase 4 | AI-Assisted Layout Intelligence | **COMPLETE WITH RELEASE PENDING** (DND-4.1–4.5)                  |
+| Phase   | Name                            | Status                                                   |
+| ------- | ------------------------------- | -------------------------------------------------------- |
+| Phase 0 | Product & Architecture Baseline | **CLOSED**                                               |
+| Phase 1 | Technical MVP                   | **CLOSED** (DND-1.1 → DND-1.8)                           |
+| Phase 2 | Public Alpha Readiness          | **PASS** — Public Alpha **LIVE**                         |
+| Phase 3 | Adaptive Auto-Layout            | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                |
+| —       | Framework Expansion Gate        | **COMPLETE** (DND-FX.1–FX.6; shipped as `0.1.0-alpha.3`) |
+| Phase 4 | AI-Assisted Layout Intelligence | **COMPLETE AND SHIPPED** (`0.1.0-alpha.4`)               |
 
 Phase 0 is **CLOSED — GO TO TECHNICAL MVP** (historical).
 
@@ -19,9 +19,9 @@ Phase 2 is **COMPLETE**: first npm Public Alpha `0.1.0-alpha.0` shipped under di
 
 Phase 3 is **COMPLETE / RELEASED**: Adaptive Auto-Layout is live on npm as **`0.1.0-alpha.1`** (`@alpha`), published via Trusted Publishing / OIDC (see [0.1.0-alpha.1](./releases/0.1.0-alpha.1.md)).
 
-Framework Expansion is **COMPLETE**: Cross-framework Alpha **`0.1.0-alpha.3`** is the valid public release (`@alpha`). `0.1.0-alpha.2` is **superseded**.
+Framework Expansion is **COMPLETE**: Cross-framework Alpha **`0.1.0-alpha.3`** shipped the six-package adapter set (`@alpha`). `0.1.0-alpha.2` is **superseded**. Current official npm `@alpha` is **`0.1.0-alpha.4`**.
 
-Phase 4 is **COMPLETE WITH RELEASE PENDING**: DND-4.1–DND-4.5 **COMPLETE**. Architecture, deterministic intelligence, generic planner seam, DOM/framework integration, and the model experiment decision are closed. Public npm packaging of accepted DND-4.2 / DND-4.3 surfaces remains pending (recommended next Alpha: **`0.1.0-alpha.4`**). Phase 4 does **not** require an LLM. Model assistance is **deferred until new evidence**.
+Phase 4 is **COMPLETE AND SHIPPED IN `0.1.0-alpha.4`**: DND-4.1–DND-4.5 **COMPLETE**. Architecture, deterministic intelligence, generic planner seam, DOM/framework integration, and the model experiment decision are closed. Accepted DND-4.2 / DND-4.3 public surfaces are published on npm (`@alpha` → `0.1.0-alpha.4`). Phase 4 does **not** require an LLM. Model assistance is **deferred until new evidence**. Intelligence packages remain private.
 
 During Phase 2 and through Framework Expansion, the GitHub repository remained **PRIVATE** by explicit decision while npm packages were public. After Alpha validation (`0.1.0-alpha.3`), the repository transitions to **public open-source** development so source, Issues, and history are transparent.
 
@@ -439,11 +439,11 @@ Meta-frameworks (Next.js, Nuxt, SvelteKit) are **compatibility environments**, n
 
 ---
 
-## Phase 4 — AI-Assisted Layout Intelligence (COMPLETE WITH RELEASE PENDING)
+## Phase 4 — AI-Assisted Layout Intelligence (COMPLETE AND SHIPPED)
 
 Planning audit: **PASSED WITH ARCHITECTURAL REFINEMENTS** — see [phase-4-planning-audit.md](./architecture/phase-4-planning-audit.md).
 
-**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3`). **Sprint map:** APPROVED (5 sprints). **Status:** **COMPLETE WITH RELEASE PENDING** — DND-4.1–DND-4.5 **COMPLETE**. DND-4.2 / DND-4.3 accepted and prepared as source `0.1.0-alpha.4` (**PREPARED — NOT PUBLISHED**); DND-4.4 decision `DEFER MODEL ASSISTANCE`; intelligence packages remain private; next gate is Post-Phase-4 Alpha Release Consolidation — Final Release Audit.
+**Entry gate:** READY (Phase 3 COMPLETE; Framework Expansion COMPLETE; public Alpha `0.1.0-alpha.3` at Phase 4 start). **Sprint map:** APPROVED (5 sprints). **Status:** **COMPLETE AND SHIPPED** — DND-4.1–DND-4.5 **COMPLETE**. DND-4.2 / DND-4.3 published as **`0.1.0-alpha.4` / `@alpha`**; DND-4.4 decision `DEFER MODEL ASSISTANCE`; intelligence packages remain private. Release notes: [0.1.0-alpha.4](./releases/0.1.0-alpha.4.md).
 
 Primary objective: optional higher-level structural/semantic/application planning **without** replacing deterministic solving.
 
@@ -491,9 +491,9 @@ DND-4.4 Model-Assisted Planning Experiment            COMPLETE (DEFER MODEL ASSI
         ↓
 DND-4.5 Phase 4 Decision Gate / Roadmap Reconciliation COMPLETE
         ↓
-PHASE 4 COMPLETE WITH RELEASE PENDING
+PHASE 4 COMPLETE AND SHIPPED (0.1.0-alpha.4 / @alpha)
         ↓
-Post-Phase-4 — Alpha Release Consolidation            recommended next (0.1.0-alpha.4)
+Post-Phase-4 — Alpha Release Consolidation            COMPLETE (0.1.0-alpha.4 published)
 ```
 
 ### Binding refinements (from planning audit)
@@ -543,8 +543,8 @@ Post-Phase-4 — Alpha Release Consolidation            recommended next (0.1.0-
 - **Objective:** Close Phase 4 product/architecture disposition; reconcile roadmap and docs; decide packaging for accepted public surfaces vs private intelligence.
 - **Out of scope:** Production implementation; Changeset apply; version bump; npm publish; model re-runs; Phase 5 implementation.
 - **Dependencies:** DND-4.1–DND-4.4.
-- **Status:** **COMPLETE** — no additional Phase 4 production implementation required; DND-4.2 / DND-4.3 accepted for public Alpha; model assistance deferred until new evidence; intelligence packages remain private; **PHASE 4 COMPLETE WITH RELEASE PENDING**.
-- **Outcome:** Documentation / governance closure only. Unreleased Changesets `dnd-4-2-automatic-item-order.md` and `dnd-4-3-planner-optional-integration.md` remain the release mechanism for the next Alpha.
+- **Status:** **COMPLETE** — no additional Phase 4 production implementation required; DND-4.2 / DND-4.3 shipped in public Alpha `0.1.0-alpha.4`; model assistance deferred until new evidence; intelligence packages remain private; **PHASE 4 COMPLETE AND SHIPPED**.
+- **Outcome:** Documentation / governance closure. Public packaging completed via Post-Phase-4 Alpha Release Consolidation ([0.1.0-alpha.4](./releases/0.1.0-alpha.4.md)).
 
 ### Phase 4 product disposition (DND-4.5)
 
@@ -555,7 +555,7 @@ Post-Phase-4 — Alpha Release Consolidation            recommended next (0.1.0-
 | `@dndgem/intelligence`        | **KEEP PRIVATE** (reference / internal) |
 | `@dndgem/intelligence-openai` | **KEEP PRIVATE AS REFERENCE**           |
 | Model assistance              | **DEFER UNTIL NEW EVIDENCE**            |
-| Recommended next public Alpha | **`0.1.0-alpha.4`** (not shipped yet)   |
+| Recommended next public Alpha | **`0.1.0-alpha.4`** (**SHIPPED**)       |
 
 ### Model assistance reopen criteria
 
@@ -585,14 +585,14 @@ Reopen only under an authorized evidence gate when **all** apply:
 
 ---
 
-## Post-Phase-4 — Alpha Release Consolidation (recommended next)
+## Post-Phase-4 — Alpha Release Consolidation (COMPLETE)
 
 - **Objective:** Release accepted DND-4.2 + DND-4.3 public surfaces as the next Alpha.
-- **Recommended target:** **`0.1.0-alpha.4`** / `@alpha` (planning recommendation only — not shipped).
-- **Mechanism:** Apply existing unreleased Changesets (`dnd-4-2-automatic-item-order.md`, `dnd-4-3-planner-optional-integration.md`); fixed six-package group; Trusted Publishing / OIDC.
+- **Target:** **`0.1.0-alpha.4`** / `@alpha` — **PUBLISHED**.
+- **Mechanism:** Applied Changesets; fixed six-package group; Trusted Publishing / OIDC (GitHub Actions).
 - **IN:** Core `automaticItemOrder`; DOM `planner` / `onPlannerEvent` / `replan()`; framework parity; consumer docs.
 - **OUT:** Publishing intelligence packages; default model inference; OpenAI as a product feature.
-- **Status:** Not started (awaits explicit release authorization after DND-4.5 Final Audit / Product Owner review).
+- **Status:** **COMPLETE** — see [0.1.0-alpha.4](./releases/0.1.0-alpha.4.md). `latest` intentionally unchanged. Private intelligence packages not published.
 
 ---
 
