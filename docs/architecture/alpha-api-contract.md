@@ -21,12 +21,12 @@ Related: [overview.md](./overview.md), [core-domain.md](./core-domain.md), [dom-
 
 | Package           | Role                                                                 | Typical consumer      | Publication                          |
 | ----------------- | -------------------------------------------------------------------- | --------------------- | ------------------------------------ |
-| `@dndgem/core`    | Domain, constraints, validity, scoring, deterministic `solveLayout`  | Headless / all layers | Published `0.1.0-alpha.3` / `@alpha` |
-| `@dndgem/dom`     | Measurement, resize, drag interaction, Vanilla `createLayoutSession` | Vanilla DOM apps      | Published `0.1.0-alpha.3` / `@alpha` |
-| `@dndgem/react`   | Thin React lifecycle adapter over the DOM session                    | React apps            | Published `0.1.0-alpha.3` / `@alpha` |
-| `@dndgem/vue`     | Thin Vue 3 lifecycle adapter over the DOM session                    | Vue 3 apps            | Published `0.1.0-alpha.3` / `@alpha` |
-| `@dndgem/angular` | Thin Angular lifecycle adapter over the DOM session                  | Angular apps          | Published `0.1.0-alpha.3` / `@alpha` |
-| `@dndgem/svelte`  | Thin Svelte 5 lifecycle adapter over the DOM session                 | Svelte 5 apps         | Published `0.1.0-alpha.3` / `@alpha` |
+| `@dndgem/core`    | Domain, constraints, validity, scoring, deterministic `solveLayout`  | Headless / all layers | Published `0.1.0-alpha.4` / `@alpha` |
+| `@dndgem/dom`     | Measurement, resize, drag interaction, Vanilla `createLayoutSession` | Vanilla DOM apps      | Published `0.1.0-alpha.4` / `@alpha` |
+| `@dndgem/react`   | Thin React lifecycle adapter over the DOM session                    | React apps            | Published `0.1.0-alpha.4` / `@alpha` |
+| `@dndgem/vue`     | Thin Vue 3 lifecycle adapter over the DOM session                    | Vue 3 apps            | Published `0.1.0-alpha.4` / `@alpha` |
+| `@dndgem/angular` | Thin Angular lifecycle adapter over the DOM session                  | Angular apps          | Published `0.1.0-alpha.4` / `@alpha` |
+| `@dndgem/svelte`  | Thin Svelte 5 lifecycle adapter over the DOM session                 | Svelte 5 apps         | Published `0.1.0-alpha.4` / `@alpha` |
 
 No other `@dndgem/*` packages are currently part of published Alpha. Flutter is a separate track. Meta-framework environments (Next.js, Nuxt, SvelteKit) use the adapters above — there is no `@dndgem/next`, `@dndgem/nuxt`, or `@dndgem/sveltekit`. Workspace-only private packages `@dndgem/intelligence` and `@dndgem/intelligence-openai` exist for Phase 4 reference/experiment work — they are **not** npm install targets and are **not** part of this Alpha contract.
 
@@ -143,7 +143,7 @@ const proposal = createAutoLayoutProposal({ intent, previous?, automaticItemOrde
 const result = solveLayout({ intent: proposal.effectiveIntent, previous? });
 ```
 
-`automaticItemOrder` (optional, DND-4.2 — **ACCEPTED FOR RELEASE**, unreleased Changeset) — advisory processing order for automatic items only. When omitted, Stage B/C use declaration order (Phase 3 default). Core normalizes defensively; unknown, duplicate, and source ids are ignored. Ordering guidance only — Core remains authoritative for geometry, validity, scoring, and final resolution. Consumers do **not** need `@dndgem/intelligence`.
+`automaticItemOrder` (optional, DND-4.2 — published in `0.1.0-alpha.4`) — advisory processing order for automatic items only. When omitted, Stage B/C use declaration order (Phase 3 default). Core normalizes defensively; unknown, duplicate, and source ids are ignored. Ordering guidance only — Core remains authoritative for geometry, validity, scoring, and final resolution. Consumers do **not** need `@dndgem/intelligence`.
 
 Auto-Layout is **opt-in**. Calling `solveLayout` alone is unchanged. Available on published npm `@alpha` (`0.1.0-alpha.1`). Alpha breaking-change policy above is unchanged.
 
@@ -182,9 +182,9 @@ Types include measurement snapshots, session/interaction state, drag events, and
 
 Default / omitted `autoLayout` keeps the existing explicit-only seeding path. Available on published npm `@alpha` (`0.1.0-alpha.1`).
 
-#### Optional advisory planner (DND-4.3 — ACCEPTED FOR RELEASE)
+#### Optional advisory planner (DND-4.3 — published in `0.1.0-alpha.4`)
 
-Unreleased Changeset; recommended next public Alpha `0.1.0-alpha.4`. Default path unchanged when `planner` is omitted.
+Default path unchanged when `planner` is omitted.
 
 ```ts
 import {
@@ -269,7 +269,7 @@ Types:
 
 `DnDGemProvider` accepts optional `autoLayout?: boolean` (default off; mirrors DOM session), plus optional `mechanics` and `ResizeObserver` for tests. Application consumers do not need the test seams. Available on published npm `@alpha` (`0.1.0-alpha.1`).
 
-Optional planner parity (DND-4.3 — ACCEPTED FOR RELEASE; unreleased Changeset): `planner?`, `onPlannerEvent?` on provider props; `useDnDGem().replan(): Promise<void>`. See [Advisory Planner](../guides/advisory-planner.md).
+Optional planner parity (DND-4.3 — published in `0.1.0-alpha.4`): `planner?`, `onPlannerEvent?` on provider props; `useDnDGem().replan(): Promise<void>`. See [Advisory Planner](../guides/advisory-planner.md).
 
 Hook contract:
 
@@ -280,7 +280,7 @@ Hook contract:
 
 ## `@dndgem/vue` public exports
 
-Runtime (published `0.1.0-alpha.3` / `@alpha`):
+Runtime (published `0.1.0-alpha.4` / `@alpha`):
 
 - `VUE_PACKAGE_NAME`, `VUE_PACKAGE_VERSION`, `getVuePackageInfo`
 - `DnDGemProvider` (renderless board owner)
@@ -312,7 +312,7 @@ Composable contract:
 
 ## `@dndgem/angular` public exports
 
-Runtime (published `0.1.0-alpha.3` / `@alpha`):
+Runtime (published `0.1.0-alpha.4` / `@alpha`):
 
 - `ANGULAR_PACKAGE_NAME`, `ANGULAR_PACKAGE_VERSION`, `getAngularPackageInfo`
 - `DnDGemBoardDirective` (`[dndgemBoard]`, board-local provider)
@@ -346,7 +346,7 @@ Directive contract:
 
 ## `@dndgem/svelte` public exports
 
-Runtime (published `0.1.0-alpha.3` / `@alpha`):
+Runtime (published `0.1.0-alpha.4` / `@alpha`):
 
 - `SVELTE_PACKAGE_NAME`, `SVELTE_PACKAGE_VERSION`, `getSveltePackageInfo`
 - `DnDGemProvider` (renderless board owner)
@@ -404,7 +404,7 @@ Alpha documents errors and validity honestly. Developer guides and troubleshooti
 
 ## Versioning
 
-Prepared source package versions are **`0.1.0-alpha.4`**. npm `@alpha` remains **`0.1.0-alpha.3`** until the authorized publish gate. Changesets owns further prereleases. Do not hand-edit `packages/*/package.json` versions.
+Published package versions are **`0.1.0-alpha.4`**. npm `@alpha` → **`0.1.0-alpha.4`**. Changesets owns further prereleases. Do not hand-edit `packages/*/package.json` versions.
 
 - Official dist-tag: `alpha` (always install with `@alpha`; `latest` is not the Alpha channel)
 - `@dndgem/core`, `@dndgem/dom`, `@dndgem/react`, `@dndgem/vue`, `@dndgem/angular`, and `@dndgem/svelte` are a **fixed** Changesets group and stay version-aligned

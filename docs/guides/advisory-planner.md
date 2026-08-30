@@ -1,6 +1,6 @@
 # Advisory Planner (Phase 4)
 
-Optional advisory planning for Auto-Layout. Accepted for a future public Alpha (`0.1.0-alpha.4` recommended); **not yet published** on npm — surfaces land via unreleased Changesets on `master`.
+Optional advisory planning for Auto-Layout. Published on npm `@alpha` as of **`0.1.0-alpha.4`**.
 
 Binding principle:
 

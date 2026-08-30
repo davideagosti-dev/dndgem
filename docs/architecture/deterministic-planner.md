@@ -1,8 +1,8 @@
 # Deterministic Intelligence Planner (DND-4.2) & Optional Integration (DND-4.3)
 
-**Status:** DND-4.2 / DND-4.3 **COMPLETE — ACCEPTED FOR RELEASE**; Phase 4 **COMPLETE WITH RELEASE PENDING** (DND-4.5)  
+**Status:** DND-4.2 / DND-4.3 **COMPLETE — SHIPPED** in `0.1.0-alpha.4`; Phase 4 **COMPLETE AND SHIPPED** (DND-4.5)  
 **Package:** `@dndgem/intelligence` — **private** reference / internal (`private: true`, `0.0.0`, unpublished)  
-**Public seam:** DOM `LayoutSessionPlanner*` + Core `automaticItemOrder` (unreleased Changesets → recommended `0.1.0-alpha.4`)  
+**Public seam:** DOM `LayoutSessionPlanner*` + Core `automaticItemOrder` (published `0.1.0-alpha.4` / `@alpha`)  
 **Related:** [layout-intelligence-contract.md](./layout-intelligence-contract.md), [ADR-0018](../adr/ADR-0018-layout-intelligence-boundary.md), [auto-layout-contract.md](./auto-layout-contract.md), [dom-adapter.md](./dom-adapter.md), [Advisory Planner guide](../guides/advisory-planner.md), [model-assisted-planning-experiment.md](./model-assisted-planning-experiment.md)
 
 ---
@@ -215,15 +215,15 @@ Planner ordering affects visual placement opportunity for automatic items only. 
 - Model-based planning was an **optional experiment** (DND-4.4) behind `@dndgem/intelligence-openai` — see [model-assisted-planning-experiment.md](./model-assisted-planning-experiment.md)
 - OpenAI is a **reference provider only**, not an architecture dependency
 - Intelligence packages remain **private / unpublished** (KEEP PRIVATE — DND-4.5)
-- DND-4.4 outcome: **`DEFER MODEL ASSISTANCE`** — experiment complete; no default model-assisted product capability; DND-4.3 public planner seam remains valid and **ACCEPTED FOR RELEASE**
-- Phase 4 is **COMPLETE WITH RELEASE PENDING** — public packaging of Core/DOM/adapter planner surfaces awaits Post-Phase-4 Alpha Release Consolidation (`0.1.0-alpha.4` recommended)
+- DND-4.4 outcome: **`DEFER MODEL ASSISTANCE`** — experiment complete; no default model-assisted product capability; DND-4.3 public planner seam remains valid and **SHIPPED** in `0.1.0-alpha.4`
+- Phase 4 is **COMPLETE AND SHIPPED** — public packaging of Core/DOM/adapter planner surfaces published as `0.1.0-alpha.4` / `@alpha`
 
 Distinguish:
 
 | Layer                                                    | Status                             |
 | -------------------------------------------------------- | ---------------------------------- |
 | Deterministic planner reference (`@dndgem/intelligence`) | Private                            |
-| Public generic planner seam (DOM / adapters)             | Accepted for release               |
+| Public generic planner seam (DOM / adapters)             | Shipped (`0.1.0-alpha.4`)          |
 | Private model experiment (`@dndgem/intelligence-openai`) | Private; model assistance deferred |
 
 ---

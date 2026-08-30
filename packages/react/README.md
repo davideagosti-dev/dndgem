@@ -8,7 +8,7 @@ Thin React adapter for **DnDGem** by **DA62**. Layout solving stays in `@dndgem/
 - Quick Start: https://dndgem.dev/docs/quick-start/
 - Support: https://dndgem.dev/support/
 
-Prepared source version: **`0.1.0-alpha.4`**. Current npm `@alpha`: **`0.1.0-alpha.3`** until publication.
+Published version: **`0.1.0-alpha.4`** on npm `@alpha`.
 
 ```bash
 npm install @dndgem/react@alpha
