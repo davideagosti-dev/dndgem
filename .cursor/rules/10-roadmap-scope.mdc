@@ -1,5 +1,5 @@
 ---
-description: Roadmap scope lock — Phase 4 complete with release pending
+description: Roadmap scope lock — Phase 4 complete and shipped in 0.1.0-alpha.4
 alwaysApply: true
 ---
 
@@ -30,19 +30,21 @@ Framework Expansion Gate is **unnumbered** (not Phase 4) and **COMPLETE**:
 3. DND-FX.3 Angular Adapter — **COMPLETE**
 4. DND-FX.4 Svelte Adapter — COMPLETE
 5. DND-FX.5 Meta-Framework Compatibility Validation — COMPLETE
-6. DND-FX.6 Cross-Framework Alpha Release Gate — **COMPLETE** (`0.1.0-alpha.3` / `@alpha`; `0.1.0-alpha.2` superseded)
+6. DND-FX.6 Cross-Framework Alpha Release Gate — **COMPLETE** (originally closed at `0.1.0-alpha.3` / `@alpha`; `0.1.0-alpha.2` superseded). The current public Alpha has since advanced to `0.1.0-alpha.4`.
 
-Phase 4 — AI-Assisted Layout Intelligence is **COMPLETE WITH RELEASE PENDING** (does **not** require an LLM):
+Phase 4 — AI-Assisted Layout Intelligence is **COMPLETE AND SHIPPED** in `0.1.0-alpha.4` (does **not** require an LLM):
 
 1. DND-4.1 Layout Intelligence Contract & Architecture — **COMPLETE** (contract; see `docs/architecture/layout-intelligence-contract.md`, `docs/architecture/phase-4-planning-audit.md`, ADR-0018)
-2. DND-4.2 Deterministic Intelligence Planner — **COMPLETE — ACCEPTED FOR RELEASE** (Core `automaticItemOrder`; private `@dndgem/intelligence` reference)
-3. DND-4.3 Planner Contract & Optional Integration — **COMPLETE — ACCEPTED FOR RELEASE** (DOM/framework `planner` / `replan`)
+2. DND-4.2 Deterministic Intelligence Planner — **COMPLETE / RELEASED** in `0.1.0-alpha.4` (Core `automaticItemOrder`; private `@dndgem/intelligence` reference)
+3. DND-4.3 Planner Contract & Optional Integration — **COMPLETE / RELEASED** in `0.1.0-alpha.4` (DOM/framework `planner` / `replan`)
 4. DND-4.4 Model-Assisted Planning Experiment — **COMPLETE** — decision: `DEFER MODEL ASSISTANCE` (private `@dndgem/intelligence-openai` reference only)
 5. DND-4.5 Phase 4 Decision Gate / Roadmap Reconciliation — **COMPLETE**
 
 Authoritative records: `docs/architecture/framework-expansion-planning-audit.md`, `docs/architecture/framework-adapter-contract.md`, ADR-0015 / ADR-0016 / ADR-0017, `docs/architecture/phase-4-planning-audit.md`, `docs/architecture/layout-intelligence-contract.md`, ADR-0018, `docs/roadmap.md`.
 
-Do not renumber Phase 4. Do not start Phase 5 or Post-Phase-4 Alpha Release Consolidation unless an explicit sprint authorizes it. Do **not** publish `@dndgem/intelligence` or `@dndgem/intelligence-openai` (existing private packages are authorized repository architecture; creating **public** intelligence packages is not). Do not reopen model assistance without meeting the DND-4.5 reopen criteria. Do not reopen Vue/Angular/Svelte except for an authorized follow-up. Do not create placeholder adapter or meta-framework packages. Do not broaden the minimal public Auto-Layout export without explicit review. Do not publish npm, create release tags, or mutate dist-tags unless an explicit release authorization requires it. Do not apply the DND-4.2 / DND-4.3 Changesets unless an authorized release sprint requires it.
+Do not renumber Phase 4. Do **not** publish `@dndgem/intelligence` or `@dndgem/intelligence-openai` (existing private packages are authorized repository architecture; creating **public** intelligence packages is not). Do not reopen model assistance without meeting the DND-4.5 reopen criteria. Do not reopen Vue/Angular/Svelte except for an authorized follow-up. Do not create placeholder adapter or meta-framework packages. Do not broaden the minimal public Auto-Layout export without explicit review. Do not publish npm, mutate dist-tags, change package versions, or start a new release without an explicitly authorized release gate.
+
+`0.1.0-alpha.4` is released and closed. No Alpha.5 or Phase 5 work is authorized by this governance sync. The next roadmap/release step requires a separate explicit planning gate.
 
 ## CI policy (DND-2.3+)
 
@@ -61,7 +63,7 @@ FX.6 established: GitHub does not reinstall browsers or rerun the 108-test matri
 Do not pull into active work unless the sprint explicitly requires it:
 
 - Phase 3 Auto-Layout work outside a dedicated follow-up sprint
-- Phase 4 production changes outside an authorized follow-up (Phase 4 decision gate is closed; release packaging is a separate Post-Phase-4 gate)
+- Phase 4 production changes outside an authorized follow-up (Phase 4 is COMPLETE AND SHIPPED in `0.1.0-alpha.4`; no Alpha.5 / Phase 5 without a separate explicit planning gate)
 - Flutter implementation (separate track; Core-contract dependent)
 - Vue (DND-FX.2 COMPLETE — do not reopen unless authorized), Angular (DND-FX.3 COMPLETE — do not reopen unless authorized), Svelte (DND-FX.4 COMPLETE — do not reopen unless authorized; do not add `@dndgem/sveltekit`)
 

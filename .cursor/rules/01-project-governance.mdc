@@ -11,7 +11,7 @@ Phase 0 is CLOSED. Do not reopen gates without a hard contradiction (stop, docum
 
 Phase 1 Technical MVP is **CLOSED** (DND-1.1 → DND-1.8). Do not reopen Phase 1 product/architecture decisions without a hard contradiction.
 
-Phase 2 Public Alpha Readiness is **PASS** — Public Alpha **LIVE**. Current official channel: **`0.1.0-alpha.3` / `@alpha`**. Historical first Alpha: `0.1.0-alpha.0`. `latest` is **not** the Alpha channel (Core/DOM/React still `0.1.0-alpha.0`; Vue/Angular/Svelte still `0.1.0-alpha.2` from first-package npm assignment). Do not mutate `latest` without separate authorization.
+Phase 2 Public Alpha Readiness is **PASS** — Public Alpha **LIVE**. Current official public Alpha: **`0.1.0-alpha.4` / `@alpha`**. Historical first Alpha: `0.1.0-alpha.0`. `latest` is **not** the Alpha channel (Core/DOM/React still `0.1.0-alpha.0`; Vue/Angular/Svelte still `0.1.0-alpha.2` from first-package npm assignment). Do not mutate `latest` without separate authorization.
 
 Phase 3 — Adaptive Auto-Layout is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `@alpha`). See `docs/architecture/phase-3-planning-audit.md` and `docs/roadmap.md`.
 
@@ -19,9 +19,9 @@ Phase 3 — Adaptive Auto-Layout is **COMPLETE / RELEASED** (`0.1.0-alpha.1` / `
 
 Framework Expansion Gate is **COMPLETE** (unnumbered; **not** Phase 4). Sprint map: `docs/architecture/framework-expansion-planning-audit.md`. Contract: `docs/architecture/framework-adapter-contract.md`. ADRs 0015–0017.
 
-**DND-FX.1** COMPLETE (contract gate). **DND-FX.2** Vue **COMPLETE**. **DND-FX.3** Angular **COMPLETE**. **DND-FX.4** Svelte **COMPLETE**. **DND-FX.5** meta-frameworks **COMPLETE**. **DND-FX.6** Cross-Framework Alpha Release Gate **COMPLETE** (`0.1.0-alpha.3` / `@alpha`; `0.1.0-alpha.2` superseded).
+**DND-FX.1** COMPLETE (contract gate). **DND-FX.2** Vue **COMPLETE**. **DND-FX.3** Angular **COMPLETE**. **DND-FX.4** Svelte **COMPLETE**. **DND-FX.5** meta-frameworks **COMPLETE**. **DND-FX.6** Cross-Framework Alpha Release Gate **COMPLETE** (originally closed at `0.1.0-alpha.3` / `@alpha`; `0.1.0-alpha.2` superseded). The current public Alpha has since advanced to `0.1.0-alpha.4`.
 
-Phase 4 — AI-Assisted Layout Intelligence is **COMPLETE WITH RELEASE PENDING** (DND-4.1–DND-4.5). Does **not** require an LLM. Contract: `docs/architecture/layout-intelligence-contract.md`, audit: `docs/architecture/phase-4-planning-audit.md`, ADR-0018. DND-4.2 / DND-4.3 public surfaces accepted for next Alpha (`0.1.0-alpha.4` recommended). Model assistance **DEFER UNTIL NEW EVIDENCE**. Do not renumber Phase 4. Do not start Post-Phase-4 release consolidation or Phase 5 without explicit authorization.
+Phase 4 — AI-Assisted Layout Intelligence is **COMPLETE AND SHIPPED** in `0.1.0-alpha.4` (DND-4.1–DND-4.5). Does **not** require an LLM. Contract: `docs/architecture/layout-intelligence-contract.md`, audit: `docs/architecture/phase-4-planning-audit.md`, ADR-0018. DND-4.2 / DND-4.3 public surfaces are **COMPLETE / RELEASED** in `0.1.0-alpha.4`. Model assistance **DEFER UNTIL NEW EVIDENCE** (DND-4.4). Do not renumber Phase 4. Do not start Alpha.5 or Phase 5 without a separate explicit planning gate.
 
 ## CI policy (DND-2.3+)
 
@@ -48,17 +48,19 @@ Cursor MUST NOT introduce:
 - npm publication / repository visibility changes unless the active sprint explicitly requires it
 - Broader-than-minimal Public Auto-Layout API freeze unless an explicit review requires it
 - Second solver / parallel validity vocabulary / intelligence inside Core by default
-- Applying DND-4.2 / DND-4.3 Changesets or publishing `0.1.0-alpha.4` unless an explicit Post-Phase-4 release sprint authorizes it
+- Publishing npm, mutating dist-tags, changing package versions, or starting a new release without an explicitly authorized release gate
 
-DND-FX.2 is **COMPLETE**. `@dndgem/vue` is published on `@alpha` (`0.1.0-alpha.3`). DND-FX.3 is **COMPLETE**. `@dndgem/angular` is published on `@alpha` (`0.1.0-alpha.3`). DND-FX.4 is **COMPLETE**. `@dndgem/svelte` is published on `@alpha` (`0.1.0-alpha.3`). Do not implement SvelteKit / Nuxt / Next packages. DND-FX.5 is **COMPLETE** (private compatibility fixtures; dedicated meta-framework packages not required). DND-FX.6 is **COMPLETE**. DND-FX.1 remains closed. Do not reopen Framework Expansion except for an authorized follow-up.
+DND-FX.2 is **COMPLETE**. DND-FX.3 is **COMPLETE**. DND-FX.4 is **COMPLETE**. DND-FX.6 originally closed the cross-framework release at `0.1.0-alpha.3`; adapters remain on the current public Alpha channel (`0.1.0-alpha.4` / `@alpha`). Do not implement SvelteKit / Nuxt / Next packages. DND-FX.5 is **COMPLETE** (private compatibility fixtures; dedicated meta-framework packages not required). DND-FX.6 is **COMPLETE**. DND-FX.1 remains closed. Do not reopen Framework Expansion except for an authorized follow-up.
 
 Flutter compatibility may be considered architecturally (types, ADRs), but not implemented until scheduled.
 
-Intelligence is optional and outside the critical deterministic path; Phase 4 follows deterministic Auto-Layout. Preferred future home: optional intelligence layer depending on Core (ADR-0018), not framework adapters.
+Intelligence is optional and outside the critical deterministic path; Phase 4 shipped deterministic planner surfaces in `0.1.0-alpha.4`. Preferred home: optional intelligence layer depending on Core (ADR-0018), not framework adapters.
 
 Repository identity is **public open source** (`davideagosti-dev/dndgem`). GitHub visibility flip (PRIVATE → PUBLIC) requires an explicit Product Owner Visibility Gate — do not change visibility without that authorization.
 
-Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.3` is the current Cross-Framework Alpha). Do not document bare / `latest` installs as the supported Alpha path.
+Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.4` is the current official public Alpha). Do not document bare / `latest` installs as the supported Alpha path.
+
+`0.1.0-alpha.4` is released and closed. No Alpha.5 or Phase 5 work is authorized by this governance sync. The next roadmap/release step requires a separate explicit planning gate.
 
 ## Phase 3 binding refinements
 
@@ -80,7 +82,7 @@ Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.3` is the current Cros
 
 - Intelligence proposes; deterministic DnDGem validates and resolves.
 - `solveLayout` / `evaluateLayout` remain the only validity/scoring/resolution authority.
-- Phase 4 does not require an LLM; heuristic/deterministic planner is the preferred first implementation (DND-4.2 — COMPLETE / ACCEPTED FOR RELEASE).
+- Phase 4 does not require an LLM; heuristic/deterministic planner is the preferred first implementation (DND-4.2 — COMPLETE / RELEASED in `0.1.0-alpha.4`).
 - Provider-neutral planner boundary required; no production provider selected; DND-4.4 deferred model assistance until new evidence.
 - Planning Proposals are UNTRUSTED until validated/normalized; fail closed to deterministic fallback.
 - No model inference in hot paths (pointermove / rAF / ResizeObserver / every solve).
@@ -88,4 +90,4 @@ Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.3` is the current Cros
 - Accessibility ownership remains with the consumer; intelligence must not auto-rewrite DOM/read/tab/ARIA semantics.
 - Deterministic DnDGem may progress toward Beta independently of model-based intelligence.
 - Existing private `@dndgem/intelligence` / `@dndgem/intelligence-openai` are authorized reference packages; public publication is not authorized.
-- Phase 4 is **COMPLETE WITH RELEASE PENDING**; next packaging gate is Post-Phase-4 Alpha Release Consolidation (`0.1.0-alpha.4` recommended).
+- Phase 4 is **COMPLETE AND SHIPPED** in `0.1.0-alpha.4`. DND-4.3 planner integration is **COMPLETE / RELEASED** in `0.1.0-alpha.4`. No Alpha.5 or Phase 5 work is authorized without a separate explicit planning gate.
