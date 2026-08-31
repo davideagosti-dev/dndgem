@@ -6,6 +6,8 @@
 
 Category: **Content-Aware Adaptive Layout Engine**
 
+Created and maintained by Davide Agosti.
+
 **Canonical website:** [https://dndgem.dev](https://dndgem.dev)
 
 **DA62:** [https://davideagosti.com](https://davideagosti.com)
@@ -20,46 +22,11 @@ GEOMETRICALLY FITS  ≠  CONTENT REMAINS USEFUL
 
 It is **not** merely a grid library, a drag-and-drop wrapper, a React-only library, or a dnd-kit abstraction. React is a thin adapter; Core stays framework-agnostic.
 
-## Project status
+## Try DnDGem
 
-DnDGem is **open source** (MIT). Development happens in this public GitHub repository. The project is **early Alpha** (product maturity: **BETA-CANDIDATE**): APIs may change; this is not a stable 1.0 release. A **Beta readiness** program is authorized; a Beta release is **not** authorized. Claim boundaries: [Beta Claim & Support Policy](docs/architecture/beta-claim-support-policy.md).
+See it immediately: **https://playground.dndgem.dev/**
 
-| Phase                          | Status                                                   |
-| ------------------------------ | -------------------------------------------------------- |
-| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                           |
-| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**                         |
-| Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                |
-| Framework Expansion Gate       | **COMPLETE** (DND-FX.1–FX.6; shipped as `0.1.0-alpha.3`) |
-| Phase 4 Layout Intelligence    | **COMPLETE AND SHIPPED** (`0.1.0-alpha.4`)               |
-| Beta Readiness Program         | **AUTHORIZED** — Beta release **NOT AUTHORIZED**         |
-
-Current official npm Alpha: **`0.1.0-alpha.4`** ([release notes](docs/releases/0.1.0-alpha.4.md) — **PUBLISHED**). Install with dist-tag **`alpha`** (`npm install @dndgem/react@alpha`, `@dndgem/vue@alpha`, etc.) — resolves to `0.1.0-alpha.4`. Previous: [0.1.0-alpha.3](docs/releases/0.1.0-alpha.3.md), [0.1.0-alpha.2](docs/releases/0.1.0-alpha.2.md) (superseded), [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md). `latest` is **not** the Alpha channel (Core/DOM/React remain `0.1.0-alpha.0`; Vue/Angular/Svelte remain `0.1.0-alpha.2` from first-package npm assignment).
-
-Public product home: **https://dndgem.dev** (see [Public site & domain hosting](docs/architecture/public-site.md)). Source: [github.com/davideagosti-dev/dndgem](https://github.com/davideagosti-dev/dndgem). Playground: **https://playground.dndgem.dev/**.
-
-## Packages
-
-```text
-@dndgem/core          renderer-agnostic domain, validity, scoring, solver
-     ▲
-@dndgem/dom           DOM measurement, resize, drag, layout session
-     ▲
-@dndgem/react         React adapter (peerDependency: react)
-@dndgem/vue           Vue 3 adapter (peerDependency: vue)
-@dndgem/angular       Angular adapter (peerDependency: @angular/core)
-@dndgem/svelte        Svelte 5 adapter (peerDependency: svelte)
-```
-
-| Need                        | Package           |
-| --------------------------- | ----------------- |
-| Headless solve / evaluate   | `@dndgem/core`    |
-| Vanilla browser integration | `@dndgem/dom`     |
-| React integration           | `@dndgem/react`   |
-| Vue integration             | `@dndgem/vue`     |
-| Angular integration         | `@dndgem/angular` |
-| Svelte integration          | `@dndgem/svelte`  |
-
-Validated meta-framework environments (not npm packages): Next.js → `@dndgem/react`; Nuxt → `@dndgem/vue`; SvelteKit → `@dndgem/svelte`.
+Integrate it: [Quick Start](docs/guides/quick-start.md) (~10–15 minutes once packages are available to your app). Public page: https://dndgem.dev/docs/quick-start/
 
 ## Installation
 
@@ -88,7 +55,7 @@ pnpm --filter @dndgem/example-svelte dev
 
 ## Quick Start
 
-See [Quick Start](docs/guides/quick-start.md) (~10–15 minutes once packages are available to your app), or the public page: https://dndgem.dev/docs/quick-start/
+See [Quick Start](docs/guides/quick-start.md) for the full first-integration guide.
 
 ### Illustrative React snippet
 
@@ -120,6 +87,47 @@ export function App() {
   );
 }
 ```
+
+## Packages
+
+```text
+@dndgem/core          renderer-agnostic domain, validity, scoring, solver
+     ▲
+@dndgem/dom           DOM measurement, resize, drag, layout session
+     ▲
+@dndgem/react         React adapter (peerDependency: react)
+@dndgem/vue           Vue 3 adapter (peerDependency: vue)
+@dndgem/angular       Angular adapter (peerDependency: @angular/core)
+@dndgem/svelte        Svelte 5 adapter (peerDependency: svelte)
+```
+
+| Need                        | Package           |
+| --------------------------- | ----------------- |
+| Headless solve / evaluate   | `@dndgem/core`    |
+| Vanilla browser integration | `@dndgem/dom`     |
+| React integration           | `@dndgem/react`   |
+| Vue integration             | `@dndgem/vue`     |
+| Angular integration         | `@dndgem/angular` |
+| Svelte integration          | `@dndgem/svelte`  |
+
+Validated meta-framework environments (not npm packages): Next.js → `@dndgem/react`; Nuxt → `@dndgem/vue`; SvelteKit → `@dndgem/svelte`.
+
+## Project status
+
+DnDGem is **open source** (MIT). Development happens in this public GitHub repository. The project is **early Alpha** (product maturity: **BETA-CANDIDATE**): APIs may change; this is not a stable 1.0 release. A **Beta readiness** program is authorized; a Beta release is **not** authorized. Claim boundaries: [Beta Claim & Support Policy](docs/architecture/beta-claim-support-policy.md).
+
+| Phase                          | Status                                                   |
+| ------------------------------ | -------------------------------------------------------- |
+| Phase 1 Technical MVP          | **CLOSED** (DND-1.1 → DND-1.8)                           |
+| Phase 2 Public Alpha Readiness | **PASS** — Public Alpha **LIVE**                         |
+| Phase 3 Adaptive Auto-Layout   | **COMPLETE / RELEASED** (`0.1.0-alpha.1`)                |
+| Framework Expansion Gate       | **COMPLETE** (DND-FX.1–FX.6; shipped as `0.1.0-alpha.3`) |
+| Phase 4 Layout Intelligence    | **COMPLETE AND SHIPPED** (`0.1.0-alpha.4`)               |
+| Beta Readiness Program         | **AUTHORIZED** — Beta release **NOT AUTHORIZED**         |
+
+Current official npm Alpha: **`0.1.0-alpha.4`** ([release notes](docs/releases/0.1.0-alpha.4.md) — **PUBLISHED**). Install with dist-tag **`alpha`** (`npm install @dndgem/react@alpha`, `@dndgem/vue@alpha`, etc.) — resolves to `0.1.0-alpha.4`. Previous: [0.1.0-alpha.3](docs/releases/0.1.0-alpha.3.md), [0.1.0-alpha.2](docs/releases/0.1.0-alpha.2.md) (superseded), [0.1.0-alpha.1](docs/releases/0.1.0-alpha.1.md). Historical first Alpha: [0.1.0-alpha.0](docs/releases/0.1.0-alpha.0.md). `latest` is **not** the Alpha channel (Core/DOM/React remain `0.1.0-alpha.0`; Vue/Angular/Svelte remain `0.1.0-alpha.2` from first-package npm assignment).
+
+Public product home: **https://dndgem.dev** (see [Public site & domain hosting](docs/architecture/public-site.md)). Source: [github.com/davideagosti-dev/dndgem](https://github.com/davideagosti-dev/dndgem). Playground: **https://playground.dndgem.dev/**.
 
 ## Where to start
 
@@ -173,12 +181,18 @@ Public landing site (static):
 pnpm --filter @dndgem/www build
 ```
 
-## Feedback
+## Feedback / Community
 
-- Bugs and contribution discussion: [GitHub Issues](https://github.com/davideagosti-dev/dndgem/issues)
-- Product / Alpha developer feedback: **`support@dndgem.dev`**
-- Public support page: https://dndgem.dev/support/
-- Security: `security@dndgem.dev` (`SECURITY.md`) — do not open public Issues for undisclosed vulnerabilities
+| Need                               | Where                                                                                           |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Reproducible bugs                  | [GitHub Issues](https://github.com/davideagosti-dev/dndgem/issues) (Bug report form)            |
+| Usage / implementation questions   | [GitHub Discussions](https://github.com/davideagosti-dev/dndgem/discussions)                    |
+| Ideas / use cases / Alpha feedback | [GitHub Discussions](https://github.com/davideagosti-dev/dndgem/discussions)                    |
+| Concrete feature requests          | [GitHub Issues](https://github.com/davideagosti-dev/dndgem/issues/new/choose) (Feature request) |
+| Private support                    | https://dndgem.dev/support/ · **support@dndgem.dev**                                            |
+| Security vulnerabilities           | [SECURITY.md](SECURITY.md) · **security@dndgem.dev** (do not open a public Issue)               |
+
+Discussions is the planned home for usage questions and broader feedback. Category configuration may follow separately.
 
 ## Development
 

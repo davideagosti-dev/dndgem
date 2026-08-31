@@ -1,0 +1,97 @@
+name: Bug report
+description: Report a reproducible DnDGem defect
+title: '[bug]: '
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a defect. Please keep this form focused on a **reproducible** problem.
+
+        **Security vulnerabilities must not be reported publicly.** See [SECURITY.md](https://github.com/davideagosti-dev/dndgem/blob/develop/SECURITY.md) and email **security@dndgem.dev**.
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: What went wrong?
+      placeholder: Concise description of the defect.
+    validations:
+      required: true
+  - type: dropdown
+    id: packages
+    attributes:
+      label: Affected package(s)
+      description: Select all that apply.
+      multiple: true
+      options:
+        - '@dndgem/core'
+        - '@dndgem/dom'
+        - '@dndgem/react'
+        - '@dndgem/vue'
+        - '@dndgem/angular'
+        - '@dndgem/svelte'
+        - Unsure / other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: DnDGem version
+      description: Package version or dist-tag (e.g. 0.1.0-alpha.4 / @alpha).
+      placeholder: 0.1.0-alpha.4
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Framework / environment
+      description: e.g. React 19, Vue 3, Angular, Svelte 5, vanilla DOM, Next.js, Nuxt, SvelteKit.
+      placeholder: React 19 + Vite
+    validations:
+      required: false
+  - type: input
+    id: browser
+    attributes:
+      label: Browser (when relevant)
+      description: Desktop browser and version if the issue is browser-specific.
+      placeholder: Chromium 131
+    validations:
+      required: false
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Minimal steps to reproduce.
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+  - type: input
+    id: reproduction
+    attributes:
+      label: Minimal reproduction (optional)
+      description: Link to a minimal repo, playground fork, or gist when available.
+      placeholder: https://…
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context (optional)
+      description: Logs, screenshots, or other details. Avoid unnecessary personal information.
+    validations:
+      required: false

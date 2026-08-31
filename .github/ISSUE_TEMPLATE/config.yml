@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Usage / implementation question
+    url: https://github.com/davideagosti-dev/dndgem/discussions
+    about: Ask how to integrate or use DnDGem. Prefer Discussions over Issues for usage questions.
+  - name: Idea / use case / Alpha feedback
+    url: https://github.com/davideagosti-dev/dndgem/discussions
+    about: Share broader ideas, use cases, or Alpha feedback. Discussions is the planned home for this.
+  - name: Private support
+    url: https://dndgem.dev/support/
+    about: Non-public support matters. You can also email support@dndgem.dev.
+  - name: Security vulnerability
+    url: https://github.com/davideagosti-dev/dndgem/blob/develop/SECURITY.md
+    about: Report vulnerabilities privately via SECURITY.md / security@dndgem.dev — do not open a public Issue.
