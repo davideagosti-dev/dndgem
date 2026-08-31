@@ -44,7 +44,19 @@ Authoritative records: `docs/architecture/framework-expansion-planning-audit.md`
 
 Do not renumber Phase 4. Do **not** publish `@dndgem/intelligence` or `@dndgem/intelligence-openai` (existing private packages are authorized repository architecture; creating **public** intelligence packages is not). Do not reopen model assistance without meeting the DND-4.5 reopen criteria. Do not reopen Vue/Angular/Svelte except for an authorized follow-up. Do not create placeholder adapter or meta-framework packages. Do not broaden the minimal public Auto-Layout export without explicit review. Do not publish npm, mutate dist-tags, change package versions, or start a new release without an explicitly authorized release gate.
 
-`0.1.0-alpha.4` is released and closed. No Alpha.5 or Phase 5 work is authorized by this governance sync. The next roadmap/release step requires a separate explicit planning gate.
+`0.1.0-alpha.4` is released and closed. No Alpha.5 or Phase 5 work is authorized. Beta release is **NOT AUTHORIZED**.
+
+## Beta Readiness Program
+
+1. BETA READINESS PROGRAM — **AUTHORIZED**
+2. CURRENT RELEASE — still `0.1.0-alpha.4` / `@alpha`
+3. BETA RELEASE — **NOT AUTHORIZED**
+4. BETA-0.1 — current approved implementation sprint (claim & support policy; see `docs/architecture/beta-claim-support-policy.md`)
+5. ALPHA.5 — **NOT AUTHORIZED**
+6. PHASE 5 — **NOT AUTHORIZED**
+7. MODEL ASSISTANCE — **DEFER**
+
+Do not publish npm, mutate dist-tags (`latest` / invent `@beta`), change package versions, or start a Beta release without an explicitly authorized release gate. Subsequent BETA-0.2–BETA-0.7 sprints require their own authorization; do not pull them into BETA-0.1.
 
 ## CI policy (DND-2.3+)
 
@@ -64,6 +76,7 @@ Do not pull into active work unless the sprint explicitly requires it:
 
 - Phase 3 Auto-Layout work outside a dedicated follow-up sprint
 - Phase 4 production changes outside an authorized follow-up (Phase 4 is COMPLETE AND SHIPPED in `0.1.0-alpha.4`; no Alpha.5 / Phase 5 without a separate explicit planning gate)
+- Beta readiness work outside the currently authorized BETA-0.x sprint (Beta release remains NOT AUTHORIZED)
 - Flutter implementation (separate track; Core-contract dependent)
 - Vue (DND-FX.2 COMPLETE — do not reopen unless authorized), Angular (DND-FX.3 COMPLETE — do not reopen unless authorized), Svelte (DND-FX.4 COMPLETE — do not reopen unless authorized; do not add `@dndgem/sveltekit`)
 

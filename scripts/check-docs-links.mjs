@@ -14,6 +14,7 @@ const ENTRY_FILES = [
   'docs/guides/README.md',
   'docs/roadmap.md',
   'docs/architecture/alpha-api-contract.md',
+  'docs/architecture/beta-claim-support-policy.md',
   'docs/architecture/release-strategy.md',
   'docs/architecture/framework-expansion-planning-audit.md',
   'docs/architecture/framework-adapter-contract.md',

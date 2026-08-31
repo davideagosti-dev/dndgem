@@ -23,3 +23,4 @@ Full tables, methodology, and environment: [Technical MVP baseline](../benchmark
 - Treat timings as evidence under a stated context
 - Re-run `pnpm bench` on your hardware before drawing local conclusions
 - Framework adapters must not change Core semantics to chase numbers
+- Beta claim policy: **qualitative / evidence-based only** — no numeric SLA, FPS guarantee, or large-N product guarantee ([Beta Claim & Support Policy](../architecture/beta-claim-support-policy.md))

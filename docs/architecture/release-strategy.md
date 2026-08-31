@@ -13,18 +13,19 @@
 
 ## Dist-tags
 
-| Tag      | Use                                                                  |
-| -------- | -------------------------------------------------------------------- |
-| `alpha`  | Official Public Alpha channel (`0.1.0-alpha.0` and later 0.x alphas) |
-| `latest` | Reserved for a future **stable** release                             |
+| Tag      | Use                                                                                         |
+| -------- | ------------------------------------------------------------------------------------------- |
+| `alpha`  | Official Public Alpha channel (`0.1.0-alpha.0` and later 0.x alphas) — **current**          |
+| `beta`   | **Planning intent only** for a future Beta channel — **not authorized**; does not exist yet |
+| `latest` | Reserved for a future **stable** release — **not** Alpha or Beta; do not mutate for Beta    |
 
-Install (Public Alpha):
+Install (Public Alpha — current supported channel):
 
 ```bash
 npm install @dndgem/react@alpha
 ```
 
-Always document and use **`@alpha`**. Do not describe this Alpha as stable.
+Always document and use **`@alpha`** until an authorized Beta release gate. Do not describe this Alpha as stable. Do not switch install docs to `@beta` yet. See [Beta Claim & Support Policy](./beta-claim-support-policy.md).
 
 ### Registry note (`latest` vs `alpha`)
 
