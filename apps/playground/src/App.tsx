@@ -46,9 +46,12 @@ const ITEMS = [
       minWidth: 100,
       minHeight: 80,
       minUsefulWidth: 140,
-      minUsefulHeight: 120,
+      // Tall readable body: board starts at 360px height, so a normal
+      // bottom-right shrink below this useful floor yields real DEGRADED
+      // while hard mins still fit — without displacing Source Intent chart.
+      minUsefulHeight: 240,
       preferredWidth: 180,
-      preferredHeight: 160,
+      preferredHeight: 240,
     },
   },
   {
@@ -58,7 +61,8 @@ const ITEMS = [
       minHeight: 64,
       minUsefulWidth: 88,
       minUsefulHeight: 72,
-      preferredWidth: 96,
+      // Preferred width keeps the compact constraint label readable at VALID.
+      preferredWidth: 112,
       preferredHeight: 80,
     },
   },
@@ -85,13 +89,13 @@ const COPY: Record<string, { title: string; body: string; className: string; ari
     },
     details: {
       title: 'Details',
-      body: 'Needs ≥120px useful height',
+      body: 'Needs ≥240px useful height',
       className: 'item details',
       ariaLabel: 'Details panel',
     },
     metric: {
       title: '42',
-      body: 'Needs ≥88px useful width',
+      body: '≥88×72',
       className: 'item metric',
       ariaLabel: 'Metric panel',
     },
