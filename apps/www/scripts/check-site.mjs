@@ -4,17 +4,22 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const site = join(root, 'site');
+const dist = join(root, 'dist');
 
 /** Bump these when preparing the next public Alpha website sync. */
 const CURRENT_ALPHA = '0.1.0-alpha.4';
 const STALE_CURRENT_ALPHA = '0.1.0-alpha.3';
 const GITHUB_REPO = 'https://github.com/davideagosti-dev/dndgem';
+const PLAYGROUND = 'https://playground.dndgem.dev/';
+const ARTICLE_REL = 'articles/geometrically-fits-content-remains-useful/index.html';
+const ARTICLE_CANONICAL = 'https://dndgem.dev/articles/geometrically-fits-content-remains-useful/';
 
 const required = [
   'index.html',
   'docs/index.html',
   'docs/quick-start/index.html',
   'support/index.html',
+  ARTICLE_REL,
   'styles.css',
   'favicon.svg',
   '_headers',
@@ -36,11 +41,12 @@ const pages = [
   ['docs/index.html', 'https://dndgem.dev/docs/', 'Documentation'],
   ['docs/quick-start/index.html', 'https://dndgem.dev/docs/quick-start/', 'Quick Start'],
   ['support/index.html', 'https://dndgem.dev/support/', 'Support'],
+  [ARTICLE_REL, ARTICLE_CANONICAL, 'Geometrically Fits ≠ Content Remains Useful'],
 ];
 
 for (const [rel, canonical, marker] of pages) {
   const html = readFileSync(join(site, rel), 'utf8');
-  if (!html.includes(`rel="canonical" href="${canonical}"`)) {
+  if (!new RegExp(`rel="canonical"\\s+href="${canonical}"`).test(html)) {
     failures.push(`${rel}: missing canonical ${canonical}`);
   }
   if (!html.includes('og:url') || !html.includes(canonical)) {
@@ -55,6 +61,33 @@ const landing = readFileSync(join(site, 'index.html'), 'utf8');
 const quick = readFileSync(join(site, 'docs/quick-start/index.html'), 'utf8');
 const docs = readFileSync(join(site, 'docs/index.html'), 'utf8');
 const support = readFileSync(join(site, 'support/index.html'), 'utf8');
+const article = readFileSync(join(site, ARTICLE_REL), 'utf8');
+
+if (!article.includes('GEOMETRICALLY FITS ≠ CONTENT REMAINS USEFUL')) {
+  failures.push(`${ARTICLE_REL}: missing central thesis`);
+}
+for (const state of ['VALID', 'DEGRADED', 'INVALID']) {
+  if (!article.includes(state)) {
+    failures.push(`${ARTICLE_REL}: missing layout state ${state}`);
+  }
+}
+if (!article.includes(PLAYGROUND)) {
+  failures.push(`${ARTICLE_REL}: missing Playground link`);
+}
+if (!article.includes(GITHUB_REPO)) {
+  failures.push(`${ARTICLE_REL}: missing DnDGem repository link`);
+}
+if (!landing.includes('/articles/geometrically-fits-content-remains-useful/')) {
+  failures.push('index.html: missing canonical article discovery link');
+}
+
+const builtArticle = join(dist, ARTICLE_REL);
+if (existsSync(builtArticle)) {
+  const builtHtml = readFileSync(builtArticle, 'utf8');
+  if (!builtHtml.includes(ARTICLE_CANONICAL) || !builtHtml.includes('DEGRADED')) {
+    failures.push(`${ARTICLE_REL}: built output is missing canonical article content`);
+  }
+}
 
 for (const [label, html] of [
   ['index.html', landing],
