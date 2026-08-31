@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Geometrically Fits ≠ Content Remains Useful — DnDGem</title>
+    <meta
+      name="description"
+      content="Why a component can geometrically fit while no longer having enough space for its content to remain useful."
+    />
+    <link
+      rel="canonical"
+      href="https://dndgem.dev/articles/geometrically-fits-content-remains-useful/"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Geometrically Fits ≠ Content Remains Useful" />
+    <meta
+      property="og:description"
+      content="Why a component can geometrically fit while no longer having enough space for its content to remain useful."
+    />
+    <meta
+      property="og:url"
+      content="https://dndgem.dev/articles/geometrically-fits-content-remains-useful/"
+    />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-name">DnDGem</span>
+        <span class="brand-by">by DA62</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/docs/">Docs</a>
+        <a href="/docs/quick-start/">Quick Start</a>
+        <a href="https://playground.dndgem.dev/">Playground</a>
+        <a href="/support/">Support</a>
+      </nav>
+    </header>
+
+    <main id="main" class="article-page">
+      <article class="article-prose">
+        <header class="article-header">
+          <p class="article-label">Article</p>
+          <h1>Geometrically Fits ≠ Content Remains Useful</h1>
+          <p class="article-byline">
+            <span>Davide Agosti</span>
+            <span>Creator &amp; Maintainer of DnDGem</span>
+          </p>
+          <p class="article-date">
+            Publication date: <time datetime="2026-08-31">31 August 2026</time>
+          </p>
+        </header>
+
+        <p>Responsive layout is usually discussed in terms of space.</p>
+
+        <p>
+          Does the component fit inside its container? Does anything overflow? Should the grid
+          collapse? Should another breakpoint or container query apply?
+        </p>
+
+        <p>But there is another boundary that is easy to miss:</p>
+
+        <p>
+          <strong
+            >A component can geometrically fit and still no longer have enough space for its content
+            to remain useful.</strong
+          >
+        </p>
+
+        <p>
+          Consider a dashboard containing a chart, a data table, a details panel and a metric card.
+        </p>
+
+        <p>Now make the available space smaller.</p>
+
+        <p>
+          Nothing necessarily has to overflow. Every card may still fit inside the available
+          rectangle. From a purely geometric perspective, the layout can remain valid.
+        </p>
+
+        <p>But the table may become too narrow to scan comfortably.</p>
+
+        <p>
+          The chart may still render while losing enough horizontal space to communicate its data
+          effectively.
+        </p>
+
+        <p>
+          A details panel may technically fit while becoming too small for its content to remain
+          practical.
+        </p>
+
+        <p>The geometry says:</p>
+
+        <blockquote>
+          <p>It fits.</p>
+        </blockquote>
+
+        <p>The content says:</p>
+
+        <blockquote>
+          <p>It isn't useful anymore.</p>
+        </blockquote>
+
+        <p>Those are different states.</p>
+
+        <section aria-labelledby="minimum-useful-size">
+          <h2 id="minimum-useful-size">Minimum size isn't always minimum useful size</h2>
+
+          <p>A layout constraint might say:</p>
+
+          <pre><code>minWidth: 120</code></pre>
+
+          <p>Below 120 pixels, the component cannot satisfy its hard minimum width.</p>
+
+          <p>But an application may have another threshold:</p>
+
+          <pre><code>minWidth: 120
+minUsefulWidth: 180</code></pre>
+
+          <p>Now we can describe something that a single minimum dimension cannot express.</p>
+
+          <p>Assuming no other constraint is violated:</p>
+
+          <pre><code>width ≥ 180px
+→ VALID
+
+120px ≤ width &lt; 180px
+→ DEGRADED
+
+width &lt; 120px
+→ INVALID</code></pre>
+
+          <p>At 240px, the component fits and has enough useful space.</p>
+
+          <p>At 150px, it still geometrically fits, but it has crossed its usefulness threshold.</p>
+
+          <p>Below 120px, its hard geometric constraint can no longer be satisfied.</p>
+
+          <p>That gives us three meaningfully different states:</p>
+
+          <pre><code>VALID
+    hard geometry is satisfied
+    usefulness constraints are satisfied
+
+DEGRADED
+    hard geometry is still satisfied
+    one or more usefulness constraints are missed
+
+INVALID
+    one or more hard geometric constraints cannot be satisfied</code></pre>
+
+          <p><code>DEGRADED</code> is the interesting state.</p>
+
+          <p>Without it, two different questions tend to collapse into one:</p>
+
+          <pre><code>Can I place this component here?
+
+Should this component remain like this?</code></pre>
+
+          <p>They aren't equivalent.</p>
+        </section>
+
+        <section aria-labelledby="responsive-layout">
+          <h2 id="responsive-layout">Responsive layout isn't only about breakpoints</h2>
+
+          <p>
+            Media queries and container queries are powerful mechanisms for adapting presentation to
+            available space.
+          </p>
+
+          <p>The question here is different.</p>
+
+          <p>
+            <strong
+              >How should an application reason about the quality of the layout that currently
+              exists?</strong
+            >
+          </p>
+
+          <p>Imagine several components sharing a constrained workspace.</p>
+
+          <p>Each component may have:</p>
+
+          <ul>
+            <li>hard minimum dimensions;</li>
+            <li>useful minimum dimensions;</li>
+            <li>preferred dimensions;</li>
+            <li>user placement intent;</li>
+            <li>available container space.</li>
+          </ul>
+
+          <p>Changing one component can affect what remains feasible for several others.</p>
+
+          <p>Resizing the container can do the same.</p>
+
+          <p>
+            At that point, responsive behaviour isn't only about selecting another CSS presentation.
+          </p>
+
+          <p>It also becomes a constraint problem.</p>
+        </section>
+
+        <section aria-labelledby="dragging-intent">
+          <h2 id="dragging-intent">Dragging introduces intent</h2>
+
+          <p>Now allow the user to drag those components.</p>
+
+          <p>A drag operation is no longer just:</p>
+
+          <pre><code>pointer moved
+→ update x/y</code></pre>
+
+          <p>An accepted drop tells the layout system something important:</p>
+
+          <p><strong>the user intended this element to be here.</strong></p>
+
+          <p>That information should not disappear simply because another component moves later.</p>
+
+          <p>But it shouldn't become an unconditional pin either.</p>
+
+          <p>
+            Imagine that the user places a metric below a chart, moves the table somewhere else, and
+            then makes the workspace substantially smaller.
+          </p>
+
+          <p>What should survive?</p>
+
+          <p>The system now has to reason about several different kinds of information:</p>
+
+          <pre><code>user intent
+hard constraints
+content-usefulness constraints
+generated placement
+previous layout state
+available space</code></pre>
+
+          <p>Treating all of these as equivalent coordinates loses information.</p>
+
+          <p>A more useful model is:</p>
+
+          <blockquote>
+            <p><strong>An accepted drag is strong intent, not a permanent pin.</strong></p>
+          </blockquote>
+
+          <p>The placement becomes durable Source Intent.</p>
+
+          <p>Subsequent reflows should preserve that intent when it remains feasible.</p>
+
+          <p>
+            When the available geometry makes that impossible, however, hard constraints and the
+            layout solver still have authority.
+          </p>
+
+          <p>The problem therefore becomes:</p>
+
+          <blockquote>
+            <p>
+              <strong
+                >Preserve user intent when feasible, while maintaining the strongest layout the
+                current constraints allow.</strong
+              >
+            </p>
+          </blockquote>
+        </section>
+
+        <section aria-labelledby="determinism">
+          <h2 id="determinism">Determinism matters</h2>
+
+          <p>Once layout becomes a constraint problem, predictability becomes important.</p>
+
+          <p>Given identical Core inputs, the solver should produce the same result.</p>
+
+          <p>That property makes layout behaviour reproducible.</p>
+
+          <p>It makes failures easier to diagnose.</p>
+
+          <p>It allows transitions between states to be tested rather than visually guessed.</p>
+
+          <p>And it keeps layout validity explainable in terms of explicit constraints.</p>
+
+          <p>The layout may adapt.</p>
+
+          <p>The result should not be arbitrary.</p>
+        </section>
+
+        <section aria-labelledby="behind-dndgem">
+          <h2 id="behind-dndgem">This is the problem behind DnDGem</h2>
+
+          <p>
+            I've been exploring this model while building <strong>DnDGem</strong>, an open-source
+            adaptive drag-and-drop and layout engine for JavaScript applications.
+          </p>
+
+          <p>Its central idea is deliberately simple:</p>
+
+          <blockquote>
+            <p><strong>GEOMETRICALLY FITS ≠ CONTENT REMAINS USEFUL</strong></p>
+          </blockquote>
+
+          <p>
+            DnDGem separates hard geometric constraints from content-usefulness constraints and uses
+            a deterministic Core to evaluate and resolve layouts.
+          </p>
+
+          <p>
+            Framework adapters sit around that Core rather than defining the layout domain itself.
+          </p>
+
+          <p>The distinction becomes particularly visible when the available space changes.</p>
+
+          <p>A layout can transition through:</p>
+
+          <pre><code>VALID
+    ↓
+DEGRADED
+    ↓
+INVALID</code></pre>
+
+          <p>or recover in the opposite direction as space becomes available again.</p>
+
+          <p>
+            That means a layout doesn't have to pretend everything is fine until the moment
+            something physically stops fitting.
+          </p>
+
+          <p>
+            There is an intermediate state where the geometry is still feasible but the content has
+            already crossed a meaningful usability threshold.
+          </p>
+        </section>
+
+        <section aria-labelledby="try-distinction">
+          <h2 id="try-distinction">Try the distinction</h2>
+
+          <p>
+            I've built the DnDGem playground so this can be observed rather than just described.
+          </p>
+
+          <p>The basic experiment is:</p>
+
+          <p><strong>Resize → Observe → Drag</strong></p>
+
+          <p>Resize the workspace and watch the solver state.</p>
+
+          <p>
+            You can move between <code>VALID</code> and <code>DEGRADED</code> while the components
+            still geometrically fit.
+          </p>
+
+          <p>
+            Then drag components and resize again to see how accepted placement intent interacts
+            with subsequent reflow.
+          </p>
+
+          <p>
+            Playground:
+            <a href="https://playground.dndgem.dev/">https://playground.dndgem.dev/</a>
+          </p>
+
+          <p>
+            Source:
+            <a href="https://github.com/davideagosti-dev/dndgem"
+              >https://github.com/davideagosti-dev/dndgem</a
+            >
+          </p>
+        </section>
+
+        <section aria-labelledby="broader-question">
+          <h2 id="broader-question">The broader question</h2>
+
+          <p>
+            DnDGem is one implementation, but the architectural question is broader than the
+            library:
+          </p>
+
+          <blockquote>
+            <p>
+              <strong
+                >How should frontend systems represent the point where a component still fits, but
+                no longer has enough space to remain useful?</strong
+              >
+            </p>
+          </blockquote>
+
+          <p>Do you encode that boundary inside individual components?</p>
+
+          <p>Do you handle it entirely through responsive CSS?</p>
+
+          <p>Do you model usefulness as part of the layout system?</p>
+
+          <p>Or does your application mostly discover that boundary through visual testing?</p>
+
+          <p>I'm interested in how other frontend engineers approach it.</p>
+        </section>
+
+        <nav class="article-links" aria-label="Article resources">
+          <a href="https://playground.dndgem.dev/">Try the Playground</a>
+          <a href="https://github.com/davideagosti-dev/dndgem">View Source</a>
+        </nav>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a>
+        <a href="/support/">Support</a>
+        <a href="https://playground.dndgem.dev/">Playground</a>
+        <a href="https://github.com/davideagosti-dev/dndgem">GitHub</a>
+        <a href="https://www.npmjs.com/package/@dndgem/react">npm</a>
+      </nav>
+      <p>
+        DnDGem by
+        <a href="https://davideagosti.com">DA62</a>
+        · MIT License · Support
+        <a href="mailto:support@dndgem.dev">support@dndgem.dev</a>
+      </p>
+    </footer>
+  </body>
+</html>
