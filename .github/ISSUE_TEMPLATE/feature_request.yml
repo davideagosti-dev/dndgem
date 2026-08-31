@@ -1,0 +1,65 @@
+name: Feature request
+description: Propose a concrete product change for DnDGem
+title: '[feature]: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for a **concrete product feature request**.
+
+        Broader ideas, use cases, and Alpha feedback may be better suited to [GitHub Discussions](https://github.com/davideagosti-dev/dndgem/discussions).
+
+        Feature requests do **not** automatically enter the roadmap. Deferred capabilities (for example model assistance, hosted AI, or public intelligence packages) should not be treated as planned work.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / use case
+      description: What problem are you trying to solve?
+      placeholder: Describe the use case and why it matters.
+    validations:
+      required: true
+  - type: textarea
+    id: limitation
+    attributes:
+      label: Current limitation
+      description: What can you not do today with DnDGem?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What would success look like for you?
+    validations:
+      required: true
+  - type: dropdown
+    id: package
+    attributes:
+      label: Affected package / framework (if relevant)
+      multiple: true
+      options:
+        - '@dndgem/core'
+        - '@dndgem/dom'
+        - '@dndgem/react'
+        - '@dndgem/vue'
+        - '@dndgem/angular'
+        - '@dndgem/svelte'
+        - Meta-framework (Next.js / Nuxt / SvelteKit)
+        - Docs / DX
+        - Unsure / other
+    validations:
+      required: false
+  - type: textarea
+    id: idea
+    attributes:
+      label: Possible API / behaviour idea (optional)
+      description: Implementation suggestions are welcome but not required. Keep this problem-first.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context (optional)
+    validations:
+      required: false
