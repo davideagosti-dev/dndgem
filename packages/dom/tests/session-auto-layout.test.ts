@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createAutoLayoutProposal, createLayoutIntent } from '@dndgem/core';
+import { createAutoLayoutProposal, createLayoutIntent, solveLayout } from '@dndgem/core';
 import { createLayoutSession, type LayoutSessionState } from '../src/index.js';
 import {
   FakeResizeObserver,
@@ -7,6 +7,7 @@ import {
   fakeElement,
   lastFakeObserver,
   resetFakeResizeObservers,
+  styleReflectingElement,
   type FakeBox,
 } from './helpers.js';
 
@@ -707,6 +708,108 @@ describe('createLayoutSession — Auto-Layout (DND-3.4)', () => {
     lastFakeObserver().deliver();
     lastFakeObserver().deliver();
     expect(changes.length).toBe(afterMount);
+    session.dispose();
+  });
+
+  /**
+   * DND-BUG-DOM-RESIZE-1: idle resize that changes resolved geometry reconnects
+   * the drag interaction. Real DOM remasures after apply see new item rects;
+   * the reconnect path must not read state from the disposed prior interaction.
+   */
+  it('survives VALID → DEGRADED idle resize without disposed-interaction error', () => {
+    resetFakeResizeObservers();
+    const mechanics = createFakeDragMechanics();
+    const containerBox: FakeBox = { left: 0, top: 0, width: 636, height: 360 };
+    const detailsConstraints = {
+      preferredWidth: 200,
+      preferredHeight: 300,
+      minWidth: 40,
+      minHeight: 40,
+      minUsefulWidth: 180,
+      minUsefulHeight: 280,
+    } as const;
+    const companionConstraints = {
+      preferredWidth: 180,
+      preferredHeight: 120,
+      minWidth: 40,
+      minHeight: 40,
+      minUsefulWidth: 160,
+      minUsefulHeight: 100,
+    } as const;
+
+    // Core-only proof for the same geometry (no DomAdapterError path).
+    const coreTall = solveLayout({
+      intent: createAutoLayoutProposal({
+        intent: createLayoutIntent({
+          space: { width: 636, height: 360 },
+          items: [
+            { id: 'details', constraints: detailsConstraints },
+            { id: 'companion', constraints: companionConstraints },
+          ],
+        }),
+      }).effectiveIntent,
+    });
+    expect(coreTall.evaluation.state).toBe('VALID');
+    const coreShort = solveLayout({
+      intent: createAutoLayoutProposal({
+        intent: createLayoutIntent({
+          space: { width: 636, height: 250 },
+          items: [
+            { id: 'details', constraints: detailsConstraints },
+            { id: 'companion', constraints: companionConstraints },
+          ],
+        }),
+      }).effectiveIntent,
+    });
+    expect(coreShort.evaluation.state).toBe('DEGRADED');
+
+    const session = createLayoutSession({
+      container: styleReflectingElement(containerBox),
+      items: [
+        {
+          id: 'details',
+          element: styleReflectingElement({ left: 0, top: 0, width: 200, height: 300 }),
+          constraints: detailsConstraints,
+        },
+        {
+          id: 'companion',
+          element: styleReflectingElement({ left: 0, top: 0, width: 180, height: 120 }),
+          constraints: companionConstraints,
+        },
+      ],
+      autoLayout: true,
+      mechanics: mechanics.adapter,
+      ResizeObserver: FakeResizeObserver,
+    });
+
+    expect(session.getState().solver.evaluation.state).toBe('VALID');
+    expect(mechanics.isConnected()).toBe(true);
+
+    containerBox.height = 250;
+    expect(() => {
+      lastFakeObserver().deliver();
+    }).not.toThrow();
+
+    const degraded = session.getState();
+    expect(degraded.solver.evaluation.state).toBe('DEGRADED');
+    expect(degraded.resolved.space.height).toBe(250);
+    expect(mechanics.isConnected()).toBe(true);
+
+    // Expand again → VALID (lifecycle still healthy after DEGRADED reconnect).
+    containerBox.height = 360;
+    expect(() => {
+      lastFakeObserver().deliver();
+    }).not.toThrow();
+    expect(session.getState().solver.evaluation.state).toBe('VALID');
+    expect(session.getState().resolved.space.height).toBe(360);
+
+    // Drag/cancel still works after the DEGRADED resize cycle.
+    mechanics.start('companion');
+    mechanics.move('companion', { x: 8, y: 4 });
+    expect(session.getState().phase).toBe('dragging');
+    mechanics.cancel('companion');
+    expect(session.getState().phase).toBe('idle');
+
     session.dispose();
   });
 });
