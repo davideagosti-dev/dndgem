@@ -511,76 +511,84 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
     if (committedIntent === undefined || committedResolved === undefined) {
       throw new DomAdapterError('INVALID_SESSION_INPUT', 'Cannot connect interaction before solve');
     }
+    // Clear the live reference before dispose. createDragInteraction → observeLayout
+    // emits a synchronous initial onMeasure; that path (and emit → getState) must not
+    // read the disposed prior interaction (DND-BUG-DOM-RESIZE-1).
     reconnecting = true;
-    interaction?.dispose();
-    interaction = createDragInteraction({
-      container: input.container,
-      items: elements,
-      intent: committedIntent,
-      previous: committedResolved,
-      mechanics: input.mechanics,
-      ResizeObserver: input.ResizeObserver,
-      onMeasure: handleMeasure,
-      onProposal: (event) => {
-        if (disposed) {
-          return;
-        }
-        applyPreview(event.proposal);
-        emit();
-      },
-      onDrop: (event) => {
-        if (disposed) {
-          return;
-        }
-        lastDrop = event.result;
-        if (event.result.accepted && event.result.resolved !== undefined) {
-          if (autoLayoutEnabled) {
-            const itemId = event.result.itemId;
-            const acceptedDesired = event.result.intent.desiredPlacements?.[itemId];
-            if (acceptedDesired !== undefined) {
-              // Promote ONLY the active item to Source Intent (generated → source).
-              // Sibling rects seeded for drag stability must not become Source Intent.
-              sourceDesired[itemId] = cloneRect(acceptedDesired);
-            }
-            const snapshot = lastSnapshot;
-            if (snapshot !== undefined) {
-              // Recompose from durable Source Intent + previous sibling geometry.
-              // Omit solver previous so the new Source Intent wins (ADR-0010).
-              // Do NOT invoke the optional planner on accepted drop (DND-4.3).
-              const next = solveAutoLayoutIdle(
-                snapshot,
-                event.result.resolved,
-                false,
-                lastAutomaticItemOrder,
-              );
-              proposalUnplacedItemIds = Object.freeze([...next.unplaced]);
-              lastSourceKey = sourceDesiredKey(sourceDesired);
-              commitSolver(next.intent, next.solver);
-              applyCommitted();
+    const previous = interaction;
+    interaction = undefined;
+    previous?.dispose();
+    try {
+      interaction = createDragInteraction({
+        container: input.container,
+        items: elements,
+        intent: committedIntent,
+        previous: committedResolved,
+        mechanics: input.mechanics,
+        ResizeObserver: input.ResizeObserver,
+        onMeasure: handleMeasure,
+        onProposal: (event) => {
+          if (disposed) {
+            return;
+          }
+          applyPreview(event.proposal);
+          emit();
+        },
+        onDrop: (event) => {
+          if (disposed) {
+            return;
+          }
+          lastDrop = event.result;
+          if (event.result.accepted && event.result.resolved !== undefined) {
+            if (autoLayoutEnabled) {
+              const itemId = event.result.itemId;
+              const acceptedDesired = event.result.intent.desiredPlacements?.[itemId];
+              if (acceptedDesired !== undefined) {
+                // Promote ONLY the active item to Source Intent (generated → source).
+                // Sibling rects seeded for drag stability must not become Source Intent.
+                sourceDesired[itemId] = cloneRect(acceptedDesired);
+              }
+              const snapshot = lastSnapshot;
+              if (snapshot !== undefined) {
+                // Recompose from durable Source Intent + previous sibling geometry.
+                // Omit solver previous so the new Source Intent wins (ADR-0010).
+                // Do NOT invoke the optional planner on accepted drop (DND-4.3).
+                const next = solveAutoLayoutIdle(
+                  snapshot,
+                  event.result.resolved,
+                  false,
+                  lastAutomaticItemOrder,
+                );
+                proposalUnplacedItemIds = Object.freeze([...next.unplaced]);
+                lastSourceKey = sourceDesiredKey(sourceDesired);
+                commitSolver(next.intent, next.solver);
+                applyCommitted();
+              } else {
+                commitSolver(event.result.intent, event.result.solver);
+                applyCommitted();
+              }
             } else {
               commitSolver(event.result.intent, event.result.solver);
               applyCommitted();
             }
           } else {
-            commitSolver(event.result.intent, event.result.solver);
             applyCommitted();
           }
-        } else {
+          onDrop?.(event);
+          emit();
+        },
+        onCancel: (event) => {
+          if (disposed) {
+            return;
+          }
           applyCommitted();
-        }
-        onDrop?.(event);
-        emit();
-      },
-      onCancel: (event) => {
-        if (disposed) {
-          return;
-        }
-        applyCommitted();
-        onCancel?.(event);
-        emit();
-      },
-    });
-    reconnecting = false;
+          onCancel?.(event);
+          emit();
+        },
+      });
+    } finally {
+      reconnecting = false;
+    }
   };
 
   const handleIdleSnapshot = (snapshot: DomMeasurementSnapshot): boolean => {
