@@ -657,7 +657,9 @@ describe('@dndgem/vue integration', () => {
     mechanics.drop('chart', { x: 20, y: 10 });
     await flush();
     expect(tags).toEqual(['B']);
-    expect(mechanics.connectCount()).toBe(connectsAfterMount);
+    // Accepted drop remasures + reconnects mechanics so the next drag baseline
+    // matches applied geometry (DND-BUG-DRAG-INTENT-1). Callback flips must not.
+    expect(mechanics.connectCount()).toBe(connectsAfterMount + 1);
   });
 
   it('matches createLayoutSession ResolvedLayout for the same normalized inputs', async () => {
