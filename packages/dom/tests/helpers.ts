@@ -45,6 +45,62 @@ export function fakeElement(box: FakeBox): HTMLElement {
   return element as unknown as HTMLElement;
 }
 
+/**
+ * Like `fakeElement`, but `getBoundingClientRect` reflects applied inline
+ * placement styles (px). Needed to exercise real reconnect remasure after
+ * `applyLayoutPlacements` — default fakes keep the seed box unchanged.
+ */
+export function styleReflectingElement(box: FakeBox): HTMLElement {
+  const style: Record<string, string> = {
+    position: '',
+    boxSizing: '',
+    left: '',
+    top: '',
+    width: '',
+    height: '',
+    right: '',
+    bottom: '',
+    transform: '',
+  };
+
+  const readPx = (value: string, fallback: number): number => {
+    if (value.endsWith('px')) {
+      const parsed = Number.parseFloat(value);
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+    }
+    return fallback;
+  };
+
+  const element = {
+    style,
+    get isConnected() {
+      return box.connected !== false;
+    },
+    getBoundingClientRect() {
+      const left = readPx(style.left ?? '', box.left);
+      const top = readPx(style.top ?? '', box.top);
+      const width = readPx(style.width ?? '', box.width);
+      const height = readPx(style.height ?? '', box.height);
+      return {
+        x: left,
+        y: top,
+        left,
+        top,
+        width,
+        height,
+        right: left + width,
+        bottom: top + height,
+        toJSON() {
+          return {};
+        },
+      };
+    },
+  };
+  return element as unknown as HTMLElement;
+}
+
 export class FakeResizeObserver implements ResizeObserver {
   static instances: FakeResizeObserver[] = [];
 
