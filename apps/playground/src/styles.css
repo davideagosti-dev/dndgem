@@ -16,24 +16,142 @@ body {
 .shell {
   max-width: 56rem;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem;
+  padding: 1.75rem 1.5rem 2.5rem;
 }
 
 h1 {
-  margin: 0 0 0.5rem;
-  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0 0 0.25rem;
+  font-size: clamp(1.85rem, 3.5vw, 2.75rem);
   letter-spacing: -0.03em;
 }
 
-.eyebrow {
-  margin: 0 0 1.25rem;
+.intro {
+  margin-bottom: 0.85rem;
+}
+
+.lede {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: #2f4450;
+}
+
+.thesis {
+  margin: 0 0 0.3rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #1d2a32;
+}
+
+.thesis-explain,
+.prompt {
+  margin: 0 0 0.45rem;
+  max-width: 38rem;
   color: #4d646f;
-  font-style: italic;
+}
+
+.prompt {
+  margin-bottom: 0;
+}
+
+.steps {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  max-width: 38rem;
+  color: #2f4450;
+}
+
+.steps li + li {
+  margin-top: 0.35rem;
+}
+
+.steps strong {
+  color: #1d2a32;
+}
+
+.demo {
+  display: grid;
+  grid-template-columns: minmax(12rem, 15rem) minmax(0, 720px);
+  gap: 1rem 1.25rem;
+  align-items: start;
+}
+
+.engine-status {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #4d646f;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.engine-label {
+  margin: 0 0 0.15rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4d646f;
+}
+
+.engine-state {
+  margin: 0 0 0.35rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.engine-status.is-valid .engine-state {
+  color: #1f5c45;
+}
+
+.engine-status.is-degraded .engine-state {
+  color: #8a5a12;
+}
+
+.engine-status.is-invalid .engine-state {
+  color: #8a2f2f;
+}
+
+.engine-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
+  color: #4d646f;
+}
+
+.engine-metrics {
+  margin: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.engine-metrics div {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+
+.engine-metrics dt {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #4d646f;
+}
+
+.engine-metrics dd {
+  margin: 0;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.92rem;
 }
 
 .board {
   position: relative;
+  box-sizing: border-box;
   width: min(100%, 720px);
+  max-width: 100%;
   height: 360px;
   resize: both;
   overflow: hidden;
@@ -55,6 +173,13 @@ h1 {
   margin: 0;
 }
 
+.item p {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  opacity: 0.95;
+}
+
 .chart {
   background: #2f6f5e;
 }
@@ -71,7 +196,38 @@ h1 {
   background: #8a4b2f;
 }
 
+.dev-tools {
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(77, 100, 111, 0.35);
+}
+
+.focus-probe {
+  font: inherit;
+  font-size: 0.8rem;
+  color: #4d646f;
+  background: transparent;
+  border: 1px solid rgba(77, 100, 111, 0.45);
+  padding: 0.25rem 0.55rem;
+  cursor: pointer;
+}
+
+.focus-probe:focus-visible {
+  outline: 2px solid #2f6f5e;
+  outline-offset: 2px;
+}
+
 code {
   font-family: ui-monospace, Consolas, monospace;
   font-size: 0.92em;
+}
+
+@media (max-width: 48rem) {
+  .demo {
+    grid-template-columns: 1fr;
+  }
+
+  .board {
+    width: 100%;
+  }
 }
