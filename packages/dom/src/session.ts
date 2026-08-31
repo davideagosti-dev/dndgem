@@ -444,6 +444,26 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
     });
   };
 
+  /**
+   * After committed geometry is written to the DOM, left/top changes do not
+   * notify ResizeObserver. Remeasure and reconnect so the next drag start
+   * baseline matches applied positions (DND-BUG-DRAG-INTENT-1). Also refreshes
+   * interaction authority to the session commit (Auto-Layout recompose).
+   */
+  const syncInteractionAfterApply = (): void => {
+    if (disposed || reconnecting) {
+      return;
+    }
+    const snapshot = measureLayout({
+      container: input.container,
+      items: elements,
+    });
+    // Seed lastSnapshot before reconnect so observeLayout's initial emit is a
+    // duplicate and handleMeasure does not idle-re-solve the just-committed layout.
+    lastSnapshot = snapshot;
+    connectInteraction();
+  };
+
   const applyPreview = (proposal: DragProposal): void => {
     const previewLayout = proposal.preview.resolved;
     applyLayoutPlacements({
@@ -574,6 +594,9 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
           } else {
             applyCommitted();
           }
+          // Drop (accept or reject) always ends with applied committed geometry.
+          // Refresh measurement + interaction before the next drag (DND-BUG-DRAG-INTENT-1).
+          syncInteractionAfterApply();
           onDrop?.(event);
           emit();
         },
@@ -582,6 +605,7 @@ export function createLayoutSession(input: LayoutSessionInput): LayoutSession {
             return;
           }
           applyCommitted();
+          syncInteractionAfterApply();
           onCancel?.(event);
           emit();
         },
