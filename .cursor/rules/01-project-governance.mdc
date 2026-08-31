@@ -60,7 +60,18 @@ Repository identity is **public open source** (`davideagosti-dev/dndgem`). GitHu
 
 Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.4` is the current official public Alpha). Do not document bare / `latest` installs as the supported Alpha path.
 
-`0.1.0-alpha.4` is released and closed. No Alpha.5 or Phase 5 work is authorized by this governance sync. The next roadmap/release step requires a separate explicit planning gate.
+`0.1.0-alpha.4` is released and closed. No Alpha.5 or Phase 5 work is authorized. Beta release is **NOT AUTHORIZED**.
+
+## Beta Readiness Program
+
+- **BETA READINESS PROGRAM:** AUTHORIZED (Product Owner-approved plan)
+- **CURRENT RELEASE:** still `0.1.0-alpha.4` / `@alpha`
+- **BETA RELEASE:** NOT AUTHORIZED (no `0.1.0-beta.0`, no `@beta` channel yet, no npm publish for Beta)
+- **BETA-0.1:** current approved implementation sprint — Beta Claim & Support Policy (`docs/architecture/beta-claim-support-policy.md`)
+- **ALPHA.5:** NOT AUTHORIZED (fallback only if readiness later reveals meaningful public contract changes — version decision not final)
+- **PHASE 5:** NOT AUTHORIZED
+- **MODEL ASSISTANCE:** DEFER
+- Do not mutate `latest` for Beta. Do not switch install docs from `@alpha` to `@beta` until an authorized Beta release gate.
 
 ## Phase 3 binding refinements
 
@@ -91,3 +102,4 @@ Public Alpha installs must use **`@alpha`** (`0.1.0-alpha.4` is the current offi
 - Deterministic DnDGem may progress toward Beta independently of model-based intelligence.
 - Existing private `@dndgem/intelligence` / `@dndgem/intelligence-openai` are authorized reference packages; public publication is not authorized.
 - Phase 4 is **COMPLETE AND SHIPPED** in `0.1.0-alpha.4`. DND-4.3 planner integration is **COMPLETE / RELEASED** in `0.1.0-alpha.4`. No Alpha.5 or Phase 5 work is authorized without a separate explicit planning gate.
+- Beta Readiness Program is AUTHORIZED; Beta release is NOT AUTHORIZED. Canonical claims: `docs/architecture/beta-claim-support-policy.md`.
