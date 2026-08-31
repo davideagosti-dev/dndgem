@@ -138,13 +138,11 @@ test('playground proves VALID → DEGRADED on real board resize without disposed
 test('playground preserves accepted Metric position through a small Table drag', async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 1600, height: 1100 });
+  await page.setViewportSize({ width: 1280, height: 1100 });
   await page.goto('/');
 
   await page.getByTestId('board').evaluate((node) => {
     const el = node as HTMLElement;
-    el.style.width = '900px';
-    el.style.maxWidth = 'none';
     el.style.height = '560px';
   });
   await expect
@@ -154,7 +152,7 @@ test('playground preserves accepted Metric position through a small Table drag',
         return { validity: probe?.validity, width: probe?.spaceWidth };
       });
     })
-    .toEqual({ validity: 'VALID', width: 900 });
+    .toEqual({ validity: 'VALID', width: 720 });
 
   const chart = await page.getByTestId('item-chart').boundingBox();
   const metric = await page.getByTestId('item-metric').boundingBox();
